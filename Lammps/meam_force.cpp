@@ -73,7 +73,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         rij = sqrt(rij2);
         recip = 1.0 / rij;
 
-        //     Compute phi and phip
+        //     Compute phi and phip (potential function)
         ind = this->eltind[elti][eltj];
         pp = rij * this->rdrar;
         kk = (int)pp;
