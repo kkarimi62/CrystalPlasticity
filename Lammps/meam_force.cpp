@@ -84,11 +84,11 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         phip = (this->phirar6[ind][kk] * pp + this->phirar5[ind][kk]) * pp + this->phirar4[ind][kk];
 
         if (eflag_either != 0) {
-          double phi_sc = phi * scaleij;
+          double phi_sc = phi * scaleij; //--- scaled energy: scaleij = 1/zij0
           if (eflag_global != 0)
             *eng_vdwl = *eng_vdwl + phi_sc * sij;
           if (eflag_atom != 0) {
-            eatom[i] = eatom[i] + 0.5 * phi_sc * sij;
+            eatom[i] = eatom[i] + 0.5 * phi_sc * sij;  //--- pair-wise term
             eatom[j] = eatom[j] + 0.5 * phi_sc * sij;
           }
         }
