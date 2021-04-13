@@ -80,7 +80,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         kk = std::min(kk, this->nrar - 2);
         pp = pp - kk;
         pp = std::min(pp, 1.0);
-        phi = ((this->phirar3[ind][kk] * pp + this->phirar2[ind][kk]) * pp + this->phirar1[ind][kk]) * pp + this->phirar[ind][kk];
+        phi = ((this->phirar3[ind][kk] * pp + this->phirar2[ind][kk]) * pp + this->phirar1[ind][kk]) * pp + this->phirar[ind][kk]; //--- additional terms from the smoothing function
         phip = (this->phirar6[ind][kk] * pp + this->phirar5[ind][kk]) * pp + this->phirar4[ind][kk];
 
         if (eflag_either != 0) {
@@ -98,10 +98,10 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 
         //     Compute pair densities and derivatives
         invrei = 1.0 / this->re_meam[elti][elti];
-        ai = rij * invrei - 1.0;
+        ai = rij * invrei - 1.0; //--- dimensionless distance
         ro0i = this->rho0_meam[elti];
         rhoa0i = ro0i * MathSpecial::fm_exp(-this->beta0_meam[elti] * ai);
-        drhoa0i = -this->beta0_meam[elti] * invrei * rhoa0i;
+        drhoa0i = -this->beta0_meam[elti] * invrei * rhoa0i; //--- drho/drij 
         rhoa1i = ro0i * MathSpecial::fm_exp(-this->beta1_meam[elti] * ai);
         drhoa1i = -this->beta1_meam[elti] * invrei * rhoa1i;
         rhoa2i = ro0i * MathSpecial::fm_exp(-this->beta2_meam[elti] * ai);
@@ -177,7 +177,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
             arg1j2 = arg1j2 + arho2[j][nv2] * arg;
             nv2 = nv2 + 1;
           }
-          arg1i1 = arg1i1 + arho1[i][n] * delij[n];
+          arg1i1 = arg1i1 + arho1[i][n] * delij[n]; //--- 4.30(a) in sandia report:  arho1[i][n] is Y_{1i\sigma}
           arg1j1 = arg1j1 - arho1[j][n] * delij[n];
           arg3i3 = arg3i3 + arho3b[i][n] * delij[n];
           arg3j3 = arg3j3 - arho3b[j][n] * delij[n];
@@ -189,24 +189,24 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 
         //     rho1 terms
         a1 = 2 * sij / rij;
-        drho1dr1 = a1 * (drhoa1j - rhoa1j / rij) * arg1i1;
+        drho1dr1 = a1 * (drhoa1j - rhoa1j / rij) * arg1i1; //--- 4.30(a)
         drho1dr2 = a1 * (drhoa1i - rhoa1i / rij) * arg1j1;
         a1 = 2.0 * sij / rij;
         for (m = 0; m < 3; m++) {
-          drho1drm1[m] = a1 * rhoa1j * arho1[i][m];
+          drho1drm1[m] = a1 * rhoa1j * arho1[i][m]; //--- 4.30(c)
           drho1drm2[m] = -a1 * rhoa1i * arho1[j][m];
         }
 
         //     rho2 terms
         a2 = 2 * sij / rij2;
-        drho2dr1 = a2 * (drhoa2j - 2 * rhoa2j / rij) * arg1i2 - 2.0 / 3.0 * arho2b[i] * drhoa2j * sij;
+        drho2dr1 = a2 * (drhoa2j - 2 * rhoa2j / rij) * arg1i2 - 2.0 / 3.0 * arho2b[i] * drhoa2j * sij; //--- 4.30(d): arho2b is W_{2i}
         drho2dr2 = a2 * (drhoa2i - 2 * rhoa2i / rij) * arg1j2 - 2.0 / 3.0 * arho2b[j] * drhoa2i * sij;
         a2 = 4 * sij / rij2;
         for (m = 0; m < 3; m++) {
           drho2drm1[m] = 0.0;
           drho2drm2[m] = 0.0;
           for (n = 0; n < 3; n++) {
-            drho2drm1[m] = drho2drm1[m] + arho2[i][this->vind2D[m][n]] * delij[n];
+            drho2drm1[m] = drho2drm1[m] + arho2[i][this->vind2D[m][n]] * delij[n]; //--- 4.30(f): arho2 is Y_{2i\sigma\alpha}
             drho2drm2[m] = drho2drm2[m] - arho2[j][this->vind2D[m][n]] * delij[n];
           }
           drho2drm1[m] = a2 * rhoa2j * drho2drm1[m];
@@ -217,7 +217,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         rij3 = rij * rij2;
         a3 = 2 * sij / rij3;
         a3a = 6.0 / 5.0 * sij / rij;
-        drho3dr1 = a3 * (drhoa3j - 3 * rhoa3j / rij) * arg1i3 - a3a * (drhoa3j - rhoa3j / rij) * arg3i3;
+        drho3dr1 = a3 * (drhoa3j - 3 * rhoa3j / rij) * arg1i3 - a3a * (drhoa3j - rhoa3j / rij) * arg3i3; //--- 4.30(g)
         drho3dr2 = a3 * (drhoa3i - 3 * rhoa3i / rij) * arg1j3 - a3a * (drhoa3i - rhoa3i / rij) * arg3j3;
         a3 = 6 * sij / rij3;
         a3a = 6 * sij / (5 * rij);
@@ -228,7 +228,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           for (n = 0; n < 3; n++) {
             for (p = n; p < 3; p++) {
               arg = delij[n] * delij[p] * this->v2D[nv2];
-              drho3drm1[m] = drho3drm1[m] + arho3[i][this->vind3D[m][n][p]] * arg;
+              drho3drm1[m] = drho3drm1[m] + arho3[i][this->vind3D[m][n][p]] * arg; //--- 4.30(i)
               drho3drm2[m] = drho3drm2[m] + arho3[j][this->vind3D[m][n][p]] * arg;
               nv2 = nv2 + 1;
             }
@@ -247,7 +247,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 
         if (this->ialloy == 1) {
 
-          a1i = fdiv_zero(drhoa0j * sij, tsq_ave[i][0]);
+          a1i = fdiv_zero(drhoa0j * sij, tsq_ave[i][0]); //--- 4.32(a)
           a1j = fdiv_zero(drhoa0i * sij, tsq_ave[j][0]);
           a2i = fdiv_zero(drhoa0j * sij, tsq_ave[i][1]);
           a2j = fdiv_zero(drhoa0i * sij, tsq_ave[j][1]);
@@ -287,22 +287,23 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           dt3dr2 = aj * (t3mi - t3j);
         }
 
-        //     Compute derivatives of total density wrt rij, sij and rij(3)
+        //     Compute derivatives of total density wrt rij, sij and rij(3)  //--- total density is weighted average of zero and higher order densities
         get_shpfcn(this->lattce_meam[elti][elti], this->stheta_meam[elti][elti], this->ctheta_meam[elti][elti], shpi);
         get_shpfcn(this->lattce_meam[eltj][eltj], this->stheta_meam[elti][elti], this->ctheta_meam[elti][elti], shpj);
 
-        drhodr1 = dgamma1[i] * drho0dr1 +
+        drhodr1 = dgamma1[i] * drho0dr1 + //--- index i: Eq. 4.36(a)
           dgamma2[i] * (dt1dr1 * rho1[i] + t1i * drho1dr1 + dt2dr1 * rho2[i] + t2i * drho2dr1 +
                         dt3dr1 * rho3[i] + t3i * drho3dr1) -
-          dgamma3[i] * (shpi[0] * dt1dr1 + shpi[1] * dt2dr1 + shpi[2] * dt3dr1);
-        drhodr2 = dgamma1[j] * drho0dr2 +
+          dgamma3[i] * (shpi[0] * dt1dr1 + shpi[1] * dt2dr1 + shpi[2] * dt3dr1); 
+        //
+        drhodr2 = dgamma1[j] * drho0dr2 + //--- index j
           dgamma2[j] * (dt1dr2 * rho1[j] + t1j * drho1dr2 + dt2dr2 * rho2[j] + t2j * drho2dr2 +
                         dt3dr2 * rho3[j] + t3j * drho3dr2) -
           dgamma3[j] * (shpj[0] * dt1dr2 + shpj[1] * dt2dr2 + shpj[2] * dt3dr2);
         for (m = 0; m < 3; m++) {
           drhodrm1[m] = 0.0;
           drhodrm2[m] = 0.0;
-          drhodrm1[m] = dgamma2[i] * (t1i * drho1drm1[m] + t2i * drho2drm1[m] + t3i * drho3drm1[m]);
+          drhodrm1[m] = dgamma2[i] * (t1i * drho1drm1[m] + t2i * drho2drm1[m] + t3i * drho3drm1[m]); //--- index i: Eq. 4.36(c)
           drhodrm2[m] = dgamma2[j] * (t1j * drho1drm2[m] + t2j * drho2drm2[m] + t3j * drho3drm2[m]);
         }
 
@@ -373,13 +374,13 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         }
 
         //     Compute derivatives of energy wrt rij, sij and rij[3]
-        dUdrij = phip * sij + frhop[i] * drhodr1 + frhop[j] * drhodr2;
+        dUdrij = phip * sij + frhop[i] * drhodr1 + frhop[j] * drhodr2; //--- Eq. 4.41(a)
         dUdsij = 0.0;
         if (!iszero(dscrfcn[fnoffset + jn])) {
-          dUdsij = phi + frhop[i] * drhods1 + frhop[j] * drhods2;
+          dUdsij = phi + frhop[i] * drhods1 + frhop[j] * drhods2; //--- Eq. 4.41(b)
         }
         for (m = 0; m < 3; m++) {
-          dUdrijm[m] = frhop[i] * drhodrm1[m] + frhop[j] * drhodrm2[m];
+          dUdrijm[m] = frhop[i] * drhodrm1[m] + frhop[j] * drhodrm2[m]; //--- Eq. 4.41(c)
         }
         if (!isone(scaleij)) {
           dUdrij *= scaleij;
@@ -391,7 +392,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 
         //     Add the part of the force due to dUdrij and dUdsij
 
-        force = dUdrij * recip + dUdsij * dscrfcn[fnoffset + jn];
+        force = dUdrij * recip + dUdsij * dscrfcn[fnoffset + jn]; //-- recip = 1/r_{ij}
         for (m = 0; m < 3; m++) {
           forcem = delij[m] * force + dUdrijm[m];
           f[i][m] = f[i][m] + forcem;
