@@ -894,9 +894,9 @@ MEAM::interpolate_meam(int ind)
     this->phirar5[ind][j] = 2.0 * this->phirar2[ind][j] / drar;
     this->phirar6[ind][j] = 3.0 * this->phirar3[ind][j] / drar;
     //--- 2nd derivatives
-    this->phirar7[ind][j] = this->phirar4[ind][j] / drar;
-    this->phirar8[ind][j] = 2.0 * this->phirar5[ind][j] / drar;
-    this->phirar9[ind][j] = 3.0 * this->phirar6[ind][j] / drar;
+    this->phirar7[ind][j] = this->phirar5[ind][j] / drar;
+    this->phirar8[ind][j] = 2.0 * this->phirar6[ind][j] / drar;
+    this->phirar9[ind][j] = 0.0;
     
   }
 }
