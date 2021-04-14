@@ -26,7 +26,7 @@ using namespace LAMMPS_NS;
 MEAM::MEAM(Memory* mem)
   : memory(mem)
 {
-  phir = phirar = phirar1 = phirar2 = phirar3 = phirar4 = phirar5 = phirar6 = NULL;
+  phir = phirar = phirar1 = phirar2 = phirar3 = phirar4 = phirar5 = phirar6 = phirar7 =phirar8 =phirar9 =NULL;
 
   nmax = 0;
   rho = rho0 = rho1 = rho2 = rho3 = frhop = frhopp = NULL;
@@ -52,6 +52,9 @@ MEAM::MEAM(Memory* mem)
 
 MEAM::~MEAM()
 {
+  memory->destroy(this->phirar9);
+  memory->destroy(this->phirar8);
+  memory->destroy(this->phirar7);
   memory->destroy(this->phirar6);
   memory->destroy(this->phirar5);
   memory->destroy(this->phirar4);
