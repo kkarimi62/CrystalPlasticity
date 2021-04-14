@@ -101,14 +101,18 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         invrei = 1.0 / this->re_meam[elti][elti];
         ai = rij * invrei - 1.0; //--- dimensionless distance
         ro0i = this->rho0_meam[elti];
-        rhoa0i = ro0i * MathSpecial::fm_exp(-this->beta0_meam[elti] * ai);
+        rhoa0i = ro0i * MathSpecial::fm_exp(-this->beta0_meam[elti] * ai); //--- Eq. (4.8)
         drhoa0i = -this->beta0_meam[elti] * invrei * rhoa0i; //--- drho/drij 
+        ddrhoa0i = -this->beta0_meam[elti] * invrei * drhoa0i; //--- d^2rho/drij^2 
         rhoa1i = ro0i * MathSpecial::fm_exp(-this->beta1_meam[elti] * ai);
         drhoa1i = -this->beta1_meam[elti] * invrei * rhoa1i;
+        ddrhoa1i = -this->beta1_meam[elti] * invrei * drhoa1i;
         rhoa2i = ro0i * MathSpecial::fm_exp(-this->beta2_meam[elti] * ai);
         drhoa2i = -this->beta2_meam[elti] * invrei * rhoa2i;
+        ddrhoa2i = -this->beta2_meam[elti] * invrei * drhoa2i;
         rhoa3i = ro0i * MathSpecial::fm_exp(-this->beta3_meam[elti] * ai);
         drhoa3i = -this->beta3_meam[elti] * invrei * rhoa3i;
+        ddrhoa3i = -this->beta3_meam[elti] * invrei * drhoa3i;
 
         if (elti != eltj) {
           invrej = 1.0 / this->re_meam[eltj][eltj];
@@ -116,21 +120,29 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           ro0j = this->rho0_meam[eltj];
           rhoa0j = ro0j * MathSpecial::fm_exp(-this->beta0_meam[eltj] * aj);
           drhoa0j = -this->beta0_meam[eltj] * invrej * rhoa0j;
+          ddrhoa0j = -this->beta0_meam[eltj] * invrej * drhoa0j;
           rhoa1j = ro0j * MathSpecial::fm_exp(-this->beta1_meam[eltj] * aj);
           drhoa1j = -this->beta1_meam[eltj] * invrej * rhoa1j;
+          ddrhoa1j = -this->beta1_meam[eltj] * invrej * drhoa1j;
           rhoa2j = ro0j * MathSpecial::fm_exp(-this->beta2_meam[eltj] * aj);
           drhoa2j = -this->beta2_meam[eltj] * invrej * rhoa2j;
+          ddrhoa2j = -this->beta2_meam[eltj] * invrej * drhoa2j;
           rhoa3j = ro0j * MathSpecial::fm_exp(-this->beta3_meam[eltj] * aj);
           drhoa3j = -this->beta3_meam[eltj] * invrej * rhoa3j;
+          ddrhoa3j = -this->beta3_meam[eltj] * invrej * drhoa3j;
         } else {
           rhoa0j = rhoa0i;
           drhoa0j = drhoa0i;
+          ddrhoa0j = ddrhoa0i;
           rhoa1j = rhoa1i;
           drhoa1j = drhoa1i;
+          ddrhoa1j = ddrhoa1i;
           rhoa2j = rhoa2i;
           drhoa2j = drhoa2i;
+          ddrhoa2j = ddrhoa2i;
           rhoa3j = rhoa3i;
           drhoa3j = drhoa3i;
+          ddrhoa3j = ddrhoa3i;
         }
 
         const double t1mi = this->t1_meam[elti];
@@ -153,6 +165,12 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           drhoa1i *= t1mi;
           drhoa2i *= t2mi;
           drhoa3i *= t3mi;
+          ddrhoa1j *= t1mj;
+          ddrhoa2j *= t2mj;
+          ddrhoa3j *= t3mj;
+          ddrhoa1i *= t1mi;
+          ddrhoa2i *= t2mi;
+          ddrhoa3i *= t3mi;
         }
 
         nv2 = 0;
@@ -179,23 +197,31 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
             nv2 = nv2 + 1;
           }
           arg1i1 = arg1i1 + arho1[i][n] * delij[n]; //--- 4.30(a) in sandia report:  arho1[i][n] is Y_{1i\sigma}
+          arg1i1_d = arg1i1_d + darho1dr[i][n] * delij[n];
           arg1j1 = arg1j1 - arho1[j][n] * delij[n];
+          arg1j1_d = arg1j1_d - darho1dr[i][n] * delij[n]; //--- minus sign???
           arg3i3 = arg3i3 + arho3b[i][n] * delij[n];
           arg3j3 = arg3j3 - arho3b[j][n] * delij[n];
         }
 
         //     rho0 terms
-        drho0dr1 = drhoa0j * sij;
+        drho0dr1 = drhoa0j * sij; //--- 4.26(a)
         drho0dr2 = drhoa0i * sij;
+        ddrho0ddr1 = ddrhoa0j * sij; 
+        ddrho0ddr2 = ddrhoa0i * sij;
 
         //     rho1 terms
         a1 = 2 * sij / rij;
         drho1dr1 = a1 * (drhoa1j - rhoa1j / rij) * arg1i1; //--- 4.30(a)
+        ddrho1ddr1 = a1 * ( ( - 0.5 * drho1dr1 / sij ) + ( ddrhoa1j - drhoa1j / rij + rhoa1j / rij2 ) * arg1i1 + (drhoa1j - rhoa1j / rij) * arg1i1_d ); 
         drho1dr2 = a1 * (drhoa1i - rhoa1i / rij) * arg1j1;
+        ddrho1ddr2 = a1 * ( ( - 0.5 * drho1dr2 / sij ) + ( ddrhoa1i - drhoa1i / rij + rhoa1i / rij2 ) * arg1j1 + (drhoa1i - rhoa1i / rij) * arg1j1_d ); 
         a1 = 2.0 * sij / rij;
         for (m = 0; m < 3; m++) {
           drho1drm1[m] = a1 * rhoa1j * arho1[i][m]; //--- 4.30(c)
+          ddrho1drmdr1[m] = a1 * ( ( - rhoa1j * arho1[i][m] / rij ) + ( rhoa1j * darho1dr[i][m] ) + ( arho1[i][m] * drhoa1j ) );
           drho1drm2[m] = -a1 * rhoa1i * arho1[j][m];
+          ddrho1drmdr2[m] = -a1 * ( ( - rhoa1i * arho1[j][m] / rij ) + ( rhoa1i * darho1dr[j][m] ) + ( arho1[j][m] * drhoa1i ) ); //--- negative sign??
         }
 
         //     rho2 terms
