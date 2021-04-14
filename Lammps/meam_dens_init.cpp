@@ -19,6 +19,7 @@ MEAM::meam_dens_setup(int atom_nmax, int nall, int n_neigh)
     memory->destroy(rho2);
     memory->destroy(rho3);
     memory->destroy(frhop);
+    memory->destroy(frhopp);
     memory->destroy(gamma);
     memory->destroy(dgamma1);
     memory->destroy(dgamma2);
@@ -39,6 +40,7 @@ MEAM::meam_dens_setup(int atom_nmax, int nall, int n_neigh)
     memory->create(rho2, nmax, "pair:rho2");
     memory->create(rho3, nmax, "pair:rho3");
     memory->create(frhop, nmax, "pair:frhop");
+    memory->create(frhopp, nmax, "pair:frhopp");
     memory->create(gamma, nmax, "pair:gamma");
     memory->create(dgamma1, nmax, "pair:dgamma1");
     memory->create(dgamma2, nmax, "pair:dgamma2");
