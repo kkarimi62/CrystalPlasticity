@@ -312,7 +312,7 @@ MEAM::phi_meam(double r, int a, int b)
   double t11av, t21av, t31av, t12av, t22av, t32av;
   double G1, G2, s1[3], s2[3], rho0_1, rho0_2;
   double Gam1, Gam2, Z1, Z2;
-  double rhobar1, rhobar2, F1, F2, dF;
+  double rhobar1, rhobar2, F1, F2, dF, ddF;
   double rho01, rho11, rho21, rho31;
   double rho02, rho12, rho22, rho32;
   double scalfac, phiaa, phibb;
@@ -442,8 +442,8 @@ MEAM::phi_meam(double r, int a, int b)
 
   // compute embedding functions, eqn I.5
 
-  F1 = embedding(this->A_meam[a], this->Ec_meam[a][a], rhobar1, dF);
-  F2 = embedding(this->A_meam[b], this->Ec_meam[b][b], rhobar2, dF);
+  F1 = embedding(this->A_meam[a], this->Ec_meam[a][a], rhobar1, dF, ddF );
+  F2 = embedding(this->A_meam[b], this->Ec_meam[b][b], rhobar2, dF, ddF );
 
 
   // compute Rose function, I.16
