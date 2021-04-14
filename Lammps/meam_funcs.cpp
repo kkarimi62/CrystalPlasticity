@@ -147,20 +147,23 @@ MEAM::zbl(const double r, const int z1, const int z2)
 // Compute embedding function F(rhobar) and derivative F'(rhobar), eqn I.5
 //
 double
-MEAM::embedding(const double A, const double Ec, const double rhobar, double& dF) const
+MEAM::embedding(const double A, const double Ec, const double rhobar, double& dF, double& ddF ) const
 {
   const double AEc = A * Ec;
 
   if (rhobar > 0.0) {
       const double lrb = log(rhobar);
       dF = AEc * (1.0 + lrb);
+      ddF = AEc * (1.0/rhobar); //--- 2nd deriv.
       return AEc * rhobar * lrb;
   } else {
     if (this->emb_lin_neg == 0) {
       dF = 0.0;
+      ddF = 0.0;
       return 0.0;
     } else {
       dF = - AEc;
+      ddF = 0.0;
       return - AEc * rhobar;
     }
   }
