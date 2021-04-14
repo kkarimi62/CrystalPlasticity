@@ -114,7 +114,7 @@ MEAM::meam_dens_final(int nlocal, int eflag_either, int eflag_global, int eflag_
         dgamma3[i] = 0.0;
       }
 
-      Fl = embedding(this->A_meam[elti], this->Ec_meam[elti][elti], rhob, frhop[i]);
+      Fl = embedding(this->A_meam[elti], this->Ec_meam[elti][elti], rhob, frhop[i], frhopp[i]);
 
       if (eflag_either != 0) {
         Fl *= scaleii;
