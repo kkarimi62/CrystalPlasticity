@@ -188,6 +188,12 @@ MEAM::compute_pair_meam(void)
     memory->destroy(this->phirar5);
   if (this->phirar6 != NULL)
     memory->destroy(this->phirar6);
+    if (this->phirar7 != NULL)
+    memory->destroy(this->phirar7);
+  if (this->phirar8 != NULL)
+    memory->destroy(this->phirar8);
+  if (this->phirar9 != NULL)
+    memory->destroy(this->phirar9);
 
   // allocate memory for array that defines the potential
   memory->create(this->phir, (this->neltypes * (this->neltypes + 1)) / 2, this->nr, "pair:phir");
@@ -201,6 +207,10 @@ MEAM::compute_pair_meam(void)
   memory->create(this->phirar4, (this->neltypes * (this->neltypes + 1)) / 2, this->nr, "pair:phirar4");
   memory->create(this->phirar5, (this->neltypes * (this->neltypes + 1)) / 2, this->nr, "pair:phirar5");
   memory->create(this->phirar6, (this->neltypes * (this->neltypes + 1)) / 2, this->nr, "pair:phirar6");
+  memory->create(this->phirar7, (this->neltypes * (this->neltypes + 1)) / 2, this->nr, "pair:phirar7");
+  memory->create(this->phirar8, (this->neltypes * (this->neltypes + 1)) / 2, this->nr, "pair:phirar8");
+  memory->create(this->phirar9, (this->neltypes * (this->neltypes + 1)) / 2, this->nr, "pair:phirar9");
+
 
   // loop over pairs of element types
   nv2 = 0;
@@ -883,5 +893,10 @@ MEAM::interpolate_meam(int ind)
     this->phirar4[ind][j] = this->phirar1[ind][j] / drar;
     this->phirar5[ind][j] = 2.0 * this->phirar2[ind][j] / drar;
     this->phirar6[ind][j] = 3.0 * this->phirar3[ind][j] / drar;
+    //--- 2nd derivatives
+    this->phirar7[ind][j] = this->phirar4[ind][j] / drar;
+    this->phirar8[ind][j] = 2.0 * this->phirar5[ind][j] / drar;
+    this->phirar9[ind][j] = 3.0 * this->phirar6[ind][j] / drar;
+    
   }
 }
