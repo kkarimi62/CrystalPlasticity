@@ -82,6 +82,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         pp = std::min(pp, 1.0);
         phi = ((this->phirar3[ind][kk] * pp + this->phirar2[ind][kk]) * pp + this->phirar1[ind][kk]) * pp + this->phirar[ind][kk]; //--- additional terms from the smoothing function
         phip = (this->phirar6[ind][kk] * pp + this->phirar5[ind][kk]) * pp + this->phirar4[ind][kk]; //--- (d/dr){\phi/S_{ij}}
+        phipp = (this->phirar8[ind][kk]) * pp + this->phirar7[ind][kk]; //--- (d^2/dr^2){\phi/S_{ij}}
 
         if (eflag_either != 0) {
           double phi_sc = phi * scaleij; //--- scaled energy: scaleij = 1/zij0
