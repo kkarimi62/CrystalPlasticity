@@ -81,7 +81,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         pp = pp - kk;
         pp = std::min(pp, 1.0);
         phi = ((this->phirar3[ind][kk] * pp + this->phirar2[ind][kk]) * pp + this->phirar1[ind][kk]) * pp + this->phirar[ind][kk]; //--- additional terms from the smoothing function
-        phip = (this->phirar6[ind][kk] * pp + this->phirar5[ind][kk]) * pp + this->phirar4[ind][kk];
+        phip = (this->phirar6[ind][kk] * pp + this->phirar5[ind][kk]) * pp + this->phirar4[ind][kk]; //--- (d/dr){\phi/S_{ij}}
 
         if (eflag_either != 0) {
           double phi_sc = phi * scaleij; //--- scaled energy: scaleij = 1/zij0
@@ -374,7 +374,9 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         }
 
         //     Compute derivatives of energy wrt rij, sij and rij[3]
-        dUdrij = phip * sij + frhop[i] * drhodr1 + frhop[j] * drhodr2; //--- Eq. 4.41(a)
+        dUdrij = phip * sij + frhop[i] * drhodr1 + frhop[j] * drhodr2; //--- Eq. 4.41(a) 1st derivative
+        ddUddrij = phipp * sij + ( frhopp[i] * drhodr1 * drhodr1 + frhop[i] * ddrhoddr1 ) + //--- 2nd derivative
+                                 ( frhopp[j] * drhodr2 * drhodr2 + frhop[j] * ddrhoddr2 );
         dUdsij = 0.0;
         if (!iszero(dscrfcn[fnoffset + jn])) {
           dUdsij = phi + frhop[i] * drhods1 + frhop[j] * drhods2; //--- Eq. 4.41(b)
@@ -394,7 +396,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 
         force = dUdrij * recip + dUdsij * dscrfcn[fnoffset + jn]; //-- recip = 1/r_{ij}
         for (m = 0; m < 3; m++) {
-          forcem = delij[m] * force + dUdrijm[m];
+          forcem = delij[m] * force + dUdrijm[m]; //--- Eq. (4.40)
           f[i][m] = f[i][m] + forcem;
           f[j][m] = f[j][m] - forcem;
         }
