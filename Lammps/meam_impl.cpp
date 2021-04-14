@@ -29,7 +29,7 @@ MEAM::MEAM(Memory* mem)
   phir = phirar = phirar1 = phirar2 = phirar3 = phirar4 = phirar5 = phirar6 = NULL;
 
   nmax = 0;
-  rho = rho0 = rho1 = rho2 = rho3 = frhop = NULL;
+  rho = rho0 = rho1 = rho2 = rho3 = frhop = frhopp = NULL;
   gamma = dgamma1 = dgamma2 = dgamma3 = arho2b = NULL;
   arho1 = arho2 = arho3 = arho3b = t_ave = tsq_ave = NULL;
 
@@ -67,6 +67,7 @@ MEAM::~MEAM()
   memory->destroy(this->rho2);
   memory->destroy(this->rho3);
   memory->destroy(this->frhop);
+  memory->destroy(this->frhopp);
   memory->destroy(this->gamma);
   memory->destroy(this->dgamma1);
   memory->destroy(this->dgamma2);
