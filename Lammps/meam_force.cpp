@@ -240,14 +240,37 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         ddrho2ddr1 = a2 * (d_argg_1*argg_2+argg_1*d_argg_2)-d_argg_3;
           
         drho2dr2 = a2 * (drhoa2i - 2 * rhoa2i / rij) * arg1j2 - 2.0 / 3.0 * arho2b[j] * drhoa2i * sij;
+        //--- 2nd derivative wrt rij (atom j)
+        argg_1 = (drhoa2i - 2 * rhoa2i / rij);
+        argg_2 = arg1j2;
+        argg_3 = 2.0 / 3.0 * arho2b[j] * drhoa2i * sij;
+        d_argg_1 = ddrhoa2i-2*(-rhoa2i/rij+drhoa2i)/rij
+        d_argg_2 = arg1j2_d;
+        d_argg_3 = 2.0 / 3.0 * (darho2b[j] * drhoa2i+arho2b[j]*ddrhoa2i) * sij;
+        ddrho2ddr1 = a2 * (d_argg_1*argg_2+argg_1*d_argg_2)-d_argg_3;
+        //
         a2 = 4 * sij / rij2;
         for (m = 0; m < 3; m++) {
           drho2drm1[m] = 0.0;
           drho2drm2[m] = 0.0;
+          drho2drmdr1[m] = 0.0;
+          drho2drmdr2[m] = 0.0;
           for (n = 0; n < 3; n++) {
             drho2drm1[m] = drho2drm1[m] + arho2[i][this->vind2D[m][n]] * delij[n]; //--- 4.30(f): arho2 is Y_{2i\sigma\alpha}
             drho2drm2[m] = drho2drm2[m] - arho2[j][this->vind2D[m][n]] * delij[n];
+            //
+            drho2drmdr1[m] += darho2dr[i][this->vind2D[m][n]] * delij[n];
+            drho2drmdr2[m] += darho2dr[j][this->vind2D[m][n]] * delij[n];
           }
+          //--- d^2rho/drm/dr
+          drho2drmdr1[m] *= rhoa2j;
+          drho2drmdr1[m] += drho2drm1[m] * (drhoa2j-2*rhoa2j/rij); 
+          drho2drmdr1[m] *= a2;
+          //
+          drho2drmdr2[m] *= rhoa2i;
+          drho2drmdr2[m] += drho2drm2[m] * (drhoa2i-2*rhoa2i/rij);
+          drho2drmdr2[m] *= -a2; //--- negative sign?
+          //
           drho2drm1[m] = a2 * rhoa2j * drho2drm1[m];
           drho2drm2[m] = -a2 * rhoa2i * drho2drm2[m];
         }
