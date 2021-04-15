@@ -193,8 +193,9 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
             }
             arg = delij[n] * delij[p] * this->v2D[nv2];
             arg1i2 = arg1i2 + arho2[i][nv2] * arg;
-            arg1i2_d = arg1i2 + darho2dr[i][nv2] * arg;
+            arg1i2_d = arg1i2_d + darho2dr[i][nv2] * arg;
             arg1j2 = arg1j2 + arho2[j][nv2] * arg;
+            arg1j2_d = arg1j2_d + darho2dr[j][nv2] * arg;
             nv2 = nv2 + 1;
           }
           arg1i1 = arg1i1 + arho1[i][n] * delij[n]; //--- 4.30(a) in sandia report:  arho1[i][n] is Y_{1i\sigma}
@@ -228,11 +229,15 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         //     rho2 terms
         a2 = 2 * sij / rij2;
         drho2dr1 = a2 * (drhoa2j - 2 * rhoa2j / rij) * arg1i2 - 2.0 / 3.0 * arho2b[i] * drhoa2j * sij; //--- 4.30(d): arho2b is W_{2i}
-        drho2dr1 = a2 *                (1)           *   (2)  -              (3)
-        ddrho2ddr1 = a2 * (ddr(1)*2+(1)*ddr(2))-ddr(3); //--- 4.30(d): arho2b is W_{2i}
-        ddr(1) = ddrhoa2j-2*(rhoa2j/rij+drhoa2j)/rij
-        ddr(2) = arg1i2_d
-        ddr(3) = 2.0 / 3.0 * (darho2b[i] * drhoa2j+arho2b[i]*ddrhoa2j) * sij //--- define darho2b[i] and ddrhoa2j
+//      drho2dr1 = a2 *                (1)           *   (2)  -              (3)
+        //--- 2nd derivative wrt rij
+        argg_1 = (drhoa2j - 2 * rhoa2j / rij);
+        argg_2 = arg1i2;
+        argg_3 = 2.0 / 3.0 * arho2b[i] * drhoa2j * sij;
+        d_argg_1 = ddrhoa2j-2*(-rhoa2j/rij+drhoa2j)/rij
+        d_argg_2 = arg1i2_d;
+        d_argg_3 = 2.0 / 3.0 * (darho2b[i] * drhoa2j+arho2b[i]*ddrhoa2j) * sij;
+        ddrho2ddr1 = a2 * (d_argg_1*argg_2+argg_1*d_argg_2)-d_argg_3;
           
         drho2dr2 = a2 * (drhoa2i - 2 * rhoa2i / rij) * arg1j2 - 2.0 / 3.0 * arho2b[j] * drhoa2i * sij;
         a2 = 4 * sij / rij2;
