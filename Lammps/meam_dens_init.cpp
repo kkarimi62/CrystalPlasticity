@@ -340,32 +340,42 @@ MEAM::calc_rho1(int i, int /*ntype*/, int* type, int* fmap, double** x, int numn
         }
         arho2b[i] = arho2b[i] + rhoa2j;
         arho2b[j] = arho2b[j] + rhoa2i;
+        darho2b[i] = darho2b[i] + drhoa2j;
+        darho2b[j] = darho2b[j] + drhoa2i;
 
         A1j = rhoa1j / rij;
         A1j_d = ( drhoa1j - A1j ) / rij;
         A2j = rhoa2j / rij2;
+        A2j_d = drhoa2j / rij2 - 2 * A2j /rij;
         A3j = rhoa3j / (rij2 * rij);
+        A3j_d = (drhoa3j-3*rhoa3j/rij) / (rij2 * rij);
         A1i = rhoa1i / rij;
         A1i_d = ( drhoa1i - A1i ) / rij;
         A2i = rhoa2i / rij2;
+        A2i_d = drhoa2i / rij2 - 2 * A2i /rij;
         A3i = rhoa3i / (rij2 * rij);
+        A3i_d = (drhoa3i-3*rhoa3i/rij) / (rij2 * rij);
         nv2 = 0;
         nv3 = 0;
         for (m = 0; m < 3; m++) {
-          arho1[i][m] = arho1[i][m] + A1j * delij[m];
+          arho1[i][m] = arho1[i][m] + A1j * delij[m]; //--- Eq. 4.27(a)
           arho1[j][m] = arho1[j][m] - A1i * delij[m];
-          darho1dr[i][m] = darho1dr[i][m] + A1j_d * delij[m];
+          darho1dr[i][m] = darho1dr[i][m] + A1j_d * delij[m]; //--- deriv. Eq. 4.27(a) wrt rij
           darho1dr[j][m] = darho1dr[j][m] - A1i_d * delij[m];
 
           arho3b[i][m] = arho3b[i][m] + rhoa3j * delij[m] / rij;
           arho3b[j][m] = arho3b[j][m] - rhoa3i * delij[m] / rij;
           for (n = m; n < 3; n++) {
-            arho2[i][nv2] = arho2[i][nv2] + A2j * delij[m] * delij[n];
+            arho2[i][nv2] = arho2[i][nv2] + A2j * delij[m] * delij[n]; //--- Eq. 4.27(b)
             arho2[j][nv2] = arho2[j][nv2] + A2i * delij[m] * delij[n];
+            darho2dr[i][nv2] = darho2dr[i][nv2] + A2j_d * delij[m] * delij[n]; //--- deriv. Eq. 4.27(b) wrt rij
+            darho2dr[j][nv2] = darho2dr[j][nv2] + A2i_d * delij[m] * delij[n];
             nv2 = nv2 + 1;
             for (p = n; p < 3; p++) {
               arho3[i][nv3] = arho3[i][nv3] + A3j * delij[m] * delij[n] * delij[p];
+              darho3dr[i][nv3] = darho3dr[i][nv3] + A3j_d * delij[m] * delij[n] * delij[p]; //--- deriv. Eq. 4.27(c) wrt rij allocate & initiaizeeeee
               arho3[j][nv3] = arho3[j][nv3] - A3i * delij[m] * delij[n] * delij[p];
+              darho3dr[j][nv3] = darho3dr[j][nv3] + A3i_d * delij[m] * delij[n] * delij[p];
               nv3 = nv3 + 1;
             }
           }
