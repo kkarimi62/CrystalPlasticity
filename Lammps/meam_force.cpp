@@ -315,15 +315,33 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         for (m = 0; m < 3; m++) {
           drho3drm1[m] = 0.0;
           drho3drm2[m] = 0.0;
+          //
+          ddrho3drmdr1[m] = 0.0;
+          ddrho3drmdr2[m] = 0.0;
           nv2 = 0;
           for (n = 0; n < 3; n++) {
             for (p = n; p < 3; p++) {
               arg = delij[n] * delij[p] * this->v2D[nv2];
               drho3drm1[m] = drho3drm1[m] + arho3[i][this->vind3D[m][n][p]] * arg; //--- 4.30(i)
               drho3drm2[m] = drho3drm2[m] + arho3[j][this->vind3D[m][n][p]] * arg;
+              //
+              ddrho3drmdr1[m] += darho3dr[i][this->vind3D[m][n][p]] * arg; //--- deriv. 4.30(i) wrt. r
+              ddrho3drmdr2[m] += darho3dr[j][this->vind3D[m][n][p]] * arg; 
+              //
               nv2 = nv2 + 1;
             }
           }
+          //
+          ddrho3drmdr1[m] *= rhoa3j;  //--- deriv. 4.30(i) wrt. r
+          ddrho3drmdr1[m] += drho3drm1[m] * (-3*rhoa3j/rij+drhoa3j);
+          ddrho3drmdr1[m] *= a3;
+          ddrho3drmdr1[m] += -a3a * ((-rhoa3j/rij+drhoa3j)*arho3b[i][m]+rhoa3j*darho3bdr[i][m])
+          //
+          ddrho3drmdr2[m] *= rhoa3i;  //--- deriv. 4.30(i) wrt. r (atom j)
+          ddrho3drmdr2[m] += drho3drm2[m] * (-3*rhoa3i/rij+drhoa3i);
+          ddrho3drmdr2[m] *= a3;
+          ddrho3drmdr2[m] += a3a * ((-rhoa3i/rij+drhoa3i)*arho3b[j][m]+rhoa3i*darho3bdr[j][m]) //--- negative sign???
+          //
           drho3drm1[m] = (a3 * drho3drm1[m] - a3a * arho3b[i][m]) * rhoa3j;
           drho3drm2[m] = (-a3 * drho3drm2[m] + a3a * arho3b[j][m]) * rhoa3i;
         }
