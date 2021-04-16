@@ -400,15 +400,21 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         get_shpfcn(this->lattce_meam[elti][elti], this->stheta_meam[elti][elti], this->ctheta_meam[elti][elti], shpi);
         get_shpfcn(this->lattce_meam[eltj][eltj], this->stheta_meam[elti][elti], this->ctheta_meam[elti][elti], shpj);
 
-        drhodr1 = dgamma1[i] * drho0dr1 + //--- index i: Eq. 4.36(a)
+        drhodr1 = dgamma1[i] * drho0dr1 + //--- index i: Eq. 4.36(a), dgamma1: defined in "meam_dens_final.cpp"
           dgamma2[i] * (dt1dr1 * rho1[i] + t1i * drho1dr1 + dt2dr1 * rho2[i] + t2i * drho2dr1 +
                         dt3dr1 * rho3[i] + t3i * drho3dr1) -
           dgamma3[i] * (shpi[0] * dt1dr1 + shpi[1] * dt2dr1 + shpi[2] * dt3dr1); 
-        //
+
+        //---
+        dgamdr = (shpi[0] * dt1dr1 + shpi[1] * dt2dr1 + shpi[2] * dt3dr1) / (Z * Z); //--- d\Gamma^{ref}/dr: deriv of Eq. (4.6) Z defined?
+        drho_bkgd_dr[i] *= dgamdr; //--- deriv. of Eq. (4.5)
+        
+        //--- index j
         drhodr2 = dgamma1[j] * drho0dr2 + //--- index j
           dgamma2[j] * (dt1dr2 * rho1[j] + t1j * drho1dr2 + dt2dr2 * rho2[j] + t2j * drho2dr2 +
                         dt3dr2 * rho3[j] + t3j * drho3dr2) -
           dgamma3[j] * (shpj[0] * dt1dr2 + shpj[1] * dt2dr2 + shpj[2] * dt3dr2);
+        //--- deriv. wrt. rij(3)
         for (m = 0; m < 3; m++) {
           drhodrm1[m] = 0.0;
           drhodrm2[m] = 0.0;
