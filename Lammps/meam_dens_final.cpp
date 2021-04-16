@@ -22,7 +22,7 @@ MEAM::meam_dens_final(int nlocal, int eflag_either, int eflag_global, int eflag_
       rho2[i] = -1.0 / 3.0 * arho2b[i] * arho2b[i];
       rho3[i] = 0.0;
       for (m = 0; m < 3; m++) {
-        rho1[i] = rho1[i] + arho1[i][m] * arho1[i][m];
+        rho1[i] = rho1[i] + arho1[i][m] * arho1[i][m]; //--- Eq. (4.28 a)
         rho3[i] = rho3[i] - 3.0 / 5.0 * arho3b[i][m] * arho3b[i][m];
       }
       for (m = 0; m < 6; m++) {
@@ -48,33 +48,33 @@ MEAM::meam_dens_final(int nlocal, int eflag_either, int eflag_global, int eflag_
         }
       }
 
-      gamma[i] = t_ave[i][0] * rho1[i] + t_ave[i][1] * rho2[i] + t_ave[i][2] * rho3[i];
+      gamma[i] = t_ave[i][0] * rho1[i] + t_ave[i][1] * rho2[i] + t_ave[i][2] * rho3[i]; //--- \Gamma: Eq. (4.4)
 
       if (rho0[i] > 0.0) {
         gamma[i] = gamma[i] / (rho0[i] * rho0[i]);
       }
 
-      Z = get_Zij(this->lattce_meam[elti][elti]);
+      Z = get_Zij(this->lattce_meam[elti][elti]); //--- Z_{i0}
 
-      G = G_gam(gamma[i], this->ibar_meam[elti], errorflag);
+      G = G_gam(gamma[i], this->ibar_meam[elti], errorflag); //--- G(\Gamma)
       if (errorflag != 0)
         return;
 
-      get_shpfcn(this->lattce_meam[elti][elti], this->stheta_meam[elti][elti], this->ctheta_meam[elti][elti], shp);
+      get_shpfcn(this->lattce_meam[elti][elti], this->stheta_meam[elti][elti], this->ctheta_meam[elti][elti], shp);  //--- s_i^{(k)} in Eq. (4.6)
 
       if (this->ibar_meam[elti] <= 0) {
         Gbar = 1.0;
         dGbar = 0.0;
       } else {
         if (this->mix_ref_t == 1) {
-          gam = (t_ave[i][0] * shp[0] + t_ave[i][1] * shp[1] + t_ave[i][2] * shp[2]) / (Z * Z);
+          gam = (t_ave[i][0] * shp[0] + t_ave[i][1] * shp[1] + t_ave[i][2] * shp[2]) / (Z * Z); //--- \Gamma^{ref}: Eq. (4.6)
         } else {
           gam = (this->t1_meam[elti] * shp[0] + this->t2_meam[elti] * shp[1] + this->t3_meam[elti] * shp[2]) /
                 (Z * Z);
         }
-        Gbar = G_gam(gam, this->ibar_meam[elti], errorflag);
+        Gbar = G_gam(gam, this->ibar_meam[elti], errorflag); //--- G(\Gamma^{ref})
       }
-      rho[i] = rho0[i] * G;
+      rho[i] = rho0[i] * G; //--- Eq. (4.3): missing / rho_bkgd ??
 
       if (this->mix_ref_t == 1) {
         if (this->ibar_meam[elti] <= 0) {
@@ -84,7 +84,7 @@ MEAM::meam_dens_final(int nlocal, int eflag_either, int eflag_global, int eflag_
           gam = (t_ave[i][0] * shp[0] + t_ave[i][1] * shp[1] + t_ave[i][2] * shp[2]) / (Z * Z);
           Gbar = dG_gam(gam, this->ibar_meam[elti], dGbar);
         }
-        rho_bkgd = this->rho0_meam[elti] * Z * Gbar;
+        rho_bkgd = this->rho0_meam[elti] * Z * Gbar; //--- Eq. (4.5)
       } else {
         if (this->bkgd_dyn == 1) {
           rho_bkgd = this->rho0_meam[elti] * Z;
@@ -94,13 +94,16 @@ MEAM::meam_dens_final(int nlocal, int eflag_either, int eflag_global, int eflag_
       }
       rhob = rho[i] / rho_bkgd;
       denom = 1.0 / rho_bkgd;
-
+      
+      drho_bkgd_dr[i] = this->rho0_meam[elti]*Z*dGbar*1.0;//dgamdr; //--- deriv of Eq. (4.5): complete definition in meam_force.cpp -> define array 
+      ddrho_bkgd_drdr[i] = this->rho0_meam[elti] * Z * ( ddGbar * dgamdr * dgamdr + dGbar * ddgamdrdr ); //--- 2nd deriv of Eq. (4.5)
+       
       G = dG_gam(gamma[i], this->ibar_meam[elti], dG);
 
-      dgamma1[i] = (G - 2 * dG * gamma[i]) * denom;
+      dgamma1[i] = (G - 2 * dG * gamma[i]) * denom; //--- Eq. (4.36a): prefactor in the 1st term of the RHS 
 
       if (!iszero(rho0[i])) {
-        dgamma2[i] = (dG / rho0[i]) * denom;
+        dgamma2[i] = (dG / rho0[i]) * denom; //--- Eq. (4.36a): prefactor in the 2nd term of the RHS 
       } else {
         dgamma2[i] = 0.0;
       }
