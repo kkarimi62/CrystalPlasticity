@@ -74,7 +74,7 @@ MEAM::G_gam(const double gamma, const int ibar, int& errorflag) const
 //  -5 => G = +-sqrt(abs(1+gamma))
 //
 double
-MEAM::dG_gam(const double gamma, const int ibar, double& dG) const
+MEAM::dG_gam(const double gamma, const int ibar, double& dG, double& dGG) const
 {
   double gsmooth_switchpoint;
   double G;
@@ -90,32 +90,39 @@ MEAM::dG_gam(const double gamma, const int ibar, double& dG) const
         G = 1 / (gsmooth_factor + 1) * pow((gsmooth_switchpoint / gamma), gsmooth_factor);
         G = sqrt(G);
         dG = -gsmooth_factor * G / (2.0 * gamma);
+        dGG = 0.5 * gsmooth_factor * ( G / gamma - dG ) / gamma
         return G;
       } else {
         G = sqrt(1.0 + gamma);
         dG = 1.0 / (2.0 * G);
+        dGG =  dG * (-1.0 / (2.0 * G * G ));
         return G;
       }
     case 1:
       G = MathSpecial::fm_exp(gamma / 2.0);
       dG = G / 2.0;
+      dGG = dG / 2.0  
       return G;
     case 3:
       G = 2.0 / (1.0 + MathSpecial::fm_exp(-gamma));
       dG = G * (2.0 - G) / 2;
+      dGG = dG * (1.0 - G);
       return G;
     case -5:
       if ((1.0 + gamma) >= 0) {
         G = sqrt(1.0 + gamma);
         dG = 1.0 / (2.0 * G);
+        dGG =  dG * (-1.0 / (2.0 * G * G ));
         return G;
       } else {
         G = -sqrt(-1.0 - gamma);
         dG = -1.0 / (2.0 * G);
+        dGG =  dG * (1.0 / (2.0 * G * G ));
         return G;
       }
   }
   dG = 1.0;
+  dGG = 0.0; 
   return 0.0;
 }
 
