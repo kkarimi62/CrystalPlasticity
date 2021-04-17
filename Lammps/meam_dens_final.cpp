@@ -48,10 +48,10 @@ MEAM::meam_dens_final(int nlocal, int eflag_either, int eflag_global, int eflag_
         }
       }
 
-      gamma[i] = t_ave[i][0] * rho1[i] + t_ave[i][1] * rho2[i] + t_ave[i][2] * rho3[i]; //--- \Gamma: Eq. (4.4)
+      gamma[i] = t_ave[i][0] * rho1[i] + t_ave[i][1] * rho2[i] + t_ave[i][2] * rho3[i]; //--- \Gamma: Eq. (4.4) rho1 is (\bar{\rho}_i^{(k)})^2
 
       if (rho0[i] > 0.0) {
-        gamma[i] = gamma[i] / (rho0[i] * rho0[i]);
+        gamma[i] = gamma[i] / (rho0[i] * rho0[i]); //--- \Gamma: Eq. (4.4) normalize by (\bar{\rho}_i^{(0)})^2
       }
 
       Z = get_Zij(this->lattce_meam[elti][elti]); //--- Z_{i0}
@@ -95,10 +95,8 @@ MEAM::meam_dens_final(int nlocal, int eflag_either, int eflag_global, int eflag_
       rhob = rho[i] / rho_bkgd;
       denom = 1.0 / rho_bkgd;
       
-      drho_bkgd_dr[i] = this->rho0_meam[elti]*Z*dGbar*1.0;//dgamdr; //--- deriv of Eq. (4.5): complete definition in meam_force.cpp -> define array 
-      ddrho_bkgd_drdr[i] = this->rho0_meam[elti] * Z * ( ddGbar * dgamdr * dgamdr + dGbar * ddgamdrdr ); //--- 2nd deriv of Eq. (4.5)
        
-      G = dG_gam(gamma[i], this->ibar_meam[elti], dG);
+      G = dG_gam(gamma[i], this->ibar_meam[elti], dG); //--- dG/dgamma
 
       dgamma1[i] = (G - 2 * dG * gamma[i]) * denom; //--- Eq. (4.36a): prefactor in the 1st term of the RHS 
 
