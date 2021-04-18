@@ -3,12 +3,12 @@
 using namespace LAMMPS_NS;
 
 void
-MEAM::meam_dens_final(int nlocal, int eflag_either, int eflag_global, int eflag_atom, double* eng_vdwl,
+MEAM::meam_dens_final(int nlocal, int eflag_either, int eflag_global, int eflag_atom, double* eng_vdwl,  //---- meam_dens_final called before force????
                       double* eatom, int /*ntype*/, int* type, int* fmap, double** scale, int& errorflag)
 {
   int i, elti;
   int m;
-  double rhob, G, dG, Gbar, dGbar, gam, shp[3], Z;
+  double rhob, G, dG, Gbar, dGbar, ddGbar, gam, shp[3], Z;
   double denom, rho_bkgd, Fl;
   double scaleii;
 
@@ -55,8 +55,11 @@ MEAM::meam_dens_final(int nlocal, int eflag_either, int eflag_global, int eflag_
       }
 
       Z = get_Zij(this->lattce_meam[elti][elti]); //--- Z_{i0}
-
+      Zarray[ i ] = get_Zij(this->lattce_meam[elti][elti]); //--- defined?
+      
       G = G_gam(gamma[i], this->ibar_meam[elti], errorflag); //--- G(\Gamma)
+      G_array[i] = G;
+      
       if (errorflag != 0)
         return;
 
@@ -65,6 +68,9 @@ MEAM::meam_dens_final(int nlocal, int eflag_either, int eflag_global, int eflag_
       if (this->ibar_meam[elti] <= 0) {
         Gbar = 1.0;
         dGbar = 0.0;
+        ddGbar = 0.0;
+        dGbar_array[ i ] = 0.0;
+        ddGbar_array[ i ] = 0.0;
       } else {
         if (this->mix_ref_t == 1) {
           gam = (t_ave[i][0] * shp[0] + t_ave[i][1] * shp[1] + t_ave[i][2] * shp[2]) / (Z * Z); //--- \Gamma^{ref}: Eq. (4.6)
@@ -80,9 +86,14 @@ MEAM::meam_dens_final(int nlocal, int eflag_either, int eflag_global, int eflag_
         if (this->ibar_meam[elti] <= 0) {
           Gbar = 1.0;
           dGbar = 0.0;
+          ddGbar = 0.0;
+          dGbar_array[ i ] = 0.0;
+          ddGbar_array[ i ] = 0.0;
         } else {
           gam = (t_ave[i][0] * shp[0] + t_ave[i][1] * shp[1] + t_ave[i][2] * shp[2]) / (Z * Z);
-          Gbar = dG_gam(gam, this->ibar_meam[elti], dGbar);
+          Gbar = dG_gam(gam, this->ibar_meam[elti], dGbar, ddGbar );
+          dGbar_array[ i ] = dGbar;
+          ddGbar_array[ i ] = ddGbar;
         }
         rho_bkgd = this->rho0_meam[elti] * Z * Gbar; //--- Eq. (4.5)
       } else {
@@ -96,8 +107,12 @@ MEAM::meam_dens_final(int nlocal, int eflag_either, int eflag_global, int eflag_
       denom = 1.0 / rho_bkgd;
       
        
-      G = dG_gam(gamma[i], this->ibar_meam[elti], dG); //--- dG/dgamma
-
+      G = dG_gam(gamma[i], this->ibar_meam[elti], dG, ddG); //--- dG/dgamma
+      G_array[i] = G; //defined?
+      dG_array[i] = dG; ///defined?
+      ddG_array[i] = ddG; ///defined?
+      
+      
       dgamma1[i] = (G - 2 * dG * gamma[i]) * denom; //--- Eq. (4.36a): prefactor in the 1st term of the RHS 
 
       if (!iszero(rho0[i])) {
