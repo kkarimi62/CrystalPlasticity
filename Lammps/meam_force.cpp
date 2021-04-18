@@ -219,66 +219,85 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         //     rho1 terms
         a1 = 2 * sij / rij;
         drho1dr1 = a1 * (drhoa1j - rhoa1j / rij) * arg1i1; //--- 4.30(a)
-        ddrho1ddr1 = a1 * ( ( - 0.5 * drho1dr1 / sij ) + ( ddrhoa1j - drhoa1j / rij + rhoa1j / rij2 ) * arg1i1 + (drhoa1j - rhoa1j / rij) * arg1i1_d ); 
         drho1dr2 = a1 * (drhoa1i - rhoa1i / rij) * arg1j1;
-        ddrho1ddr2 = a1 * ( ( - 0.5 * drho1dr2 / sij ) + ( ddrhoa1i - drhoa1i / rij + rhoa1i / rij2 ) * arg1j1 + (drhoa1i - rhoa1i / rij) * arg1j1_d ); 
+        ddrho1drdr1 = Get_ddrho1ddr( i, //--- deriv of 4.30(a) wrt rij
+                     rij,  sij, 
+                     rhoa1j,  drhoa1j,  ddrhoa1j,
+                     arho2b,
+                     arg1i1,  arg3i1,
+                     arg1i1_d
+                    )
+        ddrho1drdr2 = Get_ddrho1ddr( j, 
+                     rij,  sij, 
+                     rhoa1i,  drhoa1i,  ddrhoa1i,
+                     arho2b,
+                     arg1j1,  arg3j1,
+                     arg1j1_d
+                    )  
         a1 = 2.0 * sij / rij;
         for (m = 0; m < 3; m++) {
           drho1drm1[m] = a1 * rhoa1j * arho1[i][m]; //--- 4.30(c)
-          ddrho1drmdr1[m] = a1 * ( ( - rhoa1j * arho1[i][m] / rij ) + ( rhoa1j * darho1dr[i][m] ) + ( arho1[i][m] * drhoa1j ) );
           drho1drm2[m] = -a1 * rhoa1i * arho1[j][m];
-          ddrho1drmdr2[m] = -a1 * ( ( - rhoa1i * arho1[j][m] / rij ) + ( rhoa1i * darho1dr[j][m] ) + ( arho1[j][m] * drhoa1i ) ); //--- negative sign??
         }
-
+        Get_ddrho1drmdr( i,
+                        rij,  sij,  delij,
+                        rhoa1j,  drhoa1j,
+                        arho1,  darho1dr,
+                        ddrho1drmdr1 //--- modify 
+                    )
+        Get_ddrho1drmdr( j,
+                        rij,  sij,  delij,
+                        rhoa1i,  drhoa1i,
+                        arho1,  darho1dr,
+                        ddrho1drmdr2 //--- modify 
+                    )
         //     rho2 terms
         a2 = 2 * sij / rij2;
-        drho2dr1 = a2 * (drhoa2j - 2 * rhoa2j / rij) * arg1i2 - 2.0 / 3.0 * arho2b[i] * drhoa2j * sij; //--- 4.30(d): arho2b is W_{2i}
-//      drho2dr1 = a2 *                (1)           *   (2)  -              (3)
-        //--- 2nd derivative wrt rij
-        argg_1 = (drhoa2j - 2 * rhoa2j / rij);
-        argg_2 = arg1i2;
-        argg_3 = 2.0 / 3.0 * arho2b[i] * drhoa2j * sij;
-        d_argg_1 = ddrhoa2j-2*(-rhoa2j/rij+drhoa2j)/rij
-        d_argg_2 = arg1i2_d;
-        d_argg_3 = 2.0 / 3.0 * (darho2b[i] * drhoa2j+arho2b[i]*ddrhoa2j) * sij;
-        ddrho2ddr1 = a2 * (d_argg_1*argg_2+argg_1*d_argg_2)-d_argg_3;
-          
+        drho2dr1 = a2 * (drhoa2j - 2 * rhoa2j / rij) * arg1i2 - 2.0 / 3.0 * arho2b[i] * drhoa2j * sij; //--- 4.30(d): arho2b is W_{2i}      
         drho2dr2 = a2 * (drhoa2i - 2 * rhoa2i / rij) * arg1j2 - 2.0 / 3.0 * arho2b[j] * drhoa2i * sij;
         //--- 2nd derivative wrt rij (atom j)
-        argg_1 = (drhoa2i - 2 * rhoa2i / rij);
-        argg_2 = arg1j2;
-        argg_3 = 2.0 / 3.0 * arho2b[j] * drhoa2i * sij;
-        d_argg_1 = ddrhoa2i-2*(-rhoa2i/rij+drhoa2i)/rij
-        d_argg_2 = arg1j2_d;
-        d_argg_3 = 2.0 / 3.0 * (darho2b[j] * drhoa2i+arho2b[j]*ddrhoa2i) * sij;
-        ddrho2ddr1 = a2 * (d_argg_1*argg_2+argg_1*d_argg_2)-d_argg_3;
+        ddrho2ddr1 = Get_ddrho2ddr( i,  //--- deriv. of 4.30(d) wrt r
+                     rij,  sij, 
+                     rhoa2j,  drhoa2j,  ddrhoa2j,
+                     arho2b,
+                     arg1i2,  arg3i2,
+                     arg1i2_d
+                    );
+        ddrho2ddr2 = Get_ddrho2ddr( j, 
+                     rij,  sij, 
+                     rhoa2i,  drhoa2i,  ddrhoa2i,
+                     arho2b,
+                     arg1j2,  arg3j2,
+                     arg1j2_d
+                    );
         //
         a2 = 4 * sij / rij2;
         for (m = 0; m < 3; m++) {
           drho2drm1[m] = 0.0;
           drho2drm2[m] = 0.0;
-          drho2drmdr1[m] = 0.0;
-          drho2drmdr2[m] = 0.0;
           for (n = 0; n < 3; n++) {
             drho2drm1[m] = drho2drm1[m] + arho2[i][this->vind2D[m][n]] * delij[n]; //--- 4.30(f): arho2 is Y_{2i\sigma\alpha}
             drho2drm2[m] = drho2drm2[m] - arho2[j][this->vind2D[m][n]] * delij[n];
-            //
-            drho2drmdr1[m] += darho2dr[i][this->vind2D[m][n]] * delij[n];
-            drho2drmdr2[m] += darho2dr[j][this->vind2D[m][n]] * delij[n];
           }
-          //--- d^2rho/drm/dr
-          drho2drmdr1[m] *= rhoa2j;
-          drho2drmdr1[m] += drho2drm1[m] * (drhoa2j-2*rhoa2j/rij); 
-          drho2drmdr1[m] *= a2;
-          //
-          drho2drmdr2[m] *= rhoa2i;
-          drho2drmdr2[m] += drho2drm2[m] * (drhoa2i-2*rhoa2i/rij);
-          drho2drmdr2[m] *= -a2; //--- negative sign?
           //
           drho2drm1[m] = a2 * rhoa2j * drho2drm1[m];
-          drho2drm2[m] = -a2 * rhoa2i * drho2drm2[m];
+          drho2drm2[m] = -a2 * rhoa2i * drho2drm2[m];  //--- negative sign??
         }
-
+        Get_ddrho2drmdr( i,
+                         rij,  sij, delij,
+                        rhoa2j,  drhoa2j,
+                        arho2,
+                        darho2dr,
+                        ddrho2drmdr1 //--- modify 
+                    )
+          Get_ddrho2drmdr( j,
+                         rij,  sij, delij,
+                        rhoa2i,  drhoa2i,
+                        arho2,
+                        darho2dr,
+                        ddrho2drmdr2 //--- modify  //--- negative sign?? a2???
+                    )
+        
         //     rho3 terms
         rij3 = rij * rij2;
         a3 = 2 * sij / rij3;
