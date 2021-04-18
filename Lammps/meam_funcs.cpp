@@ -431,7 +431,7 @@ MEAM::get_Zij2_b2nn(const lattice_t latt, const double cmin, const double cmax, 
 //-------- compute higher order derivatives of density
 //------------------------------------------------------------
 double
-MEAM::Get_ddrhodrdr1( int i, int elti,
+MEAM::Get_ddrhodrdr( int i, int elti,
                       double* shpi, 
                       double t1i, double t2i, double t3i,
                       double dt1dr1, double dt2dr1, double dt3dr1,
