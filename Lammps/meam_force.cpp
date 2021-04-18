@@ -395,8 +395,12 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           dt3dr1 = ai * (t3mj - t3i);
           dt3dr2 = aj * (t3mi - t3j);
         }
-
-        //     Compute derivatives of total density wrt rij, sij and rij(3)  //--- total density is weighted average of zero and higher order densities
+        //---------------------------------------------------------------------------
+        //---------------------------------------------------------------------------
+        //------- Compute derivatives of total density wrt rij, sij and rij(3)  
+        //------- total density is weighted average of zero and higher order densities
+        //---------------------------------------------------------------------------
+        //---------------------------------------------------------------------------
         get_shpfcn(this->lattce_meam[elti][elti], this->stheta_meam[elti][elti], this->ctheta_meam[elti][elti], shpi);
         get_shpfcn(this->lattce_meam[eltj][eltj], this->stheta_meam[elti][elti], this->ctheta_meam[elti][elti], shpj);
 
@@ -404,55 +408,27 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           dgamma2[i] * (dt1dr1 * rho1[i] + t1i * drho1dr1 + dt2dr1 * rho2[i] + t2i * drho2dr1 +
                         dt3dr1 * rho3[i] + t3i * drho3dr1) -
           dgamma3[i] * (shpi[0] * dt1dr1 + shpi[1] * dt2dr1 + shpi[2] * dt3dr1); 
-
-        
-        
-        
-        //---
-        dgamdr = (shpi[0] * dt1dr1 + shpi[1] * dt2dr1 + shpi[2] * dt3dr1) / (Z * Z); //--- d\Gamma^{ref}/dr: deriv of Eq. (4.6) Z defined?
-        drho_bkgd_dr = this->rho0_meam[elti] * Z * dGbar * dgamdr; //--- deriv of Eq. (4.5) wrt. r define Z, dGbar
-        ddrho_bkgd_drdr = this->rho0_meam[elti] * Z * ( ddGbar * dgamdr * dgamdr + dGbar * ddgamdrdr ); //--- 2nd deriv of Eq. (4.5) wrt. r: define ddGbar, dGbar * ddgamdrdr
-
-        gamma = t_ave[i][0] * rho1[i] + t_ave[i][1] * rho2[i] + t_ave[i][2] * rho3[i]; //--- \Gamma: Eq. (4.4) rho1 is (\bar{\rho}_i^{(k)})^2
-        if (rho0[i] > 0.0) {
-         gamma /= (rho0[i] * rho0[i]); //--- \Gamma: Eq. (4.4) normalize by (\bar{\rho}_i^{(0)})^2
-        }
-        dgammadr =  (dt1dr1 * rho1[i] + t1i * drho1dr1 + dt2dr1 * rho2[i] + t2i * drho2dr1 + //--- deriv. of Eq. (4.4) wrt. r
-                        dt3dr1 * rho3[i] + t3i * drho3dr1) - 2.0 * rho0[i] * drho0dr1 *  gamma; 
-        if (rho0[i] > 0.0) {
-        dgammadr /= (rho0[i] * rho0[i]);
-        }
-        
-        G = dG_gam(gamma, this->ibar_meam[elti], dG, ddG); //--- 2nd deriv. of G wrt \Gamma 
-        
-        //--- 2nd deriv. of Eq. (4.4) wrt. r (index i)
-        argg1 = ddt1drdr1 * rho1[i] + 2.0 * dt1dr1 * drho1dr1 + t1i * ddrho1drdr1 + //--- ddt1drdr1 defined?
-                ddt2drdr1 * rho2[i] + 2.0 * dt2dr1 * drho2dr1 + t2i * ddrho2drdr1 +
-                ddt3drdr1 * rho3[i] + 2.0 * dt3dr1 * drho3dr1 + t3i * ddrho3drdr1;
-        argg2 = drho0dr1 * drho0dr1 *  gamma +
-                rho0[i]  * ddrho0drdr1 * gamma +
-                2.0 * rho0[i] * drho0dr1 * dgammadr;
-        ddgammadrdr = argg1 - 2.0 * argg2;
-        if (rho0[i] > 0.0) {
-        ddgammadrdr /= (rho0[i] * rho0[i]);
-        }
-        //--- (index j)??
-        
-        
-        //--- total deriv
-        ddrhodrdr1    =  ddrho0drdr1 * G + 
-                         2.0 * drho0dr1 * dG * dgammadr + 
-                         rho0[i] * ddG * dgammadr * dgammadr + 
-                         rho0[i] * dG * ddgammadrdr -
-                         2.0 * drhodr1 * drho_bkgd_dr -
-                         rho[ i ] * ddrho_bkgd_drdr;
-        
-        ddrhodrdr1 /= rho_bkgd;
+        //---                
+        ddrhodrdr1 = Get_ddrhodrdr(i, elti, //--- deriv. of Eq. 4.36(a) wrt. r
+                                    shpi, 
+                                    t1i,  t2i,  t3i,
+                                    dt1dr1,  dt2dr1,  dt3dr1,
+                                    ddt1drdr1,  ddt2drdr1,  ddt3drdr1,
+                                    drho0dr1,  drho1dr1,  drho2dr1,  drho3dr1, 
+                                    ddrho1drdr1,  ddrho2drdr1,  ddrho3drdr1 );
         //--- index j
         drhodr2 = dgamma1[j] * drho0dr2 + //--- index j
           dgamma2[j] * (dt1dr2 * rho1[j] + t1j * drho1dr2 + dt2dr2 * rho2[j] + t2j * drho2dr2 +
                         dt3dr2 * rho3[j] + t3j * drho3dr2) -
           dgamma3[j] * (shpj[0] * dt1dr2 + shpj[1] * dt2dr2 + shpj[2] * dt3dr2);
+        ddrhodrdr2 = Get_ddrhodrdr(j, eltj,
+                                    shpj, 
+                                    t1j,  t2j,  t3j,
+                                    dt1dr2,  dt2dr2,  dt3dr2,
+                                    ddt1drdr2,  ddt2drdr2,  ddt3drdr2,
+                                    drho0dr2,  drho1dr2,  drho2dr2,  drho3dr2, 
+                                    ddrho1drdr2,  ddrho2drdr2,  ddrho3drdr2 );
+        
         //--- deriv. wrt. rij(3)
         for (m = 0; m < 3; m++) {
           drhodrm1[m] = 0.0;
