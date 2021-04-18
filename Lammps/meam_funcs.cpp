@@ -426,3 +426,50 @@ MEAM::get_Zij2_b2nn(const lattice_t latt, const double cmin, const double cmax, 
   S = MathSpecial::powint(sijk, numscr);
   return Zij2;
 }
+
+//------------------------------------------------------------
+//-------- compute higher order derivatives of density
+//------------------------------------------------------------
+double
+MEAM::Get_ddrhodrdr1( int i, int elti,
+                      double* shpi, 
+                      double t1i, double t2i, double t3i,
+                      double dt1dr1, double dt2dr1, double dt3dr1,
+                      double ddt1drdr1, double ddt2drdr1, double ddt3drdr1,
+                      double drho0dr1, double drho1dr1, double drho2dr1, double drho3dr1, 
+                                       double ddrho1drdr1, double ddrho2drdr1, double ddrho3drdr1, 
+                     ){
+
+        double dgamdr = (shpi[0] * dt1dr1 + shpi[1] * dt2dr1 + shpi[2] * dt3dr1) / (Zarray[i] * Zarray[i]); //--- d\Gamma^{ref}/dr: deriv of Eq. (4.6)
+        double ddgamdrdr = (shpi[0] * ddt1drdr1 + shpi[1] * ddt2drdr1 + shpi[2] * ddt3drdr1) / (Zarray[i] * Zarray[i]) //--- d^2\Gamma^{ref}/drdr: 2nd deriv of Eq. (4.6) ddt(1-3)drdr1 defined? 
+        double drho_bkgd_dr = this->rho0_meam[elti] * Zarray[ i ] * dGbar_array[ i ] * dgamdr; //--- deriv of Eq. (4.5) wrt. r
+        double ddrho_bkgd_drdr = this->rho0_meam[elti] * Zarray[ i ] * ( ddGbar_array[i] * dgamdr * dgamdr + dGbar_array[ i ] * ddgamdrdr ); //--- 2nd deriv of Eq. (4.5) wrt. r: define , ddgamdrdr
+        double dgammadr =  (dt1dr1 * rho1[i] + t1i * drho1dr1 + //--- deriv. of Eq. (4.4) wrt. r
+                            dt2dr1 * rho2[i] + t2i * drho2dr1 + 
+                            dt3dr1 * rho3[i] + t3i * drho3dr1) - 2.0 * rho0[i] * drho0dr1 *  gamma[i]; 
+        if (rho0[i] > 0.0) {
+        dgammadr /= (rho0[i] * rho0[i]);
+        }
+        //--- 2nd deriv. of Eq. (4.4) wrt. r (index i)
+        double argg1 = ddt1drdr1 * rho1[i] + 2.0 * dt1dr1 * drho1dr1 + t1i * ddrho1drdr1 + //--- ddt1drdr1 defined?
+                ddt2drdr1 * rho2[i] + 2.0 * dt2dr1 * drho2dr1 + t2i * ddrho2drdr1 +
+                ddt3drdr1 * rho3[i] + 2.0 * dt3dr1 * drho3dr1 + t3i * ddrho3drdr1;
+        double argg2 = drho0dr1 * drho0dr1 *  gamma[ i ] +
+                rho0[i]  * ddrho0drdr1 * gamma[ i ] +
+                2.0 * rho0[i] * drho0dr1 * dgammadr;
+        double ddgammadrdr = argg1 - 2.0 * argg2;
+        if (rho0[i] > 0.0) {
+        ddgammadrdr /= (rho0[i] * rho0[i]);
+        }        
+        //--- total deriv
+        double ddrhodrdr1    =  ddrho0drdr1 * G_array[i] + 
+                         2.0 * drho0dr1 * dG_array[i] * dgammadr + 
+                         rho0[i] * ddG_array[i] * dgammadr * dgammadr + 
+                         rho0[i] * dG_array[i] * ddgammadrdr -
+                         2.0 * drhodr1 * drho_bkgd_dr -
+                         rho[ i ] * ddrho_bkgd_drdr;        
+        ddrhodrdr1 /= rho_bkgd;
+        return ddrhodrdr1;
+}
+
+
