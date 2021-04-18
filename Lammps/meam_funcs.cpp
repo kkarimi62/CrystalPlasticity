@@ -431,6 +431,72 @@ MEAM::get_Zij2_b2nn(const lattice_t latt, const double cmin, const double cmax, 
 //-------- compute higher order derivatives of density
 //------------------------------------------------------------
 double
+MEAM::Get_ddrho3ddr( double rij, double sij, 
+                    double rhoa3j, double drhoa3j, double ddrhoa3j,
+                    double arg1i3, double arg3i3,
+                    double arg1i3_d
+                    ){
+        double rij2 = rij * rij;
+        double rij3 = rij * rij2;
+        double a3 = 2 * sij / rij3;
+        double a3a = 6.0 / 5.0 * sij / rij;
+
+        //--- 2nd deriv. wrt r
+        double argg_1 = drhoa3j - 3 * rhoa3j / rij;
+        double argg_2 = arg1i3;
+        double argg_3 = drhoa3j - rhoa3j / rij;
+        double argg_4 = arg3i3;
+        double argg_1_d = ddrhoa3j - 3.0 * (- rhoa3j / rij + drhoa3j ) / rij;
+        double argg_2_d = arg1i3_d;
+        double argg_3_d = ddrhoa3j - ( drhoa3j - rhoa3j / rij ) / rij;
+        double argg_4_d = arg3i3_d;
+        double ddrho3ddr1 = a3  * (-3.0*argg_1*argg_2/rij+argg_1_d*argg_2+argg_1*argg_2_d)-
+                     a3a * (-argg_3*argg_4/rij+argg_3_d*argg_4+argg_3*argg_4_d); //--- deriv. 4.30(g) wrt r
+        return ddrho3ddr1;
+}
+//-------------------------------
+MEAM::Get_ddrho3drmdr( int i,
+                       double rij, double sij, double* delij,
+                       double rhoa3j, 
+                       double** darho3dr,
+                       double* ddrho3drmdr1 //--- modify 
+                     ){
+        double drho3drm1[3];
+        int m, n, p, nv2;
+        double rij2 = rij * rij;
+        double rij3 = rij * rij2;
+        double a3 = 6 * sij / rij3;
+        double a3a = 6 * sij / (5 * rij);
+        for (m = 0; m < 3; m++) {
+          drho3drm1[m] = 0.0;
+          ddrho3drmdr1[m] = 0.0;
+          nv2 = 0;
+          for (n = 0; n < 3; n++) {
+            for (p = n; p < 3; p++) {
+              arg = delij[n] * delij[p] * this->v2D[nv2];
+              drho3drm1[m] = drho3drm1[m] + arho3[i][this->vind3D[m][n][p]] * arg; //--- 4.30(i)
+              //
+              ddrho3drmdr1[m] += darho3dr[i][this->vind3D[m][n][p]] * arg; //--- deriv. 4.30(i) wrt. r
+              //
+              nv2 = nv2 + 1;
+            }
+          }
+          //
+          ddrho3drmdr1[m] *= rhoa3j;  //--- deriv. 4.30(i) wrt. r
+          ddrho3drmdr1[m] += drho3drm1[m] * (-3*rhoa3j/rij+drhoa3j);
+          ddrho3drmdr1[m] *= a3;
+          ddrho3drmdr1[m] += -a3a * ((-rhoa3j/rij+drhoa3j)*arho3b[i][m]+rhoa3j*darho3bdr[i][m])
+          //
+          ddrho3drmdr2[m] *= rhoa3i;  //--- deriv. 4.30(i) wrt. r (atom j)
+          ddrho3drmdr2[m] += drho3drm2[m] * (-3*rhoa3i/rij+drhoa3i);
+          ddrho3drmdr2[m] *= a3;
+          ddrho3drmdr2[m] += a3a * ((-rhoa3i/rij+drhoa3i)*arho3b[j][m]+rhoa3i*darho3bdr[j][m]) //--- negative sign???
+          //
+        }
+}
+//-------------------------------
+
+double
 MEAM::Get_ddrhodrdr( int i, int elti,
                       double* shpi, 
                       double t1i, double t2i, double t3i,
