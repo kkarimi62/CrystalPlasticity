@@ -441,9 +441,9 @@ MEAM::Get_ddrhodrdr( int i, int elti,
                      ){
 
         double dgamdr = (shpi[0] * dt1dr1 + shpi[1] * dt2dr1 + shpi[2] * dt3dr1) / (Zarray[i] * Zarray[i]); //--- d\Gamma^{ref}/dr: deriv of Eq. (4.6)
-        double ddgamdrdr = (shpi[0] * ddt1drdr1 + shpi[1] * ddt2drdr1 + shpi[2] * ddt3drdr1) / (Zarray[i] * Zarray[i]) //--- d^2\Gamma^{ref}/drdr: 2nd deriv of Eq. (4.6) ddt(1-3)drdr1 defined? 
+        double ddgamdrdr = (shpi[0] * ddt1drdr1 + shpi[1] * ddt2drdr1 + shpi[2] * ddt3drdr1) / (Zarray[i] * Zarray[i]) //--- d^2\Gamma^{ref}/drdr: 2nd deriv of Eq. (4.6)
         double drho_bkgd_dr = this->rho0_meam[elti] * Zarray[ i ] * dGbar_array[ i ] * dgamdr; //--- deriv of Eq. (4.5) wrt. r
-        double ddrho_bkgd_drdr = this->rho0_meam[elti] * Zarray[ i ] * ( ddGbar_array[i] * dgamdr * dgamdr + dGbar_array[ i ] * ddgamdrdr ); //--- 2nd deriv of Eq. (4.5) wrt. r: define , ddgamdrdr
+        double ddrho_bkgd_drdr = this->rho0_meam[elti] * Zarray[ i ] * ( ddGbar_array[i] * dgamdr * dgamdr + dGbar_array[ i ] * ddgamdrdr ); //--- 2nd deriv of Eq. (4.5) wrt. r
         double dgammadr =  (dt1dr1 * rho1[i] + t1i * drho1dr1 + //--- deriv. of Eq. (4.4) wrt. r
                             dt2dr1 * rho2[i] + t2i * drho2dr1 + 
                             dt3dr1 * rho3[i] + t3i * drho3dr1) - 2.0 * rho0[i] * drho0dr1 *  gamma[i]; 
@@ -451,7 +451,7 @@ MEAM::Get_ddrhodrdr( int i, int elti,
         dgammadr /= (rho0[i] * rho0[i]);
         }
         //--- 2nd deriv. of Eq. (4.4) wrt. r (index i)
-        double argg1 = ddt1drdr1 * rho1[i] + 2.0 * dt1dr1 * drho1dr1 + t1i * ddrho1drdr1 + //--- ddt1drdr1 defined?
+        double argg1 = ddt1drdr1 * rho1[i] + 2.0 * dt1dr1 * drho1dr1 + t1i * ddrho1drdr1 +
                 ddt2drdr1 * rho2[i] + 2.0 * dt2dr1 * drho2dr1 + t2i * ddrho2drdr1 +
                 ddt3drdr1 * rho3[i] + 2.0 * dt3dr1 * drho3dr1 + t3i * ddrho3drdr1;
         double argg2 = drho0dr1 * drho0dr1 *  gamma[ i ] +
