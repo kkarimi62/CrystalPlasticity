@@ -11,7 +11,6 @@ MEAM::meam_dens_setup(int atom_nmax, int nall, int n_neigh)
   int i, j;
 
   // grow local arrays if necessary
-
   if (atom_nmax > nmax) {
     memory->destroy(rho);
     memory->destroy(rho0);
@@ -29,6 +28,11 @@ MEAM::meam_dens_setup(int atom_nmax, int nall, int n_neigh)
     memory->destroy(arho2);
     memory->destroy(arho3);
     memory->destroy(arho3b);
+    memory->destroy(darho2bdr);
+    memory->destroy(darho1dr);
+    memory->destroy(darho2dr);
+    memory->destroy(darho3dr);
+    memory->destroy(darho3bdr);
     memory->destroy(t_ave);
     memory->destroy(tsq_ave);
 
@@ -50,6 +54,11 @@ MEAM::meam_dens_setup(int atom_nmax, int nall, int n_neigh)
     memory->create(arho2, nmax, 6, "pair:arho2");
     memory->create(arho3, nmax, 10, "pair:arho3");
     memory->create(arho3b, nmax, 3, "pair:arho3b");
+    memory->create(darho2bdr, nmax, "pair:darho2bdr");
+    memory->create(darho1dr, nmax, 3, "pair:darho1dr");
+    memory->create(darho2dr, nmax, 6, "pair:darho2dr");
+    memory->create(darho3dr, nmax, 10, "pair:darho3dr");
+    memory->create(darho3bdr, nmax, 3, "pair:darho3bdr");
     memory->create(t_ave, nmax, 3, "pair:t_ave");
     memory->create(tsq_ave, nmax, 3, "pair:tsq_ave");
   }
@@ -70,11 +79,17 @@ MEAM::meam_dens_setup(int atom_nmax, int nall, int n_neigh)
     rho0[i] = 0.0;
     arho2b[i] = 0.0;
     arho1[i][0] = arho1[i][1] = arho1[i][2] = 0.0;
-    for (j = 0; j < 6; j++)
+    drho0dr[i] = 0.0;
+    darho2bdr[i] = 0.0;
+    darho1dr[i][0] = darho1dr[i][1] = darho1dr[i][2] = 0.0;
+    for (j = 0; j < 6; j++){
       arho2[i][j] = 0.0;
-    for (j = 0; j < 10; j++)
+      darho2dr[i][j] = 0.0;}
+    for (j = 0; j < 10; j++){
       arho3[i][j] = 0.0;
+      darho3dr[i][j] = 0.0;}
     arho3b[i][0] = arho3b[i][1] = arho3b[i][2] = 0.0;
+    darho3bdr[i][0] = darho3bdr[i][1] = darho3bdr[i][2] = 0.0;
     t_ave[i][0] = t_ave[i][1] = t_ave[i][2] = 0.0;
     tsq_ave[i][0] = tsq_ave[i][1] = tsq_ave[i][2] = 0.0;
   }
@@ -364,9 +379,9 @@ MEAM::calc_rho1(int i, int /*ntype*/, int* type, int* fmap, double** x, int numn
           darho1dr[j][m] = darho1dr[j][m] - A1i_d * delij[m];
 
           arho3b[i][m] = arho3b[i][m] + rhoa3j * delij[m] / rij; //---  Eq. 4.27(e)
-          darho3bdr[i][m] = darho3bdr[i][m] + ( drhoa3j - rhoa3j / rij ) * delij[m] / rij; //--- deriv. Eq. 4.27(e) wrt rij
           arho3b[j][m] = arho3b[j][m] - rhoa3i * delij[m] / rij;
-          darho3bdr[j][m] = darho3bdr[j][m] + ( drhoa3i - rhoa3i / rij ) * delij[m] / rij;
+          darho3bdr[i][m] = darho3bdr[i][m] + ( drhoa3j - rhoa3j / rij ) * delij[m] / rij; //--- deriv. Eq. 4.27(e) wrt rij
+          darho3bdr[j][m] = darho3bdr[j][m] - ( drhoa3i - rhoa3i / rij ) * delij[m] / rij;
          for (n = m; n < 3; n++) {
             arho2[i][nv2] = arho2[i][nv2] + A2j * delij[m] * delij[n]; //--- Eq. 4.27(b)
             arho2[j][nv2] = arho2[j][nv2] + A2i * delij[m] * delij[n];
@@ -375,9 +390,9 @@ MEAM::calc_rho1(int i, int /*ntype*/, int* type, int* fmap, double** x, int numn
             nv2 = nv2 + 1;
             for (p = n; p < 3; p++) {
               arho3[i][nv3] = arho3[i][nv3] + A3j * delij[m] * delij[n] * delij[p];
-              darho3dr[i][nv3] = darho3dr[i][nv3] + A3j_d * delij[m] * delij[n] * delij[p]; //--- deriv. Eq. 4.27(c) wrt rij allocate & initiaizeeeee
               arho3[j][nv3] = arho3[j][nv3] - A3i * delij[m] * delij[n] * delij[p];
-              darho3dr[j][nv3] = darho3dr[j][nv3] + A3i_d * delij[m] * delij[n] * delij[p];
+              darho3dr[i][nv3] = darho3dr[i][nv3] + A3j_d * delij[m] * delij[n] * delij[p]; //--- deriv. Eq. 4.27(c) wrt rij allocate & initiaizeeeee
+              darho3dr[j][nv3] = darho3dr[j][nv3] - A3i_d * delij[m] * delij[n] * delij[p];
               nv3 = nv3 + 1;
             }
           }
