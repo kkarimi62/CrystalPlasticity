@@ -496,7 +496,7 @@ MEAM::Get_ddrho2drmdr(int i,
           drho2drm1[m] = 0.0;
           ddrho2drmdr1[m] = 0.0;
           for (n = 0; n < 3; n++) {
-            drho2drm1[m] = drho2drm1[m] + arho2[i][this->vind2D[m][n]] * delij[n]; //--- 4.30(f): arho2 is Y_{2i\sigma\alpha}
+            drho2drm1[m] += arho2[i][this->vind2D[m][n]] * delij[n]; //--- 4.30(f): arho2 is Y_{2i\sigma\alpha}
             ddrho2drmdr1[m] += darho2dr[i][this->vind2D[m][n]] * delij[n];
           }
           //--- d^2rho/drm/dr
@@ -574,11 +574,12 @@ MEAM::Get_ddrho3drmdr( int i,
 //-------------------------------
 
 double
-MEAM::Get_ddrhodrdr( int i, int elti,
-                      double* shpi, 
+MEAM::Get_ddrhodrdr(  int i, int elti,
+                      double* shpi,
                       double t1i, double t2i, double t3i,
                       double dt1dr1, double dt2dr1, double dt3dr1,
                       double ddt1drdr1, double ddt2drdr1, double ddt3drdr1,
+                      double* rho0, double* rho1, double* rho2, double* rho3, 
                       double drho0dr1, double drho1dr1, double drho2dr1, double drho3dr1, 
                                        double ddrho1drdr1, double ddrho2drdr1, double ddrho3drdr1, 
                      ){
