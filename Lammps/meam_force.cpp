@@ -511,8 +511,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         }
 
         //     Compute derivatives of energy wrt rij, sij and rij[3]
-        dUdrij = phip * sij + frhop[i] * drhodr1 + frhop[j] * drhodr2; //--- Eq. 4.41(a) 1st derivative
-        ddUddrij = phipp * sij + ( frhopp[i] * drhodr1 * drhodr1 + frhop[i] * ddrhoddr1 ) + //--- 2nd derivative
+        dUdrij = phip * sij + frhop[i] * drhodr1 + frhop[j] * drhodr2; //--- Eq. 4.41(a)
+        ddUddrij = phipp * sij + ( frhopp[i] * drhodr1 * drhodr1 + frhop[i] * ddrhoddr1 ) + //--- 1st deriv. of Eq. 4.41(a) wrt r
                                  ( frhopp[j] * drhodr2 * drhodr2 + frhop[j] * ddrhoddr2 );
         dUdsij = 0.0;
         if (!iszero(dscrfcn[fnoffset + jn])) {
@@ -520,8 +520,12 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         }
         for (m = 0; m < 3; m++) {
           dUdrijm[m] = frhop[i] * drhodrm1[m] + frhop[j] * drhodrm2[m]; //--- Eq. 4.41(c)
-          ddUdrdrijm[m] = frhopp[i] * drhodrm1[m] + frhop[i] * ddrhodrmdr1[m] //--- ddrhodrmdr1 defined?
-                          frhopp[j] * drhodrm2[m] + frhop[i] * ddrhodrmdr2[m]; //--- deriv of Eq. 4.41(c) wrt r
+          ddUdrdrijm[m] = frhopp[i] * drhodr1 * drhodrm1[m] + frhop[i] * ddrhodrmdr1[m] + //--- ddrhodrmdr1 defined?
+                          frhopp[j] * drhodr2 * drhodrm2[m] + frhop[i] * ddrhodrmdr2[m]; //--- deriv of Eq. 4.41(c) wrt r
+          for (n = 0; n < 3; n++) {
+            ddUdrijmdrijn[m][n] += frhopp[i] * drhodrm1[m] * drhodrm1[n] + frhop[i] * ddrhodrmdrn1[m][n]+
+                                   frhopp[j] * drhodrm2[m] * drhodrm2[n] + frhop[j] * ddrhodrmdrn2[m][n]; //ddrhodrmdrn1 defined??
+          }  
         }
         if (!isone(scaleij)) {
           dUdrij *= scaleij;
@@ -540,6 +544,19 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           f[j][m] = f[j][m] - forcem;
         }
 
+        //--- add stiffness (units of u/r^2)
+        stiff = ddUddrij - dUdrij * recip;
+        stiff0 = 0;
+        for (m = 0; m < 3; m++) {
+          stiff0 += - dUdrijm[m] * delij[m];
+          stiff1 += ddUdrdrijm[m] * delij[m];
+          for (n = 0; n < 3; n++) {
+            stiff2 += ddUdrijmdrijn[m][n] * delij[m] * delij[n];
+          }
+        }
+        stiff += ( ( stiff0 + stiff2 ) * recip  + stiff1 ) * recip;
+        
+        
         //     Tabulate per-atom virial as symmetrized stress tensor
 
         if (vflag_atom != 0) {
@@ -556,6 +573,45 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           for (m = 0; m < 6; m++) {
             vatom[i][m] = vatom[i][m] + v[m];
             vatom[j][m] = vatom[j][m] + v[m];
+          }
+          n0 = delij[0] * recip;
+          n1 = delij[1] * recip;
+          n2 = delij[2] * recip;
+          //--- per-atom modulus
+          vm[ 0 ]  = stiff * n0 * n0 * n0 * n0;
+          vm[ 1 ]  = stiff * n0 * n0 * n1 * n1;
+          vm[ 2 ]  = stiff * n0 * n0 * n2 * n2;
+          vm[ 3 ]  = stiff * n0 * n0 * n0 * n1;
+          vm[ 4 ]  = stiff * n0 * n0 * n0 * n2;
+          vm[ 5 ]  = stiff * n0 * n0 * n1 * n2;
+          //
+          vm[ 6 ]  = stiff * n1 * n1 * n1 * n1;
+          vm[ 7 ]  = stiff * n1 * n1 * n2 * n2;
+          vm[ 8 ]  = stiff * n1 * n1 * n0 * n1;
+          vm[ 9 ]  = stiff * n1 * n1 * n0 * n2;
+          vm[ 10 ] = stiff * n1 * n1 * n1 * n2;
+          //
+          vm[ 11 ] = stiff * n2 * n2 * n2 * n2;
+          vm[ 12 ] = stiff * n2 * n2 * n0 * n1;
+          vm[ 13 ] = stiff * n2 * n2 * n0 * n2;
+          vm[ 14 ] = stiff * n2 * n2 * n1 * n2;
+          //
+          vm[ 15 ] = stiff * n0 * n1 * n0 * n1;
+          vm[ 16 ] = stiff * n0 * n1 * n0 * n2;
+          vm[ 17 ] = stiff * n0 * n1 * n1 * n2;
+          //
+          vm[ 18 ] = stiff * n0 * n2 * n0 * n2;
+          vm[ 19 ] = stiff * n0 * n2 * n1 * n2;
+          //
+          vm[ 20 ] = stiff * n1 * n2 * n1 * n2;
+          //
+          ii=0
+          for (m = 0; m < 6; m++) {
+            for (n = m; n < 6; n++) {
+              satom[i][ii] = vatom[i][ii] + 0.5 * vm[ii]; //satom defined??
+              satom[j][ii] = vatom[j][ii] + 0.5 * vm[ii];
+              ii++;
+            }
           }
         }
 
