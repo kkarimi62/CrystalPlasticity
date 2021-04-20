@@ -103,6 +103,8 @@ MEAM::meam_dens_final(int nlocal, int eflag_either, int eflag_global, int eflag_
           rho_bkgd = this->rho_ref_meam[elti];
         }
       }
+      rho_bkgd_array[i]=rho_bkgd; // rho_bkgd_array[i] defined??
+      
       rhob = rho[i] / rho_bkgd;
       denom = 1.0 / rho_bkgd;
       
