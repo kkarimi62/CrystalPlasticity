@@ -50,9 +50,13 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
   double dsij1, dsij2, force1, force2;
   double t1i, t2i, t3i, t1j, t2j, t3j;
   double scaleij;
-  
   double ddrhodrmdrn1[6], ddrhodrmdrn2[6];
-
+  double ddUdrdrijm[3], ddUdrijmdrijn[6];
+  double stiff, stiff0, stiff1
+  double n0, n1, n2;
+  double ddt1drdr1,  ddt2drdr1,  ddt3drdr1;
+  double ddt1drdr2,  ddt2drdr2,  ddt3drdr2;
+  
   third = 1.0 / 3.0;
   sixth = 1.0 / 6.0;
 
@@ -365,9 +369,9 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         t2j = t_ave[j][1];
         t3j = t_ave[j][2];
 
-        if (this->ialloy == 1) {
+        if (this->ialloy == 1) {   //--- not included in the report ?????????
 
-          a1i = fdiv_zero(drhoa0j * sij, tsq_ave[i][0]); //--- 4.32(a)
+          a1i = fdiv_zero(drhoa0j * sij, tsq_ave[i][0]); 
           a1j = fdiv_zero(drhoa0i * sij, tsq_ave[j][0]);
           a2i = fdiv_zero(drhoa0j * sij, tsq_ave[i][1]);
           a2j = fdiv_zero(drhoa0i * sij, tsq_ave[j][1]);
@@ -399,12 +403,26 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           if (!iszero(rho0[j]))
             aj = drhoa0i * sij / rho0[j];
 
-          dt1dr1 = ai * (t1mj - t1i);
+          dt1dr1 = ai * (t1mj - t1i); //--- 4.32(a)
           dt1dr2 = aj * (t1mi - t1j);
           dt2dr1 = ai * (t2mj - t2i);
           dt2dr2 = aj * (t2mi - t2j);
           dt3dr1 = ai * (t3mj - t3i);
           dt3dr2 = aj * (t3mi - t3j);
+          
+          ddt1drdr1 = sij * ( - dt1dr1 * drhoa0j + ( t1mj - t1i ) * ddrhoa0j ) - dt1dr1 * drho0dr1; //--- deriv of 4.32(a) wrt. r
+          ddt1drdr1 /= rho0[i]
+          ddt2drdr1 = sij * ( - dt2dr1 * drhoa0j + ( t2mj - t2i ) * ddrhoa0j ) - dt2dr1 * drho0dr1;
+          ddt2drdr1 /= rho0[i]
+          ddt3drdr1 = sij * ( - dt3dr1 * drhoa0j + ( t3mj - t3i ) * ddrhoa0j ) - dt3dr1 * drho0dr1;
+          ddt3drdr1 /= rho0[i]
+            
+          ddt1drdr2 = sij * ( - dt1dr2 * drhoa0i + ( t1mi - t1j ) * ddrhoa0i ) - dt1dr2 * drho0dr2; //--- index j
+          ddt1drdr2 /= rho0[j]
+          ddt2drdr2 = sij * ( - dt2dr2 * drhoa0i + ( t2mi - t2j ) * ddrhoa0i ) - dt2dr2 * drho0dr2;
+          ddt2drdr2 /= rho0[j]
+          ddt3drdr2 = sij * ( - dt3dr2 * drhoa0i + ( t3mi - t3j ) * ddrhoa0i ) - dt3dr2 * drho0dr2;
+          ddt3drdr2 /= rho0[j]                      
         }
         //---------------------------------------------------------------------------
         //---------------------------------------------------------------------------
