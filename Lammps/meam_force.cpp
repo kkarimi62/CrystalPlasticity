@@ -447,10 +447,28 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           drhodrm1[m] = dgamma2[i] * (t1i * drho1drm1[m] + t2i * drho2drm1[m] + t3i * drho3drm1[m]); //--- index i: Eq. 4.36(c)
           drhodrm2[m] = dgamma2[j] * (t1j * drho1drm2[m] + t2j * drho2drm2[m] + t3j * drho3drm2[m]);
         }
-      //--- deriv. of Eq. 4.36(c) wrt. r ??????????????
-//        Get_ddrhodrmdr(
-//                        ddrhodrmdr1 //--- modify
-//                       )
+        Get_ddrhodrmdr( i, elti, //--- deriv. of Eq. 4.36(c) wrt. r
+                        shpi, 
+                        t1i,  t2i,  t3i,
+                        dt1dr1,  dt2dr1,  dt3dr1,
+                        rho0, rho1, rho2, rho3,
+                        drho0dr1,  drho1dr1,  drho2dr1,  drho3dr1, 
+                        drho0drm1,  drho1drm1,  drho2drm1,  drho3drm1, 
+                        ddrho0drmdr1, ddrho1drmdr1,  ddrho2drmdr1,  ddrho3drmdr1,
+                        drhodrm1,
+                        ddrhodrmdr1 //--- modify defined??
+                       )
+        Get_ddrhodrmdr( j, eltj, //--- deriv. of Eq. 4.36(c) wrt. r
+                        shpj, 
+                        t1j,  t2j,  t3j,
+                        dt1dr2,  dt2dr2,  dt3dr2,
+                        rho0, rho1, rho2, rho3,
+                        drho0dr2,  drho1dr2,  drho2dr2,  drho3dr2, 
+                        drho0drm2,  drho1drm2,  drho2drm2,  drho3drm2, 
+                        ddrho0drmdr2, ddrho1drmdr2,  ddrho2drmdr2,  ddrho3drmdr2,
+                        drhodrm2,
+                        ddrhodrmdr2 //--- modify
+                       )
 //        Get_ddrhodrmdrn(
 //                        ddrhodrmdrn1 //--- modify
 //                       )
