@@ -11,7 +11,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                  double* eatom, int /*ntype*/, int* type, int* fmap, double** scale, double** x, int numneigh, int* firstneigh,
                  int numneigh_full, int* firstneigh_full, int fnoffset, double** f, double** vatom)
 {
-  int j, jn, k, kn, kk, m, n, p, q;
+  int j, jn, k, kn, kk, m, n, p, q, ii;
   int nv2, nv3, elti, eltj, eltk, ind;
   double xitmp, yitmp, zitmp, delij[3], delji[3], rij2, rij, rij3;
   double v[6], fi[3], fj[3], vm[21];
@@ -33,11 +33,11 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
   double drho1drm1[3], drho1drm2[3];
   double ddrho1drmdr1[3], ddrho1drmdr2[3];
   double drho2dr1, drho2dr2, drho2ds1, drho2ds2;
-  double ddrho2ddr1, ddrho2ddr2;
+  double ddrho2drdr1, ddrho2drdr2;
   double drho2drm1[3], drho2drm2[3];
   double ddrho2drmdr1[3], ddrho2drmdr2[3];
   double drho3dr1, drho3dr2, drho3ds1, drho3ds2;
-  double ddrho3ddr1, ddrho3ddr2;
+  double ddrho3drdr1, ddrho3drdr2;
   double drho3drm1[3], drho3drm2[3];
   double ddrho3drmdr1[3], ddrho3drmdr2[3];
   double dt1dr1, dt1dr2, dt1ds1, dt1ds2;
@@ -50,6 +50,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
   double dsij1, dsij2, force1, force2;
   double t1i, t2i, t3i, t1j, t2j, t3j;
   double scaleij;
+  
+  double ddrhodrmdrn1[6], ddrhodrmdrn2[6];
 
   third = 1.0 / 3.0;
   sixth = 1.0 / 6.0;
@@ -223,8 +225,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         //     rho0 terms
         drho0dr1 = drhoa0j * sij; //--- 4.26(a)
         drho0dr2 = drhoa0i * sij;
-        ddrho0ddr1 = ddrhoa0j * sij; 
-        ddrho0ddr2 = ddrhoa0i * sij;
+        ddrho0drdr1 = ddrhoa0j * sij; 
+        ddrho0drdr2 = ddrhoa0i * sij;
 
         //     rho1 terms
         a1 = 2 * sij / rij;
@@ -266,14 +268,14 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         drho2dr1 = a2 * (drhoa2j - 2 * rhoa2j / rij) * arg1i2 - 2.0 / 3.0 * arho2b[i] * drhoa2j * sij; //--- 4.30(d): arho2b is W_{2i}      
         drho2dr2 = a2 * (drhoa2i - 2 * rhoa2i / rij) * arg1j2 - 2.0 / 3.0 * arho2b[j] * drhoa2i * sij;
         //--- 2nd derivative wrt rij (atom j)
-        ddrho2ddr1 = Get_ddrho2ddr( i,  //--- deriv. of 4.30(d) wrt r
+        ddrho2drdr1 = Get_ddrho2ddr( i,  //--- deriv. of 4.30(d) wrt r
                      rij,  sij, 
                      rhoa2j,  drhoa2j,  ddrhoa2j,
                      arho2b,
                      arg1i2,  arg3i2,
                      arg1i2_d
                     );
-        ddrho2ddr2 = Get_ddrho2ddr( j, 
+        ddrho2drdr2 = Get_ddrho2ddr( j, 
                      rij,  sij, 
                      rhoa2i,  drhoa2i,  ddrhoa2i,
                      arho2b,
@@ -315,12 +317,12 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         a3a = 6.0 / 5.0 * sij / rij;
         drho3dr1 = a3 * (drhoa3j - 3 * rhoa3j / rij) * arg1i3 - a3a * (drhoa3j - rhoa3j / rij) * arg3i3; //--- 4.30(g)
         drho3dr2 = a3 * (drhoa3i - 3 * rhoa3i / rij) * arg1j3 - a3a * (drhoa3i - rhoa3i / rij) * arg3j3;
-        ddrho3ddr1 = Get_ddrho3ddr( rij, sij, //--- deriv. of 4.30(g) wrt r   where it's used???
+        ddrho3drdr1 = Get_ddrho3drdr( rij, sij, //--- deriv. of 4.30(g) wrt r   where it was used???
                                     rhoa3j,  drhoa3j,  ddrhoa3j,
                                     arg1i3,  arg3i3,
                                     arg1i3_d
                                    )
-        ddrho3ddr2 = Get_ddrho3ddr( rij, sij,
+        ddrho3drdr2 = Get_ddrho3drdr( rij, sij,
                                     rhoa3i,  drhoa3i,  ddrhoa3i,
                                     arg1j3,  arg3j3,
                                     arg1j3_d
@@ -456,7 +458,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                         drho0drm1,  drho1drm1,  drho2drm1,  drho3drm1, 
                         ddrho0drmdr1, ddrho1drmdr1,  ddrho2drmdr1,  ddrho3drmdr1,
                         drhodrm1,
-                        ddrhodrmdr1 //--- modify defined??
+                        ddrhodrmdr1 //--- modify
                        )
         Get_ddrhodrmdr( j, eltj, //--- deriv. of Eq. 4.36(c) wrt. r
                         shpj, 
@@ -469,10 +471,27 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                         drhodrm2,
                         ddrhodrmdr2 //--- modify
                        )
-//        Get_ddrhodrmdrn(
-//                        ddrhodrmdrn1 //--- modify
-//                       )
-        //     Compute derivatives wrt sij, but only if necessary
+         
+        Get_ddrhodrmdrn(  i,  elti, //--- deriv. of Eq. 4.36(c) wrt. rm
+                         shpi, 
+                         t1i,   t2i,   t3i,
+                         dt1drm1,   dt2drm1,   dt3drm1,
+                         rho0,  rho1,  rho2,  rho3,
+                         drho0drm1,   drho1drm1,  drho2drm1,  drho3drm1, 
+                         ddrho0drmdrn1,  ddrho1drmdrn1,  ddrho2drmdrn1, ddrho3drmdrn1, //defined?
+                         ddrhodrmdrn1 //--- modify
+                       )
+        Get_ddrhodrmdrn(  j,  eltj, //--- deriv. of Eq. 4.36(c) wrt. rm
+                         shpj, 
+                         t1j,   t2j,   t3j,
+                         dt1drm2,   dt2drm2,   dt3drm2,
+                         rho0,  rho1,  rho2,  rho3,
+                         drho0drm2,   drho1drm2,  drho2drm2,  drho3drm2, 
+                         ddrho0drmdrn2,  ddrho1drmdrn2,  ddrho2drmdrn2, ddrho3drmdrn2,
+                         ddrhodrmdrn2 //--- modify
+                       )
+          
+        //     Compute derivatives wrt sij, but only if necessary     wrt s??????????????/
         if (!iszero(dscrfcn[fnoffset + jn])) {
           drho0ds1 = rhoa0j;
           drho0ds2 = rhoa0i;
@@ -546,13 +565,15 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         if (!iszero(dscrfcn[fnoffset + jn])) {
           dUdsij = phi + frhop[i] * drhods1 + frhop[j] * drhods2; //--- Eq. 4.41(b)
         }
+        nv2 = 0;
         for (m = 0; m < 3; m++) {
           dUdrijm[m] = frhop[i] * drhodrm1[m] + frhop[j] * drhodrm2[m]; //--- Eq. 4.41(c)
-          ddUdrdrijm[m] = frhopp[i] * drhodr1 * drhodrm1[m] + frhop[i] * ddrhodrmdr1[m] + //--- ddrhodrmdr1 defined?
+          ddUdrdrijm[m] = frhopp[i] * drhodr1 * drhodrm1[m] + frhop[i] * ddrhodrmdr1[m] + 
                           frhopp[j] * drhodr2 * drhodrm2[m] + frhop[i] * ddrhodrmdr2[m]; //--- deriv of Eq. 4.41(c) wrt r
           for (n = 0; n < 3; n++) {
-            ddUdrijmdrijn[m][n] += frhopp[i] * drhodrm1[m] * drhodrm1[n] + frhop[i] * ddrhodrmdrn1[m][n]+
-                                   frhopp[j] * drhodrm2[m] * drhodrm2[n] + frhop[j] * ddrhodrmdrn2[m][n]; //ddrhodrmdrn1 defined??
+            ddUdrijmdrijn[nv2] += frhopp[i] * drhodrm1[m] * drhodrm1[n] + frhop[i] * ddrhodrmdrn1[nv2]+
+                                   frhopp[j] * drhodrm2[m] * drhodrm2[n] + frhop[j] * ddrhodrmdrn2[nv2];
+            nv2++;
           }  
         }
         if (!isone(scaleij)) {
@@ -574,12 +595,15 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 
         //--- add stiffness (units of u/r^2)
         stiff = ddUddrij - dUdrij * recip;
-        stiff0 = 0;
+        stiff0 = 0.0; 
+        stiff1 = 0.0;
+        nv2 = 0;
         for (m = 0; m < 3; m++) {
           stiff0 += - dUdrijm[m] * delij[m];
           stiff1 += ddUdrdrijm[m] * delij[m];
           for (n = 0; n < 3; n++) {
-            stiff2 += ddUdrijmdrijn[m][n] * delij[m] * delij[n];
+            stiff2 += ddUdrijmdrijn[nv2] * delij[m] * delij[n];
+            nv2++;
           }
         }
         stiff += ( ( stiff0 + stiff2 ) * recip  + stiff1 ) * recip;
@@ -633,17 +657,17 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           //
           vm[ 20 ] = stiff * n1 * n2 * n1 * n2;
           //
-          ii=0
+          nv2 = 0;
           for (m = 0; m < 6; m++) {
             for (n = m; n < 6; n++) {
-              satom[i][ii] = vatom[i][ii] + 0.5 * vm[ii]; //satom defined??
-              satom[j][ii] = vatom[j][ii] + 0.5 * vm[ii];
-              ii++;
+              satom[i][nv2] += 0.5 * vm[nv2]; //satom defined?? analog to vatom //--- *r^2 to get energy
+              satom[j][nv2] += 0.5 * vm[nv2];
+              nv2++;
             }
           }
         }
 
-        //     Now compute forces on other atoms k due to change in sij
+        //     Now compute forces on other atoms k due to change in sij     stiffness ??????????????
 
         if (iszero(sij) || isone(sij)) continue; //: cont jn loop
 
