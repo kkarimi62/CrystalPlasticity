@@ -508,7 +508,7 @@ MEAM::Get_ddrho2drmdr(int i,
 
 
 double
-MEAM::Get_ddrho3ddr( double rij, double sij, 
+MEAM::Get_ddrho3drdr( double rij, double sij, 
                     double rhoa3j, double drhoa3j, double ddrhoa3j,
                     double arg1i3, double arg3i3,
                     double arg1i3_d
