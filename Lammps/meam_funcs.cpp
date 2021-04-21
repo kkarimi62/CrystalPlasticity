@@ -613,6 +613,36 @@ MEAM::Get_ddrho3drmdr( int i,
         }
 }
 //-------------------------------
+MEAM::Get_ddrho3drmdrn( int i,
+                       double rij, double sij, double* delij,
+                       double rhoa3j, 
+                       double* ddrho3drmdrn1 //--- modify 
+                     ){
+        double drho3drm1[3];
+        int m, n, p, nv2;
+        double rij2 = rij * rij;
+        double rij3 = rij * rij2;
+        double a3 = 6 * sij / rij3;
+        double a3a = 6 * sij / (5 * rij);
+   
+        nv2 = 0;
+        for (m = 0; m < 3; m++) {
+          for (n = 0; n < 3; n++) {
+            arg1 = 0.0;
+            for (p = n; p < 3; p++) {
+//              arg = delij[n] * delij[p] * this->v2D[nv2]; //--- ?????????
+              arg1 +=  ( arho3[i][this->vind3D[m][n][p]] + arho3[i][this->vind3D[m][p][n]] ) * delij[p];
+            }
+            arg1 +=  rhoa3j * sij * ((1 ? m == n : 0) * rij2 + 2.0 * delij[m]*delij[n]) / rij;
+            ddrho3drmdrn1[nv2] = rhoa3j * (a3 * arg1 -  a3a * rhoa3j * sij * ( 1 ? m == n : 0 ) / rij );
+            nv2 = nv2 + 1;
+          }
+          //
+ //--- negative sign???
+          //
+        }
+}
+//-------------------------------
 
 double
 MEAM::Get_ddrhodrdr(  int i, int elti,
