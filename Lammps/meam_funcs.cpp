@@ -474,7 +474,7 @@ MEAM::Get_ddrho1drmdr(int i, //--- deriv of Eq. (4.30c) wrt rn
         nv2 = 0;
         for (m = 0; m < 3; m++) {
          for (n = m; n < 3; n++) {
-          ddrho1drmdrn1[ nv2 ] = a1 * darho1drm[j][ nv2 ] * rhoa1j; //--- darho1drm[j][ nv2 ] defined???
+          ddrho1drmdrn1[ nv2 ] = a1 * ( rhoa1j * ( 1 ? m == n : 0 ) * sij / rij ) * rhoa1j;
           nv2++;
          }
         }
@@ -728,7 +728,7 @@ MEAM::Get_ddrhodrmdrn( int i, int elti, //--- deriv. of Eq. 4.36(c) wrt. rm
                         double t1i,  double t2i,  double t3i,
                         double* rho0, double* rho1, double* rho2, double* rho3,
                         double* drho0drm1,  double* drho1drm1,  double* drho2drm1,  double* drho3drm1, 
-                        double* ddrho0drmdrn1, double* ddrho1drmdrn1,  double* ddrho2drmdrn1,  double* ddrho3drmdrn1,
+                                            double* ddrho1drmdrn1,  double* ddrho2drmdrn1,  double* ddrho3drmdrn1,
                         double* ddrhodrmdrn1 //--- modify
                        ){
           int ii = 0;
