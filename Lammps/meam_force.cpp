@@ -386,11 +386,14 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                          darho3dr,
                          ddrho3drmdr2); //--- modify ddrho3drmdr2[m]
         //
-        Get_ddrho3drmdrn( i,
+        Get_ddrho3drmdrn( i, //--- deriv. of 4.30(i) wrt rn
                          rij,  sij, delij,
                          rhoa3j, 
-                         darho3dr,
                          ddrho3drmdrn1);
+        Get_ddrho3drmdrn( j,
+                         rij,  sij, delji,
+                         rhoa3i, 
+                         ddrho3drmdrn2);
         
         //     Compute derivatives of weighting functions t wrt rij
         t1i = t_ave[i][0];
