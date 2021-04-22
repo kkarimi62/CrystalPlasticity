@@ -56,6 +56,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
   double n0, n1, n2;
   double ddt1drdr1,  ddt2drdr1,  ddt3drdr1;
   double ddt1drdr2,  ddt2drdr2,  ddt3drdr2;
+  double ddrho1drmdrn1[6], ddrho1drmdrn2[6];
   
   third = 1.0 / 3.0;
   sixth = 1.0 / 6.0;
@@ -529,7 +530,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                          t1i,   t2i,   t3i,
                          rho0,  rho1,  rho2,  rho3,
                          drho0drm1,   drho1drm1,  drho2drm1,  drho3drm1, 
-                         ddrho0drmdrn1,  ddrho1drmdrn1,  ddrho2drmdrn1, ddrho3drmdrn1, //defined?
+                                      ddrho1drmdrn1,  ddrho2drmdrn1, ddrho3drmdrn1,
                          ddrhodrmdrn1 //--- modify
                        )
         Get_ddrhodrmdrn(  j,  eltj, //--- deriv. of Eq. 4.36(c) wrt. rm
@@ -537,7 +538,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                          t1j,   t2j,   t3j,
                          rho0,  rho1,  rho2,  rho3,
                          drho0drm2,   drho1drm2,  drho2drm2,  drho3drm2, 
-                         ddrho0drmdrn2,  ddrho1drmdrn2,  ddrho2drmdrn2, ddrho3drmdrn2,
+                                      ddrho1drmdrn2,  ddrho2drmdrn2, ddrho3drmdrn2,
                          ddrhodrmdrn2 //--- modify
                        )
           
