@@ -496,7 +496,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                                     ddt1drdr1,  ddt2drdr1,  ddt3drdr1,
                                     rho0, rho1, rho2, rho3, 
                                     drho0dr1,  drho1dr1,  drho2dr1,  drho3dr1, 
-                                    ddrho1drdr1,  ddrho2drdr1,  ddrho3drdr1,
+                                    ddrho0drdr1, ddrho1drdr1,  ddrho2drdr1,  ddrho3drdr1,
                                     drhodr1
                                   );
         //--- index j
@@ -507,7 +507,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                                    ddt1drdr2,  ddt2drdr2,  ddt3drdr2,
                                    rho0, rho1, rho2, rho3, 
                                    drho0dr2,  drho1dr2,  drho2dr2,  drho3dr2, 
-                                   ddrho1drdr2,  ddrho2drdr2,  ddrho3drdr2 
+                                   ddrho0drdr2, ddrho1drdr2,  ddrho2drdr2,  ddrho3drdr2 
                                    drhodr2
                                   );
         
@@ -548,7 +548,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                          drho0drm1,   drho1drm1,  drho2drm1,  drho3drm1, 
                                       ddrho1drmdrn1,  ddrho2drmdrn1, ddrho3drmdrn1,
                          ddrhodrmdrn1 //--- modify
-                       )
+                       );
         Get_ddrhodrmdrn(  j,  eltj, //--- deriv. of Eq. 4.36(c) wrt. rm
                          shpj, 
                          t1j,   t2j,   t3j,
@@ -556,7 +556,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                          drho0drm2,   drho1drm2,  drho2drm2,  drho3drm2, 
                                       ddrho1drmdrn2,  ddrho2drmdrn2, ddrho3drmdrn2,
                          ddrhodrmdrn2 //--- modify
-                       )
+                       );
           
         //     Compute derivatives wrt sij, but only if necessary     wrt s??????????????/
         if (!iszero(dscrfcn[fnoffset + jn])) {
