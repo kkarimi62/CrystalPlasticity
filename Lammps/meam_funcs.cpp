@@ -90,7 +90,7 @@ MEAM::dG_gam(const double gamma, const int ibar, double& dG, double& ddG) const
         G = 1 / (gsmooth_factor + 1) * pow((gsmooth_switchpoint / gamma), gsmooth_factor);
         G = sqrt(G);
         dG = -gsmooth_factor * G / (2.0 * gamma);
-        ddG = 0.5 * gsmooth_factor * ( G / gamma - dG ) / gamma
+        ddG = 0.5 * gsmooth_factor * ( G / gamma - dG ) / gamma;
         return G;
       } else {
         G = sqrt(1.0 + gamma);
