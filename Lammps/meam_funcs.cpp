@@ -445,7 +445,7 @@ MEAM::Get_ddrho1drdr(int i,
         return ddrho1ddr1;
 }
 
-double
+void
 MEAM::Get_ddrho1drmdr(int i,
                        double rij, double sij, double* delij,
                        double rhoa1j, double drhoa1j,
@@ -463,7 +463,8 @@ MEAM::Get_ddrho1drmdr(int i,
         }
 }
 //---------------------------------------------------------------------------
-MEAM::Get_ddrho1drmdr(int i, //--- deriv of Eq. (4.30c) wrt rn
+void
+MEAM::Get_ddrho1drmdrn(int i, //--- deriv of Eq. (4.30c) wrt rn
                        double rij, double sij,
                        double rhoa1j,
                        double* ddrho1drmdrn1 //--- modify 
@@ -526,7 +527,7 @@ MEAM::Get_ddrho2drmdr(int i,
         }
 }        
 //-------------------
-double
+void
 MEAM::Get_ddrho2drmdrn(int i,
                        double rij, double sij, double* delij,
                        double rhoa2j,
@@ -573,6 +574,7 @@ MEAM::Get_ddrho3drdr( double rij, double sij,
         return ddrho3ddr1;
 }
 //-------------------------------
+void
 MEAM::Get_ddrho3drmdr( int i,
                        double rij, double sij, double* delij,
                        double rhoa3j, 
@@ -613,6 +615,7 @@ MEAM::Get_ddrho3drmdr( int i,
         }
 }
 //-------------------------------
+void
 MEAM::Get_ddrho3drmdrn( int i,
                        double rij, double sij, double* delij,
                        double rhoa3j, 
