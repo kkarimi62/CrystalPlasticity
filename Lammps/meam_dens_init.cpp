@@ -296,6 +296,7 @@ MEAM::calc_rho1(int i, int /*ntype*/, int* type, int* fmap, double** x, int numn
   int nv2, nv3;
   double xtmp, ytmp, ztmp, delij[3], rij2, rij, sij;
   double ai, aj, rhoa0j, rhoa1j, rhoa2j, rhoa3j, A1j, A2j, A3j;
+  double rscalei, rscalej;
   double drhoa0j, drhoa1j, drhoa2j, drhoa3j, A1j_d, A2j_d, A3j_d;
   // double G,Gbar,gam,shp[3+1];
   double ro0i, ro0j;
@@ -319,24 +320,27 @@ MEAM::calc_rho1(int i, int /*ntype*/, int* type, int* fmap, double** x, int numn
         rij = sqrt(rij2);
         ai = rij / this->re_meam[elti][elti] - 1.0;
         aj = rij / this->re_meam[eltj][eltj] - 1.0;
+        rscalei = this->re_meam[elti][elti];
+        rscalej = this->re_meam[eltj][eltj];
+        
         ro0i = this->rho0_meam[elti];
         ro0j = this->rho0_meam[eltj];
         rhoa0j = ro0j * MathSpecial::fm_exp(-this->beta0_meam[eltj] * aj) * sij;
-        drhoa0j = -this->beta0_meam[eltj] * invrej * rhoa0j;
+        drhoa0j = -this->beta0_meam[eltj] * rhoa0j / rscalej;
         rhoa1j = ro0j * MathSpecial::fm_exp(-this->beta1_meam[eltj] * aj) * sij;
-        drhoa1j = -this->beta1_meam[eltj] * invrej * rhoa1j;
+        drhoa1j = -this->beta1_meam[eltj] * rhoa1j / rscalej;
         rhoa2j = ro0j * MathSpecial::fm_exp(-this->beta2_meam[eltj] * aj) * sij;
-        drhoa2j = -this->beta2_meam[eltj] * invrej * rhoa2j;
+        drhoa2j = -this->beta2_meam[eltj] * rhoa2j / rscalej;
         rhoa3j = ro0j * MathSpecial::fm_exp(-this->beta3_meam[eltj] * aj) * sij;
-        drhoa3j = -this->beta3_meam[eltj] * invrej * rhoa3j;
+        drhoa3j = -this->beta3_meam[eltj] * rhoa3j / rscalej;
         rhoa0i = ro0i * MathSpecial::fm_exp(-this->beta0_meam[elti] * ai) * sij;
-        drhoa0i = -this->beta0_meam[elti] * invrei * rhoa0i;
+        drhoa0i = -this->beta0_meam[elti] * rhoa0i / rscalei;
         rhoa1i = ro0i * MathSpecial::fm_exp(-this->beta1_meam[elti] * ai) * sij;
-        drhoa1i = -this->beta1_meam[elti] * invrei * rhoa1i;
+        drhoa1i = -this->beta1_meam[elti] * rhoa1i / rscalei;
         rhoa2i = ro0i * MathSpecial::fm_exp(-this->beta2_meam[elti] * ai) * sij;
-        drhoa2i = -this->beta2_meam[elti] * invrei * rhoa2i;
+        drhoa2i = -this->beta2_meam[elti] * rhoa2i / rscalei;
         rhoa3i = ro0i * MathSpecial::fm_exp(-this->beta3_meam[elti] * ai) * sij;
-        drhoa3i = -this->beta3_meam[elti] * invrei * rhoa3i;
+        drhoa3i = -this->beta3_meam[elti] * rhoa3i / rscalei;
         if (this->ialloy == 1) {
           rhoa1j = rhoa1j * this->t1_meam[eltj];
           rhoa2j = rhoa2j * this->t2_meam[eltj];
