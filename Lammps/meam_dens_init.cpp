@@ -38,6 +38,7 @@ MEAM::meam_dens_setup(int atom_nmax, int nall, int n_neigh)
     memory->destroy(Zarray);
     memory->destroy(G_array);
     memory->destroy(dG_array);
+    memory->destroy(ddG_array);
     memory->destroy(dGbar_array);
     memory->destroy(ddGbar_array);
     memory->destroy(rho_bkgd_array);
@@ -70,6 +71,7 @@ MEAM::meam_dens_setup(int atom_nmax, int nall, int n_neigh)
     memory->create(Zarray, nmax, "pair:Zarray");
     memory->create(G_array, nmax, "pair:G_array");
     memory->create(dG_array, nmax, "pair:dG_array");
+    memory->create(ddG_array, nmax, "pair:dG_array");
     memory->create(dGbar_array, nmax, "pair:dGbar_array");
     memory->create(ddGbar_array, nmax, "pair:ddGbar_array");
     memory->create(rho_bkgd_array, nmax, "pair:rho_bkgd_array");
