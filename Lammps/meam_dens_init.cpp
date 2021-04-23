@@ -28,7 +28,7 @@ MEAM::meam_dens_setup(int atom_nmax, int nall, int n_neigh)
     memory->destroy(arho2);
     memory->destroy(arho3);
     memory->destroy(arho3b);
-//    memory->destroy(darho2bdr);
+    memory->destroy(darho2b);
     memory->destroy(darho1dr);
     memory->destroy(darho2dr);
     memory->destroy(darho3dr);
@@ -61,7 +61,7 @@ MEAM::meam_dens_setup(int atom_nmax, int nall, int n_neigh)
     memory->create(arho2, nmax, 6, "pair:arho2");
     memory->create(arho3, nmax, 10, "pair:arho3");
     memory->create(arho3b, nmax, 3, "pair:arho3b");
-//    memory->create(darho2bdr, nmax, "pair:darho2bdr");
+    memory->create(darho2b, nmax, "pair:darho2b");
     memory->create(darho1dr, nmax, 3, "pair:darho1dr");
     memory->create(darho2dr, nmax, 6, "pair:darho2dr");
     memory->create(darho3dr, nmax, 10, "pair:darho3dr");
@@ -296,9 +296,11 @@ MEAM::calc_rho1(int i, int /*ntype*/, int* type, int* fmap, double** x, int numn
   int nv2, nv3;
   double xtmp, ytmp, ztmp, delij[3], rij2, rij, sij;
   double ai, aj, rhoa0j, rhoa1j, rhoa2j, rhoa3j, A1j, A2j, A3j;
+  double drhoa0j, drhoa1j, drhoa2j, drhoa3j, A1j_d, A2j_d, A3j_d;
   // double G,Gbar,gam,shp[3+1];
   double ro0i, ro0j;
   double rhoa0i, rhoa1i, rhoa2i, rhoa3i, A1i, A2i, A3i;
+  double drhoa0i, drhoa1i, drhoa2i, drhoa3i, A1i_d, A2i_d, A3i_d;
 
   elti = fmap[type[i]];
   xtmp = x[i][0];
