@@ -196,6 +196,79 @@ protected:
 
   double G_gam(const double gamma, const int ibar, int &errorflag) const;
   double dG_gam(const double gamma, const int ibar, double &dG, double &ddG) const;
+  double Get_ddrho1drdr(int i, 
+                    double rij, double sij, 
+                    double rhoa1j, double drhoa1j, double ddrhoa1j,
+                    double* arho2b,
+                    double arg1i1, double arg3i1,
+                    double arg1i1_d
+                    );
+  void Get_ddrho1drmdr(int i,
+                       double rij, double sij, double* delij,
+                       double rhoa1j, double drhoa1j,
+                       double** arho1, double** darho1dr,
+                       double* ddrho1drmdr1);
+  void Get_ddrho1drmdrn(int i, //--- deriv of Eq. (4.30c) wrt rn
+                       double rij, double sij,
+                       double rhoa1j,
+                       double* ddrho1drmdrn1);
+  double Get_ddrho2ddr(int i, 
+                    double rij, double sij, 
+                    double rhoa2j, double drhoa2j, double ddrhoa2j,
+                    double* arho2b,
+                    double arg1i2, double arg3i2,
+                    double arg1i2_d);
+  void Get_ddrho2drmdr(int i,
+                       double rij, double sij, double* delij,
+                       double rhoa2j, double drhoa2j,
+                       double** arho2,
+                       double** darho2dr,
+                       double* ddrho2drmdr1);
+  void Get_ddrho2drmdrn(int i,
+                       double rij, double sij, double* delij,
+                       double rhoa2j,
+                       double** arho2,
+                       double* ddrho2drmdrn1);
+  double Get_ddrho3drdr( double rij, double sij, 
+                    double rhoa3j, double drhoa3j, double ddrhoa3j,
+                    double arg1i3, double arg3i3,
+                    double arg1i3_d
+                    );
+  void Get_ddrho3drmdr( int i,
+                       double rij, double sij, double* delij,
+                       double rhoa3j, 
+                       double** darho3dr,
+                       double* ddrho3drmdr1);
+  void Get_ddrho3drmdrn( int i,
+                       double rij, double sij, double* delij,
+                       double rhoa3j, 
+                       double* ddrho3drmdrn1);
+  double Get_ddrhodrdr(  int i, int elti,
+                      double* shpi,
+                      double t1i, double t2i, double t3i,
+                      double dt1dr1, double dt2dr1, double dt3dr1,
+                      double ddt1drdr1, double ddt2drdr1, double ddt3drdr1,
+                      double* rho0, double* rho1, double* rho2, double* rho3, 
+                      double drho0dr1, double drho1dr1, double drho2dr1, double drho3dr1, 
+                                       double ddrho1drdr1, double ddrho2drdr1, double ddrho3drdr1);
+  void Get_ddrhodrmdr( int i, int elti, //--- deriv. of Eq. 4.36(c) wrt. r
+                        double* shpi, 
+                        double t1i,  double t2i,  double t3i,
+                        double dt1dr1,  double dt2dr1,  double dt3dr1,
+                        double* rho0, double* rho1, double* rho2, double* rho3,
+                        double drho0dr1,  double drho1dr1,  double drho2dr1,  double drho3dr1, 
+                        double* drho0drm1,  double* drho1drm1,  double* drho2drm1,  double* drho3drm1, 
+                        double* ddrho0drmdr1, double* ddrho1drmdr1,  double* ddrho2drmdr1,  double* ddrho3drmdr1,
+                        double* drhodrm1,
+                        double* ddrhodrmdr1);
+  void Get_ddrhodrmdrn( int i, int elti, //--- deriv. of Eq. 4.36(c) wrt. rm
+                        double* shpi, 
+                        double t1i,  double t2i,  double t3i,
+                        double* rho0, double* rho1, double* rho2, double* rho3,
+                        double* drho0drm1,  double* drho1drm1,  double* drho2drm1,  double* drho3drm1, 
+                                            double* ddrho1drmdrn1,  double* ddrho2drmdrn1,  double* ddrho3drmdrn1,
+                        double* ddrhodrmdrn1);
+
   static double zbl(const double r, const int z1, const int z2);
   double embedding(const double A, const double Ec, const double rhobar, double& dF, double& ddF ) const;
   static double erose(const double r, const double re, const double alpha, const double Ec, const double repuls, const double attrac, const int form);
