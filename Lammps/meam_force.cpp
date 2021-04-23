@@ -507,7 +507,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                                    ddt1drdr2,  ddt2drdr2,  ddt3drdr2,
                                    rho0, rho1, rho2, rho3, 
                                    drho0dr2,  drho1dr2,  drho2dr2,  drho3dr2, 
-                                   ddrho0drdr2, ddrho1drdr2,  ddrho2drdr2,  ddrho3drdr2 
+                                   ddrho0drdr2, ddrho1drdr2,  ddrho2drdr2,  ddrho3drdr2,
                                    drhodr2
                                   );
         
