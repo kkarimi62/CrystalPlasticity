@@ -8,7 +8,7 @@ MEAM::meam_dens_final(int nlocal, int eflag_either, int eflag_global, int eflag_
 {
   int i, elti;
   int m;
-  double rhob, G, dG, Gbar, dGbar, ddGbar, gam, shp[3], Z;
+  double rhob, G, dG, ddG, Gbar, dGbar, ddGbar, gam, shp[3], Z;
   double denom, rho_bkgd, Fl;
   double scaleii;
 
