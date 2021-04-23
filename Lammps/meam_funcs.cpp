@@ -484,11 +484,11 @@ MEAM::Get_ddrho1drmdrn(int i, //--- deriv of Eq. (4.30c) wrt rn
 
 
 double
-MEAM::Get_ddrho2ddr(int i, 
+MEAM::Get_ddrho2drdr(int i, 
                     double rij, double sij, 
                     double rhoa2j, double drhoa2j, double ddrhoa2j,
                     double* arho2b,
-                    double arg1i2, double arg3i2,
+                    double arg1i2,
                     double arg1i2_d
                     ){
         double rij2 = rij * rij;
