@@ -200,7 +200,7 @@ protected:
                     double rij, double sij, 
                     double rhoa1j, double drhoa1j, double ddrhoa1j,
                     double* arho2b,
-                    double arg1i1, double arg3i1,
+                    double arg1i1,
                     double arg1i1_d
                     );
   void Get_ddrho1drmdr(int i,
@@ -212,11 +212,11 @@ protected:
                        double rij, double sij,
                        double rhoa1j,
                        double* ddrho1drmdrn1);
-  double Get_ddrho2ddr(int i, 
+  double Get_ddrho2drdr(int i, 
                     double rij, double sij, 
                     double rhoa2j, double drhoa2j, double ddrhoa2j,
                     double* arho2b,
-                    double arg1i2, double arg3i2,
+                    double arg1i2,
                     double arg1i2_d);
   void Get_ddrho2drmdr(int i,
                        double rij, double sij, double* delij,
