@@ -684,7 +684,7 @@ int PairMEAMC::pack_forward_comm(int n, int *list, double *buf,
     buf[m++] = meam_inst->tsq_ave[j][0];
     buf[m++] = meam_inst->tsq_ave[j][1];
     buf[m++] = meam_inst->tsq_ave[j][2];
-    buf[m++] = meam_inst->frhopp[j];
+//    buf[m++] = meam_inst->frhopp[j];  //--- m???
   }
 
   return m;
@@ -728,7 +728,7 @@ void PairMEAMC::unpack_forward_comm(int n, int first, double *buf)
     meam_inst->tsq_ave[i][0] = buf[m++];
     meam_inst->tsq_ave[i][1] = buf[m++];
     meam_inst->tsq_ave[i][2] = buf[m++];
-    meam_inst->frhopp[i] = buf[m++];
+//    meam_inst->frhopp[i] = buf[m++];
   }
 }
 
