@@ -660,7 +660,6 @@ int PairMEAMC::pack_forward_comm(int n, int *list, double *buf,
     buf[m++] = meam_inst->rho2[j];
     buf[m++] = meam_inst->rho3[j];
     buf[m++] = meam_inst->frhop[j];
-    buf[m++] = meam_inst->frhopp[j];
     buf[m++] = meam_inst->gamma[j];
     buf[m++] = meam_inst->dgamma1[j];
     buf[m++] = meam_inst->dgamma2[j];
@@ -685,6 +684,7 @@ int PairMEAMC::pack_forward_comm(int n, int *list, double *buf,
     buf[m++] = meam_inst->tsq_ave[j][0];
     buf[m++] = meam_inst->tsq_ave[j][1];
     buf[m++] = meam_inst->tsq_ave[j][2];
+    buf[m++] = meam_inst->frhopp[j];
   }
 
   return m;
@@ -704,7 +704,6 @@ void PairMEAMC::unpack_forward_comm(int n, int first, double *buf)
     meam_inst->rho2[i] = buf[m++];
     meam_inst->rho3[i] = buf[m++];
     meam_inst->frhop[i] = buf[m++];
-    meam_inst->frhopp[i] = buf[m++];
     meam_inst->gamma[i] = buf[m++];
     meam_inst->dgamma1[i] = buf[m++];
     meam_inst->dgamma2[i] = buf[m++];
@@ -729,6 +728,7 @@ void PairMEAMC::unpack_forward_comm(int n, int first, double *buf)
     meam_inst->tsq_ave[i][0] = buf[m++];
     meam_inst->tsq_ave[i][1] = buf[m++];
     meam_inst->tsq_ave[i][2] = buf[m++];
+    meam_inst->frhopp[i] = buf[m++];
   }
 }
 
