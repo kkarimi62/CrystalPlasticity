@@ -435,7 +435,7 @@ MEAM::Get_ddrho1drdr(int i,
                     double rij, double sij, 
                     double rhoa1j, double drhoa1j, double ddrhoa1j,
                     double* arho2b,
-                    double arg1i1, double arg3i1,
+                    double arg1i1,
                     double arg1i1_d
                     ){
         double rij2 = rij * rij;
