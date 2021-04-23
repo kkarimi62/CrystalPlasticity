@@ -85,7 +85,7 @@ private:
 
   double** phir;
 
-  double **phirar, **phirar1, **phirar2, **phirar3, **phirar4, **phirar5, **phirar6;
+  double **phirar, **phirar1, **phirar2, **phirar3, **phirar4, **phirar5, **phirar6, **phirar7, **phirar8, **phirar9;
 
   double attrac_meam[maxelt][maxelt], repuls_meam[maxelt][maxelt];
 
