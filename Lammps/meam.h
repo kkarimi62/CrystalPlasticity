@@ -109,6 +109,7 @@ public:
   double *Zarray, *G_array, *dG_array, *ddG_array, *dGbar_array, *ddGbar_array, *rho_bkgd_array;
   double **arho1, **arho2, **arho3, **arho3b, **t_ave, **tsq_ave;
   double **darho1dr, **darho2dr, **darho3dr, **darho3bdr;
+  double **darho2bdr, *drho0dr,
     
   int maxneigh;
   double *scrfcn, *dscrfcn, *fcpair;
