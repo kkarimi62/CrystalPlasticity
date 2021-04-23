@@ -350,12 +350,12 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         ddrho3drdr1 = Get_ddrho3drdr( rij, sij, //--- deriv. of 4.30(g) wrt r   where it was used???
                                     rhoa3j,  drhoa3j,  ddrhoa3j,
                                     arg1i3,  arg3i3,
-                                    arg1i3_d
+                                    arg1i3_d, arg3i3_d
                                    )
         ddrho3drdr2 = Get_ddrho3drdr( rij, sij,
                                     rhoa3i,  drhoa3i,  ddrhoa3i,
                                     arg1j3,  arg3j3,
-                                    arg1j3_d
+                                    arg1j3_d, arg3j3_d
                                    )          
           
         a3 = 6 * sij / rij3;
@@ -378,12 +378,14 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         }
         Get_ddrho3drmdr( i,
                          rij,  sij, delij,
-                         rhoa3j, 
+                         rhoa3j,
+                         drhoa3j,
                          darho3dr,
                          ddrho3drmdr1); //--- modify ddrho3drmdr1[m] where it was used????
         Get_ddrho3drmdr( j,
                          rij,  sij, delji,
-                         rhoa3i, 
+                         rhoa3i,
+                         drhoa3i,
                          darho3dr,
                          ddrho3drmdr2); //--- modify ddrho3drmdr2[m]
         //
