@@ -232,13 +232,15 @@ protected:
   double Get_ddrho3drdr( double rij, double sij, 
                     double rhoa3j, double drhoa3j, double ddrhoa3j,
                     double arg1i3, double arg3i3,
-                    double arg1i3_d
+                    double arg1i3_d, double arg3i3_d
                     );
   void Get_ddrho3drmdr( int i,
                        double rij, double sij, double* delij,
                        double rhoa3j, 
+                       double drhoa3j, 
                        double** darho3dr,
-                       double* ddrho3drmdr1);
+                       double* ddrho3drmdr1 //--- modify 
+                     );
   void Get_ddrho3drmdrn( int i,
                        double rij, double sij, double* delij,
                        double rhoa3j, 
@@ -250,7 +252,8 @@ protected:
                       double ddt1drdr1, double ddt2drdr1, double ddt3drdr1,
                       double* rho0, double* rho1, double* rho2, double* rho3, 
                       double drho0dr1, double drho1dr1, double drho2dr1, double drho3dr1, 
-                                       double ddrho1drdr1, double ddrho2drdr1, double ddrho3drdr1);
+                      double ddrho0drdr1, double ddrho1drdr1, double ddrho2drdr1, double ddrho3drdr1,
+                      double drhodr1 );
   void Get_ddrhodrmdr( int i, int elti, //--- deriv. of Eq. 4.36(c) wrt. r
                         double* shpi, 
                         double t1i,  double t2i,  double t3i,
