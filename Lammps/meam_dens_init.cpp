@@ -94,7 +94,7 @@ MEAM::meam_dens_setup(int atom_nmax, int nall, int n_neigh)
     rho0[i] = 0.0;
     arho2b[i] = 0.0;
     arho1[i][0] = arho1[i][1] = arho1[i][2] = 0.0;
-    drho0dr[i] = 0.0;
+//    drho0dr[i] = 0.0;
 //    darho2bdr[i] = 0.0;
     darho1dr[i][0] = darho1dr[i][1] = darho1dr[i][2] = 0.0;
     for (j = 0; j < 6; j++){
