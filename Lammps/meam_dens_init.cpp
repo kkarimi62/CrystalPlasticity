@@ -28,7 +28,7 @@ MEAM::meam_dens_setup(int atom_nmax, int nall, int n_neigh)
     memory->destroy(arho2);
     memory->destroy(arho3);
     memory->destroy(arho3b);
-    memory->destroy(darho2bdr);
+//    memory->destroy(darho2bdr);
     memory->destroy(darho1dr);
     memory->destroy(darho2dr);
     memory->destroy(darho3dr);
@@ -61,7 +61,7 @@ MEAM::meam_dens_setup(int atom_nmax, int nall, int n_neigh)
     memory->create(arho2, nmax, 6, "pair:arho2");
     memory->create(arho3, nmax, 10, "pair:arho3");
     memory->create(arho3b, nmax, 3, "pair:arho3b");
-    memory->create(darho2bdr, nmax, "pair:darho2bdr");
+//    memory->create(darho2bdr, nmax, "pair:darho2bdr");
     memory->create(darho1dr, nmax, 3, "pair:darho1dr");
     memory->create(darho2dr, nmax, 6, "pair:darho2dr");
     memory->create(darho3dr, nmax, 10, "pair:darho3dr");
