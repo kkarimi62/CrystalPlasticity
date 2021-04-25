@@ -260,7 +260,6 @@ void Fix::v_setup(int vflag)
   if (vflag_atom && atom->nlocal > maxvatom) {
     maxvatom = atom->nmax;
     memory->destroy(vatom);
-    cout << "helloooooooooooohelloooooooooooohelloooooooooooo from fix.cpp!\n";
     memory->create(vatom,maxvatom,6,"fix:vatom");
   }
 
@@ -269,7 +268,6 @@ void Fix::v_setup(int vflag)
   if (vflag_global) for (i = 0; i < 6; i++) virial[i] = 0.0;
   if (vflag_atom) {
     n = atom->nlocal;
-    cout << "helloooooooooooohelloooooooooooohelloooooooooooo from fix.cpp!\n";
     for (i = 0; i < n; i++) {
       vatom[i][0] = 0.0;
       vatom[i][1] = 0.0;
@@ -331,6 +329,7 @@ void Fix::v_tally(int n, int *list, double total, double *v)
     virial[4] += fraction*v[4];
     virial[5] += fraction*v[5];
   }
+    cout << "helloooooooooooohelloooooooooooohelloooooooooooo from fix.cpp!\n";
 
   if (vflag_atom) {
     double fraction = 1.0/total;
