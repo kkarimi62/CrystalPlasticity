@@ -688,10 +688,11 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           v[3] = -0.25 * (delij[0] * fi[1] + delij[1] * fi[0]);
           v[4] = -0.25 * (delij[0] * fi[2] + delij[2] * fi[0]);
           v[5] = -0.25 * (delij[1] * fi[2] + delij[2] * fi[1]);
-
+          nv2 = 0;
           for (m = 0; m < 6; m++) {
             vatom[i][m] = vatom[i][m] + v[m];
             vatom[j][m] = vatom[j][m] + v[m];
+            nv2++;
           }
           n0 = delij[0] * recip;
           n1 = delij[1] * recip;
@@ -724,11 +725,10 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           //
           vm[ 20 ] = stiff * n1 * n2 * n1 * n2;
           //
-          nv2 = 0;
           for (m = 0; m < 6; m++) {
             for (n = m; n < 6; n++) {
-//              satom[i][nv2] += 0.5 * vm[nv2]; //satom defined?? analog to vatom //--- *r^2 to get energy  //defined?????
-//              satom[j][nv2] += 0.5 * vm[nv2];
+              vatom[i][nv2] += 0.5 * vm[nv2]; //satom defined?? analog to vatom //--- *r^2 to get energy  //defined?????
+              vatom[j][nv2] += 0.5 * vm[nv2];
               nv2++;
             }
           }
