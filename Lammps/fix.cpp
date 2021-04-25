@@ -329,7 +329,6 @@ void Fix::v_tally(int n, int *list, double total, double *v)
     virial[4] += fraction*v[4];
     virial[5] += fraction*v[5];
   }
-    cout << "helloooooooooooohelloooooooooooohelloooooooooooo from fix.cpp!\n";
 
   if (vflag_atom) {
     double fraction = 1.0/total;
@@ -366,6 +365,7 @@ void Fix::v_tally(int i, double *v)
     virial[4] += v[4];
     virial[5] += v[5];
   }
+    cout << "helloooooooooooohelloooooooooooohelloooooooooooo from v_tally(int i, double *v)\n";
 
   if (vflag_atom) {
     vatom[i][0] += v[0];
@@ -393,6 +393,7 @@ void Fix::v_tally(int n, int i, double vn)
 {
   if (vflag_global)
     virial[n] += vn;
+    cout << "helloooooooooooohelloooooooooooohelloooooooooooo from v_tally(int n, int i, double vn)\n";
 
   if (vflag_atom)
     vatom[i][n] += vn;
