@@ -781,7 +781,7 @@ void Pair::del_tally_callback(Compute *ptr)
 
 void Pair::ev_setup(int eflag, int vflag, int alloc)
 {
-  int i,n;
+  int i,j,n;
 
   evflag = 1;
 
@@ -818,7 +818,7 @@ void Pair::ev_setup(int eflag, int vflag, int alloc)
     maxvatom = atom->nmax;
     if (alloc) {
       memory->destroy(vatom);
-      memory->create(vatom,comm->nthreads*maxvatom,6,"pair:vatom");
+      memory->create(vatom,comm->nthreads*maxvatom,6+21,"pair:vatom");
     }
   }
   if (cvflag_atom && atom->nmax > maxcvatom) {
@@ -844,12 +844,14 @@ void Pair::ev_setup(int eflag, int vflag, int alloc)
     n = atom->nlocal;
     if (force->newton) n += atom->nghost;
     for (i = 0; i < n; i++) {
+      for (j = 0; j < 6+21; j++) {
       vatom[i][0] = 0.0;
-      vatom[i][1] = 0.0;
-      vatom[i][2] = 0.0;
-      vatom[i][3] = 0.0;
-      vatom[i][4] = 0.0;
-      vatom[i][5] = 0.0;
+//       vatom[i][1] = 0.0;
+//       vatom[i][2] = 0.0;
+//       vatom[i][3] = 0.0;
+//       vatom[i][4] = 0.0;
+//       vatom[i][5] = 0.0;
+      }
     }
   }
   if (cvflag_atom && alloc) {
@@ -986,7 +988,7 @@ void Pair::ev_tally(int i, int j, int nlocal, int newton_pair,
 
     if (vflag_atom) {
       if (newton_pair || i < nlocal) {
-        vatom[i][0] += 0.5*v[0];
+        vatom[i][0] += 0.5*v[0]; // enter here ??????????????
         vatom[i][1] += 0.5*v[1];
         vatom[i][2] += 0.5*v[2];
         vatom[i][3] += 0.5*v[3];
@@ -1049,7 +1051,7 @@ void Pair::ev_tally_full(int i, double evdwl, double ecoul, double fpair,
     }
 
     if (vflag_atom) {
-      vatom[i][0] += v[0];
+      vatom[i][0] += v[0]; // enter here ??????????????
       vatom[i][1] += v[1];
       vatom[i][2] += v[2];
       vatom[i][3] += v[3];
@@ -1134,7 +1136,7 @@ void Pair::ev_tally_xyz(int i, int j, int nlocal, int newton_pair,
 
     if (vflag_atom) {
       if (newton_pair || i < nlocal) {
-        vatom[i][0] += 0.5*v[0];
+        vatom[i][0] += 0.5*v[0]; // enter here ??????????????
         vatom[i][1] += 0.5*v[1];
         vatom[i][2] += 0.5*v[2];
         vatom[i][3] += 0.5*v[3];
@@ -1196,7 +1198,7 @@ void Pair::ev_tally_xyz_full(int i, double evdwl, double ecoul,
     }
 
     if (vflag_atom) {
-      vatom[i][0] += v[0];
+      vatom[i][0] += v[0]; // enter here ??????????????
       vatom[i][1] += v[1];
       vatom[i][2] += v[2];
       vatom[i][3] += v[3];
@@ -1248,7 +1250,7 @@ void Pair::ev_tally3(int i, int j, int k, double evdwl, double ecoul,
     }
 
     if (vflag_atom) {
-      vatom[i][0] += THIRD*v[0]; vatom[i][1] += THIRD*v[1];
+      vatom[i][0] += THIRD*v[0]; vatom[i][1] += THIRD*v[1]; // enter here ??????????????
       vatom[i][2] += THIRD*v[2]; vatom[i][3] += THIRD*v[3];
       vatom[i][4] += THIRD*v[4]; vatom[i][5] += THIRD*v[5];
 
@@ -1293,7 +1295,7 @@ void Pair::ev_tally4(int i, int j, int k, int m, double evdwl,
     v[4] = 0.25 * (drim[0]*fi[2] + drjm[0]*fj[2] + drkm[0]*fk[2]);
     v[5] = 0.25 * (drim[1]*fi[2] + drjm[1]*fj[2] + drkm[1]*fk[2]);
 
-    vatom[i][0] += v[0]; vatom[i][1] += v[1]; vatom[i][2] += v[2];
+    vatom[i][0] += v[0]; vatom[i][1] += v[1]; vatom[i][2] += v[2]; // enter here ??????????????
     vatom[i][3] += v[3]; vatom[i][4] += v[4]; vatom[i][5] += v[5];
     vatom[j][0] += v[0]; vatom[j][1] += v[1]; vatom[j][2] += v[2];
     vatom[j][3] += v[3]; vatom[j][4] += v[4]; vatom[j][5] += v[5];
@@ -1378,7 +1380,7 @@ void Pair::ev_tally_tip4p(int key, int *list, double *v,
         }
       } else {
         for (i = 0; i <= 5; i++) {
-          vatom[list[0]][i] += 0.5*v[i]*(1-alpha);
+          vatom[list[0]][i] += 0.5*v[i]*(1-alpha); // enter here ??????????????
           vatom[list[1]][i] += 0.25*v[i]*alpha;
           vatom[list[2]][i] += 0.25*v[i]*alpha;
           vatom[list[3]][i] += 0.5*v[i]*(1-alpha);
@@ -1428,7 +1430,7 @@ void Pair::v_tally2(int i, int j, double fpair, double *drij)
   v[4] = 0.5 * drij[0]*drij[2]*fpair;
   v[5] = 0.5 * drij[1]*drij[2]*fpair;
 
-  vatom[i][0] += v[0]; vatom[i][1] += v[1]; vatom[i][2] += v[2];
+  vatom[i][0] += v[0]; vatom[i][1] += v[1]; vatom[i][2] += v[2]; // enter here ??????????????
   vatom[i][3] += v[3]; vatom[i][4] += v[4]; vatom[i][5] += v[5];
   vatom[j][0] += v[0]; vatom[j][1] += v[1]; vatom[j][2] += v[2];
   vatom[j][3] += v[3]; vatom[j][4] += v[4]; vatom[j][5] += v[5];
