@@ -208,7 +208,7 @@ void Fix::ev_setup(int eflag, int vflag)
   if (vflag_atom && atom->nlocal > maxvatom) {
     maxvatom = atom->nmax;
     memory->destroy(vatom);
-    cout << "hello from fix.cpp!\n";
+    cout << "helloooooooooooohelloooooooooooohelloooooooooooo from fix.cpp!\n";
     memory->create(vatom,maxvatom,6,"fix:vatom");
   }
 
