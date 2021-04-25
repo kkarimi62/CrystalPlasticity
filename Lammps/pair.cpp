@@ -30,6 +30,7 @@
 #include "neighbor.h"
 #include "suffix.h"
 #include "update.h"
+#include <iostream>
 
 #include <cfloat>    // IWYU pragma: keep
 #include <climits>   // IWYU pragma: keep
@@ -39,6 +40,7 @@
 
 using namespace LAMMPS_NS;
 using namespace MathConst;
+using namespace std;
 
 enum{NONE,RLINEAR,RSQ,BMP};
 
@@ -818,6 +820,7 @@ void Pair::ev_setup(int eflag, int vflag, int alloc)
     maxvatom = atom->nmax;
     if (alloc) {
       memory->destroy(vatom);
+       cout << "hello from pair.cpp ln. 823\n";
       memory->create(vatom,comm->nthreads*maxvatom,6+21,"pair:vatom");
     }
   }
@@ -841,6 +844,8 @@ void Pair::ev_setup(int eflag, int vflag, int alloc)
     for (i = 0; i < n; i++) eatom[i] = 0.0;
   }
   if (vflag_atom && alloc) {
+            cout << "hello from pair.cpp ln. 846\n";
+
     n = atom->nlocal;
     if (force->newton) n += atom->nghost;
     for (i = 0; i < n; i++) {
@@ -988,6 +993,8 @@ void Pair::ev_tally(int i, int j, int nlocal, int newton_pair,
 
     if (vflag_atom) {
       if (newton_pair || i < nlocal) {
+               cout << "hello from pair.cpp ln. 996\n";
+
         vatom[i][0] += 0.5*v[0]; // enter here ??????????????
         vatom[i][1] += 0.5*v[1];
         vatom[i][2] += 0.5*v[2];
@@ -1051,6 +1058,8 @@ void Pair::ev_tally_full(int i, double evdwl, double ecoul, double fpair,
     }
 
     if (vflag_atom) {
+              cout << "hello from pair.cpp ln. 1061\n";
+
       vatom[i][0] += v[0]; // enter here ??????????????
       vatom[i][1] += v[1];
       vatom[i][2] += v[2];
@@ -1136,6 +1145,7 @@ void Pair::ev_tally_xyz(int i, int j, int nlocal, int newton_pair,
 
     if (vflag_atom) {
       if (newton_pair || i < nlocal) {
+       cout << "hello from pair.cpp ln. 1148\n";
         vatom[i][0] += 0.5*v[0]; // enter here ??????????????
         vatom[i][1] += 0.5*v[1];
         vatom[i][2] += 0.5*v[2];
@@ -1198,6 +1208,7 @@ void Pair::ev_tally_xyz_full(int i, double evdwl, double ecoul,
     }
 
     if (vflag_atom) {
+       cout << "hello from pair.cpp ln. 1211\n";
       vatom[i][0] += v[0]; // enter here ??????????????
       vatom[i][1] += v[1];
       vatom[i][2] += v[2];
@@ -1250,6 +1261,7 @@ void Pair::ev_tally3(int i, int j, int k, double evdwl, double ecoul,
     }
 
     if (vflag_atom) {
+       cout << "hello from pair.cpp ln. 1264\n";
       vatom[i][0] += THIRD*v[0]; vatom[i][1] += THIRD*v[1]; // enter here ??????????????
       vatom[i][2] += THIRD*v[2]; vatom[i][3] += THIRD*v[3];
       vatom[i][4] += THIRD*v[4]; vatom[i][5] += THIRD*v[5];
@@ -1294,6 +1306,7 @@ void Pair::ev_tally4(int i, int j, int k, int m, double evdwl,
     v[3] = 0.25 * (drim[0]*fi[1] + drjm[0]*fj[1] + drkm[0]*fk[1]);
     v[4] = 0.25 * (drim[0]*fi[2] + drjm[0]*fj[2] + drkm[0]*fk[2]);
     v[5] = 0.25 * (drim[1]*fi[2] + drjm[1]*fj[2] + drkm[1]*fk[2]);
+       cout << "hello from pair.cpp ln. 1309\n";
 
     vatom[i][0] += v[0]; vatom[i][1] += v[1]; vatom[i][2] += v[2]; // enter here ??????????????
     vatom[i][3] += v[3]; vatom[i][4] += v[4]; vatom[i][5] += v[5];
@@ -1409,6 +1422,8 @@ void Pair::v_tally(int i, double *fi, double *deli)
   v[4] = 0.5*deli[0]*fi[2];
   v[5] = 0.5*deli[1]*fi[2];
 
+          cout << "hello from pair.cpp ln. 1425\n";
+
   vatom[i][0] += v[0]; vatom[i][1] += v[1]; vatom[i][2] += v[2];
   vatom[i][3] += v[3]; vatom[i][4] += v[4]; vatom[i][5] += v[5];
 }
@@ -1429,6 +1444,7 @@ void Pair::v_tally2(int i, int j, double fpair, double *drij)
   v[3] = 0.5 * drij[0]*drij[1]*fpair;
   v[4] = 0.5 * drij[0]*drij[2]*fpair;
   v[5] = 0.5 * drij[1]*drij[2]*fpair;
+       cout << "hello from pair.cpp ln. 1447\n";
 
   vatom[i][0] += v[0]; vatom[i][1] += v[1]; vatom[i][2] += v[2]; // enter here ??????????????
   vatom[i][3] += v[3]; vatom[i][4] += v[4]; vatom[i][5] += v[5];
@@ -1452,6 +1468,7 @@ void Pair::v_tally3(int i, int j, int k,
   v[3] = THIRD * (drik[0]*fi[1] + drjk[0]*fj[1]);
   v[4] = THIRD * (drik[0]*fi[2] + drjk[0]*fj[2]);
   v[5] = THIRD * (drik[1]*fi[2] + drjk[1]*fj[2]);
+       cout << "hello from pair.cpp ln. 1471\n";
 
   vatom[i][0] += v[0]; vatom[i][1] += v[1]; vatom[i][2] += v[2];
   vatom[i][3] += v[3]; vatom[i][4] += v[4]; vatom[i][5] += v[5];
@@ -1478,6 +1495,7 @@ void Pair::v_tally4(int i, int j, int k, int m,
   v[3] = 0.25 * (drim[0]*fi[1] + drjm[0]*fj[1] + drkm[0]*fk[1]);
   v[4] = 0.25 * (drim[0]*fi[2] + drjm[0]*fj[2] + drkm[0]*fk[2]);
   v[5] = 0.25 * (drim[1]*fi[2] + drjm[1]*fj[2] + drkm[1]*fk[2]);
+       cout << "hello from pair.cpp ln. 1498\n";
 
   vatom[i][0] += v[0]; vatom[i][1] += v[1]; vatom[i][2] += v[2];
   vatom[i][3] += v[3]; vatom[i][4] += v[4]; vatom[i][5] += v[5];
@@ -1537,6 +1555,7 @@ void Pair::v_tally_tensor(int i, int j, int nlocal, int newton_pair,
 
   if (vflag_atom) {
     if (newton_pair || i < nlocal) {
+       cout << "hello from pair.cpp ln. 1558\n";
       vatom[i][0] += 0.5*v[0];
       vatom[i][1] += 0.5*v[1];
       vatom[i][2] += 0.5*v[2];
@@ -1837,6 +1856,7 @@ void Pair::hessian_twobody(double fforce, double dfac, double delr[3], double ph
 double Pair::memory_usage()
 {
   double bytes = comm->nthreads*maxeatom * sizeof(double);
+       cout << "hello from pair.cpp ln. 1859\n";
   bytes += comm->nthreads*maxvatom*6 * sizeof(double);
   bytes += comm->nthreads*maxcvatom*9 * sizeof(double);
   return bytes;
