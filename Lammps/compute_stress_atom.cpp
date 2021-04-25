@@ -165,7 +165,7 @@ void ComputeStressAtom::compute_peratom()
   // clear local stress array
 
   for (i = 0; i < ntotal; i++)
-    for (j = 0; j < 6; j++)
+    for (j = 0; j < (6+21); j++)
       stress[i][j] = 0.0;
 
   // add in per-atom contributions from each force
@@ -173,7 +173,7 @@ void ComputeStressAtom::compute_peratom()
   if (pairflag && force->pair && force->pair->compute_flag) {
     double **vatom = force->pair->vatom;
     for (i = 0; i < npair; i++)
-      for (j = 0; j < 6; j++)
+      for (j = 0; j < (6+21); j++)
         stress[i][j] += vatom[i][j];
   }
 
@@ -224,7 +224,7 @@ void ComputeStressAtom::compute_peratom()
         double **vatom = modify->fix[ifix]->vatom;
         if (vatom)
           for (i = 0; i < nlocal; i++)
-            for (j = 0; j < 6; j++)
+            for (j = 0; j < (6+21); j++)
               stress[i][j] += vatom[i][j];
       }
   }
@@ -241,12 +241,14 @@ void ComputeStressAtom::compute_peratom()
 
   for (i = 0; i < nlocal; i++)
     if (!(mask[i] & groupbit)) {
-      stress[i][0] = 0.0;
-      stress[i][1] = 0.0;
-      stress[i][2] = 0.0;
-      stress[i][3] = 0.0;
-      stress[i][4] = 0.0;
-      stress[i][5] = 0.0;
+       for (j = 0; j < (6+21); j++) {
+         stress[i][j] = 0.0;
+       }
+//       stress[i][1] = 0.0;
+//       stress[i][2] = 0.0;
+//       stress[i][3] = 0.0;
+//       stress[i][4] = 0.0;
+//       stress[i][5] = 0.0;
     }
 
   // include kinetic energy term for each atom in group
@@ -265,7 +267,7 @@ void ComputeStressAtom::compute_peratom()
         for (i = 0; i < nlocal; i++)
           if (mask[i] & groupbit) {
             onemass = mvv2e * rmass[i];
-            stress[i][0] += onemass*v[i][0]*v[i][0];
+            stress[i][0] += onemass*v[i][0]*v[i][0];  //--- kinetic term??????????????
             stress[i][1] += onemass*v[i][1]*v[i][1];
             stress[i][2] += onemass*v[i][2]*v[i][2];
             stress[i][3] += onemass*v[i][0]*v[i][1];
@@ -325,7 +327,7 @@ void ComputeStressAtom::compute_peratom()
     }
   }
 
-  // convert to stress*volume units = -pressure*volume
+  // convert to stress*volume units = -pressure*volume  ??????????????
 
   double nktv2p = -force->nktv2p;
   for (i = 0; i < nlocal; i++)
@@ -348,7 +350,7 @@ int ComputeStressAtom::pack_reverse_comm(int n, int first, double *buf)
   m = 0;
   last = first + n;
   for (i = first; i < last; i++) {
-    buf[m++] = stress[i][0];
+    buf[m++] = stress[i][0];  //????????????
     buf[m++] = stress[i][1];
     buf[m++] = stress[i][2];
     buf[m++] = stress[i][3];
