@@ -679,10 +679,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         
         
         //     Tabulate per-atom virial as symmetrized stress tensor
-        cout << "vflag_atom="<<vflag_atom<<"\n";
         if (vflag_atom != 0) {
-          cout << "hello from meam_force!\n";
-
           fi[0] = delij[0] * force + dUdrijm[0];
           fi[1] = delij[1] * force + dUdrijm[1];
           fi[2] = delij[2] * force + dUdrijm[2];
@@ -731,6 +728,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           //
           for (m = 0; m < 6; m++) {
             for (n = m; n < 6; n++) {
+              cout << "vflag_atom="<<vflag_atom<<"\n";
               vatom[i][nv2] += 0.5 * vm[nv2]; //satom defined?? analog to vatom //--- *r^2 to get energy  //defined?????
               vatom[j][nv2] += 0.5 * vm[nv2];
               nv2++;
