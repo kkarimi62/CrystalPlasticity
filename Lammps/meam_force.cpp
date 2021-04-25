@@ -13,6 +13,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                  double* eatom, int /*ntype*/, int* type, int* fmap, double** scale, double** x, int numneigh, int* firstneigh,
                  int numneigh_full, int* firstneigh_full, int fnoffset, double** f, double** vatom)
 {
+  cout << "hello from meam_force!\n";
   int j, jn, k, kn, kk, m, n, p, q, ii;
   int nv2, nv3, elti, eltj, eltk, ind;
   double xitmp, yitmp, zitmp, delij[3], delji[3], rij2, rij, rij3;
