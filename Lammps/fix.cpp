@@ -18,12 +18,14 @@
 #include "error.h"
 #include "group.h"
 #include "memory.h"
+#include <iostream>
 
 #include <cstring>
 #include <cctype>
 
 using namespace LAMMPS_NS;
 using namespace FixConst;
+using namespace std;
 
 // allocate space for static class instance variable and initialize it
 
@@ -206,6 +208,7 @@ void Fix::ev_setup(int eflag, int vflag)
   if (vflag_atom && atom->nlocal > maxvatom) {
     maxvatom = atom->nmax;
     memory->destroy(vatom);
+    cout << "hello from fix.cpp!\n";
     memory->create(vatom,maxvatom,6,"fix:vatom");
   }
 
