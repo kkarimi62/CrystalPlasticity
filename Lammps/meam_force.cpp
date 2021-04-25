@@ -4,7 +4,9 @@
 #include "math_special.h"
 
 using namespace LAMMPS_NS;
+#include <iostream>
 
+using namespace std;
 
 void
 MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int vflag_atom, double* eng_vdwl,
@@ -727,6 +729,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           //
           for (m = 0; m < 6; m++) {
             for (n = m; n < 6; n++) {
+              cout << "nv2=" << nv2 << "\n";
               vatom[i][nv2] += 0.5 * vm[nv2]; //satom defined?? analog to vatom //--- *r^2 to get energy  //defined?????
               vatom[j][nv2] += 0.5 * vm[nv2];
               nv2++;
