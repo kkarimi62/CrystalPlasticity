@@ -739,7 +739,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
             }
           }
         }
-        if( i == 0) cout << "s[0]="<<vatom[i][0]<<"\n"; 
+        if( i == 0) cout << "s[0]="<<vatom[i][0]<<"\t"<<"c[0]="<<vatom[i][0+6]<<"\n"; 
 
         //     Now compute forces on other atoms k due to change in sij     stiffness ??????????????
 
