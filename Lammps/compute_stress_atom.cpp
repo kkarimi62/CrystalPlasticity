@@ -27,8 +27,10 @@
 #include "fix.h"
 #include "memory.h"
 #include "error.h"
+#include <iostream>
 
 using namespace LAMMPS_NS;
+using namespace std;
 
 enum{NOBIAS,BIAS};
 
@@ -129,6 +131,7 @@ void ComputeStressAtom::init()
 
 void ComputeStressAtom::compute_peratom()
 {
+   cout << "hello from ComputeStressAtom::compute_peratom\n";
   int i,j;
   double onemass;
 
