@@ -32,7 +32,8 @@ MEAM::MEAM(Memory* mem)
   rho = rho0 = rho1 = rho2 = rho3 = frhop = frhopp = NULL;
   gamma = dgamma1 = dgamma2 = dgamma3 = arho2b = NULL;
   arho1 = arho2 = arho3 = arho3b = t_ave = tsq_ave = NULL;
-  Zarray = G_array = dG_array = ddG_array = dGbar_array = ddGbar_array = rho_bkgd_array = NULL;
+  G_array = dG_array = ddG_array = dGbar_array = ddGbar_array = rho_bkgd_array = NULL;
+  Zarray = NULL;
   darho1dr = darho2dr = darho3dr = darho3bdr = NULL;
   darho2b = NULL;
 
