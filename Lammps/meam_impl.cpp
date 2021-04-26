@@ -27,7 +27,6 @@ using namespace std;
 MEAM::MEAM(Memory* mem)
   : memory(mem)
 {
-     cout << "hello from MEAM::MEAM\n";
   phir = phirar = phirar1 = phirar2 = phirar3 = phirar4 = phirar5 = phirar6 = phirar7 =phirar8 =phirar9 =NULL;
 
   nmax = 0;
