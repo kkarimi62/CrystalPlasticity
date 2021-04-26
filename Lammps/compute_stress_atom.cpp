@@ -145,7 +145,7 @@ void ComputeStressAtom::compute_peratom()
   if (atom->nmax > nmax) {
     memory->destroy(stress);
     nmax = atom->nmax;
-    memory->create(stress,nmax,6,"stress/atom:stress");
+    memory->create(stress,nmax,6+21,"stress/atom:stress");
     array_atom = stress;
   }
 
@@ -268,9 +268,9 @@ void ComputeStressAtom::compute_peratom()
 
     if (biasflag == NOBIAS) {
       if (rmass) {
-         cout << "compute_stress_atom.cpp: ln 271\n";
         for (i = 0; i < nlocal; i++)
           if (mask[i] & groupbit) {
+            if(i=0) cout << "compute_stress_atom.cpp: ln 273\n";
             onemass = mvv2e * rmass[i];
             stress[i][0] += onemass*v[i][0]*v[i][0];  //--- kinetic term??????????????
             stress[i][1] += onemass*v[i][1]*v[i][1];
