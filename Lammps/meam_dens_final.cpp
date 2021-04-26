@@ -8,6 +8,7 @@ void
 MEAM::meam_dens_final(int nlocal, int eflag_either, int eflag_global, int eflag_atom, double* eng_vdwl,  //---- meam_dens_final called before force????
                       double* eatom, int /*ntype*/, int* type, int* fmap, double** scale, int& errorflag)
 {
+     cout << "hello from MEAM::meam_dens_final->Z\n";
   int i, elti;
   int m;
   double rhob, G, dG, ddG, Gbar, dGbar, ddGbar, gam, shp[3], Z;
