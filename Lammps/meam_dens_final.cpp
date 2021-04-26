@@ -1,7 +1,7 @@
 #include "meam.h"
 #include <iostream>
 
-using namespace std
+using namespace std;
 using namespace LAMMPS_NS;
 
 void
