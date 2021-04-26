@@ -107,7 +107,7 @@ public:
   double *rho, *rho0, *rho1, *rho2, *rho3, *frhop, *frhopp;
   double *gamma, *dgamma1, *dgamma2, *dgamma3, *arho2b, *darho2b;
   double *G_array, *dG_array, *ddG_array, *dGbar_array, *ddGbar_array, *rho_bkgd_array;
-  int* *Zarray;
+  int* Zarray;
   double **arho1, **arho2, **arho3, **arho3b, **t_ave, **tsq_ave;
   double **darho1dr, **darho2dr, **darho3dr, **darho3bdr;
     
