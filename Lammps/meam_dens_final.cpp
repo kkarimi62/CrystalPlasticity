@@ -57,9 +57,9 @@ MEAM::meam_dens_final(int nlocal, int eflag_either, int eflag_global, int eflag_
       }
 
       Z = get_Zij(this->lattce_meam[elti][elti]); //--- Z_{i0}
-      if (not Z > 0)
-        cout << "Z("<<i<<")="<<Z<<"\n";
-      Zarray[ i ] = Z; //--- defined?
+      if (iszero(Z)) {
+        cout << "Z(" << i << ")=" << Z << "\n";}
+      Zarray[ i ] = Z;
       
       G = G_gam(gamma[i], this->ibar_meam[elti], errorflag); //--- G(\Gamma)
       G_array[i] = G;
