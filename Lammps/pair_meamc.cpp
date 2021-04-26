@@ -16,7 +16,7 @@
 ------------------------------------------------------------------------- */
 
 #include "pair_meamc.h"
-
+#include <iostream>
 
 #include <cstring>
 
@@ -31,7 +31,7 @@
 #include "error.h"
 
 
-
+using namespace std;
 using namespace LAMMPS_NS;
 
 #define MAXLINE 1024
