@@ -704,20 +704,20 @@ void
 MEAM::Get_ddrhodrmdr( int i, int elti, //--- deriv. of Eq. 4.36(c) wrt. r
                         double* shpi, 
                         double t1i,  double t2i,  double t3i,
-                        double dt1dr1,  double dt2dr1,  double dt3dr1,
+                        double dt1dr,  double dt2dr,  double dt3dr,
                         double* rho0, double* rho1, double* rho2, double* rho3,
-                        double drho0dr1,  double drho1dr1,  double drho2dr1,  double drho3dr1, 
-                        double* drho0drm1,  double* drho1drm1,  double* drho2drm1,  double* drho3drm1, 
-                        double* ddrho0drmdr1, double* ddrho1drmdr1,  double* ddrho2drmdr1,  double* ddrho3drmdr1,
-                        double* drhodrm1,
-                        double* ddrhodrmdr1 //--- modify
+                        double drho0dr,  double drho1dr,  double drho2dr,  double drho3dr, 
+                        double* drho0drm,  double* drho1drm,  double* drho2drm,  double* drho3drm, 
+                        double* ddrho0drmdr, double* ddrho1drmdr,  double* ddrho2drmdr,  double* ddrho3drmdr,
+                        double* drhodrm,
+                        double* ddrhodrmdr //--- modify
                        ){
           double LHS, dLHS;
-          double dgamdr = (shpi[0] * dt1dr1 + shpi[1] * dt2dr1 + shpi[2] * dt3dr1) / (Zarray[i] * Zarray[i]); //--- d\Gamma^{ref}/dr: deriv of Eq. (4.6)
+          double dgamdr = (shpi[0] * dt1dr + shpi[1] * dt2dr + shpi[2] * dt3dr) / (Zarray[i] * Zarray[i]); //--- d\Gamma^{ref}/dr: deriv of Eq. (4.6)
           //
-          double dgammadr =  (dt1dr1 * rho1[i] + t1i * drho1dr1 + //--- deriv. of Eq. (4.4) wrt. r
-                              dt2dr1 * rho2[i] + t2i * drho2dr1 + 
-                              dt3dr1 * rho3[i] + t3i * drho3dr1) - 2.0 * rho0[i] * drho0dr1 *  gamma[i]; 
+          double dgammadr =  (dt1dr * rho1[i] + t1i * drho1dr + //--- deriv. of Eq. (4.4) wrt. r
+                              dt2dr * rho2[i] + t2i * drho2dr + 
+                              dt3dr * rho3[i] + t3i * drho3dr) - 2.0 * rho0[i] * drho0dr *  gamma[i]; 
           if (rho0[i] > 0.0) {
             dgammadr /= (rho0[i] * rho0[i]);
           }
@@ -725,13 +725,13 @@ MEAM::Get_ddrhodrmdr( int i, int elti, //--- deriv. of Eq. 4.36(c) wrt. r
           double drho_bkgd_dr = this->rho0_meam[elti] * Zarray[ i ] * dGbar_array[ i ] * dgamdr; //--- deriv of Eq. (4.5) wrt. r
           //
           for( int m = 0; m < 3; m++ ){
-            LHS = drhodrm1[m];
-            dLHS = - LHS * ( drho_bkgd_dr * rho0[i] + rho_bkgd_array[i] * drho0dr1 ) +
-                     ddG_array[i] * dgammadr * (t1i*drho1drm1[m] + t2i*drho2drm1[m] + t3i*drho3drm1[m])+
-                     dG_array[i] * ( dt1dr1 * drho1drm1[m] + dt2dr1 * drho2drm1[m] + dt3dr1 * drho3drm1[m] +
-                                     t1i * ddrho1drmdr1[m] + t2i * ddrho1drmdr1[m] + t3i * ddrho1drmdr1[m] );
+            LHS = drhodrm[m];
+            dLHS = - LHS * ( drho_bkgd_dr * rho0[i] + rho_bkgd_array[i] * drho0dr ) +
+                     ddG_array[i] * dgammadr * (t1i*drho1drm[m] + t2i*drho2drm[m] + t3i*drho3drm[m])+
+                     dG_array[i] * ( dt1dr * drho1drm[m] + dt2dr * drho2drm[m] + dt3dr * drho3drm[m] +
+                                     t1i * ddrho1drmdr[m] + t2i * ddrho1drmdr[m] + t3i * ddrho1drmdr[m] );
             dLHS /= (rho_bkgd_array[i] * rho0[i]);
-            ddrhodrmdr1[ m ] = dLHS;
+            ddrhodrmdr[ m ] = dLHS;
           }
 }
 //-----------------------------------------------------------------------------
