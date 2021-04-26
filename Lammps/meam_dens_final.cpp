@@ -8,7 +8,6 @@ void
 MEAM::meam_dens_final(int nlocal, int eflag_either, int eflag_global, int eflag_atom, double* eng_vdwl,  //---- meam_dens_final called before force????
                       double* eatom, int /*ntype*/, int* type, int* fmap, double** scale, int& errorflag)
 {
-     cout << "hello from MEAM::meam_dens_final->Z\n";
   int i, elti;
   int m;
   double rhob, G, dG, ddG, Gbar, dGbar, ddGbar, gam, shp[3], Z;
@@ -58,10 +57,6 @@ MEAM::meam_dens_final(int nlocal, int eflag_either, int eflag_global, int eflag_
       }
 
       Z = get_Zij(this->lattce_meam[elti][elti]); //--- Z_{i0}
-//      if (iszero(Z)) {
-      if (i==54715){
-        cout << "gamma=" <<  gamma[i] << "\n";
-        cout << "Z(" << i << ")=" << Z << "\n";}
       Zarray[ i ] = Z;
       
       G = G_gam(gamma[i], this->ibar_meam[elti], errorflag); //--- G(\Gamma)
