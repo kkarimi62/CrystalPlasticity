@@ -729,8 +729,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           if (i==0) cout << "hello from meam_force.cpp: ln 729: compute vatom\n";
           for (m = 0; m < 6; m++) {
             for (n = m; n < 6; n++) {
-              vatom[i][nv2] += 0.5 * vm[nv2]; //satom defined?? analog to vatom //--- *r^2 to get energy  //defined?????
-              vatom[j][nv2] += 0.5 * vm[nv2];
+//               vatom[i][nv2] += 0.5 * vm[nv2]; //satom defined?? analog to vatom //--- *r^2 to get energy  //defined?????
+//               vatom[j][nv2] += 0.5 * vm[nv2];
               nv2++;
             }
           }
