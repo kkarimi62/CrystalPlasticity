@@ -734,6 +734,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
             for (n = m; n < 6; n++) {
                vatom[i][nv2] += 0.5 * vm[nv3]; //--- *r^2 to get energy  
                vatom[j][nv2] += 0.5 * vm[nv3];
+              if( i == 0) cout << "nv2, nv3="<<nv2<<"\t"<<nv3<<"\n";
                nv2++;
                nv3++;
             }
@@ -744,7 +745,6 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         //     Now compute forces on other atoms k due to change in sij     stiffness ??????????????
 
         if (iszero(sij) || isone(sij)) continue; //: cont jn loop
-
         double dxik(0), dyik(0), dzik(0);
         double dxjk(0), dyjk(0), dzjk(0);
 
@@ -822,6 +822,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                 v[3] = -sixth * (dxik * fi[1] + dxjk * fj[1] + dyik * fi[0] + dyjk * fj[0]);
                 v[4] = -sixth * (dxik * fi[2] + dxjk * fj[2] + dzik * fi[0] + dzjk * fj[0]);
                 v[5] = -sixth * (dyik * fi[2] + dyjk * fj[2] + dzik * fi[1] + dzjk * fj[1]);
+                cout << "hello from meam_force.cpp ln. 825\n";
 
                 for (m = 0; m < 6; m++) {
                   vatom[i][m] = vatom[i][m] + v[m];
