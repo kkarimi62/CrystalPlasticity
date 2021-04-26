@@ -651,7 +651,7 @@ int PairMEAMC::pack_forward_comm(int n, int *list, double *buf,
                                 int /*pbc_flag*/, int * /*pbc*/)
 {
   int i,j,k,m;
-
+  cout << "hello from PairMEAMC::pack_forward_comm\n";
   m = 0;
   for (i = 0; i < n; i++) {
     j = list[i];
@@ -693,6 +693,7 @@ int PairMEAMC::pack_forward_comm(int n, int *list, double *buf,
 
 void PairMEAMC::unpack_forward_comm(int n, int first, double *buf)
 {
+  cout << "hello from PairMEAMC::unpack_forward_comm\n";
   int i,k,m,last;
 
   m = 0;
@@ -734,6 +735,7 @@ void PairMEAMC::unpack_forward_comm(int n, int first, double *buf)
 
 int PairMEAMC::pack_reverse_comm(int n, int first, double *buf)
 {
+  cout << "hello from PairMEAMC::pack_reverse_comm\n";
   int i,k,m,last;
 
   m = 0;
@@ -769,6 +771,7 @@ int PairMEAMC::pack_reverse_comm(int n, int first, double *buf)
 
 void PairMEAMC::unpack_reverse_comm(int n, int *list, double *buf)
 {
+  cout << "hello from PairMEAMC::unpack_reverse_comm\n";
   int i,j,k,m;
 
   m = 0;
@@ -804,6 +807,7 @@ void PairMEAMC::unpack_reverse_comm(int n, int *list, double *buf)
 
 double PairMEAMC::memory_usage()
 {
+  cout << "hello from PairMEAMC::memory_usage\n";
   double bytes = 11 * meam_inst->nmax * sizeof(double); //(scalars(10??) * natom)
   bytes += (3 + 6 + 10 + 3 + 3 + 3) * meam_inst->nmax * sizeof(double); //(arrays*natom)
   bytes += 3 * meam_inst->maxneigh * sizeof(double);
