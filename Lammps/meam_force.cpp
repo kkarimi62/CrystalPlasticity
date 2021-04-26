@@ -666,6 +666,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         stiff = ddUddrij - dUdrij * recip;
         stiff0 = 0.0; 
         stiff1 = 0.0;
+        stiff2 = 0.0;
         nv2 = 0;
         for (m = 0; m < 3; m++) {
           stiff0 += - dUdrijm[m] * delij[m];
@@ -679,7 +680,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         n0 = delij[0] * recip;
         n1 = delij[1] * recip;
         n2 = delij[2] * recip;        
-        cout << "stiff="<<stiff<<"n0="<<n0<<"\n"; 
+        cout << "stiff0,stiff1,stiff2="<<stiff0<<"\t"<<stiff1<<"\t"<<stiff2<<"\n"; 
         
         //     Tabulate per-atom virial as symmetrized stress tensor
         if (vflag_atom != 0) {
