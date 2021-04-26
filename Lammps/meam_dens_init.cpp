@@ -294,8 +294,6 @@ void
 MEAM::calc_rho1(int i, int /*ntype*/, int* type, int* fmap, double** x, int numneigh, int* firstneigh,
                 double* scrfcn, double* fcpair)
 {
-  if(i==0) cout << "hello from MEAM::calc_rho1->darho1dr \n";
-
   int jn, j, m, n, p, elti, eltj;
   int nv2, nv3;
   double xtmp, ytmp, ztmp, delij[3], rij2, rij, sij;
