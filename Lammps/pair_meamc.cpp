@@ -63,8 +63,8 @@ PairMEAMC::PairMEAMC(LAMMPS *lmp) : Pair(lmp)
 
   // set comm size needed by this Pair
 
-  comm_forward = 38;
-  comm_reverse = 30;
+  comm_forward = 38 + 8; //--- see PairMEAMC::pack_forward_comm
+  comm_reverse = 30 + 23; //--- see PairMEAMC::pack_reverse_comm
 }
 
 /* ----------------------------------------------------------------------
