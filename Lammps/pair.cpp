@@ -850,7 +850,7 @@ void Pair::ev_setup(int eflag, int vflag, int alloc)
     if (force->newton) n += atom->nghost;
     for (i = 0; i < n; i++) {
       for (j = 0; j < 6+21; j++) {
-      vatom[i][0] = 0.0;
+      vatom[i][j] = 0.0;
 //       vatom[i][1] = 0.0;
 //       vatom[i][2] = 0.0;
 //       vatom[i][3] = 0.0;
