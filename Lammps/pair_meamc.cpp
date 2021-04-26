@@ -804,6 +804,7 @@ void PairMEAMC::unpack_reverse_comm(int n, int *list, double *buf)
 
 double PairMEAMC::memory_usage()
 {
+  cout << "hello from PairMEAMC::memory_usage\n";
   double bytes = 11 * meam_inst->nmax * sizeof(double);
   bytes += (3 + 6 + 10 + 3 + 3 + 3) * meam_inst->nmax * sizeof(double);
   bytes += 3 * meam_inst->maxneigh * sizeof(double);
