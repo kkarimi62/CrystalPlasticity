@@ -329,7 +329,7 @@ void ComputeStressAtom::compute_peratom()
   double nktv2p = -force->nktv2p;
   for (i = 0; i < nlocal; i++)
     if (mask[i] & groupbit) {
-      for (j = 0; j < 6+21; j++)
+      for (j = 0; j < 6+21; j++) {
       stress[i][j] *= nktv2p;
       }
 //       stress[i][1] *= nktv2p;
