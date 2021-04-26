@@ -13,7 +13,6 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                  double* eatom, int /*ntype*/, int* type, int* fmap, double** scale, double** x, int numneigh, int* firstneigh,
                  int numneigh_full, int* firstneigh_full, int fnoffset, double** f, double** vatom)
 {
-  if (i==0) cout << "hello from meam_force.cpp\n";
   int j, jn, k, kn, kk, m, n, p, q, ii;
   int nv2, nv3, elti, eltj, eltk, ind;
   double xitmp, yitmp, zitmp, delij[3], delji[3], rij2, rij, rij3;
@@ -681,7 +680,6 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         n0 = delij[0] * recip;
         n1 = delij[1] * recip;
         n2 = delij[2] * recip;        
-//        cout << "stiff0,stiff1,stiff2="<<stiff0<<"\t"<<stiff1<<"\t"<<stiff2<<"\n"; 
         
         //     Tabulate per-atom virial as symmetrized stress tensor
         if (vflag_atom != 0) {
@@ -734,13 +732,11 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
             for (n = m; n < 6; n++) {
                vatom[i][nv2] += 0.5 * vm[nv3]; //--- *r^2 to get energy  
                vatom[j][nv2] += 0.5 * vm[nv3];
-              if( i == 0) cout << "nv2, nv3="<<nv2<<"\t"<<nv3<<"\n";
                nv2++;
                nv3++;
             }
           }
         }
-        if( i == 0) cout << "s[0]="<<vatom[i][0]<<"\t"<<"c[0]="<<vatom[i][0+6]<<"\n"; 
 
         //     Now compute forces on other atoms k due to change in sij     stiffness ??????????????
 
@@ -822,13 +818,12 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                 v[3] = -sixth * (dxik * fi[1] + dxjk * fj[1] + dyik * fi[0] + dyjk * fj[0]);
                 v[4] = -sixth * (dxik * fi[2] + dxjk * fj[2] + dzik * fi[0] + dzjk * fj[0]);
                 v[5] = -sixth * (dyik * fi[2] + dyjk * fj[2] + dzik * fi[1] + dzjk * fj[1]);
-                if(i==0) cout << "hello from meam_force.cpp ln. 825\n";
 
-//                 for (m = 0; m < 6; m++) { //uncomment !!!!!!!!!!!!!!!!!!
-//                   vatom[i][m] = vatom[i][m] + v[m];
-//                   vatom[j][m] = vatom[j][m] + v[m];
-//                   vatom[k][m] = vatom[k][m] + v[m];
-//                 }
+                for (m = 0; m < 6; m++) { 
+                  vatom[i][m] = vatom[i][m] + v[m];
+                  vatom[j][m] = vatom[j][m] + v[m];
+                  vatom[k][m] = vatom[k][m] + v[m];
+                }
               }
             }
           }
