@@ -686,19 +686,15 @@ int PairMEAMC::pack_forward_comm(int n, int *list, double *buf,
     buf[m++] = meam_inst->tsq_ave[j][1];
     buf[m++] = meam_inst->tsq_ave[j][2];
      //
-    buf[m++] = meam_inst->frhopp[j];
-    buf[m++] = meam_inst->darho2b[j];
-    for (k = 0; k < 3; k++)  buf[m++] = meam_inst->darho1dr[j][k];
-    for (k = 0; k < 6; k++)  buf[m++] = meam_inst->darho2dr[j][k];
-    for (k = 0; k < 10; k++) buf[m++] = meam_inst->darho3dr[j][k];
-    for (k = 0; k < 3; k++)  buf[m++] = meam_inst->darho3bdr[j][k];
-    buf[m++] = meam_inst->Zarray[j];
-    buf[m++] = meam_inst->G_array[j];
-    buf[m++] = meam_inst->dG_array[j];
-    buf[m++] = meam_inst->ddG_array[j];
-    buf[m++] = meam_inst->dGbar_array[j];
-    buf[m++] = meam_inst->ddGbar_array[j];
-    buf[m++] = meam_inst->rho_bkgd_array[j];  }
+     buf[m++] = meam_inst->frhopp[j]; //--- computed in meam_dens_final.cpp
+     buf[m++] = meam_inst->Zarray[j];
+     buf[m++] = meam_inst->G_array[j];
+     buf[m++] = meam_inst->dG_array[j];
+     buf[m++] = meam_inst->ddG_array[j];
+     buf[m++] = meam_inst->dGbar_array[j];
+     buf[m++] = meam_inst->ddGbar_array[j];
+     buf[m++] = meam_inst->rho_bkgd_array[j];  
+  }
 
   return m;
 }
@@ -744,11 +740,6 @@ void PairMEAMC::unpack_forward_comm(int n, int first, double *buf)
     meam_inst->tsq_ave[i][2] = buf[m++];
      //
     meam_inst->frhopp[i] += buf[m++];
-    meam_inst->darho2b[i] += buf[m++];
-    for (k = 0; k < 3; k++)  meam_inst->darho1dr[i][k] += buf[m++];
-    for (k = 0; k < 6; k++)  meam_inst->darho2dr[i][k] += buf[m++];
-    for (k = 0; k < 10; k++) meam_inst->darho3dr[i][k] += buf[m++];
-    for (k = 0; k < 3; k++)  meam_inst->darho3bdr[i][k] += buf[m++];
     meam_inst->Zarray[i] += buf[m++];
     meam_inst->G_array[i] += buf[m++];
     meam_inst->dG_array[i] += buf[m++];
@@ -791,19 +782,19 @@ int PairMEAMC::pack_reverse_comm(int n, int first, double *buf)
     buf[m++] = meam_inst->tsq_ave[i][1];
     buf[m++] = meam_inst->tsq_ave[i][2];
      //
-    buf[m++] = meam_inst->frhopp[i];
-    buf[m++] = meam_inst->darho2b[i];
-    for (k = 0; k < 3; k++)  buf[m++] = meam_inst->darho1dr[i][k];
-    for (k = 0; k < 6; k++)  buf[m++] = meam_inst->darho2dr[i][k];
-    for (k = 0; k < 10; k++) buf[m++] = meam_inst->darho3dr[i][k];
-    for (k = 0; k < 3; k++)  buf[m++] = meam_inst->darho3bdr[i][k];
-    buf[m++] = meam_inst->Zarray[i];
-    buf[m++] = meam_inst->G_array[i];
-    buf[m++] = meam_inst->dG_array[i];
-    buf[m++] = meam_inst->ddG_array[i];
-    buf[m++] = meam_inst->dGbar_array[i];
-    buf[m++] = meam_inst->ddGbar_array[i];
-    buf[m++] = meam_inst->rho_bkgd_array[i];
+//     buf[m++] = meam_inst->frhopp[i];
+     buf[m++] = meam_inst->darho2b[i];
+     for (k = 0; k < 3; k++)  buf[m++] = meam_inst->darho1dr[i][k]; //--- calculated in meam_dens_init.cpp
+     for (k = 0; k < 6; k++)  buf[m++] = meam_inst->darho2dr[i][k];
+     for (k = 0; k < 10; k++) buf[m++] = meam_inst->darho3dr[i][k];
+     for (k = 0; k < 3; k++)  buf[m++] = meam_inst->darho3bdr[i][k];
+//     buf[m++] = meam_inst->Zarray[i];
+//     buf[m++] = meam_inst->G_array[i];
+//     buf[m++] = meam_inst->dG_array[i];
+//     buf[m++] = meam_inst->ddG_array[i];
+//     buf[m++] = meam_inst->dGbar_array[i];
+//     buf[m++] = meam_inst->ddGbar_array[i];
+//     buf[m++] = meam_inst->rho_bkgd_array[i];
   }
 
   return m;
@@ -841,19 +832,11 @@ void PairMEAMC::unpack_reverse_comm(int n, int *list, double *buf)
     meam_inst->tsq_ave[j][1] += buf[m++];
     meam_inst->tsq_ave[j][2] += buf[m++];
      //
-    meam_inst->frhopp[j] += buf[m++];
     meam_inst->darho2b[j] += buf[m++];
     for (k = 0; k < 3; k++)  meam_inst->darho1dr[j][k] += buf[m++];
     for (k = 0; k < 6; k++)  meam_inst->darho2dr[j][k] += buf[m++];
     for (k = 0; k < 10; k++) meam_inst->darho3dr[j][k] += buf[m++];
     for (k = 0; k < 3; k++)  meam_inst->darho3bdr[j][k] += buf[m++];
-    meam_inst->Zarray[j] += buf[m++];
-    meam_inst->G_array[j] += buf[m++];
-    meam_inst->dG_array[j] += buf[m++];
-    meam_inst->ddG_array[j] += buf[m++];
-    meam_inst->dGbar_array[j] += buf[m++];
-    meam_inst->ddGbar_array[j] += buf[m++];
-    meam_inst->rho_bkgd_array[j] += buf[m++];
   }
 }
 
