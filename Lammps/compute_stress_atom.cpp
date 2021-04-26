@@ -46,7 +46,7 @@ ComputeStressAtom::ComputeStressAtom(LAMMPS *lmp, int narg, char **arg) :
   size_peratom_cols = 21+6;
   pressatomflag = 1;
   timeflag = 1;
-  comm_reverse = 6;
+  comm_reverse = 21+6;
 
   // store temperature ID used by stress computation
   // insure it is valid for temperature computation
