@@ -13,6 +13,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                  double* eatom, int /*ntype*/, int* type, int* fmap, double** scale, double** x, int numneigh, int* firstneigh,
                  int numneigh_full, int* firstneigh_full, int fnoffset, double** f, double** vatom)
 {
+  if (i==0) cout << "hello from meam_force.cpp\n";
   int j, jn, k, kn, kk, m, n, p, q, ii;
   int nv2, nv3, elti, eltj, eltk, ind;
   double xitmp, yitmp, zitmp, delij[3], delji[3], rij2, rij, rij3;
@@ -728,7 +729,6 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           //
           vm[ 20 ] = stiff * n1 * n2 * n1 * n2;
           //
-          if (i==0) cout << "hello from meam_force.cpp: ln 729: compute vatom\n";
           for (m = 0; m < 6; m++) {
             for (n = m; n < 6; n++) {
 //               vatom[i][nv2] += 0.5 * vm[nv2]; //satom defined?? analog to vatom //--- *r^2 to get energy  //defined?????
