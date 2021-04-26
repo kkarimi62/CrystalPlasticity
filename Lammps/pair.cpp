@@ -820,7 +820,6 @@ void Pair::ev_setup(int eflag, int vflag, int alloc)
     maxvatom = atom->nmax;
     if (alloc) {
       memory->destroy(vatom);
-       cout << "hello from pair.cpp ln. 823: allocate vatom \n";
       memory->create(vatom,comm->nthreads*maxvatom,6+21,"pair:vatom");
     }
   }
@@ -844,7 +843,6 @@ void Pair::ev_setup(int eflag, int vflag, int alloc)
     for (i = 0; i < n; i++) eatom[i] = 0.0;
   }
   if (vflag_atom && alloc) {
-            cout << "hello from pair.cpp ln. 846: initialize vatom\n";
 
     n = atom->nlocal;
     if (force->newton) n += atom->nghost;
