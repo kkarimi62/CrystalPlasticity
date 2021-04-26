@@ -393,7 +393,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                          rhoa3j,
                          drhoa3j,
                          darho3dr,
-                         ddrho3drmdr1); //--- modify ddrho3drmdr1[m] where it was used????
+                         ddrho3drmdr1); //--- modify ddrho3drmdr1[m]
         Get_ddrho3drmdr( j,
                          rij,  sij, delji,
                          rhoa3i,
@@ -418,7 +418,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         t2j = t_ave[j][1];
         t3j = t_ave[j][2];
 
-        if (this->ialloy == 1) {   //--- not included in the report ?????????
+        if (this->ialloy == 1) {   //--- not included in the report? (skipped)
 
           a1i = fdiv_zero(drhoa0j * sij, tsq_ave[i][0]); 
           a1j = fdiv_zero(drhoa0i * sij, tsq_ave[j][0]);
@@ -434,7 +434,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           dt3dr1 = a3i * (t3mj - t3i * MathSpecial::square(t3mj));
           dt3dr2 = a3j * (t3mi - t3j * MathSpecial::square(t3mi));
 
-        } else if (this->ialloy == 2) {
+        } else if (this->ialloy == 2) { //--- skipped
 
           dt1dr1 = 0.0;
           dt1dr2 = 0.0;
@@ -443,7 +443,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           dt3dr1 = 0.0;
           dt3dr2 = 0.0;
 
-        } else {
+        } else { //--- this block is skipped too!!!!!!!!!
 
           ai = 0.0;
           if (!iszero(rho0[i]))
