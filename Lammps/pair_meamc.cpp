@@ -31,8 +31,10 @@
 #include "error.h"
 #include "utils.h"
 #include "fmt/format.h"
+#include <iostream>
 
 using namespace LAMMPS_NS;
+using namespace std;
 
 #define MAXLINE 1024
 
