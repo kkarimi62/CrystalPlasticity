@@ -131,7 +131,6 @@ void ComputeStressAtom::init()
 
 void ComputeStressAtom::compute_peratom()
 {
-   cout << "hello from ComputeStressAtom::compute_peratom\n";
   int i,j;
   double onemass;
 
@@ -247,17 +246,11 @@ void ComputeStressAtom::compute_peratom()
        for (j = 0; j < (6+21); j++) {
          stress[i][j] = 0.0;
        }
-//       stress[i][1] = 0.0;
-//       stress[i][2] = 0.0;
-//       stress[i][3] = 0.0;
-//       stress[i][4] = 0.0;
-//       stress[i][5] = 0.0;
     }
 
   // include kinetic energy term for each atom in group
   // apply temperature bias is applicable
   // mvv2e converts mv^2 to energy
-     cout << "stress[i][j]="<<stress[0][0]<<"\n";
 
   if (keflag) {
     double **v = atom->v;
@@ -270,9 +263,8 @@ void ComputeStressAtom::compute_peratom()
       if (rmass) {
         for (i = 0; i < nlocal; i++)
           if (mask[i] & groupbit) {
-            if(i=0) cout << "compute_stress_atom.cpp: ln 273\n";
             onemass = mvv2e * rmass[i];
-            stress[i][0] += onemass*v[i][0]*v[i][0];  //--- kinetic term??????????????
+            stress[i][0] += onemass*v[i][0]*v[i][0];  //--- kinetic term (skipped!)
             stress[i][1] += onemass*v[i][1]*v[i][1];
             stress[i][2] += onemass*v[i][2]*v[i][2];
             stress[i][3] += onemass*v[i][0]*v[i][1];
@@ -281,7 +273,6 @@ void ComputeStressAtom::compute_peratom()
           }
 
       } else {
-         cout << "compute_stress_atom.cpp: ln 284\n";
         for (i = 0; i < nlocal; i++)
           if (mask[i] & groupbit) {
             onemass = mvv2e * mass[type[i]];
@@ -303,7 +294,6 @@ void ComputeStressAtom::compute_peratom()
         temperature->compute_scalar();
 
       if (rmass) {
-         cout << "compute_stress_atom.cpp: ln 306\n";
         for (i = 0; i < nlocal; i++)
           if (mask[i] & groupbit) {
             temperature->remove_bias(i,v[i]);
@@ -318,7 +308,6 @@ void ComputeStressAtom::compute_peratom()
           }
 
       } else {
-         cout << "compute_stress_atom.cpp: ln 321\n";
         for (i = 0; i < nlocal; i++)
           if (mask[i] & groupbit) {
             temperature->remove_bias(i,v[i]);
@@ -340,13 +329,14 @@ void ComputeStressAtom::compute_peratom()
   double nktv2p = -force->nktv2p;
   for (i = 0; i < nlocal; i++)
     if (mask[i] & groupbit) {
-      if(i==0) cout << "compute_stress_atom.cpp: ln 271\n";
-      stress[i][0] *= nktv2p;
-      stress[i][1] *= nktv2p;
-      stress[i][2] *= nktv2p;
-      stress[i][3] *= nktv2p;
-      stress[i][4] *= nktv2p;
-      stress[i][5] *= nktv2p;
+      for (j = 0; j < 6+21; j++)
+      stress[i][j] *= nktv2p;
+      }
+//       stress[i][1] *= nktv2p;
+//       stress[i][2] *= nktv2p;
+//       stress[i][3] *= nktv2p;
+//       stress[i][4] *= nktv2p;
+//       stress[i][5] *= nktv2p;
     }
 }
 
