@@ -1,5 +1,7 @@
 #include "meam.h"
+#include <iostream>
 
+using namespace std
 using namespace LAMMPS_NS;
 
 void
@@ -55,7 +57,9 @@ MEAM::meam_dens_final(int nlocal, int eflag_either, int eflag_global, int eflag_
       }
 
       Z = get_Zij(this->lattce_meam[elti][elti]); //--- Z_{i0}
-      Zarray[ i ] = get_Zij(this->lattce_meam[elti][elti]); //--- defined?
+      if (not Z > 0)
+        cout << "Z("<<i<<")="<<Z<<"\n";
+      Zarray[ i ] = Z; //--- defined?
       
       G = G_gam(gamma[i], this->ibar_meam[elti], errorflag); //--- G(\Gamma)
       G_array[i] = G;
