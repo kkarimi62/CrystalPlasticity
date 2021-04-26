@@ -802,7 +802,7 @@ void PairMEAMC::unpack_reverse_comm(int n, int *list, double *buf)
     meam_inst->tsq_ave[j][1] += buf[m++];
     meam_inst->tsq_ave[j][2] += buf[m++];
      //
-    meam_inst->frhopp[j] += buf[m++] = ;
+    meam_inst->frhopp[j] += buf[m++];
   }
 }
 
