@@ -171,12 +171,14 @@ void ComputeStressAtom::compute_peratom()
       stress[i][j] = 0.0;
 
   // add in per-atom contributions from each force
-
+  double vmax[size_peratom_cols];
   if (pairflag && force->pair && force->pair->compute_flag) {
     double **vatom = force->pair->vatom;
     for (i = 0; i < npair; i++)
-      for (j = 0; j < size_peratom_cols; j++)
+      for (j = 0; j < size_peratom_cols; j++){
+         if(vatom[i][j]>vmax[j]) vmax[j] = vatom[i][j];
         stress[i][j] += vatom[i][j];
+      }
   }
 
   if (bondflag && force->bond) {
@@ -233,9 +235,17 @@ void ComputeStressAtom::compute_peratom()
 
   // communicate ghost virials between neighbor procs
 
+  
+   
   if (force->newton || (force->kspace && force->kspace->tip4pflag))
     comm->reverse_comm_compute(this); //?????
 
+     double vmax2[size_peratom_cols];
+     for (i = 0; i < nlocal; i++){
+      for (j = 0; j < size_peratom_cols; j++){
+         if(stress[i][j]>vmax2[j]) vmax2[j] = stress[i][j];
+      }
+     }
   // zero virial of atoms not in group
   // only do this after comm since ghost contributions must be included
 
