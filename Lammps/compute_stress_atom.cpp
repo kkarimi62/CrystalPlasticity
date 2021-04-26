@@ -44,7 +44,7 @@ ComputeStressAtom::ComputeStressAtom(LAMMPS *lmp, int narg, char **arg) :
   size_peratom_cols = 6+21;
   pressatomflag = 1;
   timeflag = 1;
-  comm_reverse = 6;
+  comm_reverse = 6+21;
 
   // store temperature ID used by stress computation
   // insure it is valid for temperature computation
@@ -345,17 +345,20 @@ void ComputeStressAtom::compute_peratom()
 
 int ComputeStressAtom::pack_reverse_comm(int n, int first, double *buf)
 {
-  int i,m,last;
+  int i,j,m,last;
 
   m = 0;
   last = first + n;
   for (i = first; i < last; i++) {
-    buf[m++] = stress[i][0];  //????????????
-    buf[m++] = stress[i][1];
-    buf[m++] = stress[i][2];
-    buf[m++] = stress[i][3];
-    buf[m++] = stress[i][4];
-    buf[m++] = stress[i][5];
+     for( j=0;j<(6+21);j++) {
+       buf[m++] = stress[i][j];  //????????????
+//     buf[m++] = stress[i][1];
+//     buf[m++] = stress[i][2];
+//     buf[m++] = stress[i][3];
+//     buf[m++] = stress[i][4];
+//     buf[m++] = stress[i][5];
+     }
+     
   }
   return m;
 }
@@ -364,17 +367,19 @@ int ComputeStressAtom::pack_reverse_comm(int n, int first, double *buf)
 
 void ComputeStressAtom::unpack_reverse_comm(int n, int *list, double *buf)
 {
-  int i,j,m;
+  int i,j,k,m;
 
   m = 0;
   for (i = 0; i < n; i++) {
     j = list[i];
-    stress[j][0] += buf[m++];
-    stress[j][1] += buf[m++];
-    stress[j][2] += buf[m++];
-    stress[j][3] += buf[m++];
-    stress[j][4] += buf[m++];
-    stress[j][5] += buf[m++];
+     for( k=0;k<(6+21);k++) {
+       stress[j][k] += buf[m++];
+//     stress[j][1] += buf[m++];
+//     stress[j][2] += buf[m++];
+//     stress[j][3] += buf[m++];
+//     stress[j][4] += buf[m++];
+//     stress[j][5] += buf[m++];
+     }
   }
 }
 
