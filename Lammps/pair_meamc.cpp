@@ -770,7 +770,6 @@ int PairMEAMC::pack_reverse_comm(int n, int first, double *buf)
     for (k = 0; k < 6; k++)  buf[m++] = meam_inst->darho2dr[i][k];
     for (k = 0; k < 10; k++) buf[m++] = meam_inst->darho3dr[i][k];
     for (k = 0; k < 3; k++)  buf[m++] = meam_inst->darho3bdr[i][k];
-    buf[m++] = meam_inst->drho0dr[i];
     buf[m++] = meam_inst->Zarray[i];
     buf[m++] = meam_inst->G_array[i];
     buf[m++] = meam_inst->dG_array[i];
@@ -821,7 +820,6 @@ void PairMEAMC::unpack_reverse_comm(int n, int *list, double *buf)
     for (k = 0; k < 6; k++)  meam_inst->darho2dr[j][k] += buf[m++];
     for (k = 0; k < 10; k++) meam_inst->darho3dr[j][k] += buf[m++];
     for (k = 0; k < 3; k++)  meam_inst->darho3bdr[j][k] += buf[m++];
-    meam_inst->drho0dr[j] += buf[m++];
     meam_inst->Zarray[j] += buf[m++];
     meam_inst->G_array[j] += buf[m++];
     meam_inst->dG_array[j] += buf[m++];
