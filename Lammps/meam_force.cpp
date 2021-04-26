@@ -676,7 +676,10 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           }
         }
         stiff += ( ( stiff0 + stiff2 ) * recip  + stiff1 ) * recip;
-        
+        n0 = delij[0] * recip;
+        n1 = delij[1] * recip;
+        n2 = delij[2] * recip;        
+        cout << "stiff="<<stiff<<"n0="<<n0<<"\n"; 
         
         //     Tabulate per-atom virial as symmetrized stress tensor
         if (vflag_atom != 0) {
@@ -695,9 +698,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
             vatom[j][m] = vatom[j][m] + v[m];
             nv2++;
           }
-          n0 = delij[0] * recip;
-          n1 = delij[1] * recip;
-          n2 = delij[2] * recip;
+
           //--- per-atom modulus
           vm[ 0 ]  = stiff * n0 * n0 * n0 * n0;
           vm[ 1 ]  = stiff * n0 * n0 * n1 * n1;
