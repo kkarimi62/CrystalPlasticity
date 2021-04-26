@@ -43,7 +43,7 @@ ComputeStressAtom::ComputeStressAtom(LAMMPS *lmp, int narg, char **arg) :
   if (narg < 4) error->all(FLERR,"Illegal compute stress/atom command");
 
   peratom_flag = 1;
-  size_peratom_cols = 6;
+  size_peratom_cols = 21+6;
   pressatomflag = 1;
   timeflag = 1;
   comm_reverse = 6;
