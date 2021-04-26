@@ -2,8 +2,10 @@
 #include <cmath>
 #include "memory.h"
 #include "math_special.h"
+#include <iostream>
 
 using namespace LAMMPS_NS;
+using namespace std;
 
 void
 MEAM::meam_dens_setup(int atom_nmax, int nall, int n_neigh)
@@ -95,7 +97,7 @@ MEAM::meam_dens_setup(int atom_nmax, int nall, int n_neigh)
     arho2b[i] = 0.0;
     arho1[i][0] = arho1[i][1] = arho1[i][2] = 0.0;
 //    drho0dr[i] = 0.0;
-    darho2b[i] = 0.0;
+//    darho2bdr[i] = 0.0;
     darho1dr[i][0] = darho1dr[i][1] = darho1dr[i][2] = 0.0;
     for (j = 0; j < 6; j++){
       arho2[i][j] = 0.0;
@@ -292,6 +294,8 @@ void
 MEAM::calc_rho1(int i, int /*ntype*/, int* type, int* fmap, double** x, int numneigh, int* firstneigh,
                 double* scrfcn, double* fcpair)
 {
+       cout << "hello from MEAM::calc_rho1->darho1dr \n";
+
   int jn, j, m, n, p, elti, eltj;
   int nv2, nv3;
   double xtmp, ytmp, ztmp, delij[3], rij2, rij, sij;
