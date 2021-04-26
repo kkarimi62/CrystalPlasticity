@@ -43,10 +43,10 @@ ComputeStressAtom::ComputeStressAtom(LAMMPS *lmp, int narg, char **arg) :
   if (narg < 4) error->all(FLERR,"Illegal compute stress/atom command");
 
   peratom_flag = 1;
-  size_peratom_cols = 6+21;
+  size_peratom_cols = 6;
   pressatomflag = 1;
   timeflag = 1;
-  comm_reverse = 6+21;
+  comm_reverse = 6;
 
   // store temperature ID used by stress computation
   // insure it is valid for temperature computation
@@ -144,7 +144,7 @@ void ComputeStressAtom::compute_peratom()
   if (atom->nmax > nmax) {
     memory->destroy(stress);
     nmax = atom->nmax;
-    memory->create(stress,nmax,6+21,"stress/atom:stress");
+    memory->create(stress,nmax,size_peratom_cols,"stress/atom:stress");
     array_atom = stress;
   }
 
@@ -167,7 +167,7 @@ void ComputeStressAtom::compute_peratom()
   // clear local stress array
 
   for (i = 0; i < ntotal; i++)
-    for (j = 0; j < (6+21); j++)
+    for (j = 0; j < size_peratom_cols; j++)
       stress[i][j] = 0.0;
 
   // add in per-atom contributions from each force
@@ -175,42 +175,42 @@ void ComputeStressAtom::compute_peratom()
   if (pairflag && force->pair && force->pair->compute_flag) {
     double **vatom = force->pair->vatom;
     for (i = 0; i < npair; i++)
-      for (j = 0; j < (6+21); j++)
+      for (j = 0; j < size_peratom_cols; j++)
         stress[i][j] += vatom[i][j];
   }
 
   if (bondflag && force->bond) {
     double **vatom = force->bond->vatom;
     for (i = 0; i < nbond; i++)
-      for (j = 0; j < 6; j++)
+      for (j = 0; j < size_peratom_cols; j++)
         stress[i][j] += vatom[i][j];
   }
 
   if (angleflag && force->angle) {
     double **vatom = force->angle->vatom;
     for (i = 0; i < nbond; i++)
-      for (j = 0; j < 6; j++)
+      for (j = 0; j < size_peratom_cols; j++)
         stress[i][j] += vatom[i][j];
   }
 
   if (dihedralflag && force->dihedral) {
     double **vatom = force->dihedral->vatom;
     for (i = 0; i < nbond; i++)
-      for (j = 0; j < 6; j++)
+      for (j = 0; j < size_peratom_cols; j++)
         stress[i][j] += vatom[i][j];
   }
 
   if (improperflag && force->improper) {
     double **vatom = force->improper->vatom;
     for (i = 0; i < nbond; i++)
-      for (j = 0; j < 6; j++)
+      for (j = 0; j < size_peratom_cols; j++)
         stress[i][j] += vatom[i][j];
   }
 
   if (kspaceflag && force->kspace && force->kspace->compute_flag) {
     double **vatom = force->kspace->vatom;
     for (i = 0; i < nkspace; i++)
-      for (j = 0; j < 6; j++)
+      for (j = 0; j < size_peratom_cols; j++)
         stress[i][j] += vatom[i][j];
   }
 
@@ -226,7 +226,7 @@ void ComputeStressAtom::compute_peratom()
         double **vatom = modify->fix[ifix]->vatom;
         if (vatom)
           for (i = 0; i < nlocal; i++)
-            for (j = 0; j < (6+21); j++)
+            for (j = 0; j < size_peratom_cols; j++)
               stress[i][j] += vatom[i][j];
       }
   }
@@ -234,7 +234,7 @@ void ComputeStressAtom::compute_peratom()
   // communicate ghost virials between neighbor procs
 
   if (force->newton || (force->kspace && force->kspace->tip4pflag))
-    comm->reverse_comm_compute(this);
+    comm->reverse_comm_compute(this); //?????
 
   // zero virial of atoms not in group
   // only do this after comm since ghost contributions must be included
@@ -243,7 +243,7 @@ void ComputeStressAtom::compute_peratom()
 
   for (i = 0; i < nlocal; i++)
     if (!(mask[i] & groupbit)) {
-       for (j = 0; j < (6+21); j++) {
+       for (j = 0; j < size_peratom_cols; j++) {
          stress[i][j] = 0.0;
        }
     }
@@ -329,7 +329,7 @@ void ComputeStressAtom::compute_peratom()
   double nktv2p = -force->nktv2p;
   for (i = 0; i < nlocal; i++)
     if (mask[i] & groupbit) {
-      for (j = 0; j < 6+21; j++) {
+      for (j = 0; j < size_peratom_cols; j++) {
       stress[i][j] *= nktv2p;
       }
 //       stress[i][1] *= nktv2p;
@@ -349,7 +349,7 @@ int ComputeStressAtom::pack_reverse_comm(int n, int first, double *buf)
   m = 0;
   last = first + n;
   for (i = first; i < last; i++) {
-     for( j=0;j<(6+21);j++) {
+     for( j=0;j<size_peratom_cols;j++) {
        buf[m++] = stress[i][j];  //????????????
 //     buf[m++] = stress[i][1];
 //     buf[m++] = stress[i][2];
@@ -371,7 +371,7 @@ void ComputeStressAtom::unpack_reverse_comm(int n, int *list, double *buf)
   m = 0;
   for (i = 0; i < n; i++) {
     j = list[i];
-     for( k=0;k<(6+21);k++) {
+     for( k=0;k<size_peratom_cols;k++) {
        stress[j][k] += buf[m++];
 //     stress[j][1] += buf[m++];
 //     stress[j][2] += buf[m++];
@@ -388,6 +388,6 @@ void ComputeStressAtom::unpack_reverse_comm(int n, int *list, double *buf)
 
 double ComputeStressAtom::memory_usage()
 {
-  double bytes = nmax*6 * sizeof(double);
+  double bytes = nmax*size_peratom_cols * sizeof(double);
   return bytes;
 }
