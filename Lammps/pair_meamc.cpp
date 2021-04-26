@@ -651,6 +651,7 @@ int PairMEAMC::pack_forward_comm(int n, int *list, double *buf,
                                 int /*pbc_flag*/, int * /*pbc*/)
 {
   int i,j,k,m;
+  cout << "hello from PairMEAMC::pack_forward_comm\n";
 
   m = 0;
   for (i = 0; i < n; i++) {
@@ -694,6 +695,7 @@ int PairMEAMC::pack_forward_comm(int n, int *list, double *buf,
 void PairMEAMC::unpack_forward_comm(int n, int first, double *buf)
 {
   int i,k,m,last;
+  cout << "hello from PairMEAMC::unpack_forward_comm\n";
 
   m = 0;
   last = first + n;
@@ -735,6 +737,7 @@ void PairMEAMC::unpack_forward_comm(int n, int first, double *buf)
 int PairMEAMC::pack_reverse_comm(int n, int first, double *buf)
 {
   int i,k,m,last;
+  cout << "hello from PairMEAMC::pack_reverse_comm\n";
 
   m = 0;
   last = first + n;
@@ -770,6 +773,7 @@ int PairMEAMC::pack_reverse_comm(int n, int first, double *buf)
 void PairMEAMC::unpack_reverse_comm(int n, int *list, double *buf)
 {
   int i,j,k,m;
+  cout << "hello from PairMEAMC::unpack_reverse_comm\n";
 
   m = 0;
   for (i = 0; i < n; i++) {
