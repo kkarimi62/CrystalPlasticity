@@ -57,7 +57,9 @@ MEAM::meam_dens_final(int nlocal, int eflag_either, int eflag_global, int eflag_
       }
 
       Z = get_Zij(this->lattce_meam[elti][elti]); //--- Z_{i0}
-      if (iszero(Z)) {
+//      if (iszero(Z)) {
+      if (i==54715){
+        cout << "gamma=" <<  gamma[i] << "\n";
         cout << "Z(" << i << ")=" << Z << "\n";}
       Zarray[ i ] = Z;
       
