@@ -257,6 +257,7 @@ void ComputeStressAtom::compute_peratom()
   // include kinetic energy term for each atom in group
   // apply temperature bias is applicable
   // mvv2e converts mv^2 to energy
+     cout << "stress[i][j]="<<stress[0][0]<<"\n";
 
   if (keflag) {
     double **v = atom->v;
