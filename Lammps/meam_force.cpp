@@ -824,11 +824,11 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                 v[5] = -sixth * (dyik * fi[2] + dyjk * fj[2] + dzik * fi[1] + dzjk * fj[1]);
                 if(i==0) cout << "hello from meam_force.cpp ln. 825\n";
 
-                for (m = 0; m < 6; m++) {
-                  vatom[i][m] = vatom[i][m] + v[m];
-                  vatom[j][m] = vatom[j][m] + v[m];
-                  vatom[k][m] = vatom[k][m] + v[m];
-                }
+//                 for (m = 0; m < 6; m++) { //uncomment !!!!!!!!!!!!!!!!!!
+//                   vatom[i][m] = vatom[i][m] + v[m];
+//                   vatom[j][m] = vatom[j][m] + v[m];
+//                   vatom[k][m] = vatom[k][m] + v[m];
+//                 }
               }
             }
           }
