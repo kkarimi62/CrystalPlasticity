@@ -782,19 +782,11 @@ int PairMEAMC::pack_reverse_comm(int n, int first, double *buf)
     buf[m++] = meam_inst->tsq_ave[i][1];
     buf[m++] = meam_inst->tsq_ave[i][2];
      //
-//     buf[m++] = meam_inst->frhopp[i];
      buf[m++] = meam_inst->darho2b[i];
      for (k = 0; k < 3; k++)  buf[m++] = meam_inst->darho1dr[i][k]; //--- calculated in meam_dens_init.cpp
      for (k = 0; k < 6; k++)  buf[m++] = meam_inst->darho2dr[i][k];
      for (k = 0; k < 10; k++) buf[m++] = meam_inst->darho3dr[i][k];
      for (k = 0; k < 3; k++)  buf[m++] = meam_inst->darho3bdr[i][k];
-//     buf[m++] = meam_inst->Zarray[i];
-//     buf[m++] = meam_inst->G_array[i];
-//     buf[m++] = meam_inst->dG_array[i];
-//     buf[m++] = meam_inst->ddG_array[i];
-//     buf[m++] = meam_inst->dGbar_array[i];
-//     buf[m++] = meam_inst->ddGbar_array[i];
-//     buf[m++] = meam_inst->rho_bkgd_array[i];
   }
 
   return m;
