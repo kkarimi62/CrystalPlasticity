@@ -655,7 +655,7 @@ int PairMEAMC::pack_forward_comm(int n, int *list, double *buf,
   m = 0;
   for (i = 0; i < n; i++) {
     j = list[i];
-    buf[m++] = meam_inst->rho0[j];
+    buf[m++] = meam_inst->rho0[j]; //--- put all atom-wise arrays used in meam_force.cpp ??? store in one single array? what for??
     buf[m++] = meam_inst->rho1[j];
     buf[m++] = meam_inst->rho2[j];
     buf[m++] = meam_inst->rho3[j];
@@ -684,7 +684,6 @@ int PairMEAMC::pack_forward_comm(int n, int *list, double *buf,
     buf[m++] = meam_inst->tsq_ave[j][0];
     buf[m++] = meam_inst->tsq_ave[j][1];
     buf[m++] = meam_inst->tsq_ave[j][2];
-//    buf[m++] = meam_inst->frhopp[j];  //--- m???
   }
 
   return m;
@@ -728,7 +727,6 @@ void PairMEAMC::unpack_forward_comm(int n, int first, double *buf)
     meam_inst->tsq_ave[i][0] = buf[m++];
     meam_inst->tsq_ave[i][1] = buf[m++];
     meam_inst->tsq_ave[i][2] = buf[m++];
-//    meam_inst->frhopp[i] = buf[m++];
   }
 }
 
@@ -776,7 +774,7 @@ void PairMEAMC::unpack_reverse_comm(int n, int *list, double *buf)
   m = 0;
   for (i = 0; i < n; i++) {
     j = list[i];
-    meam_inst->rho0[j] += buf[m++];
+    meam_inst->rho0[j] += buf[m++]; //--- why not all the arrays are included??
     meam_inst->arho2b[j] += buf[m++];
     meam_inst->arho1[j][0] += buf[m++];
     meam_inst->arho1[j][1] += buf[m++];
@@ -806,8 +804,8 @@ void PairMEAMC::unpack_reverse_comm(int n, int *list, double *buf)
 
 double PairMEAMC::memory_usage()
 {
-  double bytes = 11 * meam_inst->nmax * sizeof(double);
-  bytes += (3 + 6 + 10 + 3 + 3 + 3) * meam_inst->nmax * sizeof(double);
+  double bytes = 11 * meam_inst->nmax * sizeof(double); //(scalars(10??) * natom)
+  bytes += (3 + 6 + 10 + 3 + 3 + 3) * meam_inst->nmax * sizeof(double); //(arrays*natom)
   bytes += 3 * meam_inst->maxneigh * sizeof(double);
   return bytes;
 }
