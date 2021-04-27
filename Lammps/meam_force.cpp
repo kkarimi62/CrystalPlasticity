@@ -774,8 +774,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           nv3 = 0;
           for (m = 0; m < 6; m++) {
             for (n = m; n < 6; n++) {
-               vatom[i][nv2] += 0.5 * vm[nv3]; //--- *r^2 to get energy  
-               vatom[j][nv2] += 0.5 * vm[nv3];
+               vatom[i][nv2] += 0.5 * vm[nv3] * rij2; //--- *r^2 to get energy  
+               vatom[j][nv2] += 0.5 * vm[nv3] * rij2;
                nv2++;
                nv3++;
             }
