@@ -101,10 +101,12 @@ MEAM::meam_dens_setup(int atom_nmax, int nall, int n_neigh)
 //    darho1dr[i][0] = darho1dr[i][1] = darho1dr[i][2] = 0.0;
     for (j = 0; j < 6; j++){
       arho2[i][j] = 0.0;
-//      darho2dr[i][j] = 0.0;}
+//      darho2dr[i][j] = 0.0;
+    }
     for (j = 0; j < 10; j++){
       arho3[i][j] = 0.0;
-//      darho3dr[i][j] = 0.0;}
+//      darho3dr[i][j] = 0.0;
+    }
     arho3b[i][0] = arho3b[i][1] = arho3b[i][2] = 0.0;
 //    darho3bdr[i][0] = darho3bdr[i][1] = darho3bdr[i][2] = 0.0;
     t_ave[i][0] = t_ave[i][1] = t_ave[i][2] = 0.0;
