@@ -238,7 +238,7 @@ protected:
                        double rij, double sij, double* delij,
                        double rhoa3j, 
                        double drhoa3j, 
-                       double* darho3dri,
+                       double* darho3dri, double* darho3bdri,
                        double* ddrho3drmdr1 //--- modify 
                      );
   void Get_ddrho3drmdrn( int i,
