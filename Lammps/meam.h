@@ -200,14 +200,13 @@ protected:
   double Get_ddrho1drdr(int i, 
                     double rij, double sij, 
                     double rhoa1j, double drhoa1j, double ddrhoa1j,
-                    double* arho2b,
                     double arg1i1,
                     double arg1i1_d
                     );
   void Get_ddrho1drmdr(int i,
                        double rij, double sij, double* delij,
                        double rhoa1j, double drhoa1j,
-                       double** arho1, double** darho1dr,
+                       double** arho1, double* darho1dri,
                        double* ddrho1drmdr1);
   void Get_ddrho1drmdrn(int i, //--- deriv of Eq. (4.30c) wrt rn
                        double rij, double sij,
@@ -223,7 +222,7 @@ protected:
                        double rij, double sij, double* delij,
                        double rhoa2j, double drhoa2j,
                        double** arho2,
-                       double** darho2dr,
+                       double* darho2dri,
                        double* ddrho2drmdr1);
   void Get_ddrho2drmdrn(int i,
                        double rij, double sij, double* delij,
@@ -239,7 +238,7 @@ protected:
                        double rij, double sij, double* delij,
                        double rhoa3j, 
                        double drhoa3j, 
-                       double** darho3dr,
+                       double* darho3dri,
                        double* ddrho3drmdr1 //--- modify 
                      );
   void Get_ddrho3drmdrn( int i,
