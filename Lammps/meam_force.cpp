@@ -436,13 +436,13 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                          rij,  sij, delij,
                          rhoa3j,
                          drhoa3j,
-                         darho3dri,
+                         darho3dri, darho3bdri,
                          ddrho3drmdr1); //--- modify ddrho3drmdr1[m]
         Get_ddrho3drmdr( j,
                          rij,  sij, delji,
                          rhoa3i,
                          drhoa3i,
-                         darho3drj,
+                         darho3drj, darho3bdrj,
                          ddrho3drmdr2); //--- modify ddrho3drmdr2[m]
         //
         Get_ddrho3drmdrn( i, //--- deriv. of 4.30(i) wrt rn
