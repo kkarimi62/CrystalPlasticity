@@ -492,12 +492,13 @@ MEAM::Get_ddrho2drdr(int i,
                     ){
         double rij2 = rij * rij;
         double a2 = 2 * sij / rij2;
+        double darho2b = drhoa2j * sij;
         double argg_1 = (drhoa2j - 2 * rhoa2j / rij);
         double argg_2 = arg1i2;
         double argg_3 = 2.0 / 3.0 * arho2b[i] * drhoa2j * sij;
         double d_argg_1 = ddrhoa2j-2*(-rhoa2j/rij+drhoa2j)/rij;
         double d_argg_2 = arg1i2_d;
-        double d_argg_3 = 2.0 / 3.0 * (darho2b[i] * drhoa2j+arho2b[i]*ddrhoa2j) * sij;
+        double d_argg_3 = 2.0 / 3.0 * (darho2b * drhoa2j+arho2b[i]*ddrhoa2j) * sij;
         double ddrho2ddr1 = a2 * (d_argg_1*argg_2+argg_1*d_argg_2)-d_argg_3;
         
         return ddrho2ddr1;
@@ -583,7 +584,7 @@ MEAM::Get_ddrho3drmdr( int i,
                        double rij, double sij, double* delij,
                        double rhoa3j, 
                        double drhoa3j, 
-                       double* darho3dr,
+                       double* darho3dr, double* darho3bdr,
                        double* ddrho3drmdr1 //--- modify 
                      ){
         double drho3drm1[3];
@@ -611,7 +612,7 @@ MEAM::Get_ddrho3drmdr( int i,
           ddrho3drmdr1[m] *= rhoa3j;  //--- deriv. 4.30(i) wrt. r
           ddrho3drmdr1[m] += drho3drm1[m] * (-3*rhoa3j/rij+drhoa3j);
           ddrho3drmdr1[m] *= a3;
-          ddrho3drmdr1[m] += -a3a * ((-rhoa3j/rij+drhoa3j)*arho3b[i][m]+rhoa3j*darho3bdr[i][m]);
+          ddrho3drmdr1[m] += -a3a * ((-rhoa3j/rij+drhoa3j)*arho3b[i][m]+rhoa3j*darho3bdr[m]);
 //           //
 //           ddrho3drmdr2[m] *= rhoa3i;  //--- deriv. 4.30(i) wrt. r (atom j)
 //           ddrho3drmdr2[m] += drho3drm2[m] * (-3*rhoa3i/rij+drhoa3i);
