@@ -35,8 +35,8 @@ MEAM::MEAM(Memory* mem)
   arho1 = arho2 = arho3 = arho3b = t_ave = tsq_ave = NULL;
   G_array = dG_array = ddG_array = dGbar_array = ddGbar_array = rho_bkgd_array = NULL;
   Zarray = NULL;
-  darho1dr = darho2dr = darho3dr = darho3bdr = NULL;
-  darho2b = NULL;
+//  darho1dr = darho2dr = darho3dr = darho3bdr = NULL;
+//  darho2b = NULL;
 
   maxneigh = 0;
   scrfcn = dscrfcn = fcpair = NULL;
@@ -81,11 +81,11 @@ MEAM::~MEAM()
   memory->destroy(this->dgamma2);
   memory->destroy(this->dgamma3);
   memory->destroy(this->arho2b);
-  memory->destroy(this->darho1dr);
-  memory->destroy(this->darho2dr);
-  memory->destroy(this->darho2b);
-  memory->destroy(this->darho3dr);
-  memory->destroy(this->darho3bdr);
+//   memory->destroy(this->darho1dr);
+//   memory->destroy(this->darho2dr);
+//   memory->destroy(this->darho2b);
+//   memory->destroy(this->darho3dr);
+//   memory->destroy(this->darho3bdr);
    
   memory->destroy(this->Zarray);
   memory->destroy(this->G_array);
