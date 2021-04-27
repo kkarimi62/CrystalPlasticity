@@ -30,11 +30,11 @@ MEAM::meam_dens_setup(int atom_nmax, int nall, int n_neigh)
     memory->destroy(arho2);
     memory->destroy(arho3);
     memory->destroy(arho3b);
-    memory->destroy(darho2b);
-    memory->destroy(darho1dr);
-    memory->destroy(darho2dr);
-    memory->destroy(darho3dr);
-    memory->destroy(darho3bdr);
+//     memory->destroy(darho2b);
+//     memory->destroy(darho1dr);
+//     memory->destroy(darho2dr);
+//     memory->destroy(darho3dr);
+//     memory->destroy(darho3bdr);
     memory->destroy(t_ave);
     memory->destroy(tsq_ave);
     memory->destroy(Zarray);
@@ -63,11 +63,11 @@ MEAM::meam_dens_setup(int atom_nmax, int nall, int n_neigh)
     memory->create(arho2, nmax, 6, "pair:arho2");
     memory->create(arho3, nmax, 10, "pair:arho3");
     memory->create(arho3b, nmax, 3, "pair:arho3b");
-    memory->create(darho2b, nmax, "pair:darho2b");
-    memory->create(darho1dr, nmax, 3, "pair:darho1dr");
-    memory->create(darho2dr, nmax, 6, "pair:darho2dr");
-    memory->create(darho3dr, nmax, 10, "pair:darho3dr");
-    memory->create(darho3bdr, nmax, 3, "pair:darho3bdr");
+//     memory->create(darho2b, nmax, "pair:darho2b");
+//     memory->create(darho1dr, nmax, 3, "pair:darho1dr");
+//     memory->create(darho2dr, nmax, 6, "pair:darho2dr");
+//     memory->create(darho3dr, nmax, 10, "pair:darho3dr");
+//     memory->create(darho3bdr, nmax, 3, "pair:darho3bdr");
     memory->create(t_ave, nmax, 3, "pair:t_ave");
     memory->create(tsq_ave, nmax, 3, "pair:tsq_ave");
     memory->create(Zarray, nmax, "pair:Zarray");
@@ -299,11 +299,11 @@ MEAM::calc_rho1(int i, int /*ntype*/, int* type, int* fmap, double** x, int numn
   double xtmp, ytmp, ztmp, delij[3], rij2, rij, sij;
   double ai, aj, rhoa0j, rhoa1j, rhoa2j, rhoa3j, A1j, A2j, A3j;
   double rscalei, rscalej;
-  double drhoa0j, drhoa1j, drhoa2j, drhoa3j, A1j_d, A2j_d, A3j_d;
+//  double drhoa0j, drhoa1j, drhoa2j, drhoa3j, A1j_d, A2j_d, A3j_d;
   // double G,Gbar,gam,shp[3+1];
   double ro0i, ro0j;
   double rhoa0i, rhoa1i, rhoa2i, rhoa3i, A1i, A2i, A3i;
-  double drhoa0i, drhoa1i, drhoa2i, drhoa3i, A1i_d, A2i_d, A3i_d;
+//  double drhoa0i, drhoa1i, drhoa2i, drhoa3i, A1i_d, A2i_d, A3i_d;
 
   elti = fmap[type[i]];
   xtmp = x[i][0];
@@ -328,34 +328,34 @@ MEAM::calc_rho1(int i, int /*ntype*/, int* type, int* fmap, double** x, int numn
         ro0i = this->rho0_meam[elti];
         ro0j = this->rho0_meam[eltj];
         rhoa0j = ro0j * MathSpecial::fm_exp(-this->beta0_meam[eltj] * aj) * sij;
-        drhoa0j = -this->beta0_meam[eltj] * rhoa0j / rscalej;
+//        drhoa0j = -this->beta0_meam[eltj] * rhoa0j / rscalej;
         rhoa1j = ro0j * MathSpecial::fm_exp(-this->beta1_meam[eltj] * aj) * sij;
-        drhoa1j = -this->beta1_meam[eltj] * rhoa1j / rscalej;
+//        drhoa1j = -this->beta1_meam[eltj] * rhoa1j / rscalej;
         rhoa2j = ro0j * MathSpecial::fm_exp(-this->beta2_meam[eltj] * aj) * sij;
-        drhoa2j = -this->beta2_meam[eltj] * rhoa2j / rscalej;
+//        drhoa2j = -this->beta2_meam[eltj] * rhoa2j / rscalej;
         rhoa3j = ro0j * MathSpecial::fm_exp(-this->beta3_meam[eltj] * aj) * sij;
-        drhoa3j = -this->beta3_meam[eltj] * rhoa3j / rscalej;
+//        drhoa3j = -this->beta3_meam[eltj] * rhoa3j / rscalej;
         rhoa0i = ro0i * MathSpecial::fm_exp(-this->beta0_meam[elti] * ai) * sij;
-        drhoa0i = -this->beta0_meam[elti] * rhoa0i / rscalei;
+//        drhoa0i = -this->beta0_meam[elti] * rhoa0i / rscalei;
         rhoa1i = ro0i * MathSpecial::fm_exp(-this->beta1_meam[elti] * ai) * sij;
-        drhoa1i = -this->beta1_meam[elti] * rhoa1i / rscalei;
+//        drhoa1i = -this->beta1_meam[elti] * rhoa1i / rscalei;
         rhoa2i = ro0i * MathSpecial::fm_exp(-this->beta2_meam[elti] * ai) * sij;
-        drhoa2i = -this->beta2_meam[elti] * rhoa2i / rscalei;
+//        drhoa2i = -this->beta2_meam[elti] * rhoa2i / rscalei;
         rhoa3i = ro0i * MathSpecial::fm_exp(-this->beta3_meam[elti] * ai) * sij;
-        drhoa3i = -this->beta3_meam[elti] * rhoa3i / rscalei;
+//        drhoa3i = -this->beta3_meam[elti] * rhoa3i / rscalei;
         if (this->ialloy == 1) {
           rhoa1j = rhoa1j * this->t1_meam[eltj];
           rhoa2j = rhoa2j * this->t2_meam[eltj];
           rhoa3j = rhoa3j * this->t3_meam[eltj];
-          drhoa1j = drhoa1j * this->t1_meam[eltj];
-          drhoa2j = drhoa2j * this->t2_meam[eltj];
-          drhoa3j = drhoa3j * this->t3_meam[eltj];
+//          drhoa1j = drhoa1j * this->t1_meam[eltj];
+//          drhoa2j = drhoa2j * this->t2_meam[eltj];
+//          drhoa3j = drhoa3j * this->t3_meam[eltj];
           rhoa1i = rhoa1i * this->t1_meam[elti];
           rhoa2i = rhoa2i * this->t2_meam[elti];
           rhoa3i = rhoa3i * this->t3_meam[elti];
-          drhoa1i = drhoa1i * this->t1_meam[elti];
-          drhoa2i = drhoa2i * this->t2_meam[elti];
-          drhoa3i = drhoa3i * this->t3_meam[elti];
+ //         drhoa1i = drhoa1i * this->t1_meam[elti];
+ //         drhoa2i = drhoa2i * this->t2_meam[elti];
+ //         drhoa3i = drhoa3i * this->t3_meam[elti];
         }
         rho0[i] = rho0[i] + rhoa0j;
         rho0[j] = rho0[j] + rhoa0i;
@@ -378,44 +378,38 @@ MEAM::calc_rho1(int i, int /*ntype*/, int* type, int* fmap, double** x, int numn
         }
         arho2b[i] = arho2b[i] + rhoa2j;
         arho2b[j] = arho2b[j] + rhoa2i;
-        darho2b[i] = darho2b[i] + drhoa2j;
-        darho2b[j] = darho2b[j] + drhoa2i;
+//        darho2b[i] = darho2b[i] + drhoa2j;
+//        darho2b[j] = darho2b[j] + drhoa2i;
 
         A1j = rhoa1j / rij;
-        A1j_d = ( drhoa1j - A1j ) / rij;
         A2j = rhoa2j / rij2;
-        A2j_d = drhoa2j / rij2 - 2 * A2j /rij;
         A3j = rhoa3j / (rij2 * rij);
-        A3j_d = (drhoa3j-3*rhoa3j/rij) / (rij2 * rij);
         A1i = rhoa1i / rij;
-        A1i_d = ( drhoa1i - A1i ) / rij;
         A2i = rhoa2i / rij2;
-        A2i_d = drhoa2i / rij2 - 2 * A2i /rij;
         A3i = rhoa3i / (rij2 * rij);
-        A3i_d = (drhoa3i-3*rhoa3i/rij) / (rij2 * rij);
         nv2 = 0;
         nv3 = 0;
         for (m = 0; m < 3; m++) {
           arho1[i][m] = arho1[i][m] + A1j * delij[m]; //--- Eq. 4.27(a)
           arho1[j][m] = arho1[j][m] - A1i * delij[m];
-          darho1dr[i][m] = darho1dr[i][m] + A1j_d * delij[m]; //--- deriv. Eq. 4.27(a) wrt rij
-          darho1dr[j][m] = darho1dr[j][m] - A1i_d * delij[m];
+//          darho1dr[i][m] = darho1dr[i][m] + A1j_d * delij[m]; //--- deriv. Eq. 4.27(a) wrt rij 
+//          darho1dr[j][m] = darho1dr[j][m] - A1i_d * delij[m];
 
           arho3b[i][m] = arho3b[i][m] + rhoa3j * delij[m] / rij; //---  Eq. 4.27(e)
           arho3b[j][m] = arho3b[j][m] - rhoa3i * delij[m] / rij;
-          darho3bdr[i][m] = darho3bdr[i][m] + ( drhoa3j - rhoa3j / rij ) * delij[m] / rij; //--- deriv. Eq. 4.27(e) wrt rij
-          darho3bdr[j][m] = darho3bdr[j][m] - ( drhoa3i - rhoa3i / rij ) * delij[m] / rij;
+//           darho3bdr[i][m] = darho3bdr[i][m] + ( drhoa3j - rhoa3j / rij ) * delij[m] / rij; //--- deriv. Eq. 4.27(e) wrt rij
+//           darho3bdr[j][m] = darho3bdr[j][m] - ( drhoa3i - rhoa3i / rij ) * delij[m] / rij;
          for (n = m; n < 3; n++) {
             arho2[i][nv2] = arho2[i][nv2] + A2j * delij[m] * delij[n]; //--- Eq. 4.27(b)
             arho2[j][nv2] = arho2[j][nv2] + A2i * delij[m] * delij[n];
-            darho2dr[i][nv2] = darho2dr[i][nv2] + A2j_d * delij[m] * delij[n]; //--- deriv. Eq. 4.27(b) wrt rij
-            darho2dr[j][nv2] = darho2dr[j][nv2] + A2i_d * delij[m] * delij[n];
+//            darho2dr[i][nv2] = darho2dr[i][nv2] + A2j_d * delij[m] * delij[n]; //--- deriv. Eq. 4.27(b) wrt rij
+//            darho2dr[j][nv2] = darho2dr[j][nv2] + A2i_d * delij[m] * delij[n];
             nv2 = nv2 + 1;
             for (p = n; p < 3; p++) {
               arho3[i][nv3] = arho3[i][nv3] + A3j * delij[m] * delij[n] * delij[p];
               arho3[j][nv3] = arho3[j][nv3] - A3i * delij[m] * delij[n] * delij[p];
-              darho3dr[i][nv3] = darho3dr[i][nv3] + A3j_d * delij[m] * delij[n] * delij[p]; //--- deriv. Eq. 4.27(c) wrt rij allocate & initiaizeeeee
-              darho3dr[j][nv3] = darho3dr[j][nv3] - A3i_d * delij[m] * delij[n] * delij[p];
+//               darho3dr[i][nv3] = darho3dr[i][nv3] + A3j_d * delij[m] * delij[n] * delij[p]; //--- deriv. Eq. 4.27(c) wrt rij 
+//               darho3dr[j][nv3] = darho3dr[j][nv3] - A3i_d * delij[m] * delij[n] * delij[p];
               nv3 = nv3 + 1;
             }
           }
