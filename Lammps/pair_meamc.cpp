@@ -64,7 +64,7 @@ PairMEAMC::PairMEAMC(LAMMPS *lmp) : Pair(lmp)
   // set comm size needed by this Pair
 
   comm_forward = 38 + 8; //--- see PairMEAMC::pack_forward_comm
-  comm_reverse = 30 + 23; //--- see PairMEAMC::pack_reverse_comm
+  comm_reverse = 30; //--- see PairMEAMC::pack_reverse_comm
 }
 
 /* ----------------------------------------------------------------------
@@ -779,11 +779,11 @@ int PairMEAMC::pack_reverse_comm(int n, int first, double *buf)
     buf[m++] = meam_inst->tsq_ave[i][1];
     buf[m++] = meam_inst->tsq_ave[i][2];
      //
-     buf[m++] = meam_inst->darho2b[i];
-     for (k = 0; k < 3; k++)  buf[m++] = meam_inst->darho1dr[i][k]; //--- calculated in meam_dens_init.cpp
-     for (k = 0; k < 6; k++)  buf[m++] = meam_inst->darho2dr[i][k];
-     for (k = 0; k < 10; k++) buf[m++] = meam_inst->darho3dr[i][k];
-     for (k = 0; k < 3; k++)  buf[m++] = meam_inst->darho3bdr[i][k];
+//      buf[m++] = meam_inst->darho2b[i];
+//      for (k = 0; k < 3; k++)  buf[m++] = meam_inst->darho1dr[i][k]; //--- calculated in meam_dens_init.cpp
+//      for (k = 0; k < 6; k++)  buf[m++] = meam_inst->darho2dr[i][k];
+//      for (k = 0; k < 10; k++) buf[m++] = meam_inst->darho3dr[i][k];
+//      for (k = 0; k < 3; k++)  buf[m++] = meam_inst->darho3bdr[i][k];
   }
 
   return m;
@@ -820,11 +820,11 @@ void PairMEAMC::unpack_reverse_comm(int n, int *list, double *buf)
     meam_inst->tsq_ave[j][1] += buf[m++];
     meam_inst->tsq_ave[j][2] += buf[m++];
      //
-    meam_inst->darho2b[j] += buf[m++];
-    for (k = 0; k < 3; k++)  meam_inst->darho1dr[j][k] += buf[m++];
-    for (k = 0; k < 6; k++)  meam_inst->darho2dr[j][k] += buf[m++];
-    for (k = 0; k < 10; k++) meam_inst->darho3dr[j][k] += buf[m++];
-    for (k = 0; k < 3; k++)  meam_inst->darho3bdr[j][k] += buf[m++];
+//     meam_inst->darho2b[j] += buf[m++];
+//     for (k = 0; k < 3; k++)  meam_inst->darho1dr[j][k] += buf[m++];
+//     for (k = 0; k < 6; k++)  meam_inst->darho2dr[j][k] += buf[m++];
+//     for (k = 0; k < 10; k++) meam_inst->darho3dr[j][k] += buf[m++];
+//     for (k = 0; k < 3; k++)  meam_inst->darho3bdr[j][k] += buf[m++];
   }
 }
 
