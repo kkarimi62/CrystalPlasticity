@@ -456,10 +456,7 @@ MEAM::Get_ddrho1drmdr(int i,
         int m;
         a1 = 2.0 * sij / rij;
         for (m = 0; m < 3; m++) {
-//          drho1drm1[m] = a1 * rhoa1j * arho1[i][m]; //--- 4.30(c)
           ddrho1drmdr1[m] = a1 * ( ( - rhoa1j * arho1[i][m] / rij ) + ( rhoa1j * darho1dri[m] ) + ( arho1[i][m] * drhoa1j ) );
-//          drho1drm2[m] = -a1 * rhoa1i * arho1[j][m];
-//          ddrho1drmdr2[m] = -a1 * ( ( - rhoa1i * arho1[j][m] / rij ) + ( rhoa1i * darho1dr[j][m] ) + ( arho1[j][m] * drhoa1i ) ); //--- negative sign??
         }
 }
 //---------------------------------------------------------------------------
