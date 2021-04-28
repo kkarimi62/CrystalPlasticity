@@ -702,6 +702,10 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           dUdrijm[0] *= scaleij;
           dUdrijm[1] *= scaleij;
           dUdrijm[2] *= scaleij;
+          //
+          ddUddrij *= scaleij;
+          for(m=0;m<3;m++) ddUdrdrijm[m] *= scaleij;
+          for(m=0;m<6;m++) ddUdrijmdrijn[m] *= scaleij;
         }
 
         //     Add the part of the force due to dUdrij and dUdsij
