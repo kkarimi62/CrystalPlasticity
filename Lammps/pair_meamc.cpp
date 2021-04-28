@@ -63,7 +63,7 @@ PairMEAMC::PairMEAMC(LAMMPS *lmp) : Pair(lmp)
 
   // set comm size needed by this Pair
 
-  comm_forward = 38;// + 8; //--- see PairMEAMC::pack_forward_comm
+  comm_forward = 38 + 8; //--- see PairMEAMC::pack_forward_comm
   comm_reverse = 30; //--- see PairMEAMC::pack_reverse_comm
 }
 
@@ -685,14 +685,14 @@ int PairMEAMC::pack_forward_comm(int n, int *list, double *buf,
     buf[m++] = meam_inst->tsq_ave[j][1];
     buf[m++] = meam_inst->tsq_ave[j][2];
      //
-//      buf[m++] = meam_inst->frhopp[j]; //--- computed in meam_dens_final.cpp
-//      buf[m++] = meam_inst->Zarray[j];
-//      buf[m++] = meam_inst->G_array[j];
-//      buf[m++] = meam_inst->dG_array[j];
-//      buf[m++] = meam_inst->ddG_array[j];
-//      buf[m++] = meam_inst->dGbar_array[j];
-//      buf[m++] = meam_inst->ddGbar_array[j];
-//      buf[m++] = meam_inst->rho_bkgd_array[j];  
+     buf[m++] = meam_inst->frhopp[j]; //--- computed in meam_dens_final.cpp
+     buf[m++] = meam_inst->Zarray[j];
+     buf[m++] = meam_inst->G_array[j];
+     buf[m++] = meam_inst->dG_array[j];
+     buf[m++] = meam_inst->ddG_array[j];
+     buf[m++] = meam_inst->dGbar_array[j];
+     buf[m++] = meam_inst->ddGbar_array[j];
+     buf[m++] = meam_inst->rho_bkgd_array[j];  
   }
 
   return m;
