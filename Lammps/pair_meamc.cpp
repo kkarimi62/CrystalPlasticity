@@ -737,14 +737,14 @@ void PairMEAMC::unpack_forward_comm(int n, int first, double *buf)
     meam_inst->tsq_ave[i][1] = buf[m++];
     meam_inst->tsq_ave[i][2] = buf[m++];
      //
-    meam_inst->frhopp[i] += buf[m++];
-    meam_inst->Zarray[i] += buf[m++];
-    meam_inst->G_array[i] += buf[m++];
-    meam_inst->dG_array[i] += buf[m++];
-    meam_inst->ddG_array[i] += buf[m++];
-    meam_inst->dGbar_array[i] += buf[m++];
-    meam_inst->ddGbar_array[i] += buf[m++];
-    meam_inst->rho_bkgd_array[i] += buf[m++];
+    meam_inst->frhopp[i] = buf[m++];
+    meam_inst->Zarray[i] = buf[m++];
+    meam_inst->G_array[i] = buf[m++];
+    meam_inst->dG_array[i] = buf[m++];
+    meam_inst->ddG_array[i] = buf[m++];
+    meam_inst->dGbar_array[i] = buf[m++];
+    meam_inst->ddGbar_array[i] = buf[m++];
+    meam_inst->rho_bkgd_array[i] = buf[m++];
   }
 }
 
