@@ -613,19 +613,27 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           
         //     Compute derivatives wrt sij, but only if necessary     wrt s??????????????/
         if (!iszero(dscrfcn[fnoffset + jn])) {
-          drho0ds1 = rhoa0j;
+          drho0ds1 = rhoa0j; //--- (4.26b)
           drho0ds2 = rhoa0i;
+          ddrho0dsds1 = 0.0;
+          ddrho0dsds2 = 0.0;
           a1 = 2.0 / rij;
-          drho1ds1 = a1 * rhoa1j * arg1i1;
+          drho1ds1 = a1 * rhoa1j * arg1i1; //--- (4.30b)
           drho1ds2 = a1 * rhoa1i * arg1j1;
+          ddrho1dsds1 = 2.0 * rhoa1j * rhoa1j;
+          ddrho1dsds2 = 2.0 * rhoa1i * rhoa1i;
           a2 = 2.0 / rij2;
-          drho2ds1 = a2 * rhoa2j * arg1i2 - 2.0 / 3.0 * arho2b[i] * rhoa2j;
+          drho2ds1 = a2 * rhoa2j * arg1i2 - 2.0 / 3.0 * arho2b[i] * rhoa2j; //--- (4.30e)
           drho2ds2 = a2 * rhoa2i * arg1j2 - 2.0 / 3.0 * arho2b[j] * rhoa2i;
+          ddrho2dsds1 = 4.0 * rhoa2j * rhoa2j / 3.0; 
+          ddrho2dsds2 = 4.0 * rhoa2i * rhoa2i / 3.0; 
           a3 = 2.0 / rij3;
           a3a = 6.0 / (5.0 * rij);
-          drho3ds1 = a3 * rhoa3j * arg1i3 - a3a * rhoa3j * arg3i3;
+          drho3ds1 = a3 * rhoa3j * arg1i3 - a3a * rhoa3j * arg3i3; //--- (4.30h)
           drho3ds2 = a3 * rhoa3i * arg1j3 - a3a * rhoa3i * arg3j3;
-
+          ddrho3dsds1 = 4.0 * rhoa3j * rhoa3j / 5.0;
+          ddrho3dsds2 = 4.0 * rhoa3i * rhoa3i / 5.0;
+          
           if (this->ialloy == 1) {
             a1i = fdiv_zero(rhoa0j, tsq_ave[i][0]);
             a1j = fdiv_zero(rhoa0i, tsq_ave[j][0]);
@@ -653,21 +661,42 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           } else {
 
             ai = 0.0;
-            if (!iszero(rho0[i]))
+            ai_d = 0.0;
+            if (!iszero(rho0[i])) {
               ai = rhoa0j / rho0[i];
+              ai_d = drhoa0j / rho0[i];
+            }
             aj = 0.0;
-            if (!iszero(rho0[j]))
+            aj_d = 0.0;
+            if (!iszero(rho0[j])){
               aj = rhoa0i / rho0[j];
+              aj_d = drhoa0i / rho0[j];
+            }
 
-            dt1ds1 = ai * (t1mj - t1i);
+            dt1ds1 = ai * (t1mj - t1i); //--- (4.32b)
             dt1ds2 = aj * (t1mi - t1j);
             dt2ds1 = ai * (t2mj - t2i);
             dt2ds2 = aj * (t2mi - t2j);
             dt3ds1 = ai * (t3mj - t3i);
             dt3ds2 = aj * (t3mi - t3j);
+            //
+            ddt1dsds1 = -2.0 * ai * dt1ds1; //--- d(4.32b)/ds
+            ddt1dsds2 = -2.0 * aj * dt1ds2;
+            ddt2dsds1 = -2.0 * ai * dt2ds1;
+            ddt2dsds2 = -2.0 * aj * dt2ds2;
+            ddt3dsds1 = -2.0 * ai * dt3ds1;
+            ddt3dsds2 = -2.0 * aj * dt3ds2;
+              
+            //
+            ddt1dsdr1 = ai_d * (-dt1ds1*sij+(t1mj - t1i)) - ai * dt1dr1; //--- d(4.32b)/dr
+            ddt1dsdr2 = aj_d * (-dt1ds2*sij+(t1mi - t1j)) - aj * dt1dr2;
+            ddt2dsdr1 = ai_d * (-dt2ds1*sij+(t2mj - t2i)) - ai * dt2dr1;
+            ddt2dsdr2 = aj_d * (-dt2ds2*sij+(t2mi - t2j)) - aj * dt2dr2;
+            ddt3dsdr1 = ai_d * (-dt3ds1*sij+(t3mj - t3i)) - ai * dt3dr1;
+            ddt3dsdr2 = aj_d * (-dt3ds2*sij+(t3mi - t3j)) - aj * dt3dr2;
           }
 
-          drhods1 = dgamma1[i] * drho0ds1 +
+          drhods1 = dgamma1[i] * drho0ds1 + //--- (4.36b)
             dgamma2[i] * (dt1ds1 * rho1[i] + t1i * drho1ds1 + dt2ds1 * rho2[i] + t2i * drho2ds1 +
                           dt3ds1 * rho3[i] + t3i * drho3ds1) -
             dgamma3[i] * (shpi[0] * dt1ds1 + shpi[1] * dt2ds1 + shpi[2] * dt3ds1);
@@ -675,6 +704,28 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
             dgamma2[j] * (dt1ds2 * rho1[j] + t1j * drho1ds2 + dt2ds2 * rho2[j] + t2j * drho2ds2 +
                           dt3ds2 * rho3[j] + t3j * drho3ds2) -
             dgamma3[j] * (shpj[0] * dt1ds2 + shpj[1] * dt2ds2 + shpj[2] * dt3ds2);
+          //
+          ddrhodsds1 = Get_ddrhodrdr(i, elti, //--- d(4.36b)/ds
+                                    shpi, 
+                                    t1i,  t2i,  t3i,
+                                    dt1ds1,  dt2ds1,  dt3ds1,
+                                    ddt1dsds1,  ddt2dsds1,  ddt3dsds1,
+                                    rho0, rho1, rho2, rho3, 
+                                    drho0ds1,  drho1ds1,  drho2ds1,  drho3ds1, 
+                                    ddrho0dsds1, ddrho1dsds1,  ddrho2dsds1,  ddrho3dsds1,
+                                    drhods1
+                                  );
+          ddrhodsds2 = Get_ddrhodrdr(j, eltj,
+                                    shpj, 
+                                    t1j,  t2j,  t3j,
+                                    dt1ds2,  dt2ds2,  dt3ds2,
+                                    ddt1dsds2,  ddt2dsds2,  ddt3dsds2,
+                                    rho0, rho1, rho2, rho3, 
+                                    drho0ds2,  drho1ds2,  drho2ds2,  drho3ds2, 
+                                    ddrho0dsds2, ddrho1dsds2,  ddrho2dsds2,  ddrho3dsds2,
+                                    drhods2
+                                  );          
+          
         }
 
         //     Compute derivatives of energy wrt rij, sij and rij[3]
