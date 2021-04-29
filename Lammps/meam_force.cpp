@@ -617,22 +617,66 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           drho0ds2 = rhoa0i;
           ddrho0dsds1 = 0.0;
           ddrho0dsds2 = 0.0;
+          ddrho0drmds1 = 0.0;
+          ddrho0drmds2 = 0.0;
           a1 = 2.0 / rij;
           drho1ds1 = a1 * rhoa1j * arg1i1; //--- (4.30b)
           drho1ds2 = a1 * rhoa1i * arg1j1;
           ddrho1dsds1 = 2.0 * rhoa1j * rhoa1j;
           ddrho1dsds2 = 2.0 * rhoa1i * rhoa1i;
+          for (m = 0; m < 3; m++) {
+            ddrho1drmds1[m] =  a1 * rhoa1j * (arho1[i][m] + sij * rhoa1j * delij[m]/rij);
+            ddrho1drmds2[m] = -a1 * rhoa1i * (arho1[j][m] + sij * rhoa1i * delji[m]/rij); //--- d/drij[m]=-d/drji[m]
+          }
           a2 = 2.0 / rij2;
           drho2ds1 = a2 * rhoa2j * arg1i2 - 2.0 / 3.0 * arho2b[i] * rhoa2j; //--- (4.30e)
           drho2ds2 = a2 * rhoa2i * arg1j2 - 2.0 / 3.0 * arho2b[j] * rhoa2i;
           ddrho2dsds1 = 4.0 * rhoa2j * rhoa2j / 3.0; 
           ddrho2dsds2 = 4.0 * rhoa2i * rhoa2i / 3.0; 
+          a2 = 4.0 / rij2;
+          for (m = 0; m < 3; m++) {
+            ddrho2drmds1[m] = 0.0;
+            ddrho2drmds2[m] = 0.0;
+            for (n = 0; n < 3; n++) {
+              ddrho2drmds1[m] += arho2[i][this->vind2D[m][n]] * delij[n]; 
+              ddrho2drmds2[m] += -arho2[j][this->vind2D[m][n]] * delij[n]; //--- delji??? 
+            }
+            //
+            ddrho2drmds1[m] *= a2 * rhoa2j ;
+            ddrho2drmds2[m] *= -a2 * rhoa2i ;
+            //
+            ddrho2drmds1[m] += a2 * rhoa2j * rhoa2j * sij * delij[m];
+            ddrho2drmds2[m] += -a2 * rhoa2i * rhoa2i * sij * delij[m]; //--- del ji???
+          }          
           a3 = 2.0 / rij3;
           a3a = 6.0 / (5.0 * rij);
           drho3ds1 = a3 * rhoa3j * arg1i3 - a3a * rhoa3j * arg3i3; //--- (4.30h)
           drho3ds2 = a3 * rhoa3i * arg1j3 - a3a * rhoa3i * arg3j3;
           ddrho3dsds1 = 4.0 * rhoa3j * rhoa3j / 5.0;
           ddrho3dsds2 = 4.0 * rhoa3i * rhoa3i / 5.0;
+          a3 = 6 / rij3;
+          a3a = 6 / (5 * rij);
+          for (m = 0; m < 3; m++) {
+            ddrho3drmds1[m] = 0.0;
+            ddrho3drmds2[m] = 0.0;
+            //
+            nv2 = 0;
+            for (n = 0; n < 3; n++) {
+              for (p = n; p < 3; p++) {
+                arg = delij[n] * delij[p] * this->v2D[nv2];
+                ddrho3drmds1[m] += arho3[i][this->vind3D[m][n][p]] * arg; //--- 4.30(i)
+                ddrho3drmds2[m] += arho3[j][this->vind3D[m][n][p]] * arg;
+                nv2 = nv2 + 1;
+              }
+            }
+            ddrho3drmds1[m] = (a3 * ddrho3drmds1[m] - a3a * arho3b[i][m]) * rhoa3j;
+            ddrho3drmds2[m] = (-a3 * ddrho3drmds2[m] + a3a * arho3b[j][m]) * rhoa3i; 
+            //
+            ddrho3drmds1[m] += rhoa3j * rhoa3j * sij * delij[m] * ( a3 * rij - a3a  / rij );
+            ddrho3drmds2[m] += -rhoa3i * rhoa3i * sij * delij[m] * ( a3 * rij - a3a  / rij ); //--- del ji???
+          }
+          
+          
           
           if (this->ialloy == 1) {
             a1i = fdiv_zero(rhoa0j, tsq_ave[i][0]);
@@ -724,8 +768,55 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                                     drho0ds2,  drho1ds2,  drho2ds2,  drho3ds2, 
                                     ddrho0dsds2, ddrho1dsds2,  ddrho2dsds2,  ddrho3dsds2,
                                     drhods2
-                                  );          
-          
+                                  );
+          //
+          ddrhodrds1 = Get_ddrhodrds(   i,  elti, //--- d(4.36b)/dr
+                       shpi,
+                       t1i,  t2i,  t3i,
+                       dt1dr1,  dt2dr1,  dt3dr1,
+                       dt1ds1,  dt2ds1,  dt3dr1,
+                       ddt1drds1,  ddt2drds1,  ddt3drds1, 
+                       rho0,  rho1,  rho2,  rho3, 
+                       drho0dr1,  drho1dr1,  drho2dr1,  drho3dr1, 
+                       drho0ds1,  drho1ds1,  drho2ds1,  drho3ds1, 
+                       ddrho0drds1,  ddrho1drds1,  ddrho2drds1,  ddrho3drds1,
+                       drhodr1,  drhods1
+                     );          
+          ddrhodrds2 = Get_ddrhodrds(   j,  eltj,
+                       shpj,
+                       t1j,  t2j,  t3j,
+                       dt1dr2,  dt2dr2,  dt3dr2,
+                       dt1ds2,  dt2ds2,  dt3dr2,
+                       ddt1drds2,  ddt2drds2,  ddt3drds2, 
+                       rho0,  rho1,  rho2,  rho3, 
+                       drho0dr2,  drho1dr2,  drho2dr2,  drho3dr2, 
+                       drho0ds2,  drho1ds2,  drho2ds2,  drho3ds2, 
+                       ddrho0drds2,  ddrho1drds2,  ddrho2drds2,  ddrho3drds2,
+                       drhodr2,  drhods2
+                     );
+          //
+          Get_ddrhodrmds( i, elti, //--- deriv. of Eq. 4.36(c) wrt. s
+                        shpi, 
+                        t1i,  t2i,  t3i,
+                        dt1ds1,  dt2ds1,  dt3ds1,
+                        rho0, rho1, rho2, rho3,
+                        drho0ds1,  drho1ds1,  drho2ds1,  drho3ds1, 
+                        drho0drm1,  drho1drm1,  drho2drm1,  drho3drm1, 
+                        ddrho0drmds1, ddrho1drmds1,  ddrho2drmds1,  ddrho3drmds1,
+                        drhodrm1,
+                        ddrhodrmds1 //--- modify
+                       );         
+          Get_ddrhodrmds( j, eltj, //--- deriv. of Eq. 4.36(c) wrt. s
+                        shpj, 
+                        t1j,  t2j,  t3j,
+                        dt1ds2,  dt2ds2,  dt3ds2,
+                        rho0, rho1, rho2, rho3,
+                        drho0ds2,  drho1ds2,  drho2ds2,  drho3ds2, 
+                        drho0drm2,  drho1drm2,  drho2drm2,  drho3drm2, 
+                        ddrho0drmds2, ddrho1drmds2,  ddrho2drmds2,  ddrho3drmds2,
+                        drhodrm2,
+                        ddrhodrmds2 //--- modify  negative sign?????
+                       );         
         }
 
         //     Compute derivatives of energy wrt rij, sij and rij[3]
@@ -735,6 +826,12 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         dUdsij = 0.0;
         if (!iszero(dscrfcn[fnoffset + jn])) {
           dUdsij = phi + frhop[i] * drhods1 + frhop[j] * drhods2; //--- Eq. 4.41(b)
+          ddUddsij = frhopp[i] * drhods1 * drhods1 + frhop[i] * ddrhodsds1 +
+                     frhopp[j] * drhods2 * drhods2 + frhop[j] * ddrhodsds2;
+          for (m = 0; m < 3; m++) ddUdrijmds[m] = frhopp[i] * drhods1 * drhodrm1[m] + frhop[i] * ddrhodrmds1[m] +
+                                                 frhopp[j] * drhods2 * drhodrm2[m] + frhop[j] * ddrhodrmds2[m];
+          ddUdrijds = phip + frhopp[i] * drhods1 * drhodr1 + frhop[i] * ddrhodrds1 +
+                             frhopp[j] * drhods2 * drhodr2 + frhop[j] * ddrhodrds2;
         }
         nv2 = 0;
         for (m = 0; m < 3; m++) {
@@ -783,6 +880,19 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           }
         }
         stiff += ( ( stiff0 + stiff2 ) * recip  + stiff1 ) * recip;
+        
+        
+        //--- sij contribution
+        stiff0 = 0;
+        if (!iszero(dscrfcn[fnoffset + jn])) {
+          stiff += ddUddsij * dscrfcn[fnoffset + jn] * dscrfcn[fnoffset + jn]; // units of dscrfcn[fnoffset + jn] s/r^2????? 
+          for (m = 0; m < 3; m++) {
+            stiff0 += ddUdrijmds[m] * delij[m];
+          }
+          2 * stiff0 * dscrfcn[fnoffset + jn] * recip
+        }
+        
+        
         n0 = delij[0] * recip;
         n1 = delij[1] * recip;
         n2 = delij[2] * recip;        
