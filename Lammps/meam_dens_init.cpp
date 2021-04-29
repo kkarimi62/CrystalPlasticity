@@ -221,9 +221,9 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* fcpair, double**
       } else {
         delc = Cmax - Cmin;
         cikj = (cikj - Cmin) / delc;
-        sikj = fcut(cikj);
+        sikj = fcut(cikj); //--- Eq.(4.11c)
       }
-      sij *= sikj;
+      sij *= sikj; 
     }
 
     fc = dfcut(rnorm, dfc);
@@ -276,8 +276,8 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* fcpair, double**
           cikj = (cikj - Cmin) / delc;
           sikj = dfcut(cikj, dfikj);
           coef1 = dfikj / (delc * sikj);
-          dCikj = dCfunc(rij2, rik2, rjk2);
-          dscrfcn[jn] = dscrfcn[jn] + coef1 * dCikj;
+          dCikj = dCfunc(rij2, rik2, rjk2); //--- (4.17)
+          dscrfcn[jn] = dscrfcn[jn] + coef1 * dCikj; //--- (4.22)
         }
       }
       coef1 = sfcij;
