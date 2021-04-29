@@ -763,6 +763,67 @@ MEAM::Get_ddrhodrmdrn( int i, int elti, //--- deriv. of Eq. 4.36(c) wrt. rm
 }
 
 //-----------------------------------------------------------------------------
+double
+MEAM::Get_ddrhodrds(  int i, int elti,
+                      double* shpi,
+                      double t1i, double t2i, double t3i,
+                      double dt1dr1, double dt2dr1, double dt3dr1,
+                      double dt1ds1, double dt2ds1, double dt3dr1,
+                      double ddt1drds1, double ddt2drds1, double ddt3drds1, 
+                      double* rho0, double* rho1, double* rho2, double* rho3, 
+                      double drho0dr1, double drho1dr1, double drho2dr1, double drho3dr1, 
+                      double drho0ds1, double drho1ds1, double drho2ds1, double drho3ds1, 
+                      double ddrho0drds1, double ddrho1drds1, double ddrho2drds1, double ddrho3drds1,
+                      double drhodr1, double drhods1
+                     ){
 
+        double dgamdr = (shpi[0] * dt1dr1 + shpi[1] * dt2dr1 + shpi[2] * dt3dr1) / (Zarray[i] * Zarray[i]); //--- d\Gamma^{ref}/dr: deriv of Eq. (4.6)
+        double dgamds = (shpi[0] * dt1ds1 + shpi[1] * dt2ds1 + shpi[2] * dt3ds1) / (Zarray[i] * Zarray[i]); //--- d\Gamma^{ref}/ds: deriv of Eq. (4.6)
+        double ddgamdrds = (shpi[0] * ddt1drds1 + shpi[1] * ddt2drds1 + shpi[2] * ddt3drds1) / (Zarray[i] * Zarray[i]); //--- d^2\Gamma^{ref}/drds: 2nd deriv of Eq. (4.6)
+        double rho_bkgd = rho_bkgd_array[ i ];
+        double drho_bkgd_dr = this->rho0_meam[elti] * Zarray[ i ] * dGbar_array[ i ] * dgamdr; //--- deriv of Eq. (4.5) wrt. r
+        double drho_bkgd_ds = this->rho0_meam[elti] * Zarray[ i ] * dGbar_array[ i ] * dgamds; //--- deriv of Eq. (4.5) wrt. s
+        double ddrho_bkgd_drds = this->rho0_meam[elti] * Zarray[ i ] * ( ddGbar_array[i] * dgamds * dgamdr + dGbar_array[ i ] * ddgamdrds ); //--- 2nd deriv of Eq. (4.5) wrt. r
+        double dgammadr =  (dt1dr1 * rho1[i] + t1i * drho1dr1 + //--- deriv. of Eq. (4.4) wrt. r
+                            dt2dr1 * rho2[i] + t2i * drho2dr1 + 
+                            dt3dr1 * rho3[i] + t3i * drho3dr1) - 2.0 * rho0[i] * drho0dr1 *  gamma[i]; 
+        double dgammads =  (dt1ds1 * rho1[i] + t1i * drho1ds1 + //--- deriv. of Eq. (4.4) wrt. s
+                            dt2ds1 * rho2[i] + t2i * drho2ds1 + 
+                            dt3ds1 * rho3[i] + t3i * drho3ds1) - 2.0 * rho0[i] * drho0ds1 *  gamma[i];                             
+                            
+
+        //--- d^2\Gamma/drds        
+          double ddgammadrds   =  
+                            (ddt1drds1 * rho1[i] + dt1dr1 * drho1ds1 + 
+                             dt1ds1 * drho1dr1 + t1i * ddrho1drds1   +
+                             ddt2drds1 * rho2[i] + dt2dr1 * drho2ds1 + 
+                             dt2ds1 * drho2dr1 + t2i * ddrho2drds1   +
+                             ddt3drds1 * rho3[i] + dt3dr1 * drho3ds1 +
+                             dt3ds1 * drho3dr1 + t3i * ddrho3drds1)  -
+                             2.0 * (drho0ds1 * drho0dr1 *  gamma[i] + rho0[i] * ddrho0drds1 *  gamma[i] + rho0[i] * drho0dr1 *  dgammads) -
+                             dgammadr * (2.0 * rho0[i] * drho0ds);
+        if (!iszero(rho0[i])) {
+           rho0sq = (rho0[i] * rho0[i])
+           dgammadr /= rho0sq;
+           dgammads /= rho0sq;
+           dgammadrds /= rho0sq;
+        }
+        else {
+           dgammadr = dgammads = dgammadrds = 0.0;
+        }
+        
+        //--- total deriv
+        double ddrhodrds1    =  ddrho0drds1 * G_array[i] + 
+                         drho0dr1 * dG_array[i] * dgammads + 
+                         drho0ds1 * dG_array[i] * dgammadr + 
+                         rho0[i] * ddG_array[i] * dgammads * dgammadr + 
+                         rho0[i] * dG_array[i] * ddgammadrds -
+                         drhodr1 * drho_bkgd_ds -
+                         drhods1 * drho_bkgd_dr -
+                         rho[ i ] * ddrho_bkgd_drds;        
+        ddrhodrds1 /= rho_bkgd;
+        return ddrhodrds1;
+}
+//-----------------------------------------------------------------------------
 
 
