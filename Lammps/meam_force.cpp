@@ -883,13 +883,19 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         
         
         //--- sij contribution
-        stiff0 = 0;
+        stiff0 = 0.0;
+        stiff1 = 0.0;
         if (!iszero(dscrfcn[fnoffset + jn])) {
-          stiff += ddUddsij * dscrfcn[fnoffset + jn] * dscrfcn[fnoffset + jn]; // units of dscrfcn[fnoffset + jn] s/r^2????? 
+          stiff += ddUddsij * dscrfcn[fnoffset + jn] * dscrfcn[fnoffset + jn] +
+                   ddUdrijds * 2.0 * dscrfcn[fnoffset + jn] +
+                   dUdsij * ( ddscrfcn[fnoffset + jn] - dscrfcn[fnoffset + jn] * recip ); // units of dscrfcn[fnoffset + jn] s/r^2????? 
           for (m = 0; m < 3; m++) {
             stiff0 += ddUdrijmds[m] * delij[m];
+            stiff1 += ddscrfcndrm[fnoffset + jn][m] * delij[m];
           }
-          2 * stiff0 * dscrfcn[fnoffset + jn] * recip
+          stiff0 *= 2.0 * dscrfcn[fnoffset + jn] * recip;
+          stiff1 *= dUdsij * recip;          
+          stiff +=  stiff0 + stiff1;
         }
         
         
