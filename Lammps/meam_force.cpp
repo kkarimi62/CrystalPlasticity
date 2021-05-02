@@ -20,7 +20,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
   double third, sixth;
   double pp, dUdrij, dUdsij, dUdrijm[3], force, forcem;
   double ddUddrij;
-  double ddUddsij, ddUdrijmds[ 3 ], ddUdrijds, 
+  double ddUddsij, ddUdrijmds[ 3 ], ddUdrijds;
   double recip, phi, phip, phipp;
   double sij;
   double a1, a1i, a1j, a2, a2i, a2j;
