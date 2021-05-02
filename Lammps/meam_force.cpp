@@ -756,12 +756,12 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
             ddt3dsds2 = -2.0 * aj * dt3ds2;
               
             //
-            ddt1dsdr1 = ai_d * (-dt1ds1*sij+(t1mj - t1i)) - ai * dt1dr1; //--- d(4.32b)/dr
-            ddt1dsdr2 = aj_d * (-dt1ds2*sij+(t1mi - t1j)) - aj * dt1dr2;
-            ddt2dsdr1 = ai_d * (-dt2ds1*sij+(t2mj - t2i)) - ai * dt2dr1;
-            ddt2dsdr2 = aj_d * (-dt2ds2*sij+(t2mi - t2j)) - aj * dt2dr2;
-            ddt3dsdr1 = ai_d * (-dt3ds1*sij+(t3mj - t3i)) - ai * dt3dr1;
-            ddt3dsdr2 = aj_d * (-dt3ds2*sij+(t3mi - t3j)) - aj * dt3dr2;
+            ddt1drds1 = ai_d * (-dt1ds1*sij+(t1mj - t1i)) - ai * dt1dr1; //--- d(4.32b)/dr
+            ddt1drds2 = aj_d * (-dt1ds2*sij+(t1mi - t1j)) - aj * dt1dr2;
+            ddt2drds1 = ai_d * (-dt2ds1*sij+(t2mj - t2i)) - ai * dt2dr1;
+            ddt2drds2 = aj_d * (-dt2ds2*sij+(t2mi - t2j)) - aj * dt2dr2;
+            ddt3drds1 = ai_d * (-dt3ds1*sij+(t3mj - t3i)) - ai * dt3dr1;
+            ddt3drds2 = aj_d * (-dt3ds2*sij+(t3mi - t3j)) - aj * dt3dr2;
           }
 
           drhods1 = dgamma1[i] * drho0ds1 + //--- (4.36b)
