@@ -73,6 +73,11 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
   double ddrho2dsds1, ddrho2dsds2;
   double ddrho3dsds1, ddrho3dsds2;
   double ddrhodsds1, ddrhodsds2;
+  double ddrho0drds1, ddrho0drds2;
+  double ddrho1drds1, ddrho1drds2;
+  double ddrho2drds1, ddrho2drds2;
+  double ddrho3drds1, ddrho3drds2;
+  double ddrhodrds1, ddrhodrds2;
   double ddrho0drmds1[3], ddrho0drmds2[3];
   double ddrho1drmds1[3], ddrho1drmds2[3];
   double ddrho2drmds1[3], ddrho2drmds2[3];
@@ -81,9 +86,9 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
   double ddt1dsds1, ddt1dsds2;
   double ddt2dsds1, ddt2dsds2;
   double ddt3dsds1, ddt3dsds2;
-  double ddt1dsdr1, ddt1dsdr2;
-  double ddt2dsdr1, ddt2dsdr2;
-  double ddt3dsdr1, ddt3dsdr2;
+  double ddt1drds1, ddt1drds2;
+  double ddt2drds1, ddt2drds2;
+  double ddt3drds1, ddt3drds2;
   
   third = 1.0 / 3.0;
   sixth = 1.0 / 6.0;
