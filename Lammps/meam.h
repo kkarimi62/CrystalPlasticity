@@ -271,7 +271,30 @@ protected:
                         double* drho0drm1,  double* drho1drm1,  double* drho2drm1,  double* drho3drm1, 
                                             double* ddrho1drmdrn1,  double* ddrho2drmdrn1,  double* ddrho3drmdrn1,
                         double* ddrhodrmdrn1);
-
+  void Get_ddrhodrds(  int i, int elti,
+                      double* shpi,
+                      double t1i, double t2i, double t3i,
+                      double dt1dr1, double dt2dr1, double dt3dr1,
+                      double dt1ds1, double dt2ds1, double dt3dr1,
+                      double ddt1drds1, double ddt2drds1, double ddt3drds1, 
+                      double* rho0, double* rho1, double* rho2, double* rho3, 
+                      double drho0dr1, double drho1dr1, double drho2dr1, double drho3dr1, 
+                      double drho0ds1, double drho1ds1, double drho2ds1, double drho3ds1, 
+                      double ddrho0drds1, double ddrho1drds1, double ddrho2drds1, double ddrho3drds1,
+                      double drhodr1, double drhods1
+                     );
+  void Get_ddrhodrmds( int i, int elti, //--- deriv. of Eq. 4.36(c) wrt. r
+                        double* shpi, 
+                        double t1i,  double t2i,  double t3i,
+                        double dt1ds,  double dt2ds,  double dt3ds,
+                        double* rho0, double* rho1, double* rho2, double* rho3,
+                        double drho0ds,  double drho1ds,  double drho2ds,  double drho3ds, 
+                        double* drho0drm,  double* drho1drm,  double* drho2drm,  double* drho3drm, 
+                        double* ddrho0drmds, double* ddrho1drmds,  double* ddrho2drmds,  double* ddrho3drmds,
+                        double* drhodrm,
+                        double* ddrhodrmds //--- modify
+                       );
+  
   static double zbl(const double r, const int z1, const int z2);
   double embedding(const double A, const double Ec, const double rhobar, double& dF, double& ddF ) const;
   static double erose(const double r, const double re, const double alpha, const double Ec, const double repuls, const double attrac, const int form);
