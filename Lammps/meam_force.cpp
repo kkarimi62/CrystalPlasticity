@@ -71,9 +71,11 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
   double ddrho0dsds1, ddrho0dsds2;
   double ddrho1dsds1, ddrho1dsds2;
   double ddrho2dsds1, ddrho2dsds2;
+  double ddrho3dsds1, ddrho3dsds2;
   double ddrho0drmds1[3], ddrho0drmds2[3];
   double ddrho1drmds1[3], ddrho1drmds2[3];
   double ddrho2drmds1[3], ddrho2drmds2[3];
+  double ddrho3drmds1[3], ddrho3drmds2[3];
   double ddt1dsds1, ddt1dsds2;
   double ddt2dsds1, ddt2dsds2;
   double ddt3dsds1, ddt3dsds2;
