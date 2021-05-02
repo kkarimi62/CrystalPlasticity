@@ -20,12 +20,14 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
   double third, sixth;
   double pp, dUdrij, dUdsij, dUdrijm[3], force, forcem;
   double ddUddrij;
+  double ddUddsij, ddUdrijmds[ 3 ], ddUdrijds, 
   double recip, phi, phip, phipp;
   double sij;
   double a1, a1i, a1j, a2, a2i, a2j;
   double a3i, a3j;
   double shpi[3], shpj[3];
   double ai, aj, ro0i, ro0j, invrei, invrej;
+  double ai_d, aj_d, 
   double rhoa0j, drhoa0j, ddrhoa0j, rhoa0i, drhoa0i, ddrhoa0i;
   double rhoa1j, drhoa1j, ddrhoa1j, rhoa1i, drhoa1i, ddrhoa1i;
   double rhoa2j, drhoa2j, ddrhoa2j, rhoa2i, drhoa2i, ddrhoa2i;
@@ -66,6 +68,18 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
   double ddt1drdr1,  ddt2drdr1,  ddt3drdr1;
   double ddt1drdr2,  ddt2drdr2,  ddt3drdr2;
   double ddrho1drmdrn1[6], ddrho1drmdrn2[6];
+  double ddrho0dsds1, ddrho0dsds2;
+  double ddrho1dsds1, ddrho1dsds2;
+  double ddrho2dsds1, ddrho2dsds2;
+  double ddrho0drmds1[3], ddrho0drmds2[3];
+  double ddrho1drmds1[3], ddrho1drmds2[3];
+  double ddrho2drmds1[3], ddrho2drmds2[3];
+  double ddt1dsds1, ddt1dsds2;
+  double ddt2dsds1, ddt2dsds2;
+  double ddt3dsds1, ddt3dsds2;
+  double ddt1dsdr1, ddt1dsdr2;
+  double ddt2dsdr1, ddt2dsdr2;
+  double ddt3dsdr1, ddt3dsdr2;
   
   third = 1.0 / 3.0;
   sixth = 1.0 / 6.0;
@@ -617,8 +631,10 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           drho0ds2 = rhoa0i;
           ddrho0dsds1 = 0.0;
           ddrho0dsds2 = 0.0;
-          ddrho0drmds1 = 0.0;
-          ddrho0drmds2 = 0.0;
+          for (m = 0; m < 3; m++) {
+            ddrho0drmds1[m] = 0.0;
+            ddrho0drmds2[m] = 0.0;
+          }
           a1 = 2.0 / rij;
           drho1ds1 = a1 * rhoa1j * arg1i1; //--- (4.30b)
           drho1ds2 = a1 * rhoa1i * arg1j1;
@@ -703,7 +719,6 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
             dt3ds2 = 0.0;
 
           } else {
-
             ai = 0.0;
             ai_d = 0.0;
             if (!iszero(rho0[i])) {
