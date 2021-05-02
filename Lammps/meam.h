@@ -271,7 +271,7 @@ protected:
                         double* drho0drm1,  double* drho1drm1,  double* drho2drm1,  double* drho3drm1, 
                                             double* ddrho1drmdrn1,  double* ddrho2drmdrn1,  double* ddrho3drmdrn1,
                         double* ddrhodrmdrn1);
-  void Get_ddrhodrds(  int i, int elti,
+  double Get_ddrhodrds(  int i, int elti,
                       double* shpi,
                       double t1i, double t2i, double t3i,
                       double dt1dr1, double dt2dr1, double dt3dr1,
