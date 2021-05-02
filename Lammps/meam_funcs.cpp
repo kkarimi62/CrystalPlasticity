@@ -801,15 +801,15 @@ MEAM::Get_ddrhodrds(  int i, int elti,
                              ddt3drds1 * rho3[i] + dt3dr1 * drho3ds1 +
                              dt3ds1 * drho3dr1 + t3i * ddrho3drds1)  -
                              2.0 * (drho0ds1 * drho0dr1 *  gamma[i] + rho0[i] * ddrho0drds1 *  gamma[i] + rho0[i] * drho0dr1 *  dgammads) -
-                             dgammadr * (2.0 * rho0[i] * drho0ds);
+                             dgammadr * (2.0 * rho0[i] * drho0ds1);
         if (!iszero(rho0[i])) {
-           rho0sq = (rho0[i] * rho0[i])
+           double rho0sq = (rho0[i] * rho0[i]);
            dgammadr /= rho0sq;
            dgammads /= rho0sq;
-           dgammadrds /= rho0sq;
+           ddgammadrds /= rho0sq;
         }
         else {
-           dgammadr = dgammads = dgammadrds = 0.0;
+           dgammadr = dgammads = ddgammadrds = 0.0;
         }
         
         //--- total deriv
@@ -859,7 +859,7 @@ MEAM::Get_ddrhodrmds( int i, int elti, //--- deriv. of Eq. 4.36(c) wrt. r
                      dG_array[i] * ( dt1ds * drho1drm[m] + dt2ds * drho2drm[m] + dt3ds * drho3drm[m] +
                                      t1i * ddrho1drmds[m] + t2i * ddrho1drmds[m] + t3i * ddrho1drmds[m] );
             dLHS /= (rho_bkgd_array[i] * rho0[i]);
-            ddrhodrmdr[ m ] = dLHS;
+            ddrhodrmds[ m ] = dLHS;
           }
 }
 
