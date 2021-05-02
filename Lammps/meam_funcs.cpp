@@ -825,5 +825,41 @@ MEAM::Get_ddrhodrds(  int i, int elti,
         return ddrhodrds1;
 }
 //-----------------------------------------------------------------------------
-
+void
+MEAM::Get_ddrhodrmds( int i, int elti, //--- deriv. of Eq. 4.36(c) wrt. r
+                        double* shpi, 
+                        double t1i,  double t2i,  double t3i,
+                        double dt1ds,  double dt2ds,  double dt3ds,
+                        double* rho0, double* rho1, double* rho2, double* rho3,
+                        double drho0ds,  double drho1ds,  double drho2ds,  double drho3ds, 
+                        double* drho0drm,  double* drho1drm,  double* drho2drm,  double* drho3drm, 
+                        double* ddrho0drmds, double* ddrho1drmds,  double* ddrho2drmds,  double* ddrho3drmds,
+                        double* drhodrm,
+                        double* ddrhodrmds //--- modify
+                       ){
+          double LHS, dLHS;
+          double dgamds = (shpi[0] * dt1ds + shpi[1] * dt2ds + shpi[2] * dt3ds) / (Zarray[i] * Zarray[i]); //--- d\Gamma^{ref}/dr: deriv of Eq. (4.6)
+          //
+          double dgammads =  (dt1ds * rho1[i] + t1i * drho1ds + //--- deriv. of Eq. (4.4) wrt. r
+                              dt2ds * rho2[i] + t2i * drho2ds + 
+                              dt3ds * rho3[i] + t3i * drho3ds) - 2.0 * rho0[i] * drho0ds *  gamma[i]; 
+          if (rho0[i] > 0.0) {
+            dgammads /= (rho0[i] * rho0[i]);
+          }
+          else {
+            dgammads = 0.0;
+          }
+          //
+          double drho_bkgd_ds = this->rho0_meam[elti] * Zarray[ i ] * dGbar_array[ i ] * dgamds; //--- deriv of Eq. (4.5) wrt. r
+          //
+          for( int m = 0; m < 3; m++ ){
+            LHS = drhodrm[m];
+            dLHS = - LHS * ( drho_bkgd_ds * rho0[i] + rho_bkgd_array[i] * drho0ds ) +
+                     ddG_array[i] * dgammads * (t1i*drho1drm[m] + t2i*drho2drm[m] + t3i*drho3drm[m])+
+                     dG_array[i] * ( dt1ds * drho1drm[m] + dt2ds * drho2drm[m] + dt3ds * drho3drm[m] +
+                                     t1i * ddrho1drmds[m] + t2i * ddrho1drmds[m] + t3i * ddrho1drmds[m] );
+            dLHS /= (rho_bkgd_array[i] * rho0[i]);
+            ddrhodrmdr[ m ] = dLHS;
+          }
+}
 
