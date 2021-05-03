@@ -10,7 +10,7 @@ Reading data file ...
   50688 atoms
   reading velocities ...
   50688 velocities
-  read_data CPU = 0.178 seconds
+  read_data CPU = 0.173 seconds
 mass 1 58.993
 mass 2 58.6934
 mass 3 51.9961
@@ -43,8 +43,8 @@ variable srate1 equal "v_srate / 1.0e12"
 fix             2 all deform 1  xy erate ${srate1}  units box  remap v
 fix             2 all deform 1  xy erate 0.0001  units box  remap v
 compute 	1 all stress/atom NULL pair
-#dump      1 all custom 1 NiFe_glass-${initTemp}-${srate}.dump id type x y z vx vy vz
-dump    11 all custom 1 virialStress.xyz id type x y z c_1[1] c_1[2] c_1[3] c_1[4] c_1[5] c_1[6] c_1[10]
+#dump      1 all custom 1 NiFe_glass-${initTemp}-${srate}.dump id type x y z vx vy vz  meam_force.cpp ln.967: 15+6+1
+dump    11 all custom 1 virialStress.xyz id type x y z c_1[1] c_1[2] c_1[3] c_1[4] c_1[5] c_1[6] c_1[22]
 #dump 2 all custom 10000 dump.NiFe_glass-${initTemp}-${srate}.unwrap id type xu yu zu
 variable strainxy equal "(xy)/v_L0y"
 variable  tmp3 equal "vol"
@@ -90,20 +90,20 @@ Step Temp E_pair E_mol TotEng Press Volume
        8    299.43507   -218000.25            0    -216038.4    55.298157    607112.78 
        9    299.46684   -218000.45            0    -216038.4    55.936392    607112.78 
       10    299.50317   -218000.69            0    -216038.4    56.250974    607112.78 
-Loop time of 113.44 on 1 procs for 10 steps with 50688 atoms
+Loop time of 113.04 on 1 procs for 10 steps with 50688 atoms
 
-Performance: 0.008 ns/day, 3151.110 hours/ns, 0.088 timesteps/s
-99.8% CPU use with 1 MPI tasks x no OpenMP threads
+Performance: 0.008 ns/day, 3140.012 hours/ns, 0.088 timesteps/s
+99.9% CPU use with 1 MPI tasks x no OpenMP threads
 
 MPI task timing breakdown:
 Section |  min time  |  avg time  |  max time  |%varavg| %total
 ---------------------------------------------------------------
-Pair    | 108.86     | 108.86     | 108.86     |   0.0 | 95.96
+Pair    | 108.42     | 108.42     | 108.42     |   0.0 | 95.91
 Neigh   | 0          | 0          | 0          |   0.0 |  0.00
-Comm    | 0.010727   | 0.010727   | 0.010727   |   0.0 |  0.01
-Output  | 4.3907     | 4.3907     | 4.3907     |   0.0 |  3.87
-Modify  | 0.16622    | 0.16622    | 0.16622    |   0.0 |  0.15
-Other   |            | 0.01373    |            |       |  0.01
+Comm    | 0.01035    | 0.01035    | 0.01035    |   0.0 |  0.01
+Output  | 4.4397     | 4.4397     | 4.4397     |   0.0 |  3.93
+Modify  | 0.16101    | 0.16101    | 0.16101    |   0.0 |  0.14
+Other   |            | 0.01358    |            |       |  0.01
 
 Nlocal:        50688.0 ave       50688 max       50688 min
 Histogram: 1 0 0 0 0 0 0 0 0 0
@@ -126,4 +126,4 @@ Dangerous builds = 0
 # SIMULATION DONE
 print "All done"
 All done
-Total wall time: 0:02:06
+Total wall time: 0:02:05
