@@ -1,0 +1,2898 @@
+# Rene Alvarez - ralvarez@ncbj.gov.pl
+
+#----------------------------------------------------------------------------------------#
+
+#------------------------------ General variables ---------------------------------------#
+ # Simulation variables
+
+  variable        T         equal     300
+
+ # Time variables
+
+  variable        t_eq      equal     0 #100000        # Equlibration time
+  variable        t_qu      equal     0 #500000        # Cooling rate 100 K/ns
+  variable        dt        equal     0.001         # Time step
+  variable        damp_t    equal     200*${dt}     # Thermostat damping
+  variable        damp_p    equal     2500*${dt}    # Barostat damping
+
+#----------------------------------------------------------------------------------------#
+
+  units           metal
+  atom_style      atomic
+  read_data       min_Co0.05Ni0.26Cr0.02Fe0.4Mn0.27_1.data    # include here your initial configuration equilibrated at T = 300 K 
+
+# Interatomic potential information.
+
+  neigh_modify    delay   0
+  pair_style      meam/c
+  pair_coeff      * *  library_CoNiCrFeMn.meam Co Ni Cr Fe Mn parameters.meam Co Ni Cr Fe Mn
+  timestep        ${dt}
+  
+#---------------------------------   Equilibrate in NPT ensemble  ----------------------#
+  
+  compute 1 all stress/atom NULL pair
+  dump    1 all custom 1 virialStress.xyz id type x y z c_1[1] c_1[2] c_1[3] c_1[4] c_1[5] c_1[6] c_1[7] 
+ 
+  fix             1         all npt temp $T $T ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+  run             ${t_eq}
+  thermo          0
+  unfix           1
+  reset_timestep  0
+
+#
+##-------------------                 Simulation & output setup    ---------------------------
+#  
+#  fix             1             all npt temp $T $T ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  variable        energy        equal etotal/atoms
+#  variable        dU            equal pe/atoms
+#  variable        Temp          equal temp
+#  variable        vol           equal ((vol/atoms)*0.6022)
+#  variable        E2            equal v_energy*v_energy
+#  variable        V2            equal v_vol*v_vol
+#  thermo_style    custom        step temp etotal pe v_energy v_dU v_vol v_E2 v_Temp
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  thermo          1000
+#  thermo_modify   lost      ignore
+#  run ${t_eq}
+#  print   "# Temp    T_ave      vol_med   vol2_med   std_vol   E_med   E2_med  std_E  "   file    Thermo_C.dat
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  300  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+##------------------                 Cooling at 100 K/ns          ----------------------------
+#
+## Quenching 350 K 
+#
+# fix              1  all npt temp $T 350 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 350 K
+#  reset_timestep  0
+#  fix             1             all npt temp 350 350 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  350  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 400 K 
+#
+# fix              1  all npt temp 350 400 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 400 K
+#  reset_timestep  0
+#  fix             1             all npt temp 400 400 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  400  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 450 K 
+#
+# fix              1  all npt temp 400 450 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 450 K
+#  reset_timestep  0
+#  fix             1             all npt temp 450 450 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  450  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 500 K 
+#
+# fix              1  all npt temp 450 500 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 500 K
+#  reset_timestep  0
+#  fix             1             all npt temp 500 500 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  500  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 550 K 
+#
+# fix              1  all npt temp 500 550 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 550 K
+#  reset_timestep  0
+#  fix             1             all npt temp 550 550 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  550  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 600 K 
+#
+# fix              1  all npt temp 550 600 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 600 K
+#  reset_timestep  0
+#  fix             1             all npt temp 600 600 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  600  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 650 K 
+#
+# fix              1  all npt temp 600 650 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 650 K
+#  reset_timestep  0
+#  fix             1             all npt temp 650 650 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  650  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 700 K 
+#
+# fix              1  all npt temp 650 700 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 700 K
+#  reset_timestep  0
+#  fix             1             all npt temp 700 700 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  700  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+## Quenching 750 K 
+#
+# fix              1  all npt temp 700 750 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 750 K
+#  reset_timestep  0
+#  fix             1             all npt temp 750 750 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  750  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 800 K 
+#
+# fix              1  all npt temp 750 800 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 800 K
+#  reset_timestep  0
+#  fix             1             all npt temp 800 800 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  800  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 850 K 
+#
+# fix              1  all npt temp 800 850 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 850 K
+#  reset_timestep  0
+#  fix             1             all npt temp 850 850 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  850  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 900 K 
+#
+# fix              1  all npt temp 850 900 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 900 K
+#  reset_timestep  0
+#  fix             1             all npt temp 900 900 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  900  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 950 K 
+#
+# fix              1  all npt temp 900 950 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 950 K
+#  reset_timestep  0
+#  fix             1             all npt temp 950 950 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  950  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1000 K 
+#
+# fix              1  all npt temp 950 1000 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1000 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1000 1000 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1000  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+## Quenching 1050 K 
+#
+# fix              1  all npt temp 1000 1050 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1050 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1050 1050 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1050  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1100 K 
+#
+# fix              1  all npt temp 1050 1100 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1100 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1100 1100 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1100  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1150 K 
+#
+# fix              1  all npt temp 1100 1150 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1150 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1150 1150 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1150  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1200 K 
+#
+# fix              1  all npt temp 1150 1200 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1200 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1200 1200 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1200  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1250 K 
+#
+# fix              1  all npt temp 1200 1250 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1250 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1250 1250 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1250  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1300 K 
+#
+# fix              1  all npt temp 1250 1300 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1350 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1300 1300 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1300  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1350 K 
+#
+# fix              1  all npt temp 1300 1350 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1350 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1350 1350 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1350  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1400 K 
+#
+# fix              1  all npt temp 1350 1400 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1400 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1400 1400 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1400  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1450 K 
+#
+# fix              1  all npt temp 1400 1450 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1450 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1450 1450 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1450  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1500 K 
+#
+# fix              1  all npt temp 1450 1500 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1500 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1500 1500 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1500  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1550 K 
+#
+# fix              1  all npt temp 1500 1550 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1550 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1550 1550 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1550  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1600 K 
+#
+# fix              1  all npt temp 1550 1600 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1600 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1600 1600 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1600  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1650 K 
+#
+# fix              1  all npt temp 1600 1650 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1650 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1650 1650 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1650  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1700 K 
+#
+# fix              1  all npt temp 1650 1700 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1700 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1700 1700 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1700  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1750 K 
+#
+# fix              1  all npt temp 1700 1750 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1750 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1750 1750 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1750  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1800 K 
+#
+# fix              1  all npt temp 1750 1800 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1800 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1800 1800 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1800  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1850 K 
+#
+# fix              1  all npt temp 1800 1800 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1850 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1850 1850 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1850  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1900 K 
+#
+# fix              1  all npt temp 1850 1900 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1900 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1900 1900 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1900  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1950 K 
+#
+# fix              1  all npt temp 1900 1950 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1950 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1950 1950 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1950  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 2000 K 
+#
+# fix              1  all npt temp 1950 2000 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 2000 K
+#  reset_timestep  0
+#  fix             1             all npt temp 2000 2000 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  2000  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 2050 K 
+#
+# fix              1  all npt temp 2000 2050 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 2050 K
+#  reset_timestep  0
+#  fix             1             all npt temp 2050 2050 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  2050  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 2100 K 
+#
+# fix              1  all npt temp 2050 2100 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 2100 K
+#  reset_timestep  0
+#  fix             1             all npt temp 2100 2100 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  2100  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 2150 K 
+#
+# fix              1  all npt temp 2100 2150 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 2150 K
+#  reset_timestep  0
+#  fix             1             all npt temp 2150 2150 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  2150  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 2200 K 
+#
+# fix              1  all npt temp 2150 2200 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 2200 K
+#  reset_timestep  0
+#  fix             1             all npt temp 2200 2200 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  2200  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 2250 K 
+#
+# fix              1  all npt temp 2200 2250 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 2250 K
+#  reset_timestep  0
+#  fix             1             all npt temp 2250 2250 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  2250  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 2300 K 
+#
+# fix              1  all npt temp 2250 2300 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 2300 K
+#  reset_timestep  0
+#  fix             1             all npt temp 2300 2300 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  2300  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 2350 K 
+#
+# fix              1  all npt temp 2300 2350 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 2350 K
+#  reset_timestep  0
+#  fix             1             all npt temp 2350 2350 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  2350  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 2400 K 
+#
+# fix              1  all npt temp 2350 2400 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 2400 K
+#  reset_timestep  0
+#  fix             1             all npt temp 2400 2400 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  2400  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 2450 K 
+#
+# fix              1  all npt temp 2400 2450 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 2450 K
+#  reset_timestep  0
+#  fix             1             all npt temp 2450 2450 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  2450  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 2500 K 
+#
+# fix              1  all npt temp 2450 2500 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 2500 K
+#  reset_timestep  0
+#  fix             1             all npt temp 2500 2500 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  2500  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+##----------------------------------------------    quenching ------------------------------------------------------------
+#
+#
+## Quenching 2450 K 
+#
+# fix              1  all npt temp 2500 2450 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 2450 K
+#  reset_timestep  0
+#  fix             1             all npt temp 2450 2450 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  2450  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 2400 K 
+#
+# fix              1  all npt temp 2450 2400 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 2400 K
+#  reset_timestep  0
+#  fix             1             all npt temp 2400 2400 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  2400  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 2350 K 
+#
+# fix              1  all npt temp 2400 2350 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 2350 K
+#  reset_timestep  0
+#  fix             1             all npt temp 2350 2350 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  2350  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 2300 K 
+#
+# fix              1  all npt temp 2350 2300 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 2300 K
+#  reset_timestep  0
+#  fix             1             all npt temp 2300 2300 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  2300  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 2250 K 
+#
+# fix              1  all npt temp 2300 2250 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 2250 K
+#  reset_timestep  0
+#  fix             1             all npt temp 2250 2250 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  2250  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 2200 K 
+#
+# fix              1  all npt temp 2250 2200 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix   1
+#
+## Equilibration 2200 K
+#  reset_timestep  0
+#  fix             1             all npt temp 2200 2200 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  2200  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 2150 K 
+#
+# fix              1  all npt temp 2200 2150 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 2150 K
+#  reset_timestep  0
+#  fix             1             all npt temp 2150 2150 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  2150  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 2100 K 
+#
+# fix              1  all npt temp 2150 2100 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 2100 K
+#  reset_timestep  0
+#  fix             1             all npt temp 2100 2100 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  2100  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 2050 K 
+#
+# fix              1  all npt temp 2100 2050 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 2050 K
+#  reset_timestep  0
+#  fix             1             all npt temp 2050 2050 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  2050  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 2000 K 
+#
+# fix              1  all npt temp 2050 2000 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 2000 K
+#  reset_timestep  0
+#  fix             1             all npt temp 2000 2000 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  2000  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1950 K 
+#
+# fix              1  all npt temp 2000 1950 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1950 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1950 1950 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1950  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1900 K 
+#
+# fix              1  all npt temp 1950 1900 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1900 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1900 1900 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1900  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1850 K 
+#
+# fix              1  all npt temp 1900 1850 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1850 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1850 1850 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1850  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+#
+## Quenching 1800 K 
+#
+# fix              1  all npt temp 1850 1800 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1800 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1800 1800 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1800  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1750 K 
+#
+# fix              1  all npt temp 1800 1750 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1750 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1750 1750 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1750  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1700 K 
+#
+# fix              1  all npt temp 1750 1700 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1700 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1700 1700 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1700  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1650 K 
+#
+# fix              1  all npt temp 1700 1650 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1650 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1650 1650 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1650  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1600 K 
+#
+# fix              1  all npt temp 1650 1600 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1600 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1600 1600 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1600  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1550 K 
+#
+# fix              1  all npt temp 1600 1550 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1550 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1550 1550 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1550  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1500 K 
+#
+# fix              1  all npt temp 1550 1500 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1500 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1500 1500 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1500  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1450 K 
+#
+# fix              1  all npt temp 1500 1450 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1450 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1450 1450 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1450  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1400 K 
+#
+# fix              1  all npt temp 1450 1400 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1400 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1400 1400 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1400  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1350 K 
+#
+# fix              1  all npt temp 1400 1350 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1350 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1350 1350 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1350  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1300 K 
+#
+# fix              1  all npt temp 1350 1300 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1300 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1300 1300 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1300  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1250 K 
+#
+# fix              1  all npt temp 1300 1250 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1250 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1250 1250 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1250  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1200 K 
+#
+# fix              1  all npt temp 1250 1200 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1200 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1200 1200 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1200  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1150 K 
+#
+# fix              1  all npt temp 1200 1150 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1150 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1150 1150 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1150  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1100 K 
+#
+# fix              1  all npt temp 1150 1100 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1100 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1100 1100 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1100  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1050 K 
+#
+# fix              1  all npt temp 1100 1050 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1050 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1050 1050 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1050  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 1000 K 
+#
+# fix              1  all npt temp 1050 1000 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 1000 K
+#  reset_timestep  0
+#  fix             1             all npt temp 1000 1000 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  1000  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 950 K 
+#
+# fix              1  all npt temp 1000 950 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 950 K
+#  reset_timestep  0
+#  fix             1             all npt temp 950 950 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  950  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 900 K 
+#
+# fix              1  all npt temp 950 900 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 900 K
+#  reset_timestep  0
+#  fix             1             all npt temp 900 900 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  900  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 850 K 
+#
+# fix              1  all npt temp 900 850 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 850 K
+#  reset_timestep  0
+#  fix             1             all npt temp 850 850 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  850  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 800 K 
+#
+# fix              1  all npt temp 850 800 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 800 K
+#  reset_timestep  0
+#  fix             1             all npt temp 800 800 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  800  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 750 K 
+#
+# fix              1  all npt temp 800 750 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 750 K
+#  reset_timestep  0
+#  fix             1             all npt temp 750 750 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  750  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 700 K 
+#
+# fix              1  all npt temp 750 700 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 700 K
+#  reset_timestep  0
+#  fix             1             all npt temp 700 700 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  700  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 650 K 
+#
+# fix              1  all npt temp 700 650 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 650 K
+#  reset_timestep  0
+#  fix             1             all npt temp 650 650 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  650  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 600 K 
+#
+# fix              1  all npt temp 650 600 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 600 K
+#  reset_timestep  0
+#  fix             1             all npt temp 600 600 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  600  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 550 K 
+#
+# fix              1  all npt temp 600 550 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 550 K
+#  reset_timestep  0
+#  fix             1             all npt temp 550 550 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  550  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 500 K 
+#
+# fix              1  all npt temp 550 500 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 500 K
+#  reset_timestep  0
+#  fix             1             all npt temp 500 500 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  500  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 450 K 
+#
+# fix              1  all npt temp 500 450 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 450 K
+#  reset_timestep  0
+#  fix             1             all npt temp 450 450 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  450  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 400 K 
+#
+# fix              1  all npt temp 450 400 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 400 K
+#  reset_timestep  0
+#  fix             1             all npt temp 400 400 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  400  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 350 K 
+#
+# fix              1  all npt temp 400 350 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 350 K
+#  reset_timestep  0
+#  fix             1             all npt temp 350 350 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  350  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
+## Quenching 300 K 
+#
+# fix              1  all npt temp 350 300 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+# run ${t_qu}
+# unfix  1
+#
+## Equilibration 300 K
+#  reset_timestep  0
+#  fix             1             all npt temp 300 300 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+#  fix             vec1          all vector  1 v_vol
+#  fix             vec2          all vector  1 v_energy
+#  fix             vec3          all vector  1 v_Temp
+#  fix             Esq           all vector  1 v_E2
+#  fix             Vsq           all vector  1 v_V2
+#  dump            data          all custom  ${t_eq}  Glass_300K.dat id type x y z vx vy vz
+#  dump_modify     data          element     Co Ni Cr Fe Mn
+#  run ${t_eq}
+#  variable        vol_med       equal ave(f_vec1)
+#  variable        vol2_med      equal ave(f_Vsq)
+#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
+#  variable        E_med         equal ave(f_vec2)
+#  variable        E2_med        equal ave(f_Esq)
+#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
+#  variable        T_ave         equal ave(f_vec3)
+#  print   "  300  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
+#  unfix 1
+#  unfix vec1
+#  unfix vec2
+#  unfix vec3
+#  unfix Esq
+#  unfix Vsq
+#  reset_timestep  0
+#
+#
