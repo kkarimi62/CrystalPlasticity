@@ -10,7 +10,7 @@ Reading data file ...
   50688 atoms
   reading velocities ...
   50688 velocities
-  read_data CPU = 0.169 seconds
+  read_data CPU = 0.178 seconds
 mass 1 58.993
 mass 2 58.6934
 mass 3 51.9961
@@ -90,19 +90,19 @@ Step Temp E_pair E_mol TotEng Press Volume
        8    299.43507   -218000.25            0    -216038.4    55.298157    607112.78 
        9    299.46684   -218000.45            0    -216038.4    55.936392    607112.78 
       10    299.50317   -218000.69            0    -216038.4    56.250974    607112.78 
-Loop time of 112.932 on 1 procs for 10 steps with 50688 atoms
+Loop time of 113.44 on 1 procs for 10 steps with 50688 atoms
 
-Performance: 0.008 ns/day, 3137.003 hours/ns, 0.089 timesteps/s
+Performance: 0.008 ns/day, 3151.110 hours/ns, 0.088 timesteps/s
 99.8% CPU use with 1 MPI tasks x no OpenMP threads
 
 MPI task timing breakdown:
 Section |  min time  |  avg time  |  max time  |%varavg| %total
 ---------------------------------------------------------------
-Pair    | 108.3      | 108.3      | 108.3      |   0.0 | 95.89
+Pair    | 108.86     | 108.86     | 108.86     |   0.0 | 95.96
 Neigh   | 0          | 0          | 0          |   0.0 |  0.00
-Comm    | 0.010652   | 0.010652   | 0.010652   |   0.0 |  0.01
-Output  | 4.4501     | 4.4501     | 4.4501     |   0.0 |  3.94
-Modify  | 0.16197    | 0.16197    | 0.16197    |   0.0 |  0.14
+Comm    | 0.010727   | 0.010727   | 0.010727   |   0.0 |  0.01
+Output  | 4.3907     | 4.3907     | 4.3907     |   0.0 |  3.87
+Modify  | 0.16622    | 0.16622    | 0.16622    |   0.0 |  0.15
 Other   |            | 0.01373    |            |       |  0.01
 
 Nlocal:        50688.0 ave       50688 max       50688 min
@@ -126,4 +126,4 @@ Dangerous builds = 0
 # SIMULATION DONE
 print "All done"
 All done
-Total wall time: 0:02:05
+Total wall time: 0:02:06
