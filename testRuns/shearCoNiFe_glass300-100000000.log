@@ -10,7 +10,7 @@ Reading data file ...
   50688 atoms
   reading velocities ...
   50688 velocities
-  read_data CPU = 0.148 seconds
+  read_data CPU = 0.196 seconds
 mass 1 58.993
 mass 2 58.6934
 mass 3 51.9961
@@ -83,20 +83,20 @@ Step Temp E_pair E_mol TotEng Press Volume
        1    299.36659    -217999.8            0    -216038.4    40.935057    607112.78 
        2    299.35856   -217999.74            0    -216038.4    44.055306    607112.78 
        3     299.3566   -217999.73            0    -216038.4    46.825427    607112.78 
-Loop time of 33.9795 on 1 procs for 3 steps with 50688 atoms
+Loop time of 34.2305 on 1 procs for 3 steps with 50688 atoms
 
-Performance: 0.008 ns/day, 3146.253 hours/ns, 0.088 timesteps/s
-99.8% CPU use with 1 MPI tasks x no OpenMP threads
+Performance: 0.008 ns/day, 3169.491 hours/ns, 0.088 timesteps/s
+99.9% CPU use with 1 MPI tasks x no OpenMP threads
 
 MPI task timing breakdown:
 Section |  min time  |  avg time  |  max time  |%varavg| %total
 ---------------------------------------------------------------
-Pair    | 32.577     | 32.577     | 32.577     |   0.0 | 95.87
+Pair    | 32.676     | 32.676     | 32.676     |   0.0 | 95.46
 Neigh   | 0          | 0          | 0          |   0.0 |  0.00
-Comm    | 0.0030782  | 0.0030782  | 0.0030782  |   0.0 |  0.01
-Output  | 1.3488     | 1.3488     | 1.3488     |   0.0 |  3.97
-Modify  | 0.047319   | 0.047319   | 0.047319   |   0.0 |  0.14
-Other   |            | 0.0035     |            |       |  0.01
+Comm    | 0.0042861  | 0.0042861  | 0.0042861  |   0.0 |  0.01
+Output  | 1.4863     | 1.4863     | 1.4863     |   0.0 |  4.34
+Modify  | 0.059905   | 0.059905   | 0.059905   |   0.0 |  0.18
+Other   |            | 0.003545   |            |       |  0.01
 
 Nlocal:        50688.0 ave       50688 max       50688 min
 Histogram: 1 0 0 0 0 0 0 0 0 0
