@@ -903,7 +903,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
             nv2++;
           }
         }
-//        stiff += ( ( stiff0 + stiff2 ) * recip  + stiff1 ) * recip;
+        stiff += ( ( stiff0 + stiff2 ) * recip  + stiff1 ) * recip;
         
         
         //--- sij contribution
