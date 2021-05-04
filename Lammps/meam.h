@@ -112,7 +112,7 @@ public:
 //  double **darho1dr, **darho2dr, **darho3dr, **darho3bdr;
     
   int maxneigh;
-  double *scrfcn, *dscrfcn, *fcpair;
+  double *scrfcn, *dscrfcn, *ddscrfcn, *fcpair;
 
   //angle for trimer, zigzag, line reference structures
   double stheta_meam[maxelt][maxelt];
