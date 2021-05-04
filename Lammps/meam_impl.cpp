@@ -39,7 +39,7 @@ MEAM::MEAM(Memory* mem)
 //  darho2b = NULL;
 
   maxneigh = 0;
-  scrfcn = dscrfcn = fcpair = NULL;
+  scrfcn = dscrfcn = ddscrfcn = fcpair = NULL;
 
   neltypes = 0;
   for (int i = 0; i < maxelt; i++) {
@@ -105,5 +105,6 @@ MEAM::~MEAM()
 
   memory->destroy(this->scrfcn);
   memory->destroy(this->dscrfcn);
+  memory->destroy(this->ddscrfcn);
   memory->destroy(this->fcpair);
 }
