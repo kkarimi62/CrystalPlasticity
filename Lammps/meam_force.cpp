@@ -110,7 +110,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 
     if (!iszero(scrfcn[fnoffset + jn]) && eltj >= 0) {
 
-      sij = scrfcn[fnoffset + jn] * fcpair[fnoffset + jn];
+      sij = scrfcn[fnoffset + jn] * fcpair[fnoffset + jn]; //--- 4.11a
       delij[0] = x[j][0] - xitmp;
       delij[1] = x[j][1] - yitmp;
       delij[2] = x[j][2] - zitmp;
@@ -878,6 +878,10 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           ddUddrij *= scaleij;
           for(m=0;m<3;m++) ddUdrdrijm[m] *= scaleij;
           for(m=0;m<6;m++) ddUdrijmdrijn[m] *= scaleij;
+          //
+          ddUddsij *= scaleij;
+          ddUdrijds *= scaleij;
+          for(m=0;m<3;m++) ddUdrijmds[m] *= scaleij;
         }
 
         //     Add the part of the force due to dUdrij and dUdsij
@@ -890,7 +894,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         }
 
         //--- add stiffness (units of u/r^2)
-        stiff = ddUddrij - dUdrij * recip;  //positive definite?????
+        stiff = ddUddrij - dUdrij * recip; 
         stiff0 = 0.0; 
         stiff1 = 0.0;
         stiff2 = 0.0;
@@ -911,7 +915,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         if (!iszero(dscrfcn[fnoffset + jn])) {
           stiff += ddUddsij * dscrfcn[fnoffset + jn] * dscrfcn[fnoffset + jn] +
                    ddUdrijds * 2.0 * dscrfcn[fnoffset + jn] +
-                   dUdsij * ( ddscrfcn[fnoffset + jn] - dscrfcn[fnoffset + jn] * recip ); // units of dscrfcn[fnoffset + jn] s/r^2????? 
+                   dUdsij * ( ddscrfcn[fnoffset + jn] - dscrfcn[fnoffset + jn] * recip );
           for (m = 0; m < 3; m++) {
             stiff0 += ddUdrijmds[m] * delij[m];
           }
@@ -973,7 +977,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           nv3 = 0;
           for (m = 0; m < 6; m++) {
             for (n = m; n < 6; n++) {
-               vatom[i][nv2] += vm[nv3] * rij2; //--- *r^2 to get energy  where initialized ???
+               vatom[i][nv2] += vm[nv3] * rij2; //--- *r^2 to get energy
                vatom[j][nv2] += vm[nv3] * rij2;
                nv2++;
                nv3++;
