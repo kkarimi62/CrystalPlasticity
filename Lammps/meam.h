@@ -213,7 +213,7 @@ protected:
     denom = rij4 - asq;
     denom = denom * denom;
     ddenom = 2*(rij4-asq)*(4*rij3);
-    dcikj = -4 * (-2 * rij2 * asq + rij4 * b + asq * b) / denom
+    dcikj = -4 * (-2 * rij2 * asq + rij4 * b + asq * b) / denom;
     return (-4*((-4 * rij * asq + 4*rij3 * b))-dcikj*ddenom)/denom ; //---(4.17a)
   }
   
