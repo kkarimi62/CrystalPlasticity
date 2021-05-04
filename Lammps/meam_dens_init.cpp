@@ -140,10 +140,12 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
   double xitmp, yitmp, zitmp, delxij, delyij, delzij, rij2, rij;
   double xjtmp, yjtmp, zjtmp, delxik, delyik, delzik, rik2 /*,rik*/;
   double xktmp, yktmp, zktmp, delxjk, delyjk, delzjk, rjk2 /*,rjk*/;
-  double xik, xjk, sij, fcij, sfcij, dfcij, sikj, dfikj, cikj;
+  double xik, xjk, sij, fcij, sfcij, dfcij, ddfcij, sikj, dfikj, ddfikj, cikj;
+  double arg1, arg1_d;
+  double dsij, ddsij;
   double Cmin, Cmax, delc, /*ebound,*/ a, coef1, coef2;
-  double dCikj;
-  double rnorm, fc, dfc, drinv;
+  double dCikj, ddCikj;
+  double rnorm, fc, dfc, ddfc, drinv;
 
   drinv = 1.0 / this->delr_meam;
   elti = fmap[type[i]];
