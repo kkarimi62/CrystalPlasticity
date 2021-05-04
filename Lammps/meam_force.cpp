@@ -900,7 +900,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
             nv2++;
           }  
         }
-        if (!isone(scaleij)) { //--- add higher order derivs!!!?????????????
+        if (!isone(scaleij)) { //--- add higher order derivatives !!!?????????????
           dUdrij *= scaleij;
           dUdsij *= scaleij;
           dUdrijm[0] *= scaleij;
@@ -1058,10 +1058,11 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                     if (cikj >= Cmin && cikj <= Cmax) {
                       cikj = (cikj - Cmin) / delc;
                       sikj = dfcut(cikj, dfc, ddfc);
-                      dCfunc2(rij2, rik2, rjk2, dCikj1, dCikj2);
+                      dCfunc2(rij2, rik2, rjk2, dCikj1, dCikj2); //--- 4.17b, 4.17c
                       a = sij / delc * dfc / sikj;
-                      dsij1 = a * dCikj1;
-                      dsij2 = a * dCikj2;
+                      dsij1 = a * dCikj1; //--- 4.22b
+                      dsij2 = a * dCikj2; //--- 4.22c
+                      //ddsij1, dsij2 ??
                     }
                   }
                 }
