@@ -202,10 +202,11 @@ protected:
   // 2nd Derivative of Cikj w.r.t. rij
   //     Inputs: rij,rij2,rik2,rjk2
   //
-  static double ddCfunc(const double rij2, const double rik2, const double rjk2) {
-    double rij4, a, asq, b,denom;
+  static double ddCfunc(const double rij, const double rij2, const double rik2, const double rjk2) {
+    double rij4, a, asq, b,denom, ddenom, rij3, dcikj;
 
     rij4 = rij2 * rij2;
+    rij3 = rij2 * rij;
     a = rik2 - rjk2;
     b = rik2 + rjk2;
     asq = a*a;
