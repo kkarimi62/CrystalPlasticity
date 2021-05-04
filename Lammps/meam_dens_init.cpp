@@ -83,10 +83,12 @@ MEAM::meam_dens_setup(int atom_nmax, int nall, int n_neigh)
   if (n_neigh > maxneigh) {
     memory->destroy(scrfcn);
     memory->destroy(dscrfcn);
+    memory->destroy(ddscrfcn);
     memory->destroy(fcpair);
     maxneigh = n_neigh;
     memory->create(scrfcn, maxneigh, "pair:scrfcn");
     memory->create(dscrfcn, maxneigh, "pair:dscrfcn");
+    memory->create(ddscrfcn, maxneigh, "pair:ddscrfcn");
     memory->create(fcpair, maxneigh, "pair:fcpair");
   }
 
@@ -120,7 +122,7 @@ MEAM::meam_dens_init(int i, int ntype, int* type, int* fmap, double** x,
                      int numneigh_full, int* firstneigh_full, int fnoffset)
 {
   //     Compute screening function and derivatives
-  getscreen(i, &scrfcn[fnoffset], &dscrfcn[fnoffset], &fcpair[fnoffset], x, numneigh, firstneigh,
+  getscreen(i, &scrfcn[fnoffset], &dscrfcn[fnoffset], &ddscrfcn[fnoffset], &fcpair[fnoffset], x, numneigh, firstneigh,
             numneigh_full, firstneigh_full, ntype, type, fmap);
 
   //     Calculate intermediate density terms to be communicated
@@ -130,7 +132,7 @@ MEAM::meam_dens_init(int i, int ntype, int* type, int* fmap, double** x,
 // ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
 void
-MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* fcpair, double** x, int numneigh,
+MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double* fcpair, double** x, int numneigh,
                 int* firstneigh, int numneigh_full, int* firstneigh_full, int /*ntype*/, int* type, int* fmap)
 {
   int jn, j, kn, k;
