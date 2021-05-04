@@ -1,7 +1,7 @@
 # Amin Esfandiarpour - Amin.esfandiarpour@ncbj.gov.pl- Am.esfandiyarpour@gmail.com
 
 variable initTemp equal 300          	# desired temperature
-variable runTime equal 3 #2000000   	# number of increment 
+variable runTime equal 100000 #2000000   	# number of increment 
 variable srate equal 1.0e8 
 log	     	shearCoNiFe_glass${initTemp}-${srate}.log
 units		metal
@@ -35,7 +35,7 @@ variable srate1 equal "v_srate / 1.0e12"
 fix             2 all deform 1  xy erate ${srate1}  units box  remap v
 compute 	1 all stress/atom NULL pair
 #dump      1 all custom 1 NiFe_glass-${initTemp}-${srate}.dump id type x y z vx vy vz  meam_force.cpp ln.967: 15+6+1
-dump    11 all custom 1 virialStress.xyz id type x y z c_1[1] c_1[2] c_1[3] c_1[4] c_1[5] c_1[6] c_1[22] 
+dump    11 all custom 100 virialStress.xyz id type x y z c_1[1] c_1[2] c_1[3] c_1[4] c_1[5] c_1[6] c_1[22] 
 #dump 2 all custom 10000 dump.NiFe_glass-${initTemp}-${srate}.unwrap id type xu yu zu 
 variable strainxy equal "(xy)/v_L0y"
 variable  tmp3 equal "vol"
