@@ -142,13 +142,15 @@ protected:
   //-----------------------------------------------------------------------------
   // Cutoff function and derivative
   //
-  static double dfcut(const double xi, double& dfc) {
+  static double dfcut(const double xi, double& dfc, double& ddfc) {
     double a, a3, a4, a1m4;
     if (xi >= 1.0) {
       dfc = 0.0;
+      ddfc = 0.0;
       return 1.0;
     } else if (xi <= 0.0) {
       dfc = 0.0;
+      ddfc = 0.0;
       return 0.0;
     } else {
       a = 1.0 - xi;
@@ -157,6 +159,7 @@ protected:
       a1m4 = 1.0-a4;
 
       dfc = 8 * a1m4 * a3;
+      ddfc = 8*(-3*a*a*a1m4+4*a3*a3);
       return a1m4*a1m4;
     }
   }
@@ -174,7 +177,7 @@ protected:
     asq = a*a;
     denom = rij4 - asq;
     denom = denom * denom;
-    return -4 * (-2 * rij2 * asq + rij4 * b + asq * b) / denom;
+    return -4 * (-2 * rij2 * asq + rij4 * b + asq * b) / denom; //---(4.17a)
   }
 
   //-----------------------------------------------------------------------------
@@ -191,10 +194,28 @@ protected:
     a = rik2 - rjk2;
     denom = rij4 - a * a;
     denom = denom * denom;
-    dCikj1 = 4 * rij2 * (rij4 + rik4 + 2 * rik2 * rjk2 - 3 * rjk4 - 2 * rij2 * a) / denom;
-    dCikj2 = 4 * rij2 * (rij4 - 3 * rik4 + 2 * rik2 * rjk2 + rjk4 + 2 * rij2 * a) / denom;
+    dCikj1 = 4 * rij2 * (rij4 + rik4 + 2 * rik2 * rjk2 - 3 * rjk4 - 2 * rij2 * a) / denom; //---(4.17b)
+    dCikj2 = 4 * rij2 * (rij4 - 3 * rik4 + 2 * rik2 * rjk2 + rjk4 + 2 * rij2 * a) / denom; //---(4.17c)
   }
 
+  //-----------------------------------------------------------------------------
+  // 2nd Derivative of Cikj w.r.t. rij
+  //     Inputs: rij,rij2,rik2,rjk2
+  //
+  static double ddCfunc(const double rij2, const double rik2, const double rjk2) {
+    double rij4, a, asq, b,denom;
+
+    rij4 = rij2 * rij2;
+    a = rik2 - rjk2;
+    b = rik2 + rjk2;
+    asq = a*a;
+    denom = rij4 - asq;
+    denom = denom * denom;
+    ddenom = 2*(rij4-asq)*(4*rij3);
+    dcikj = -4 * (-2 * rij2 * asq + rij4 * b + asq * b) / denom
+    return (-4*((-4 * rij * asq + 4*rij3 * b))-dcikj*ddenom)/denom ; //---(4.17a)
+  }
+  
   double G_gam(const double gamma, const int ibar, int &errorflag) const;
   double dG_gam(const double gamma, const int ibar, double &dG, double &ddG) const;
   double Get_ddrho1drdr(int i, 
