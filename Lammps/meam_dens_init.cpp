@@ -208,7 +208,7 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* fcpair, double**
       //     atom k can't possibly screen i-j
       if (a <= 0.0) continue;
 
-      cikj = (2.0 * (xik + xjk) + a - 2.0) / a;
+      cikj = (2.0 * (xik + xjk) + a - 2.0) / a; //--- Eq. (4.11d)
       Cmax = this->Cmax_meam[elti][eltj][eltk];
       Cmin = this->Cmin_meam[elti][eltj][eltk];
       if (cikj >= Cmax) continue;
@@ -220,19 +220,21 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* fcpair, double**
         break;
       } else {
         delc = Cmax - Cmin;
-        cikj = (cikj - Cmin) / delc;
+        cikj = (cikj - Cmin) / delc; //--- func. arg. in Eq.(4.11c)
         sikj = fcut(cikj); //--- Eq.(4.11c)
       }
-      sij *= sikj; 
+      sij *= sikj; //--- Eq.(4.11a) x fc????
     }
 
     fc = dfcut(rnorm, dfc);
     fcij = fc;
-    dfcij = dfc * drinv;
+    dfcij = dfc * drinv; 
 
     //     Now compute derivatives
     dscrfcn[jn] = 0.0;
-    sfcij = sij * fcij;
+    ddscrfcn[jn] = 0.0;
+    arg1 = 0.0;
+    sfcij = sij * fcij; //--- 4.11a
     if (!iszero(sfcij) && !isone(sfcij)) {
       for (kn = 0; kn < numneigh_full; kn++) {
         k = firstneigh_full[kn];
@@ -273,16 +275,24 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* fcpair, double**
           //     (rejected above)
         } else {
           delc = Cmax - Cmin;
-          cikj = (cikj - Cmin) / delc;
-          sikj = dfcut(cikj, dfikj);
+          cikj = (cikj - Cmin) / delc; //--- func. arg. in 4.20b
+          sikj = dfcut(cikj, dfikj, ddfikj ); //--- dfikj is (4.20b), sikj is (4.11c)
           coef1 = dfikj / (delc * sikj);
           dCikj = dCfunc(rij2, rik2, rjk2); //--- (4.17)
-          dscrfcn[jn] = dscrfcn[jn] + coef1 * dCikj; //--- (4.22)
+          ddCikj = dCfunc(rij2, rik2, rjk2);
+          dscrfcn[jn] = dscrfcn[jn] + coef1 * dCikj; //--- (4.21): sum over k
+          arg1_d += (1.0/delc)*( -(dfikj*dfikj*dCikj*dCikj)/delc/sikj/sikj+  
+                                (ddfikj*dCikj*dCikj/sikj) + 
+                                (dfikj*ddCikj/sikj)  ) ; //initialize ???
         }
       }
       coef1 = sfcij;
-      coef2 = sij * dfcij / rij;
-      dscrfcn[jn] = dscrfcn[jn] * coef1 - coef2;
+      coef2 = sij * dfcij / rij; //--- rij????? should be drinv??   //if dscrfcn=0 pass ddscrfcn=0
+      arg_1 = dscrfcn[jn];
+      dsij = sij * arg_1;
+      ddsij = dsij * arg_1 + sij * arg1_d;
+      dscrfcn[jn] = dscrfcn[jn] * coef1 - coef2; //--- (4.22a)
+      ddscrfcn[jn] = - drinv * dfcij * dsij + fcij * ddsij - drinv * ( dsij * dfcij- sij * ddfcij * drinv ); //define ddsij ddfcij
     }
 
     scrfcn[jn] = sij;
