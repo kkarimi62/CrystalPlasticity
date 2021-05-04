@@ -228,9 +228,10 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
       sij *= sikj; //--- Eq.(4.11a) x fc????
     }
 
-    fc = dfcut(rnorm, dfc);
+    fc = dfcut(rnorm, dfc, ddfc);
     fcij = fc;
     dfcij = dfc * drinv; 
+    ddfcij = ddfc * drinv * drinv; 
 
     //     Now compute derivatives
     dscrfcn[jn] = 0.0;
@@ -294,7 +295,7 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
       dsij = sij * arg_1;
       ddsij = dsij * arg_1 + sij * arg1_d;
       dscrfcn[jn] = dscrfcn[jn] * coef1 - coef2; //--- (4.22a)
-      ddscrfcn[jn] = - drinv * dfcij * dsij + fcij * ddsij - drinv * ( dsij * dfcij- sij * ddfcij * drinv ); //define ddsij ddfcij
+      ddscrfcn[jn] = - drinv * dfcij * dsij + fcij * ddsij - drinv * ( dsij * dfcij- sij * ddfcij * drinv );
     }
 
     scrfcn[jn] = sij;
