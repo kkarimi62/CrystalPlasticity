@@ -991,7 +991,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           k = firstneigh_full[kn];
           eltk = fmap[type[k]];
           if (k != j && eltk >= 0) {
-            double xik, xjk, cikj, sikj, dfc, a;
+            double xik, xjk, cikj, sikj, dfc, ddfc, a;
             double dCikj1, dCikj2;
             double delc, rik2, rjk2;
 
@@ -1021,7 +1021,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                     cikj = (2.0 * (xik + xjk) + a - 2.0) / a;
                     if (cikj >= Cmin && cikj <= Cmax) {
                       cikj = (cikj - Cmin) / delc;
-                      sikj = dfcut(cikj, dfc);
+                      sikj = dfcut(cikj, dfc, ddfc);
                       dCfunc2(rij2, rik2, rjk2, dCikj1, dCikj2);
                       a = sij / delc * dfc / sikj;
                       dsij1 = a * dCikj1;
