@@ -329,7 +329,7 @@ protected:
 
 protected:
   void meam_checkindex(int, int, int, int*, int*);
-  void getscreen(int i, double* scrfcn, double* dscrfcn, double* fcpair, double** x, int numneigh,
+  void getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double* fcpair, double** x, int numneigh,
                  int* firstneigh, int numneigh_full, int* firstneigh_full, int ntype, int* type, int* fmap);
   void calc_rho1(int i, int ntype, int* type, int* fmap, double** x, int numneigh, int* firstneigh,
                  double* scrfcn, double* fcpair);
