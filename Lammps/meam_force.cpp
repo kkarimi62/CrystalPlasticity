@@ -703,7 +703,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           
           
           
-          if (this->ialloy == 1) {
+          if (this->ialloy == 1) {   // couldn't find in the report?????
             a1i = fdiv_zero(rhoa0j, tsq_ave[i][0]);
             a1j = fdiv_zero(rhoa0i, tsq_ave[j][0]);
             a2i = fdiv_zero(rhoa0j, tsq_ave[i][1]);
@@ -726,7 +726,20 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
             dt2ds2 = 0.0;
             dt3ds1 = 0.0;
             dt3ds2 = 0.0;
-
+            //
+            ddt1dsds1 = 0.0;
+            ddt1dsds2 = 0.0;
+            ddt2dsds1 = 0.0;
+            ddt2dsds2 = 0.0;
+            ddt3dsds1 = 0.0;
+            ddt3dsds2 = 0.0;
+            //
+            ddt1drds1 = 0.0;
+            ddt1drds2 = 0.0;
+            ddt2drds1 = 0.0;
+            ddt2drds2 = 0.0;
+            ddt3drds1 = 0.0;
+            ddt3drds2 = 0.0;
           } else {
             ai = 0.0;
             ai_d = 0.0;
