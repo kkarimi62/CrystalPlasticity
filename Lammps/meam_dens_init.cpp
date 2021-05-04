@@ -238,7 +238,7 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
     //     Now compute derivatives
     dscrfcn[jn] = 0.0;
     ddscrfcn[jn] = 0.0;
-    arg1 = 0.0;
+    arg1_d = 0.0;
     sfcij = sij * fcij; //--- 4.11a
     if (!iszero(sfcij) && !isone(sfcij)) {
       for (kn = 0; kn < numneigh_full; kn++) {
@@ -293,9 +293,9 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
       }
       coef1 = sfcij;
       coef2 = sij * dfcij / rij; //--- rij????? should be drinv??   //if dscrfcn=0 pass ddscrfcn=0
-      arg_1 = dscrfcn[jn];
-      dsij = sij * arg_1;
-      ddsij = dsij * arg_1 + sij * arg1_d;
+      arg1 = dscrfcn[jn];
+      dsij = sij * arg1;
+      ddsij = dsij * arg1 + sij * arg1_d;
       dscrfcn[jn] = dscrfcn[jn] * coef1 - coef2; //--- (4.22a)
       ddscrfcn[jn] = - drinv * dfcij * dsij + fcij * ddsij - drinv * ( dsij * dfcij- sij * ddfcij * drinv );
     }
