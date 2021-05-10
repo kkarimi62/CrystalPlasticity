@@ -945,15 +945,15 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         stiff += ( ( stiff0 + stiff2 ) * recip  + stiff1 ) * recip;
         
         
-        //--- sij contribution
+        //--- sij contribution ?????????????????
         if (!iszero(dscrfcn[fnoffset + jn]) or !iszero(ddscrfcn[fnoffset + jn])){
-          stiff += ddUddsij * dscrfcn[fnoffset + jn] * dscrfcn[fnoffset + jn] * rij2 +
-                   ddUdrijds * 2.0 * dscrfcn[fnoffset + jn] * rij+
-                   dUdsij * ( ddscrfcn[fnoffset + jn] - dscrfcn[fnoffset + jn]);
-          stiff0 = 0.0;
-          for (m = 0; m < 3; m++) stiff0 += ddUdrijmds[m] * delij[m];
-          stiff0 *= 2.0 * dscrfcn[fnoffset + jn];
-          stiff +=  stiff0;
+//           stiff += ddUddsij * dscrfcn[fnoffset + jn] * dscrfcn[fnoffset + jn] * rij2 +
+//                    ddUdrijds * 2.0 * dscrfcn[fnoffset + jn] * rij+
+//                    dUdsij * ( ddscrfcn[fnoffset + jn] - dscrfcn[fnoffset + jn]);
+//           stiff0 = 0.0;
+//           for (m = 0; m < 3; m++) stiff0 += ddUdrijmds[m] * delij[m];
+//           stiff0 *= 2.0 * dscrfcn[fnoffset + jn];
+//           stiff +=  stiff0;
         }
         
         
