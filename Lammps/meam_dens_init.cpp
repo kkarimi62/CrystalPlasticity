@@ -284,21 +284,23 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
           cikj = (cikj - Cmin) / delc; //--- func. arg. in 4.20b
           sikj = dfcut(cikj, dfikj, ddfikj ); //--- dfikj is (4.20b), sikj is (4.11c)
           coef1 = dfikj / (delc * sikj);
-          dCikj = dCfunc(rij2, rik2, rjk2); //--- (4.17)
+          dCikj = dCfunc(rij2, rik2, rjk2); //--- (4.17)/rij
           ddCikj = ddCfunc(rij, rij2, rik2, rjk2);
-          dscrfcn[jn] = dscrfcn[jn] + coef1 * dCikj; //--- (4.21): sum over k
+          dscrfcn[jn] = dscrfcn[jn] + coef1 * dCikj; //--- (4.21)/rij: sum over k
+          dCikj *= rij;
           arg1_d += (1.0/delc)*( -(dfikj*dfikj*dCikj*dCikj)/delc/sikj/sikj+  
                                 (ddfikj*dCikj*dCikj/sikj) + 
-                                (dfikj*ddCikj/sikj)  ) ; //initialize ???
+                                (dfikj*ddCikj/sikj)  ) ;
         }
       }
       coef1 = sfcij;
-      coef2 = sij * dfcij / rij; //--- rij????? should be drinv??
-      arg1 = dscrfcn[jn];
+      coef2 = sij * dfcij / rij; //--- scaled by rij
+      arg1 = dscrfcn[jn] * rij;
       dsij = sij * arg1;
       ddsij = dsij * arg1 + sij * arg1_d;
-      dscrfcn[jn] = dscrfcn[jn] * coef1 - coef2; //--- (4.22a)
-      ddscrfcn[jn] = - drinv * dfcij * dsij + fcij * ddsij - drinv * ( dsij * dfcij- sij * ddfcij * drinv );
+      dscrfcn[jn] = dscrfcn[jn] * coef1 - coef2; //--- (4.22a)/rij: units of s/r^2
+//      ddscrfcn[jn] = - drinv * dfcij * dsij + fcij * ddsij - drinv * ( dsij * dfcij- sij * ddfcij * drinv );
+      ddscrfcn[jn] = - drinv * dfc * dsij + fcij * ddsij - drinv * ( dsij * dfc - sij * ddfc * drinv ); //--- units of s/r^2
     }
 
     scrfcn[jn] = sij;
