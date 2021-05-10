@@ -285,7 +285,7 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
           sikj = dfcut(cikj, dfikj, ddfikj ); //--- dfikj is (4.20b), sikj is (4.11c)
           coef1 = dfikj / (delc * sikj);
           dCikj = dCfunc(rij2, rik2, rjk2); //--- (4.17a)/rij
-          ddCikj = ddCfunc(rij, rij2, rik2, rjk2);
+          ddCikj = ddCfunc(rij, rij2, rik2, rjk2); //--- d(4.17a)/dr
           dscrfcn[jn] = dscrfcn[jn] + coef1 * dCikj; //--- (4.21)/rij: sum over k
           dCikj *= rij;
           arg1_d += (1.0/delc)*( -(dfikj*dfikj*dCikj*dCikj)/delc/sikj/sikj+  
