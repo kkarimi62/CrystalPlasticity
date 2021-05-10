@@ -1072,6 +1072,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                       ddCfunc2(rik, rjk, rij2, rik2, rjk2, ddCikj1, ddCikj2);
                       dCikj1 *= rik;
                       dCikj2 *= rjk;
+                      //
                       arg1 = dCikj1 / delc * dfc / sikj;
                       arg1_d = (1.0/delc)*( -(dfc*dfc*dCikj1*dCikj1)/delc/sikj/sikj+  
                                 (ddfc*dCikj1*dCikj1/sikj) + 
@@ -1080,7 +1081,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                       //
                       arg1 = dCikj2 / delc * dfc / sikj;
                       arg1_d = (1.0/delc)*( -(dfc*dfc*dCikj2*dCikj2)/delc/sikj/sikj+  
-                                (ddfc*dCikj1*dCikj2/sikj) + 
+                                (ddfc*dCikj2*dCikj2/sikj) + 
                                 (dfc*ddCikj2/sikj)  ) ;                    
                       ddsij2 = rjk * dsij2 * arg1 + sij * arg1_d;                       
                     }
@@ -1127,16 +1128,16 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
               }
             }
             //--- add stiffness
-//             if (!iszero(dsij1) || !iszero(dsij2) || !iszero(ddsij1) || !iszero(ddsij2) ) {
+            if (!iszero(dsij1) || !iszero(dsij2) || !iszero(ddsij1) || !iszero(ddsij2) ) {
             
-//             stiff1 = ddUddsij * dsij1 * dsij1 * rik2 +
-//                      ddUdrijds * 2.0 * dsij1 * rik+
-//                      dUdsij * ( ddsij1 - dsij1); //--- units of u/r^2
-//             stiff1 *= rik2; //--- units of energy
-//             stiff2 = ddUddsij * dsij2 * dsij2 * rjk2 +
-//                      ddUdrijds * 2.0 * dsij2 * rjk+
-//                      dUdsij * ( ddsij2 - dsij2 );
-//              stiff2 *= rjk2;
+            stiff1 = ddUddsij * dsij1 * dsij1 * rik2 +
+                     ddUdrijds * 2.0 * dsij1 * rik+
+                     dUdsij * ( ddsij1 - dsij1); //--- units of u/r^2
+            stiff1 *= rik2; //--- units of energy
+            stiff2 = ddUddsij * dsij2 * dsij2 * rjk2 +
+                     ddUdrijds * 2.0 * dsij2 * rjk+
+                     dUdsij * ( ddsij2 - dsij2 );
+             stiff2 *= rjk2;
 
           //--- per-atom modulus
 //            n0 = dxik / rik;
@@ -1183,7 +1184,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 //                nv3++;
 //             }
 //           }            
-//           }             
+           }             
            }
           //     end of k loop
         }
