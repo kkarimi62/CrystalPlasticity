@@ -287,7 +287,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         for (n = 0; n < 3; n++) {
           for (p = n; p < 3; p++) {
             for (q = p; q < 3; q++) {
-              arg = delij[n] * delij[p] * delij[q] * this->v3D[nv3];  //delij or delji????
+              arg = delij[n] * delij[p] * delij[q] * this->v3D[nv3];
               arg1i3 +=  arho3[i][nv3] * arg; //--- arho3 is Y_{3i\sigma\beta\gamma} Eq.(4.27c)
               arg1j3 +=  - arho3[j][nv3] * arg; 
               arg1i3_d +=  darho3dri[nv3] * arg;
@@ -1174,9 +1174,9 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           nv2 = 6;
           for (m = 0; m < 6; m++) {
             for (n = m; n < 6; n++) {
-               vatom[i][nv2] += vm[nv3];
-               vatom[j][nv2] += vm[nv3];
-               vatom[k][nv2] += vm[nv3];
+//                vatom[i][nv2] += vm[nv3];
+//                vatom[j][nv2] += vm[nv3];
+//                vatom[k][nv2] += vm[nv3];
                nv2++;
                nv3++;
             }
