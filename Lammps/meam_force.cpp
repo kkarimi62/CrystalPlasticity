@@ -952,7 +952,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
             stiff0 += ddUdrijmds[m] * delij[m];
           }
           stiff0 *= 2.0 * dscrfcn[fnoffset + jn] * recip;
-          stiff +=  stiff0 + stiff1;
+          stiff +=  stiff0;
         }
         
         
