@@ -287,9 +287,10 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
           dCikj = dCfunc(rij2, rik2, rjk2); //--- (4.17a)/rij
           ddCikj = ddCfunc(rij, rij2, rik2, rjk2);
           dscrfcn[jn] = dscrfcn[jn] + coef1 * dCikj; //--- (4.21)/rij: sum over k
+          dCikj *= rij;
           arg1_d += (1.0/delc)*( -(dfikj*dfikj*dCikj*dCikj)/delc/sikj/sikj+  
                                 (ddfikj*dCikj*dCikj/sikj) + 
-                                (dfikj*ddCikj/sikj)  ) ; //initialize ???
+                                (dfikj*ddCikj/sikj)  );
         }
       }
       coef1 = sfcij;
