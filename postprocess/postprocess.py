@@ -17,7 +17,7 @@ if __name__ == '__main__':
 	mem = '4gb'
 	partition = 'single' #'cpu2019' #'bigmem' #'single' #'parallel' #'single'
 	argv = " -p path \'%s"%(readPath) 
-#	argv2nd = " -p TCRLTN 10" #lambdc 1.0e5"
+	argv2nd = "" #lambdc 1.0e5"
 	PYFILdic = { 
 		0:'ElasticConstants.ipynb',
 		}
