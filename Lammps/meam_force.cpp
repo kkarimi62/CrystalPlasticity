@@ -1131,14 +1131,14 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
             //--- add stiffness
             if (!iszero(dsij1) || !iszero(dsij2) || !iszero(ddsij1) || !iszero(ddsij2) ) {
             
-            stif1 = ddUddsij * dsij1 * dsij1 * rik2 +
-                     ddUdrijds * 2.0 * dsij1 * rik +
-                     dUdsij * ( ddsij1 - dsij1); //--- units of u/r^2
-            stif1 *= rik2; //--- units of energy
-            stif2 = ddUddsij * dsij2 * dsij2 * rjk2 +
-                     ddUdrijds * 2.0 * dsij2 * rjk+
-                     dUdsij * ( ddsij2 - dsij2 );
-             stif2 *= rjk2;
+//             stif1 = ddUddsij * dsij1 * dsij1 * rik2 +
+//                      ddUdrijds * 2.0 * dsij1 * rik +
+//                      dUdsij * ( ddsij1 - dsij1); //--- units of u/r^2
+//             stif1 *= rik2; //--- units of energy
+//             stif2 = ddUddsij * dsij2 * dsij2 * rjk2 +
+//                      ddUdrijds * 2.0 * dsij2 * rjk+
+//                      dUdsij * ( ddsij2 - dsij2 );
+//              stif2 *= rjk2;
 
           //--- per-atom modulus
 //            n0 = dxik / rik;
