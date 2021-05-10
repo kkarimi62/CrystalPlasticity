@@ -177,7 +177,7 @@ protected:
     asq = a*a;
     denom = rij4 - asq;
     denom = denom * denom;
-    return -4 * (-2 * rij2 * asq + rij4 * b + asq * b) / denom; //---(4.17a)
+    return -4 * (-2 * rij2 * asq + rij4 * b + asq * b) / denom; //---(4.17a)/rij: wrong sign for rij2 * asq in the report
   }
 
   //-----------------------------------------------------------------------------
@@ -194,8 +194,8 @@ protected:
     a = rik2 - rjk2;
     denom = rij4 - a * a;
     denom = denom * denom;
-    dCikj1 = 4 * rij2 * (rij4 + rik4 + 2 * rik2 * rjk2 - 3 * rjk4 - 2 * rij2 * a) / denom; //---(4.17b)
-    dCikj2 = 4 * rij2 * (rij4 - 3 * rik4 + 2 * rik2 * rjk2 + rjk4 + 2 * rij2 * a) / denom; //---(4.17c)
+    dCikj1 = 4 * rij2 * (rij4 + rik4 + 2 * rik2 * rjk2 - 3 * rjk4 - 2 * rij2 * a) / denom; //---(4.17b)/rik
+    dCikj2 = 4 * rij2 * (rij4 - 3 * rik4 + 2 * rik2 * rjk2 + rjk4 + 2 * rij2 * a) / denom; //---(4.17c)/rjk
   }
 
   //-----------------------------------------------------------------------------
@@ -203,7 +203,7 @@ protected:
   //     Inputs: rij,rij2,rik2,rjk2
   //
   static double ddCfunc(const double rij, const double rij2, const double rik2, const double rjk2) {
-    double rij4, a, asq, b,denom, ddenom, rij3, dcikj;
+    double rij4, a, asq, b,denom, ddenom, rij3, dcikj, ddcikj;
 
     rij4 = rij2 * rij2;
     rij3 = rij2 * rij;
@@ -213,8 +213,13 @@ protected:
     denom = rij4 - asq;
     denom = denom * denom;
     ddenom = 2*(rij4-asq)*(4*rij3);
-    dcikj = -4 * (-2 * rij2 * asq + rij4 * b + asq * b) / denom;
-    return (-4*((-4 * rij * asq + 4*rij3 * b))-dcikj*ddenom)/denom ; //---(4.17a)
+    
+    dcikj = rij * dCfunc(rij2, rik2, rjk2);
+    ddcikj = -4 * (-2 * rij2 * asq + rij4 * b + asq * b) - 4 * rij * (-2 * 2 * rij * asq + 4*rij3 * b ) - dcikj * ddenom;
+    ddcikj /= denom;
+    
+    return ddcikj;    
+    
   }
   
   double G_gam(const double gamma, const int ibar, int &errorflag) const;
