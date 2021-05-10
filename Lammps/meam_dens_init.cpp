@@ -234,7 +234,7 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
     fc = dfcut(rnorm, dfc, ddfc);
     fcij = fc;
     dfcij = dfc * drinv; 
-//    ddfcij = ddfc * drinv * drinv; 
+    ddfcij = ddfc * drinv * drinv; 
 
     //     Now compute derivatives
     dscrfcn[jn] = 0.0;
@@ -287,7 +287,7 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
           dCikj = dCfunc(rij2, rik2, rjk2); //--- (4.17a)/rij
           ddCikj = ddCfunc(rij, rij2, rik2, rjk2); //--- d(4.17a)/dr
           dscrfcn[jn] = dscrfcn[jn] + coef1 * dCikj; //--- (4.21)/rij: sum over k
-          dCikj *= rij;
+//          dCikj *= rij;
           arg1_d += (1.0/delc)*( -(dfikj*dfikj*dCikj*dCikj)/delc/sikj/sikj+  
                                 (ddfikj*dCikj*dCikj/sikj) + 
                                 (dfikj*ddCikj/sikj)  );
@@ -295,11 +295,12 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
       }
       coef1 = sfcij;
       coef2 = sij * dfcij / rij; //--- scale by rij???!!!
-      arg1 = dscrfcn[jn] * rij;
+      arg1 = dscrfcn[jn];// * rij;
       dsij = sij * arg1;
       ddsij = dsij * arg1 + sij * arg1_d;
       dscrfcn[jn] = dscrfcn[jn] * coef1 - coef2; //--- (4.22a) / rij: units of s/r^2
-      ddscrfcn[jn] = - drinv * dfc * dsij + fcij * ddsij - drinv * ( dsij * dfc - sij * ddfc * drinv ); //--- units of s/r^2
+//      ddscrfcn[jn] = - drinv * dfc * dsij + fcij * ddsij - drinv * ( dsij * dfc - sij * ddfc * drinv ); //--- units of s/r^2
+      ddscrfcn[jn] = - drinv * dfcij * dsij + fcij * ddsij - drinv * ( dsij * dfcij- sij * ddfcij * drinv );
     }
 
     scrfcn[jn] = sij;
