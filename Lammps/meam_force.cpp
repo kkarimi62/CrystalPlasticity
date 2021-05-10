@@ -1069,20 +1069,20 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                       dsij1 = a * dCikj1; //--- 4.22b/rik: units of s/r^2
                       dsij2 = a * dCikj2; //--- 4.22c/rjk
 //
-                      ddCfunc2(rik, rjk, rij2, rik2, rjk2, ddCikj1, ddCikj2);
-                      dCikj1 *= rik;
-                      dCikj2 *= rjk;
-                      arg1 = dCikj1 / delc * dfc / sikj;
-                      arg1_d = (1.0/delc)*( -(dfc*dfc*dCikj1*dCikj1)/delc/sikj/sikj+  
-                                (ddfc*dCikj1*dCikj1/sikj) + 
-                                (dfc*ddCikj1/sikj)  ) ;                
-                      ddsij1 = rik * dsij1 * arg1 + sij * arg1_d; //--- units of s/r^2
-                      //
-                      arg1 = dCikj2 / delc * dfc / sikj;
-                      arg1_d = (1.0/delc)*( -(dfc*dfc*dCikj2*dCikj2)/delc/sikj/sikj+  
-                                (ddfc*dCikj1*dCikj2/sikj) + 
-                                (dfc*ddCikj2/sikj)  ) ;                    
-                      ddsij2 = rjk * dsij2 * arg1 + sij * arg1_d;                       
+//                       ddCfunc2(rik, rjk, rij2, rik2, rjk2, ddCikj1, ddCikj2);
+//                       dCikj1 *= rik;
+//                       dCikj2 *= rjk;
+//                       arg1 = dCikj1 / delc * dfc / sikj;
+//                       arg1_d = (1.0/delc)*( -(dfc*dfc*dCikj1*dCikj1)/delc/sikj/sikj+  
+//                                 (ddfc*dCikj1*dCikj1/sikj) + 
+//                                 (dfc*ddCikj1/sikj)  ) ;                
+//                       ddsij1 = rik * dsij1 * arg1 + sij * arg1_d; //--- units of s/r^2
+//                       //
+//                       arg1 = dCikj2 / delc * dfc / sikj;
+//                       arg1_d = (1.0/delc)*( -(dfc*dfc*dCikj2*dCikj2)/delc/sikj/sikj+  
+//                                 (ddfc*dCikj1*dCikj2/sikj) + 
+//                                 (dfc*ddCikj2/sikj)  ) ;                    
+//                       ddsij2 = rjk * dsij2 * arg1 + sij * arg1_d;                       
                     }
                   }
                 }
@@ -1127,64 +1127,64 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
               }
             }
             //--- add stiffness
-            if (!iszero(dsij1) || !iszero(dsij2) || !iszero(ddsij1) || !iszero(ddsij2) ) {
+//             if (!iszero(dsij1) || !iszero(dsij2) || !iszero(ddsij1) || !iszero(ddsij2) ) {
             
-            stiff1 = ddUddsij * dsij1 * dsij1 * rik2 +
-                     ddUdrijds * 2.0 * dsij1 * rik+
-                     dUdsij * ( ddsij1 - dsij1); //--- units of u/r^2
-            stiff1 *= rik2; //--- units of energy
-            stiff2 = ddUddsij * dsij2 * dsij2 * rjk2 +
-                     ddUdrijds * 2.0 * dsij2 * rjk+
-                     dUdsij * ( ddsij2 - dsij2 );
-             stiff2 *= rjk2;
+//             stiff1 = ddUddsij * dsij1 * dsij1 * rik2 +
+//                      ddUdrijds * 2.0 * dsij1 * rik+
+//                      dUdsij * ( ddsij1 - dsij1); //--- units of u/r^2
+//             stiff1 *= rik2; //--- units of energy
+//             stiff2 = ddUddsij * dsij2 * dsij2 * rjk2 +
+//                      ddUdrijds * 2.0 * dsij2 * rjk+
+//                      dUdsij * ( ddsij2 - dsij2 );
+//              stiff2 *= rjk2;
 
           //--- per-atom modulus
-           n0 = dxik / rik;
-           n1 = dyik / rik;
-           n2 = dzik / rik;
-           m0 = dxjk / rjk;
-           m1 = dyjk / rjk;
-           m2 = dzjk / rjk;
-          vm[ 0 ]  = -third * (stiff1 * n0 * n0 * n0 * n0+stiff2 * m0 * m0 * m0 * m0);
-          vm[ 1 ]  = -third * (stiff1 * n0 * n0 * n1 * n1+stiff2 * m0 * m0 * m1 * m1);
-          vm[ 2 ]  = -third * (stiff1 * n0 * n0 * n2 * n2+stiff2 * m0 * m0 * m2 * m2);
-          vm[ 3 ]  = -third * (stiff1 * n0 * n0 * n0 * n1+stiff2 * m0 * m0 * m0 * m1);
-          vm[ 4 ]  = -third * (stiff1 * n0 * n0 * n0 * n2+stiff2 * m0 * m0 * m0 * m2);
-          vm[ 5 ]  = -third * (stiff1 * n0 * n0 * n1 * n2+stiff2 * m0 * m0 * m1 * m2);
-          //
-          vm[ 6 ]  = -third * (stiff1 * n1 * n1 * n1 * n1+stiff2 * m1 * m1 * m1 * m1);
-          vm[ 7 ]  = -third * (stiff1 * n1 * n1 * n2 * n2+stiff2 * m1 * m1 * m2 * m2);
-          vm[ 8 ]  = -third * (stiff1 * n1 * n1 * n0 * n1+stiff2 * m1 * m1 * m0 * m1);
-          vm[ 9 ]  = -third * (stiff1 * n1 * n1 * n0 * n2+stiff2 * m1 * m1 * m0 * m2);
-          vm[ 10 ] = -third * (stiff1 * n1 * n1 * n1 * n2+stiff2 * m1 * m1 * m1 * m2);
-          //
-          vm[ 11 ] = -third * (stiff1 * n2 * n2 * n2 * n2+stiff2 * m2 * m2 * m2 * m2);
-          vm[ 12 ] = -third * (stiff1 * n2 * n2 * n0 * n1+stiff2 * m2 * m2 * m0 * m1);
-          vm[ 13 ] = -third * (stiff1 * n2 * n2 * n0 * n2+stiff2 * m2 * m2 * m0 * m2);
-          vm[ 14 ] = -third * (stiff1 * n2 * n2 * n1 * n2+stiff2 * m2 * m2 * m1 * m2);
-          //
-          vm[ 15 ] = -third * (stiff1 * n0 * n1 * n0 * n1+stiff2 * m0 * m1 * m0 * m1);
-          vm[ 16 ] = -third * (stiff1 * n0 * n1 * n0 * n2+stiff2 * m0 * m1 * m0 * m2);
-          vm[ 17 ] = -third * (stiff1 * n0 * n1 * n1 * n2+stiff2 * m0 * m1 * m1 * m2);
-          //
-          vm[ 18 ] = -third * (stiff1 * n0 * n2 * n0 * n2+stiff2 * m0 * m2 * m0 * m2);
-          vm[ 19 ] = -third * (stiff1 * n0 * n2 * n1 * n2+stiff2 * m0 * m2 * m1 * m2);
-          //
-          vm[ 20 ] = -third * (stiff1 * n1 * n2 * n1 * n2+stiff2 * m1 * m2 * m1 * m2);
-          //
-          nv3 = 0;
-          nv2 = 6;
-          for (m = 0; m < 6; m++) {
-            for (n = m; n < 6; n++) {
-//                vatom[i][nv2] += vm[nv3];
-//                vatom[j][nv2] += vm[nv3];
-//                vatom[k][nv2] += vm[nv3];
-               nv2++;
-               nv3++;
-            }
-          }            
-          }             
-          }
+//            n0 = dxik / rik;
+//            n1 = dyik / rik;
+//            n2 = dzik / rik;
+//            m0 = dxjk / rjk;
+//            m1 = dyjk / rjk;
+//            m2 = dzjk / rjk;
+//           vm[ 0 ]  = -third * (stiff1 * n0 * n0 * n0 * n0+stiff2 * m0 * m0 * m0 * m0);
+//           vm[ 1 ]  = -third * (stiff1 * n0 * n0 * n1 * n1+stiff2 * m0 * m0 * m1 * m1);
+//           vm[ 2 ]  = -third * (stiff1 * n0 * n0 * n2 * n2+stiff2 * m0 * m0 * m2 * m2);
+//           vm[ 3 ]  = -third * (stiff1 * n0 * n0 * n0 * n1+stiff2 * m0 * m0 * m0 * m1);
+//           vm[ 4 ]  = -third * (stiff1 * n0 * n0 * n0 * n2+stiff2 * m0 * m0 * m0 * m2);
+//           vm[ 5 ]  = -third * (stiff1 * n0 * n0 * n1 * n2+stiff2 * m0 * m0 * m1 * m2);
+//           //
+//           vm[ 6 ]  = -third * (stiff1 * n1 * n1 * n1 * n1+stiff2 * m1 * m1 * m1 * m1);
+//           vm[ 7 ]  = -third * (stiff1 * n1 * n1 * n2 * n2+stiff2 * m1 * m1 * m2 * m2);
+//           vm[ 8 ]  = -third * (stiff1 * n1 * n1 * n0 * n1+stiff2 * m1 * m1 * m0 * m1);
+//           vm[ 9 ]  = -third * (stiff1 * n1 * n1 * n0 * n2+stiff2 * m1 * m1 * m0 * m2);
+//           vm[ 10 ] = -third * (stiff1 * n1 * n1 * n1 * n2+stiff2 * m1 * m1 * m1 * m2);
+//           //
+//           vm[ 11 ] = -third * (stiff1 * n2 * n2 * n2 * n2+stiff2 * m2 * m2 * m2 * m2);
+//           vm[ 12 ] = -third * (stiff1 * n2 * n2 * n0 * n1+stiff2 * m2 * m2 * m0 * m1);
+//           vm[ 13 ] = -third * (stiff1 * n2 * n2 * n0 * n2+stiff2 * m2 * m2 * m0 * m2);
+//           vm[ 14 ] = -third * (stiff1 * n2 * n2 * n1 * n2+stiff2 * m2 * m2 * m1 * m2);
+//           //
+//           vm[ 15 ] = -third * (stiff1 * n0 * n1 * n0 * n1+stiff2 * m0 * m1 * m0 * m1);
+//           vm[ 16 ] = -third * (stiff1 * n0 * n1 * n0 * n2+stiff2 * m0 * m1 * m0 * m2);
+//           vm[ 17 ] = -third * (stiff1 * n0 * n1 * n1 * n2+stiff2 * m0 * m1 * m1 * m2);
+//           //
+//           vm[ 18 ] = -third * (stiff1 * n0 * n2 * n0 * n2+stiff2 * m0 * m2 * m0 * m2);
+//           vm[ 19 ] = -third * (stiff1 * n0 * n2 * n1 * n2+stiff2 * m0 * m2 * m1 * m2);
+//           //
+//           vm[ 20 ] = -third * (stiff1 * n1 * n2 * n1 * n2+stiff2 * m1 * m2 * m1 * m2);
+//           //
+//           nv3 = 0;
+//           nv2 = 6;
+//           for (m = 0; m < 6; m++) {
+//             for (n = m; n < 6; n++) {
+// //                vatom[i][nv2] += vm[nv3];
+// //                vatom[j][nv2] += vm[nv3];
+// //                vatom[k][nv2] += vm[nv3];
+//                nv2++;
+//                nv3++;
+//             }
+//           }            
+//           }             
+           }
           //     end of k loop
         }
       }
