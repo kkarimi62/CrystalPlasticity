@@ -1040,6 +1040,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 
             dsij1 = 0.0;
             dsij2 = 0.0;
+            ddsij1 = 0.0;
+            ddsij2 = 0.0;
             if (!iszero(sij) && !isone(sij)) {
               const double rbound = rij2 * this->ebound_meam[elti][eltj];
               delc = Cmax - Cmin;
@@ -1123,6 +1125,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
               }
             }
             //--- add stiffness
+            if (!iszero(dsij1) || !iszero(dsij2) || !iszero(ddsij1) || !iszero(ddsij2) ) {
+            
             stiff1 = ddUddsij * dsij1 * dsij1 * rik2 +
                      ddUdrijds * 2.0 * dsij1 * rik+
                      dUdsij * ( ddsij1 - dsij1); //--- units of u/r^2
@@ -1170,14 +1174,14 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           nv2 = 6;
           for (m = 0; m < 6; m++) {
             for (n = m; n < 6; n++) {
-               vatom[i][nv2] += vm[nv3]; //--- *r^2 to get energy
+               vatom[i][nv2] += vm[nv3];
                vatom[j][nv2] += vm[nv3];
                vatom[k][nv2] += vm[nv3];
                nv2++;
                nv3++;
             }
           }            
-            
+          } 
           }
           //     end of k loop
         }
