@@ -60,12 +60,14 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
   double arg1i1, arg1j1, arg1i2, arg1j2, arg1i3, arg1j3, arg3i3, arg3j3;
   double arg1i1_d, arg1j1_d, arg1i2_d, arg1j2_d, arg1i3_d, arg1j3_d, arg3i3_d, arg3j3_d;
   double dsij1, dsij2, force1, force2;
+  double ddsij1, ddsij2, arg1, arg1_d;
   double t1i, t2i, t3i, t1j, t2j, t3j;
   double scaleij;
   double ddrho3drmdrn1[6], ddrho3drmdrn2[6], ddrhodrmdrn1[6], ddrhodrmdrn2[6];
   double ddUdrdrijm[3], ddUdrijmdrijn[6];
   double stiff, stiff0, stiff1, stiff2;
   double n0, n1, n2;
+  double m0, m1, m2;
   double ddt1drdr1,  ddt2drdr1,  ddt3drdr1;
   double ddt1drdr2,  ddt2drdr2,  ddt3drdr2;
   double ddrho1drmdrn1[6], ddrho1drmdrn2[6];
@@ -1029,7 +1031,9 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           if (k != j && eltk >= 0) {
             double xik, xjk, cikj, sikj, dfc, ddfc, a;
             double dCikj1, dCikj2;
+            double ddCikj1, ddCikj2;
             double delc, rik2, rjk2;
+            double rik, rjk;
 
             sij = scrfcn[jn+fnoffset] * fcpair[jn+fnoffset];
             const double Cmax = this->Cmax_meam[elti][eltj][eltk];
@@ -1044,11 +1048,13 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
               dyjk = x[k][1] - x[j][1];
               dzjk = x[k][2] - x[j][2];
               rjk2 = dxjk * dxjk + dyjk * dyjk + dzjk * dzjk;
+              rjk = sqrt( rjk2 );
               if (rjk2 <= rbound) {
                 dxik = x[k][0] - x[i][0];
                 dyik = x[k][1] - x[i][1];
                 dzik = x[k][2] - x[i][2];
                 rik2 = dxik * dxik + dyik * dyik + dzik * dzik;
+                rik = sqrt( rik2 );
                 if (rik2 <= rbound) {
                   xik = rik2 / rij2;
                   xjk = rjk2 / rij2;
