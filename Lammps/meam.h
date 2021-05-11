@@ -238,10 +238,10 @@ protected:
     denom = rij4 - a * a;
     
     ddenom_ik = - 2*a * 2*rik;
-    ddenom_ik *= 2 * denom;
+    ddenom_ik *= (2 * denom);
 
     ddenom_jk = 2*a * 2*rjk;
-    ddenom_jk *= 2 * denom;
+    ddenom_jk *= (2 * denom);
 
     denom = denom * denom;
 
