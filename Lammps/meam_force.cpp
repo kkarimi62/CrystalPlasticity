@@ -1033,7 +1033,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           }
         }
 
-        //     Now compute forces on other atoms k due to change in sij     stiffness ??????????????
+        //     Now compute forces on other atoms k due to change in sij     stiffness ?
 
         if (iszero(sij) || isone(sij)) continue; //: cont jn loop
         double dxik(0), dyik(0), dzik(0);
@@ -1084,21 +1084,21 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                       dsij2 = a * dCikj2; //--- 4.22c/rjk
 //
                       
-//                      ddCfunc2(rik, rjk, rij2, rik2, rjk2, ddCikj1, ddCikj2);
-//                       dCikj1 *= rik;
-//                       dCikj2 *= rjk;
-                      //
-//                       arg1 = dCikj1 / delc * dfc / sikj;
-//                       arg1_d = (1.0/delc)*( -(dfc*dfc*dCikj1*dCikj1)/delc/sikj/sikj+  
-//                                 (ddfc*dCikj1*dCikj1/sikj) + 
-//                                 (dfc*ddCikj1/sikj)) ;                
-//                      ddsddrik = 0.0;//rik * dsij1 * arg1 + sij * arg1_d; //--- units of s/r^2
-                      //
-//                       arg1 = dCikj2 / delc * dfc / sikj;
-//                       arg1_d = (1.0/delc)*( -(dfc*dfc*dCikj2*dCikj2)/delc/sikj/sikj+  
-//                                 (ddfc*dCikj2*dCikj2/sikj) + 
-//                                 (dfc*ddCikj2/sikj)  ) ;                    
-//                      ddsddrjk = 0.0;//rjk * dsij2 * arg1 + sij * arg1_d;                       
+                     ddCfunc2(rik, rjk, rij2, rik2, rjk2, ddCikj1, ddCikj2);
+                      dCikj1 *= rik;
+                      dCikj2 *= rjk;
+                      
+                      arg1 = dCikj1 / delc * dfc / sikj;
+                      arg1_d = (1.0/delc)*( -(dfc*dfc*dCikj1*dCikj1)/delc/sikj/sikj+  
+                                (ddfc*dCikj1*dCikj1/sikj) + 
+                                (dfc*ddCikj1/sikj)) ;                
+                     ddsddrik = 0.0;//rik * dsij1 * arg1 + sij * arg1_d; //--- units of s/r^2
+                      
+                      arg1 = dCikj2 / delc * dfc / sikj;
+                      arg1_d = (1.0/delc)*( -(dfc*dfc*dCikj2*dCikj2)/delc/sikj/sikj+  
+                                (ddfc*dCikj2*dCikj2/sikj) + 
+                                (dfc*ddCikj2/sikj)  ) ;                    
+                     ddsddrjk = 0.0;//rjk * dsij2 * arg1 + sij * arg1_d;                       
                     }
                   }
                 }
