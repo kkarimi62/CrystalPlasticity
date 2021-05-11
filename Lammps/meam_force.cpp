@@ -60,7 +60,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
   double arg1i1, arg1j1, arg1i2, arg1j2, arg1i3, arg1j3, arg3i3, arg3j3;
   double arg1i1_d, arg1j1_d, arg1i2_d, arg1j2_d, arg1i3_d, arg1j3_d, arg3i3_d, arg3j3_d;
   double dsij1, dsij2, force1, force2;
-  double ddsij1, ddsij2, arg1, arg1_d;
+  double ddsij1, ddsij2; //, arg1, arg1_d;
   double t1i, t2i, t3i, t1j, t2j, t3j;
   double scaleij;
   double ddrho3drmdrn1[6], ddrho3drmdrn2[6], ddrhodrmdrn1[6], ddrhodrmdrn2[6];
@@ -93,7 +93,10 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
   double ddt1drds1, ddt1drds2;
   double ddt2drds1, ddt2drds2;
   double ddt3drds1, ddt3drds2;
-  
+  double rik, rjk;
+  double rik2, rjk2;
+
+
   third = 1.0 / 3.0;
   sixth = 1.0 / 6.0;
 
@@ -1033,9 +1036,9 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
             double xik, xjk, cikj, sikj, dfc, ddfc, a;
             double dCikj1, dCikj2;
             double ddCikj1, ddCikj2;
-            double delc, rik2, rjk2;
-            double rik, rjk;
-
+            double delc; //, rik2, rjk2;
+            double arg1, arg1_d;
+            
             sij = scrfcn[jn+fnoffset] * fcpair[jn+fnoffset];
             const double Cmax = this->Cmax_meam[elti][eltj][eltk];
             const double Cmin = this->Cmin_meam[elti][eltj][eltk];
