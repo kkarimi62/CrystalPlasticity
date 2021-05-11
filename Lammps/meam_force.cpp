@@ -378,20 +378,9 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         drho2dr1 = a2 * (drhoa2j - 2 * rhoa2j / rij) * arg1i2 - 2.0 / 3.0 * arho2b[i] * drhoa2j * sij; //--- 4.30(d): arho2b is W_{2i}      
         drho2dr2 = a2 * (drhoa2i - 2 * rhoa2i / rij) * arg1j2 - 2.0 / 3.0 * arho2b[j] * drhoa2i * sij;
         //--- 2nd derivative wrt rij (atom j)
-        ddrho2drdr1 = Get_ddrho2drdr( i,  //--- deriv. of 4.30(d) wrt r check value??????????/
-                     rij,  sij, 
-                     rhoa2j,  drhoa2j,  ddrhoa2j,
-                     arho2b,
-                     arg1i2,
-                     arg1i2_d
-                    );
-        ddrho2drdr2 = Get_ddrho2drdr( j, 
-                     rij,  sij, 
-                     rhoa2i,  drhoa2i,  ddrhoa2i,
-                     arho2b,
-                     arg1j2,
-                     arg1j2_d
-                    );
+        //--- deriv. of 4.30(d) wrt r 
+        ddrho2drdr1 = Get_ddrho2drdr( i, rij,  sij, rhoa2j,  drhoa2j,  ddrhoa2j, arho2b, arg1i2, arg1i2_d );
+        ddrho2drdr2 = Get_ddrho2drdr( j, rij,  sij, rhoa2i,  drhoa2i,  ddrhoa2i, arho2b, arg1j2, arg1j2_d );
         //
         a2 = 4 * sij / rij2;
         for (m = 0; m < 3; m++) {
@@ -1185,7 +1174,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 //                    nv3++;
 //                 }
 //               }                 
-             }
+//             }
             }
            }
           //     end of k loop
