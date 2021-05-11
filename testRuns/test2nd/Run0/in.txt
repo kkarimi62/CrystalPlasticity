@@ -12,7 +12,7 @@ boundary	p p p
 region mybox block -40.0 40.0 -44.0 44.0 -44.0 44.0
 create_box 5 mybox
 lattice fcc 3.7 #keyword values ...
-create_atoms 1 box  
+create_atoms 2 box  
 change_box all triclinic
 
 
