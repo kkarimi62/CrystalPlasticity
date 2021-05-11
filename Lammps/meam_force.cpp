@@ -64,7 +64,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
   double t1i, t2i, t3i, t1j, t2j, t3j;
   double scaleij;
   double ddrho3drmdrn1[6], ddrho3drmdrn2[6], ddrhodrmdrn1[6], ddrhodrmdrn2[6];
-  double ddUdrdrijm[3], ddUdrijmdrijn[6];
+  double ddUdrdrijm[3], ddUdrmdrn[6];
   double stiff, stiff0, stiff1, stiff2;
   double stif1, stif2;
   double n0, n1, n2;
@@ -890,7 +890,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           ddUdrdrijm[m] = frhopp[i] * drhodr1 * drhodrm1[m] + frhop[i] * ddrhodrmdr1[m] + 
                           frhopp[j] * drhodr2 * drhodrm2[m] + frhop[i] * ddrhodrmdr2[m]; //--- deriv of Eq. 4.41(c) wrt r
           for (n = 0; n < 3; n++) {
-            ddUdrijmdrijn[nv2] =  frhopp[i] * drhodrm1[m] * drhodrm1[n] + frhop[i] * ddrhodrmdrn1[nv2]+
+            ddUdrmdrn[nv2] =  frhopp[i] * drhodrm1[m] * drhodrm1[n] + frhop[i] * ddrhodrmdrn1[nv2]+
                                    frhopp[j] * drhodrm2[m] * drhodrm2[n] + frhop[j] * ddrhodrmdrn2[nv2];
             nv2++;
           }  
@@ -904,7 +904,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           //
           ddUddrij *= scaleij;
           for(m=0;m<3;m++) ddUdrdrijm[m] *= scaleij;
-          for(m=0;m<6;m++) ddUdrijmdrijn[m] *= scaleij;
+          for(m=0;m<6;m++) ddUdrmdrn[m] *= scaleij;
           //
           ddUddsij *= scaleij;
           ddUdrijds *= scaleij;
@@ -930,7 +930,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           stiff0 += - dUdrijm[m] * delij[m];
           stiff1 += ddUdrdrijm[m] * delij[m];
           for (n = 0; n < 3; n++) {
-            stiff2 += ddUdrijmdrijn[nv2] * delij[m] * delij[n];
+            stiff2 += ddUdrmdrn[nv2] * delij[m] * delij[n];
             nv2++;
           }
         }
