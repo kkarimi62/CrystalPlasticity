@@ -40,7 +40,7 @@ if __name__ == '__main__':
 			os.system( 'cp %s/%s %s' % ( EXEC_DIR, PYFIL, path ) ) # --- create folder & mv oar scrip & cp executable
 		#---
 		os.system( 'cp shearMG300-11.in %s/in.txt ' % writPath ) #--- lammps script: periodic x, pxx, vy, load
-		os.system( 'cp %s/FeNi_glass_300.data %s ' % (sourcePath, irun, writPath) ) #--- lammps script: periodic x, pxx, vy, load
+		os.system( 'cp %s/FeNi_glass_300.data %s ' % (sourcePath, writPath) ) #--- lammps script: periodic x, pxx, vy, load
 		#---
 		#---
 		makeOAR( path, 1, nThreads, durtn, PYFIL ) # --- make oar script
