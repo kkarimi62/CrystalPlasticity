@@ -60,7 +60,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
   double arg1i1, arg1j1, arg1i2, arg1j2, arg1i3, arg1j3, arg3i3, arg3j3;
   double arg1i1_d, arg1j1_d, arg1i2_d, arg1j2_d, arg1i3_d, arg1j3_d, arg3i3_d, arg3j3_d;
   double dsij1, dsij2, force1, force2;
-  double ddsij1, ddsij2; //, arg1, arg1_d;
+  double ddsij1=0.0, ddsij2=0.0; //, arg1, arg1_d;
   double t1i, t2i, t3i, t1j, t2j, t3j;
   double scaleij;
   double ddrho3drmdrn1[6], ddrho3drmdrn2[6], ddrhodrmdrn1[6], ddrhodrmdrn2[6];
