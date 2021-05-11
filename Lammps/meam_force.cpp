@@ -490,7 +490,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         t2j = t_ave[j][1];
         t3j = t_ave[j][2];
 
-        if (this->ialloy == 1) {   //--- not included in the report? (skipped)
+            if (this->ialloy == 1) {   //--- not included in the report? (skipped)
 
           a1i = fdiv_zero(drhoa0j * sij, tsq_ave[i][0]); 
           a1j = fdiv_zero(drhoa0i * sij, tsq_ave[j][0]);
@@ -505,8 +505,15 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           dt2dr2 = a2j * (t2mi - t2j * MathSpecial::square(t2mi));
           dt3dr1 = a3i * (t3mj - t3i * MathSpecial::square(t3mj));
           dt3dr2 = a3j * (t3mi - t3j * MathSpecial::square(t3mi));
+              
+          ddt1drdr1 = 0.0;
+          ddt1drdr2 = 0.0;
+          ddt2drdr1 = 0.0;
+          ddt2drdr2 = 0.0;
+          ddt3drdr1 = 0.0;
+          ddt3drdr2 = 0.0;
 
-        } else if (this->ialloy == 2) { //--- skipped
+        } else if (this->ialloy == 2) {
 
           dt1dr1 = 0.0;
           dt1dr2 = 0.0;
@@ -514,8 +521,14 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           dt2dr2 = 0.0;
           dt3dr1 = 0.0;
           dt3dr2 = 0.0;
-
-        } else { //--- this block is skipped too!!!!!!!!!
+          
+          ddt1drdr1 = 0.0;
+          ddt1drdr2 = 0.0;
+          ddt2drdr1 = 0.0;
+          ddt2drdr2 = 0.0;
+          ddt3drdr1 = 0.0;
+          ddt3drdr2 = 0.0;
+        } else {
 
           ai = 0.0;
           if (!iszero(rho0[i]))
@@ -530,20 +543,27 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           dt2dr2 = aj * (t2mi - t2j);
           dt3dr1 = ai * (t3mj - t3i);
           dt3dr2 = aj * (t3mi - t3j);
+              
+          ai = 0.0;
+          if (!iszero(rho0[i]))
+            ai = 1.0 / rho0[i];
+          aj = 0.0;
+          if (!iszero(rho0[j]))
+            aj = 1.0 / rho0[j];              
           
           ddt1drdr1 = sij * ( - dt1dr1 * drhoa0j + ( t1mj - t1i ) * ddrhoa0j ) - dt1dr1 * drho0dr1; //--- deriv of 4.32(a) wrt. r
-          ddt1drdr1 /= rho0[i];
+          ddt1drdr1 *= ai;
           ddt2drdr1 = sij * ( - dt2dr1 * drhoa0j + ( t2mj - t2i ) * ddrhoa0j ) - dt2dr1 * drho0dr1;
-          ddt2drdr1 /= rho0[i];
+          ddt2drdr1 *= ai;
           ddt3drdr1 = sij * ( - dt3dr1 * drhoa0j + ( t3mj - t3i ) * ddrhoa0j ) - dt3dr1 * drho0dr1;
-          ddt3drdr1 /= rho0[i];
+          ddt3drdr1 *= ai;
             
           ddt1drdr2 = sij * ( - dt1dr2 * drhoa0i + ( t1mi - t1j ) * ddrhoa0i ) - dt1dr2 * drho0dr2; //--- index j
-          ddt1drdr2 /= rho0[j];
+          ddt1drdr2 *= aj;
           ddt2drdr2 = sij * ( - dt2dr2 * drhoa0i + ( t2mi - t2j ) * ddrhoa0i ) - dt2dr2 * drho0dr2;
-          ddt2drdr2 /= rho0[j];
+          ddt2drdr2 *= aj;
           ddt3drdr2 = sij * ( - dt3dr2 * drhoa0i + ( t3mi - t3j ) * ddrhoa0i ) - dt3dr2 * drho0dr2;
-          ddt3drdr2 /= rho0[j] ;                     
+          ddt3drdr2 *= aj ;                     
         }
         //---------------------------------------------------------------------------
         //---------------------------------------------------------------------------
