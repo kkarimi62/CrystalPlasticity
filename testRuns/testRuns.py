@@ -5,11 +5,10 @@ def makeOAR( EXEC_DIR, node, core, time, PYFIL ):
 	print >> someFile, 'module load mpich/3.2.1-gnu'
 
 	#--- run python script 
-#	OUT_PATH = '.'
-#	if SCRATCH:
-#		OUT_PATH = '/scratch/${SLURM_JOB_ID}'
-#	print >> someFile, "mpirun -np %s $EXEC_DIR/%s < in.txt -var boxx %4.3e -var boxz0 %4.3e -var OUT_PATH %s -echo screen -var DATA_FILE \'data.txt\' -var ZHI ${zmax} -var RMAX ${rmax}" %( nThreads, PYFIL, diam, height, OUT_PATH )
-	print >> someFile, "$EXEC_DIR/%s < in.txt" %( PYFIL )
+	OUT_PATH = '.'
+	if SCRATCH:
+		OUT_PATH = '/scratch/${SLURM_JOB_ID}'
+	print >> someFile, "$EXEC_DIR/%s < in.txt -var OUT_PATH %s" %( PYFIL, OUT_PATH )
 	someFile.close()										  
 
 
@@ -23,7 +22,7 @@ if __name__ == '__main__':
 	EXEC_DIR = '/home/kamran.karimi1/Project/git/CrystalPlasticity/lammps-29Oct20/src' #--- path for executable file
 	PYFIL = 'lmp_serial' 
 	durtn = '47:59:59'
-	SCRATCH = None
+	SCRATCH = True
 	partition = 'single' #'parallel'
 	#--- update data.txt and lammps script
 	#---
