@@ -1103,7 +1103,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                        ddUdrijds * 2.0 * dsij2 * rjk +
                        dUdsij * ( ddsij2 - dsij2 );
                stif2 *= rjk2;
-             cout <<  stif1 << "\t" << stif2 << "\n";
+//             cout <<  stif1 << "\t" << stif2 << "\n";
              
               //
               f[i][0] += force1 * dxik;
