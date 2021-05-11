@@ -930,7 +930,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           stiff0 += - dUdrijm[m] * delij[m];
           stiff1 += ddUdrdrijm[m] * delij[m];
           for (n = 0; n < 3; n++) {
-            stiff2 += ddUdrmdrn[nv2] * delij[m] * delij[n];
+            stiff2 = stiff2 + ddUdrmdrn[nv2] * delij[m] * delij[n];
             nv2++;
           }
         }
