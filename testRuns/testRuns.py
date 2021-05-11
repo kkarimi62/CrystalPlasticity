@@ -5,11 +5,10 @@ def makeOAR( EXEC_DIR, node, core, time, PYFIL ):
 	print >> someFile, 'module load mpich/3.2.1-gnu'
 
 	#--- run python script 
-#	OUT_PATH = '.'
-#	if SCRATCH:
-#		OUT_PATH = '/scratch/${SLURM_JOB_ID}'
-#	print >> someFile, "mpirun -np %s $EXEC_DIR/%s < in.txt -var boxx %4.3e -var boxz0 %4.3e -var OUT_PATH %s -echo screen -var DATA_FILE \'data.txt\' -var ZHI ${zmax} -var RMAX ${rmax}" %( nThreads, PYFIL, diam, height, OUT_PATH )
-	print >> someFile, "$EXEC_DIR/%s < in.txt" %( PYFIL )
+	OUT_PATH = '.'
+	if SCRATCH:
+		OUT_PATH = '/scratch/${SLURM_JOB_ID}'
+	print >> someFile, "$EXEC_DIR/%s < in.txt -var OUT_PATH %s" %( PYFIL, OUT_PATH )
 	someFile.close()										  
 
 
@@ -18,12 +17,12 @@ if __name__ == '__main__':
 
 	nruns	 = 1
 	nThreads = 1
-	jobname  = 'test'
+	jobname  = 'test3rd'
 	sourcePath = os.getcwd() + '/dataFiles'
 	EXEC_DIR = '/home/kamran.karimi1/Project/git/CrystalPlasticity/lammps-29Oct20/src' #--- path for executable file
 	PYFIL = 'lmp_serial' 
-	durtn = '00:59:59'
-	SCRATCH = None
+	durtn = '47:59:59'
+	SCRATCH = True
 	partition = 'single' #'parallel'
 	#--- update data.txt and lammps script
 	#---
@@ -40,7 +39,9 @@ if __name__ == '__main__':
 			os.system( 'cp %s/%s %s' % ( EXEC_DIR, PYFIL, path ) ) # --- create folder & mv oar scrip & cp executable
 		#---
 		os.system( 'cp shearMG300-11.in %s/in.txt ' % writPath ) #--- lammps script: periodic x, pxx, vy, load
-		os.system( 'cp %s/FeNi_glass_300.data %s ' % (sourcePath, irun, writPath) ) #--- lammps script: periodic x, pxx, vy, load
+		os.system( 'cp %s/FeNi_glass_300.data %s ' % (sourcePath, writPath) ) #--- lammps script: periodic x, pxx, vy, load
+		os.system( 'cp %s/parameters.meam %s ' % (sourcePath, writPath) ) #--- lammps script: periodic x, pxx, vy, load
+		os.system( 'cp %s/library_CoNiCrFeMn.meam %s ' % (sourcePath, writPath) ) #--- lammps script: periodic x, pxx, vy, load
 		#---
 		#---
 		makeOAR( path, 1, nThreads, durtn, PYFIL ) # --- make oar script

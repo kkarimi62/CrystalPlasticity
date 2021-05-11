@@ -1,7 +1,7 @@
 # Amin Esfandiarpour - Amin.esfandiarpour@ncbj.gov.pl- Am.esfandiyarpour@gmail.com
 
 variable initTemp equal 300          	# desired temperature
-variable runTime equal 3 #2000000   	# number of increment 
+variable runTime equal 1000000 #2000000   	# number of increment 
 variable srate equal 1.0e8 
 log	     	shearCoNiFe_glass${initTemp}-${srate}.log
 units		metal
@@ -35,18 +35,22 @@ variable srate1 equal "v_srate / 1.0e12"
 fix             2 all deform 1  xy erate ${srate1}  units box  remap v
 compute 	1 all stress/atom NULL pair
 #dump      1 all custom 1 NiFe_glass-${initTemp}-${srate}.dump id type x y z vx vy vz  meam_force.cpp ln.967: 15+6+1
-dump    11 all custom 1 virialStress.xyz id type x y z c_1[1] c_1[2] c_1[3] c_1[4] c_1[5] c_1[6] c_1[22] 
+dump    11 all custom 100 ${OUT_PATH}/virialStress.xyz id type x y z c_1[1] c_1[2] c_1[3] c_1[4] c_1[5] c_1[6] c_1[22] 
+dump_modify 11 flush yes format line "%d %d %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e"
 #dump 2 all custom 10000 dump.NiFe_glass-${initTemp}-${srate}.unwrap id type xu yu zu 
 variable strainxy equal "(xy)/v_L0y"
 variable  tmp3 equal "vol"
 variable Volume equal ${tmp3}
-#compute		reducedstress all reduce sum c_mystress[4]
-#variable	stress equal (c_reducedstress)/(10^4*${Volume})
-#variable s1xy equal "v_stress"
+
+compute		reducedstress all reduce sum c_1[22]
+variable	stress equal (c_reducedstress)/(${Volume})
+variable s1xy equal "v_stress"
 #variable p1xy equal "v_strainxy"
 #variable p1 equal "-pxy/10000"
-thermo 1
-#thermo_style	custom step v_strainxy v_p1 v_stress ke pe press temp 
+thermo 100
+thermo_style	custom step v_strainxy v_stress #ke pe press temp 
+thermo_modify format line "%d %f %3.2e"
+
 #fix def1 all print 1 "${p1xy} ${p1} ${s1xy}" append NiFe_glass-${initTemp}-${srate}.txt 
 run ${runTime}    
 
@@ -56,3 +60,7 @@ run ${runTime}
 ######################################
 # SIMULATION DONE
 print "All done"
+
+    
+
+

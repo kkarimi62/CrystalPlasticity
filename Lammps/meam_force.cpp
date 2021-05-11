@@ -490,7 +490,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         t2j = t_ave[j][1];
         t3j = t_ave[j][2];
 
-        if (this->ialloy == 1) {   //--- not included in the report? (skipped)
+            if (this->ialloy == 1) {   //--- not included in the report? (skipped)
 
           a1i = fdiv_zero(drhoa0j * sij, tsq_ave[i][0]); 
           a1j = fdiv_zero(drhoa0i * sij, tsq_ave[j][0]);
@@ -505,8 +505,15 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           dt2dr2 = a2j * (t2mi - t2j * MathSpecial::square(t2mi));
           dt3dr1 = a3i * (t3mj - t3i * MathSpecial::square(t3mj));
           dt3dr2 = a3j * (t3mi - t3j * MathSpecial::square(t3mi));
+              
+          ddt1drdr1 = 0.0;
+          ddt1drdr2 = 0.0;
+          ddt2drdr1 = 0.0;
+          ddt2drdr2 = 0.0;
+          ddt3drdr1 = 0.0;
+          ddt3drdr2 = 0.0;
 
-        } else if (this->ialloy == 2) { //--- skipped
+        } else if (this->ialloy == 2) {
 
           dt1dr1 = 0.0;
           dt1dr2 = 0.0;
@@ -514,8 +521,14 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           dt2dr2 = 0.0;
           dt3dr1 = 0.0;
           dt3dr2 = 0.0;
-
-        } else { //--- this block is skipped too!!!!!!!!!
+          
+          ddt1drdr1 = 0.0;
+          ddt1drdr2 = 0.0;
+          ddt2drdr1 = 0.0;
+          ddt2drdr2 = 0.0;
+          ddt3drdr1 = 0.0;
+          ddt3drdr2 = 0.0;
+        } else {
 
           ai = 0.0;
           if (!iszero(rho0[i]))
@@ -530,20 +543,27 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           dt2dr2 = aj * (t2mi - t2j);
           dt3dr1 = ai * (t3mj - t3i);
           dt3dr2 = aj * (t3mi - t3j);
+              
+          ai = 0.0;
+          if (!iszero(rho0[i]))
+            ai = 1.0 / rho0[i];
+          aj = 0.0;
+          if (!iszero(rho0[j]))
+            aj = 1.0 / rho0[j];              
           
           ddt1drdr1 = sij * ( - dt1dr1 * drhoa0j + ( t1mj - t1i ) * ddrhoa0j ) - dt1dr1 * drho0dr1; //--- deriv of 4.32(a) wrt. r
-          ddt1drdr1 /= rho0[i];
+          ddt1drdr1 *= ai;
           ddt2drdr1 = sij * ( - dt2dr1 * drhoa0j + ( t2mj - t2i ) * ddrhoa0j ) - dt2dr1 * drho0dr1;
-          ddt2drdr1 /= rho0[i];
+          ddt2drdr1 *= ai;
           ddt3drdr1 = sij * ( - dt3dr1 * drhoa0j + ( t3mj - t3i ) * ddrhoa0j ) - dt3dr1 * drho0dr1;
-          ddt3drdr1 /= rho0[i];
+          ddt3drdr1 *= ai;
             
           ddt1drdr2 = sij * ( - dt1dr2 * drhoa0i + ( t1mi - t1j ) * ddrhoa0i ) - dt1dr2 * drho0dr2; //--- index j
-          ddt1drdr2 /= rho0[j];
+          ddt1drdr2 *= aj;
           ddt2drdr2 = sij * ( - dt2dr2 * drhoa0i + ( t2mi - t2j ) * ddrhoa0i ) - dt2dr2 * drho0dr2;
-          ddt2drdr2 /= rho0[j];
+          ddt2drdr2 *= aj;
           ddt3drdr2 = sij * ( - dt3dr2 * drhoa0i + ( t3mi - t3j ) * ddrhoa0i ) - dt3dr2 * drho0dr2;
-          ddt3drdr2 /= rho0[j] ;                     
+          ddt3drdr2 *= aj ;                     
         }
         //---------------------------------------------------------------------------
         //---------------------------------------------------------------------------
@@ -895,7 +915,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
             nv2++;
           }  
         }
-        if (!isone(scaleij)) { //--- add higher order derivatives !!!?????????????
+        if (!isone(scaleij)) { //--- add higher order derivatives
           dUdrij *= scaleij;
           dUdsij *= scaleij;
           dUdrijm[0] *= scaleij;
@@ -1013,7 +1033,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           }
         }
 
-        //     Now compute forces on other atoms k due to change in sij     stiffness ??????????????
+        //     Now compute forces on other atoms k due to change in sij     stiffness ?
 
         if (iszero(sij) || isone(sij)) continue; //: cont jn loop
         double dxik(0), dyik(0), dzik(0);
@@ -1064,21 +1084,21 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                       dsij2 = a * dCikj2; //--- 4.22c/rjk
 //
                       
-//                      ddCfunc2(rik, rjk, rij2, rik2, rjk2, ddCikj1, ddCikj2);
-//                       dCikj1 *= rik;
-//                       dCikj2 *= rjk;
-                      //
-//                       arg1 = dCikj1 / delc * dfc / sikj;
-//                       arg1_d = (1.0/delc)*( -(dfc*dfc*dCikj1*dCikj1)/delc/sikj/sikj+  
-//                                 (ddfc*dCikj1*dCikj1/sikj) + 
-//                                 (dfc*ddCikj1/sikj)) ;                
-//                      ddsddrik = 0.0;//rik * dsij1 * arg1 + sij * arg1_d; //--- units of s/r^2
-                      //
-//                       arg1 = dCikj2 / delc * dfc / sikj;
-//                       arg1_d = (1.0/delc)*( -(dfc*dfc*dCikj2*dCikj2)/delc/sikj/sikj+  
-//                                 (ddfc*dCikj2*dCikj2/sikj) + 
-//                                 (dfc*ddCikj2/sikj)  ) ;                    
-//                      ddsddrjk = 0.0;//rjk * dsij2 * arg1 + sij * arg1_d;                       
+                     ddCfunc2(rik, rjk, rij2, rik2, rjk2, ddCikj1, ddCikj2);
+                      dCikj1 *= rik;
+                      dCikj2 *= rjk;
+                      
+                      arg1 = dCikj1 / delc * dfc / sikj;
+                      arg1_d = (1.0/delc)*( -(dfc*dfc*dCikj1*dCikj1)/delc/sikj/sikj+  
+                                (ddfc*dCikj1*dCikj1/sikj) + 
+                                (dfc*ddCikj1/sikj)) ;                
+                     ddsddrik = rik * dsij1 * arg1 + sij * arg1_d; //--- units of s/r^2
+                      
+                      arg1 = dCikj2 / delc * dfc / sikj;
+                      arg1_d = (1.0/delc)*( -(dfc*dfc*dCikj2*dCikj2)/delc/sikj/sikj+  
+                                (ddfc*dCikj2*dCikj2/sikj) + 
+                                (dfc*ddCikj2/sikj)  ) ;                    
+                     ddsddrjk = rjk * dsij2 * arg1 + sij * arg1_d;                       
                     }
                   }
                 }
@@ -1090,11 +1110,10 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
               force1 = dUdsij * dsij1;
               force2 = dUdsij * dsij2;
             //--- add stiffness
-//               stif1 =  ddUddsij * dsij1 * dsij1 * rik2 + ddUdrijds * 2.0 * dsij1 * rik + dUdsij * ( - dsij1 + ddsddrik  ); //--- units of u/r^2 
-//               stif1 *= rik2; //--- units of energy
-//               stif2 =  ddUddsij * dsij2 * dsij2 * rjk2 + ddUdrijds * 2.0 * dsij2 * rjk + dUdsij * ( - dsij2 + ddsddrjk  );
-//               stif2 *= rjk2;
-//             cout <<  stif1 << "\t" << stif2 << "\n";
+              stif1 =  ddUddsij * dsij1 * dsij1 * rik2 + ddUdrijds * 2.0 * dsij1 * rik + dUdsij * ( - dsij1 + ddsddrik  ); //--- units of u/r^2 
+              stif1 *= rik2; //--- units of energy
+              stif2 =  ddUddsij * dsij2 * dsij2 * rjk2 + ddUdrijds * 2.0 * dsij2 * rjk + dUdsij * ( - dsij2 + ddsddrjk  );
+              stif2 *= rjk2;
               //
               f[i][0] += force1 * dxik;
               f[i][1] += force1 * dyik;
@@ -1127,6 +1146,54 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                   vatom[j][m] = vatom[j][m] + v[m];
                   vatom[k][m] = vatom[k][m] + v[m];
                 }
+          //--- per-atom modulus
+               n0 = dxik / rik;
+               n1 = dyik / rik;
+               n2 = dzik / rik;
+               m0 = dxjk / rjk;
+               m1 = dyjk / rjk;
+               m2 = dzjk / rjk;
+              vm[ 0 ]  = -third * (stif1 * n0 * n0 * n0 * n0+stif2 * m0 * m0 * m0 * m0);
+              vm[ 1 ]  = -third * (stif1 * n0 * n0 * n1 * n1+stif2 * m0 * m0 * m1 * m1);
+              vm[ 2 ]  = -third * (stif1 * n0 * n0 * n2 * n2+stif2 * m0 * m0 * m2 * m2);
+              vm[ 3 ]  = -third * (stif1 * n0 * n0 * n0 * n1+stif2 * m0 * m0 * m0 * m1);
+              vm[ 4 ]  = -third * (stif1 * n0 * n0 * n0 * n2+stif2 * m0 * m0 * m0 * m2);
+              vm[ 5 ]  = -third * (stif1 * n0 * n0 * n1 * n2+stif2 * m0 * m0 * m1 * m2);
+              //
+              vm[ 6 ]  = -third * (stif1 * n1 * n1 * n1 * n1+stif2 * m1 * m1 * m1 * m1);
+              vm[ 7 ]  = -third * (stif1 * n1 * n1 * n2 * n2+stif2 * m1 * m1 * m2 * m2);
+              vm[ 8 ]  = -third * (stif1 * n1 * n1 * n0 * n1+stif2 * m1 * m1 * m0 * m1);
+              vm[ 9 ]  = -third * (stif1 * n1 * n1 * n0 * n2+stif2 * m1 * m1 * m0 * m2);
+              vm[ 10 ] = -third * (stif1 * n1 * n1 * n1 * n2+stif2 * m1 * m1 * m1 * m2);
+              //
+              vm[ 11 ] = -third * (stif1 * n2 * n2 * n2 * n2+stif2 * m2 * m2 * m2 * m2);
+              vm[ 12 ] = -third * (stif1 * n2 * n2 * n0 * n1+stif2 * m2 * m2 * m0 * m1);
+              vm[ 13 ] = -third * (stif1 * n2 * n2 * n0 * n2+stif2 * m2 * m2 * m0 * m2);
+              vm[ 14 ] = -third * (stif1 * n2 * n2 * n1 * n2+stif2 * m2 * m2 * m1 * m2);
+              //
+              vm[ 15 ] = -third * (stif1 * n0 * n1 * n0 * n1+stif2 * m0 * m1 * m0 * m1);
+              vm[ 16 ] = -third * (stif1 * n0 * n1 * n0 * n2+stif2 * m0 * m1 * m0 * m2);
+              vm[ 17 ] = -third * (stif1 * n0 * n1 * n1 * n2+stif2 * m0 * m1 * m1 * m2);
+              //
+              vm[ 18 ] = -third * (stif1 * n0 * n2 * n0 * n2+stif2 * m0 * m2 * m0 * m2);
+              vm[ 19 ] = -third * (stif1 * n0 * n2 * n1 * n2+stif2 * m0 * m2 * m1 * m2);
+              //
+              vm[ 20 ] = -third * (stif1 * n1 * n2 * n1 * n2+stif2 * m1 * m2 * m1 * m2);
+              
+              nv3 = 0;
+              nv2 = 6;
+              for (m = 0; m < 6; m++) {
+                for (n = m; n < 6; n++) {
+                    vatom[i][nv2] += vm[nv3];
+                    vatom[j][nv2] += vm[nv3];
+                    vatom[k][nv2] += vm[nv3];
+                   nv2++;
+                   nv3++;
+                }
+              }                  
+                
+                
+                
               }
             }
           }
