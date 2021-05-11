@@ -57,7 +57,7 @@ variable s1xy equal "v_stress"
 #variable p1 equal "-pxy/10000"
 thermo 1
 thermo_style	custom step v_strainxy v_stress #ke pe press temp 
-thermo_modify format "%d %f %3.2e"
+thermo_modify format line "%d %f %3.2e"
 
 #fix def1 all print 1 "${p1xy} ${p1} ${s1xy}" append NiFe_glass-${initTemp}-${srate}.txt 
 run ${runTime}    
