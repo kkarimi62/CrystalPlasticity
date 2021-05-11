@@ -1063,6 +1063,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                       dsij1 = a * dCikj1; //--- 4.22b/rik: units of s/r^2
                       dsij2 = a * dCikj2; //--- 4.22c/rjk
 //
+                      
                       ddCfunc2(rik, rjk, rij2, rik2, rjk2, ddCikj1, ddCikj2);
                       dCikj1 *= rik;
                       dCikj2 *= rjk;
@@ -1089,9 +1090,9 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
               force1 = dUdsij * dsij1;
               force2 = dUdsij * dsij2;
             //--- add stiffness
-              stif1 =  ddUddsij * dsij1 * dsij1 * rik2 + ddUdrijds * 2.0 * dsij1 * rik + dUdsij * ( - dsij1 + 0  ); //--- units of u/r^2 ddsij2
+              stif1 =  ddUddsij * dsij1 * dsij1 * rik2 + ddUdrijds * 2.0 * dsij1 * rik + dUdsij * ( - dsij1 + ddsij1  ); //--- units of u/r^2 
               stif1 *= rik2; //--- units of energy
-              stif2 =  ddUddsij * dsij2 * dsij2 * rjk2 + ddUdrijds * 2.0 * dsij2 * rjk + dUdsij * ( - dsij2 + 0  );
+              stif2 =  ddUddsij * dsij2 * dsij2 * rjk2 + ddUdrijds * 2.0 * dsij2 * rjk + dUdsij * ( - dsij2 + ddsij2  );
               stif2 *= rjk2;
 //             cout <<  stif1 << "\t" << stif2 << "\n";
               //
