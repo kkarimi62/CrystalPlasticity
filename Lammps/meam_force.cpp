@@ -290,7 +290,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         for (n = 0; n < 3; n++) {
           for (p = n; p < 3; p++) {
             for (q = p; q < 3; q++) {
-              arg = delij[n] * delij[p] * delij[q] * this->v3D[nv3];  //delij or delji????
+              arg = delij[n] * delij[p] * delij[q] * this->v3D[nv3];
               arg1i3 +=  arho3[i][nv3] * arg; //--- arho3 is Y_{3i\sigma\beta\gamma} Eq.(4.27c)
               arg1j3 +=  - arho3[j][nv3] * arg; 
               arg1i3_d +=  darho3dri[nv3] * arg;
@@ -673,7 +673,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
             ddrho2drmds2[m] = 0.0;
             for (n = 0; n < 3; n++) {
               ddrho2drmds1[m] += arho2[i][this->vind2D[m][n]] * delij[n]; 
-              ddrho2drmds2[m] += -arho2[j][this->vind2D[m][n]] * delij[n]; //--- delji??? 
+              ddrho2drmds2[m] += -arho2[j][this->vind2D[m][n]] * delij[n]; 
             }
             //
             ddrho2drmds1[m] *= a2 * rhoa2j ;
@@ -1072,13 +1072,13 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 //                       arg1_d = (1.0/delc)*( -(dfc*dfc*dCikj1*dCikj1)/delc/sikj/sikj+  
 //                                 (ddfc*dCikj1*dCikj1/sikj) + 
 //                                 (dfc*ddCikj1/sikj)) ;                
-                      ddsddrik = 0.0;//rik * dsij1 * arg1 + sij * arg1_d; //--- units of s/r^2
+//                      ddsddrik = 0.0;//rik * dsij1 * arg1 + sij * arg1_d; //--- units of s/r^2
                       //
 //                       arg1 = dCikj2 / delc * dfc / sikj;
 //                       arg1_d = (1.0/delc)*( -(dfc*dfc*dCikj2*dCikj2)/delc/sikj/sikj+  
 //                                 (ddfc*dCikj2*dCikj2/sikj) + 
 //                                 (dfc*ddCikj2/sikj)  ) ;                    
-                      ddsddrjk = 0.0;//rjk * dsij2 * arg1 + sij * arg1_d;                       
+//                      ddsddrjk = 0.0;//rjk * dsij2 * arg1 + sij * arg1_d;                       
                     }
                   }
                 }
@@ -1090,10 +1090,10 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
               force1 = dUdsij * dsij1;
               force2 = dUdsij * dsij2;
             //--- add stiffness
-              stif1 =  ddUddsij * dsij1 * dsij1 * rik2 + ddUdrijds * 2.0 * dsij1 * rik + dUdsij * ( - dsij1 + ddsddrik  ); //--- units of u/r^2 
-              stif1 *= rik2; //--- units of energy
-              stif2 =  ddUddsij * dsij2 * dsij2 * rjk2 + ddUdrijds * 2.0 * dsij2 * rjk + dUdsij * ( - dsij2 + ddsddrjk  );
-              stif2 *= rjk2;
+//               stif1 =  ddUddsij * dsij1 * dsij1 * rik2 + ddUdrijds * 2.0 * dsij1 * rik + dUdsij * ( - dsij1 + ddsddrik  ); //--- units of u/r^2 
+//               stif1 *= rik2; //--- units of energy
+//               stif2 =  ddUddsij * dsij2 * dsij2 * rjk2 + ddUdrijds * 2.0 * dsij2 * rjk + dUdsij * ( - dsij2 + ddsddrjk  );
+//               stif2 *= rjk2;
 //             cout <<  stif1 << "\t" << stif2 << "\n";
               //
               f[i][0] += force1 * dxik;
