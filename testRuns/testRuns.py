@@ -18,11 +18,11 @@ if __name__ == '__main__':
 
 	nruns	 = 1
 	nThreads = 1
-	jobname  = 'test'
+	jobname  = 'test3rd'
 	sourcePath = os.getcwd() + '/dataFiles'
 	EXEC_DIR = '/home/kamran.karimi1/Project/git/CrystalPlasticity/lammps-29Oct20/src' #--- path for executable file
 	PYFIL = 'lmp_serial' 
-	durtn = '00:59:59'
+	durtn = '47:59:59'
 	SCRATCH = None
 	partition = 'single' #'parallel'
 	#--- update data.txt and lammps script
