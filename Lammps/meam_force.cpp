@@ -1072,13 +1072,13 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                       arg1_d = (1.0/delc)*( -(dfc*dfc*dCikj1*dCikj1)/delc/sikj/sikj+  
                                 (ddfc*dCikj1*dCikj1/sikj) + 
                                 (dfc*ddCikj1/sikj)) ;                
-                      ddsij1 = rik * dsij1 * arg1 + sij * arg1_d; //--- units of s/r^2
+                      ddsij1 = 0.0;//rik * dsij1 * arg1 + sij * arg1_d; //--- units of s/r^2
                       //
                       arg1 = dCikj2 / delc * dfc / sikj;
                       arg1_d = (1.0/delc)*( -(dfc*dfc*dCikj2*dCikj2)/delc/sikj/sikj+  
                                 (ddfc*dCikj2*dCikj2/sikj) + 
                                 (dfc*ddCikj2/sikj)  ) ;                    
-                      ddsij2 = rjk * dsij2 * arg1 + sij * arg1_d;                       
+                      ddsij2 = 0.0;//rjk * dsij2 * arg1 + sij * arg1_d;                       
                     }
                   }
                 }
