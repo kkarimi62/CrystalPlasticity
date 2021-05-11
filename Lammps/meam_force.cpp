@@ -60,7 +60,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
   double arg1i1, arg1j1, arg1i2, arg1j2, arg1i3, arg1j3, arg3i3, arg3j3;
   double arg1i1_d, arg1j1_d, arg1i2_d, arg1j2_d, arg1i3_d, arg1j3_d, arg3i3_d, arg3j3_d;
   double dsij1, dsij2, force1, force2;
-  double ddsij1=0.0, ddsij2=0.0; //, arg1, arg1_d;
+  double ddsddrik, ddsddrjk; //, arg1, arg1_d;
   double t1i, t2i, t3i, t1j, t2j, t3j;
   double scaleij;
   double ddrho3drmdrn1[6], ddrho3drmdrn2[6], ddrhodrmdrn1[6], ddrhodrmdrn2[6];
@@ -1072,13 +1072,13 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 //                       arg1_d = (1.0/delc)*( -(dfc*dfc*dCikj1*dCikj1)/delc/sikj/sikj+  
 //                                 (ddfc*dCikj1*dCikj1/sikj) + 
 //                                 (dfc*ddCikj1/sikj)) ;                
-                      ddsij1 = 0.0;//rik * dsij1 * arg1 + sij * arg1_d; //--- units of s/r^2
+                      ddsddrik = 0.0;//rik * dsij1 * arg1 + sij * arg1_d; //--- units of s/r^2
                       //
 //                       arg1 = dCikj2 / delc * dfc / sikj;
 //                       arg1_d = (1.0/delc)*( -(dfc*dfc*dCikj2*dCikj2)/delc/sikj/sikj+  
 //                                 (ddfc*dCikj2*dCikj2/sikj) + 
 //                                 (dfc*ddCikj2/sikj)  ) ;                    
-                      ddsij2 = 0.0;//rjk * dsij2 * arg1 + sij * arg1_d;                       
+                      ddsddrjk = 0.0;//rjk * dsij2 * arg1 + sij * arg1_d;                       
                     }
                   }
                 }
@@ -1090,9 +1090,9 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
               force1 = dUdsij * dsij1;
               force2 = dUdsij * dsij2;
             //--- add stiffness
-              stif1 =  ddUddsij * dsij1 * dsij1 * rik2 + ddUdrijds * 2.0 * dsij1 * rik + dUdsij * ( - dsij1 + ddsij1  ); //--- units of u/r^2 
+              stif1 =  ddUddsij * dsij1 * dsij1 * rik2 + ddUdrijds * 2.0 * dsij1 * rik + dUdsij * ( - dsij1 + ddsddrik  ); //--- units of u/r^2 
               stif1 *= rik2; //--- units of energy
-              stif2 =  ddUddsij * dsij2 * dsij2 * rjk2 + ddUdrijds * 2.0 * dsij2 * rjk + dUdsij * ( - dsij2 + ddsij2  );
+              stif2 =  ddUddsij * dsij2 * dsij2 * rjk2 + ddUdrijds * 2.0 * dsij2 * rjk + dUdsij * ( - dsij2 + ddsddrjk  );
               stif2 *= rjk2;
 //             cout <<  stif1 << "\t" << stif2 << "\n";
               //
