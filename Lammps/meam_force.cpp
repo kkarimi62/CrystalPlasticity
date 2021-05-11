@@ -632,7 +632,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                          ddrhodrmdrn2 //--- modify
                        );
           
-        //     Compute derivatives wrt sij, but only if necessary     wrt s??????????????/
+        //     Compute derivatives wrt sij, but only if necessary wrt s
         if (!iszero(dscrfcn[fnoffset + jn])) {
         // rho0
           drho0ds1 = rhoa0j; //--- (4.26b)
