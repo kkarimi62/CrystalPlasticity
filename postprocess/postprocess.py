@@ -14,8 +14,8 @@ if __name__ == '__main__':
 	readPath = os.getcwd() + '/../testRuns/test' # --- source
 	EXEC_DIR = '.'     #--- path for executable file
 	durtn = '00:59:59'
-	mem = '4gb'
-	partition = 'single' #'cpu2019' #'bigmem' #'single' #'parallel' #'single'
+	mem = '64gb'
+	partition = 'bigmem' #'cpu2019' #'bigmem' #'single' #'parallel' #'single'
 	argv = " -p path \'%s"%(readPath) 
 	argv2nd = "" #lambdc 1.0e5"
 	PYFILdic = { 
