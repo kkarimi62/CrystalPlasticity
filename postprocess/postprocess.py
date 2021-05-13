@@ -10,12 +10,12 @@ if __name__ == '__main__':
 	import os
 #
 	nruns	 = 1
-	jobname  = 'test' 
-	readPath = os.getcwd() + '/../testRuns/test' # --- source
+	jobname  = 'test3rd' 
+	readPath = os.getcwd() + '/../testRuns/test3rd' # --- source
 	EXEC_DIR = '.'     #--- path for executable file
 	durtn = '00:29:59'
-	mem = '256gb'
-	partition = 'bigmem' #'cpu2019' #'bigmem' #'single' #'parallel' #'single'
+	mem = '4gb'
+	partition = 'single' #'cpu2019' #'bigmem' #'single' #'parallel' #'single'
 	argv = " -p path \'%s"%(readPath) 
 	argv2nd = "" #lambdc 1.0e5"
 	PYFILdic = { 
