@@ -6,7 +6,7 @@
 
   variable        t_eq      equal     10000        # Equlibration time
   variable        dt        equal     0.01         # Time step
-  variable        nthermo   equal     1000     		# output frequency
+  variable        nthermo   equal     2000     		# output frequency
 #----------------------------------------------------------------------------------------#
 
   units           metal
@@ -23,7 +23,7 @@
 
 
 #-------------------                 Simulation & output setup    ---------------------------
-  fix 1 all viscous 1.0
+#  fix 1 all viscous 1.0
   thermo          ${nthermo}
   thermo_modify   lost      ignore
   dump    1 all custom ${nthermo} ${OUT_PATH}/dumpFile.xyz id type x y z 
