@@ -6,11 +6,7 @@ def makeOAR( EXEC_DIR, node, core, time, PYFIL ):
 	print >> someFile, 'module load mpich/3.2.1-gnu\n'
 
 	#--- run python scri
-	print >> open( '%s/pyScripy.py'%writPath, 'w' ), 'import imp\ngn=imp.load_source(\'generate.name\',\'%s/generate.py\')\n  \
-							   						  gn.Generate( %s, %s,(%s,%s), (%s, %s), (%s, %s), \
-						 										   title = \'data.txt\', \
-			 													   ratio1 = %s, ratio2 = %s, ratio3 = %s, ratio4 = %s, ratio5 = %s )' \
-													%(PYFIL, natom, ntypes, xlo, xhi, ylo, yhi, zlo, zhi, 0.05, 0.26, 0.02, 0.4, 0.27)
+	print >> open( '%s/pyScripy.py'%writPath, 'w' ), 'import imp\ngn=imp.load_source(\'generate.name\',\'%s/generate.py\')\ngn.Generate( %s, %s,(%s,%s), (%s, %s), (%s, %s),title = \'data.txt\',ratio1 = %s, ratio2 = %s, ratio3 = %s, ratio4 = %s, ratio5 = %s )'%(PYFIL, natom, ntypes, xlo, xhi, ylo, yhi, zlo, zhi, 0.05, 0.26, 0.02, 0.4, 0.27)
 	print >> someFile, 'python pyScripy.py\n'
 
 	#--- run python script 
