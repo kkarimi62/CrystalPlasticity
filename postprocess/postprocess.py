@@ -14,7 +14,7 @@ if __name__ == '__main__':
 	readPath = os.getcwd() + '/../testRuns/test3rd' # --- source
 	EXEC_DIR = '.'     #--- path for executable file
 	durtn = '00:29:59'
-	mem = '8gb'
+	mem = '16gb'
 	partition = 'single' #'cpu2019' #'bigmem' #'single' #'parallel' #'single'
 	argv = " -p path \'%s"%(readPath) 
 	argv2nd = "" #lambdc 1.0e5"
