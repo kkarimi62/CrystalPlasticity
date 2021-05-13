@@ -19,13 +19,13 @@ Reading data file ...
 WARNING: Atom style in data file differs from currently defined atom style (../read_data.cpp:515)
   reading atoms ...
   50688 atoms
-  read_data CPU = 0.080 seconds
+  read_data CPU = 0.087 seconds
 
 # Interatomic potential information.
 
   neigh_modify    delay   0
   pair_style      soft ${cutoff}
-  pair_style      soft 1.07721734502
+  pair_style      soft 0.215443469003
   pair_coeff      * *  10.0
   timestep        ${dt}
   timestep        0.01
@@ -48,17 +48,17 @@ WARNING: Atom style in data file differs from currently defined atom style (../r
 Neighbor list info ...
   update every 1 steps, delay 0 steps, check yes
   max neighbors/atom: 2000, page size: 100000
-  master list distance cutoff = 3.0772173
-  ghost atom cutoff = 3.0772173
-  binsize = 1.5386087, bins = 52 52 52
+  master list distance cutoff = 2.2154435
+  ghost atom cutoff = 2.2154435
+  binsize = 1.1077217, bins = 72 72 72
   1 neighbor lists, perpetual/occasional/extra = 1 0 0
   (1) pair soft, perpetual
       attributes: half, newton on
       pair build: half/bin/atomonly/newton
       stencil: half/bin/3d/newton
       bin: standard
-Per MPI rank memory allocation (min/avg/max) = 18.50 | 18.50 | 18.50 Mbytes
+Per MPI rank memory allocation (min/avg/max) = 18.64 | 18.64 | 18.64 Mbytes
 Step Temp E_pair E_mol TotEng Press 
-       0            0    50994.696            0    50994.696    165070.64 
-ERROR: Lost atoms: original 50688 current 21950 (../thermo.cpp:427)
+       0            0    355.65713            0    355.65713    1055.7728 
+ERROR: Lost atoms: original 50688 current 50522 (../thermo.cpp:427)
 Last command:    run             ${t_eq}
