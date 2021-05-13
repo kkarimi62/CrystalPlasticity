@@ -5,7 +5,7 @@ def makeOAR( EXEC_DIR, node, core, time, PYFIL ):
 	print >> someFile, 'module load mpich/3.2.1-gnu'
 
 	#--- run python scri
-	print >> open( 'pyScripy.py', 'w' ), 'import generate as gn; \ 
+	print >> open( 'pyScripy.py', 'w' ), 'import generate as gn; \
 				   						Generate( %s, %s,(%s,%s), (%s, %s), (%s, %s), \
 			 							title = \'data.txt\', \
 			 							ratio1 = %s, ratio2 = %s, ratio3 = %s, ratio4 = %s, ratio5 = %s )' \
