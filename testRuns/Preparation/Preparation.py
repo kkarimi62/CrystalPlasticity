@@ -35,11 +35,12 @@ if __name__ == '__main__':
 	SCRATCH = None
 	partition = 'single' #'parallel'
 	#--- sim. parameters
-	(xlo, xhi ) = (0.0, 1.0)
-	(ylo, yhi ) = (0.0, 1.0)
-	(zlo, zhi ) = (0.0, 1.0)
-	natom = 1000
+#	(xlo, xhi ) = (0.0, 1.0)
+#	(ylo, yhi ) = (0.0, 1.0)
+#	(zlo, zhi ) = (0.0, 1.0)
+	natom = 50688 
 	ntypes = 5
+	rho = 0.1
 	#---
 	os.system( 'rm -rf %s' % jobname ) #--- rm existing
 	os.system( 'rm jobID.txt' )
