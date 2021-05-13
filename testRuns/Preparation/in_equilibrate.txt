@@ -12,7 +12,6 @@
   variable        damp_t    equal     200*${dt}     # Thermostat damping
   variable        damp_p    equal     2500*${dt}    # Barostat damping
   variable        nthermo   equal     1000     		# output frequency
-  nthermo
 #----------------------------------------------------------------------------------------#
 
   units           metal
