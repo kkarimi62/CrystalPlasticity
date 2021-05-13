@@ -30,7 +30,7 @@ if __name__ == '__main__':
 #	sourcePath = os.getcwd() + '/dataFiles'
 	EXEC_DIR = '/home/kamran.karimi1/Project/git/CrystalPlasticity/lammps-29Oct20/src' #--- path for executable file
 	MEAM_library_DIR='/home/kamran.karimi1/Project/git/CrystalPlasticity/testRuns/dataFiles' #--- meam potential parameters
-	PYFIL = '/Users/Home/Desktop/Tmp/txt/git/CrystalPlasticity/py' 
+	PYFIL = '/home/kamran.karimi1/Project/git/CrystalPlasticity/py'
 	durtn = '47:59:59'
 	SCRATCH = None
 	partition = 'single' #'parallel'
