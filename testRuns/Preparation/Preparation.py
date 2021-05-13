@@ -10,7 +10,7 @@ def makeOAR( EXEC_DIR, node, core, time, PYFIL ):
 							   						gn.Generate( %s, %s,(%s,%s), (%s, %s), (%s, %s), \
 						 							title = \'data.txt\', \
 			 										ratio1 = %s, ratio2 = %s, ratio3 = %s, ratio4 = %s, ratio5 = %s )' \
-													%(natom, ntypes, xlo, xhi, ylo, yhi, zlo, zhi, 0.05, 0.26, 0.02, 0.4, 0.27)
+													%(PYFIL, natom, ntypes, xlo, xhi, ylo, yhi, zlo, zhi, 0.05, 0.26, 0.02, 0.4, 0.27)
 	print >> someFile, 'python pyScripy.py\n'
 
 	#--- run python script 
