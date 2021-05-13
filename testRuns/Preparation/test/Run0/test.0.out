@@ -1,3 +1,8 @@
 LAMMPS (29 Oct 2020)
 Reading data file ...
-ERROR on proc 0: Cannot open file data.txt: No such file or directory (../read_data.cpp:1965)
+  orthogonal box = (0.0000000 0.0000000 0.0000000) to (1.0000000 1.0000000 1.0000000)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  1000 atoms
+  read_data CPU = 0.003 seconds
+ERROR on proc 0: Substitution for illegal variable pair_coeff_args (../input.cpp:597)

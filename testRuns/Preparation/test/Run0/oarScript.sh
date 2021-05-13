@@ -6,6 +6,6 @@ MEAM_library_DIR=/home/kamran.karimi1/Project/git/CrystalPlasticity/testRuns/dat
 
 module load mpich/3.2.1-gnu
 
-python pyScripy.py
+python pyScript.py
 
 $EXEC_DIR/lmp_serial < in.txt -var OUT_PATH . pair_coeff_args $MEAM_library_DIR/library_CoNiCrFeMn.meam Co Ni Cr Fe Mn $MEAM_library_DIR/parameters.meam Co Ni Cr Fe Mn
