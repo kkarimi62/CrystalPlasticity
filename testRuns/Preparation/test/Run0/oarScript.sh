@@ -8,4 +8,4 @@ module load mpich/3.2.1-gnu
 
 python pyScript.py
 
-$EXEC_DIR/lmp_serial < in.txt -var OUT_PATH . -var pairCoeffArgs /home/kamran.karimi1/Project/git/CrystalPlasticity/testRuns/dataFiles/library_CoNiCrFeMn.meam Co Ni Cr Fe Mn /home/kamran.karimi1/Project/git/CrystalPlasticity/testRuns/dataFiles/parameters.meam Co Ni Cr Fe Mn
+$EXEC_DIR/lmp_serial < in.txt -var OUT_PATH . -var MEAM_library_DIR /home/kamran.karimi1/Project/git/CrystalPlasticity/testRuns/dataFiles
