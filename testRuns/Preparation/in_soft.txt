@@ -26,7 +26,7 @@
   fix 1 all nve
   fix 2 all viscous 1.0
   thermo          ${nthermo}
-  thermo_modify   lost      ignore
+#  thermo_modify   lost      ignore
   dump    1 all custom ${nthermo} ${OUT_PATH}/dumpFile.xyz id type x y z 
   dump_modify 1 flush yes format line "%d %d %4.3e %4.3e %4.3e"
 #  reset_timestep  0
