@@ -16,7 +16,7 @@ def makeOAR( EXEC_DIR, node, core, time, PYFIL ):
 	OUT_PATH = '.'
 	if SCRATCH:
 		OUT_PATH = '/scratch/${SLURM_JOB_ID}'
-	print >> someFile, "$EXEC_DIR/%s < in.txt -var OUT_PATH %s -var pair_coeff_args $MEAM_library_DIR/library_CoNiCrFeMn.meam Co Ni Cr Fe Mn $MEAM_library_DIR/parameters.meam Co Ni Cr Fe Mn" %( EXEC, OUT_PATH )
+	print >> someFile, "$EXEC_DIR/%s < in.txt -var OUT_PATH %s -var pairCoeffArgs %s/library_CoNiCrFeMn.meam Co Ni Cr Fe Mn %s/parameters.meam Co Ni Cr Fe Mn" %( EXEC, OUT_PATH, MEAM_library_DIR, MEAM_library_DIR )
 	someFile.close()										  
 
 

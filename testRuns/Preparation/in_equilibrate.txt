@@ -22,7 +22,7 @@
 
   neigh_modify    delay   0
   pair_style      meam/c
-  pair_coeff      * *  ${pair_coeff_args} #library_CoNiCrFeMn.meam Co Ni Cr Fe Mn parameters.meam Co Ni Cr Fe Mn
+  pair_coeff      * *  ${pairCoeffArgs} #library_CoNiCrFeMn.meam Co Ni Cr Fe Mn parameters.meam Co Ni Cr Fe Mn
   timestep        ${dt}
   
 #---------------------------------   Equilibrate in NPT ensemble  ----------------------#
