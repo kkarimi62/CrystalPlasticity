@@ -4,7 +4,6 @@ Reading data file ...
   1 by 1 by 1 MPI processor grid
   reading atoms ...
   50688 atoms
-  read_data CPU = 0.134 seconds
-# Temp    T_ave      vol_med   vol2_med   std_vol   E_med   E2_med  std_E  
-ERROR: Variable std_vol: Invalid thermo keyword 'nan' in variable formula (../variable.cpp:2142)
-Last command:   300  ${T_ave
+  read_data CPU = 0.139 seconds
+ERROR: Could not find fix group ID (../modify.cpp:815)
+Last command:   fix all viscous 1.0
