@@ -1,0 +1,24 @@
+LAMMPS (29 Oct 2020)
+#----------------------------------------------------------------------------------------#
+
+#------------------------------ General variables ---------------------------------------#
+ # Simulation variables
+
+  variable        T         equal     300
+
+ # Time variables
+
+  variable        t_eq      equal     100000        # Equlibration time
+  variable        dt        equal     0.001         # Time step
+  variable        damp_t    equal     200*${dt}     # Thermostat damping
+  variable        damp_t    equal     200*0.001     
+  variable        damp_p    equal     2500*${dt}    # Barostat damping
+  variable        damp_p    equal     2500*0.001    
+  variable        nthermo   equal     1000     		# output frequency
+#----------------------------------------------------------------------------------------#
+
+  units           metal
+  atom_style      atomic
+  read_data       data.txt
+Reading data file ...
+ERROR on proc 0: Cannot open file data.txt: No such file or directory (../read_data.cpp:1965)
