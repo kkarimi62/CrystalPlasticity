@@ -1,9 +1,14 @@
 import numpy as np
 # 
 def Generate( natom, ntypes, 
-			  (xlo,xhi), (ylo, yhi), (zlo, zhi),
+#			  (xlo,xhi), (ylo, yhi), (zlo, zhi),
+			  rho,
 			  title = 'data.txt',
 			  **kwargs ): 
+
+	L = (natom/rho) ** (1.0/3.0)
+	xlo = ylo = zlo = 0.0
+	xhi = yhi = zhi = L
 
 	x, y, z  = np.random.rand(	natom, 3 ).T
 

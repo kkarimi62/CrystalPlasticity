@@ -8,7 +8,7 @@ def makeOAR( EXEC_DIR, node, core, time, PYFIL ):
 	#--- run python script
 	pyScript = open( '%s/pyScript.py'%writPath, 'w' )
 	print >> pyScript, 'import imp\ngn=imp.load_source(\'generate.name\',\'%s/generate.py\')'%(PYFIL)
-	print >> pyScript, 'gn.Generate( %s, %s,(%s,%s), (%s, %s), (%s, %s),title = \'data.txt\',ratio1 = %s, ratio2 = %s, ratio3 = %s, ratio4 = %s, ratio5 = %s )'%(natom, ntypes, xlo, xhi, ylo, yhi, zlo, zhi, 0.05, 0.26, 0.02, 0.4, 0.27)
+	print >> pyScript, 'gn.Generate( %s, %s, %s,title = \'data.txt\',ratio1 = %s, ratio2 = %s, ratio3 = %s, ratio4 = %s, ratio5 = %s )'%(natom, ntypes, rho, 0.05, 0.26, 0.02, 0.4, 0.27)
 	pyScript.close()
 	print >> someFile, 'python pyScript.py\n'
 
