@@ -42,6 +42,11 @@ def Generate( natom, ntypes,
 	print >> sfile, '%s %s ylo yhi'%(ylo,yhi)
 	print >> sfile, '%s %s zlo zhi'%(zlo,zhi)
 	print >> sfile
+	print >> sfile, 'Masses'
+	print >> sfile
+	for i in xrange( ntypes ):
+		print >> sfile, '%s %s'%(i+1,1.0)
+	print >> sfile
 	print >> sfile, 'Atoms  # atomic: id tyoe x y z'
 	print >> sfile
 	for iatom in xrange( natom ): 
