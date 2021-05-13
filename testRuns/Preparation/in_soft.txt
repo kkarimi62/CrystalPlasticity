@@ -23,7 +23,7 @@
 
 
 #-------------------                 Simulation & output setup    ---------------------------
-  fix all viscous 1.0
+  fix 1 all viscous 1.0
   thermo          ${nthermo}
   thermo_modify   lost      ignore
   dump    1 all custom ${nthermo} ${OUT_PATH}/dumpFile.xyz id type x y z 
