@@ -25,7 +25,7 @@ WARNING: Atom style in data file differs from currently defined atom style (../r
 
   neigh_modify    delay   0
   pair_style      soft ${cutoff}
-  pair_style      soft 0.0215443469003
+  pair_style      soft 0.215443469003
   pair_coeff      * *  1.0
   timestep        ${dt}
   timestep        0.001
@@ -48,48 +48,17 @@ WARNING: Atom style in data file differs from currently defined atom style (../r
 Neighbor list info ...
   update every 1 steps, delay 0 steps, check yes
   max neighbors/atom: 2000, page size: 100000
-  master list distance cutoff = 2.0215443
-  ghost atom cutoff = 2.0215443
-  binsize = 1.0107722, bins = 79 79 79
+  master list distance cutoff = 2.2154435
+  ghost atom cutoff = 2.2154435
+  binsize = 1.1077217, bins = 72 72 72
   1 neighbor lists, perpetual/occasional/extra = 1 0 0
   (1) pair soft, perpetual
       attributes: half, newton on
       pair build: half/bin/atomonly/newton
       stencil: half/bin/3d/newton
       bin: standard
-Per MPI rank memory allocation (min/avg/max) = 18.76 | 18.76 | 18.76 Mbytes
+Per MPI rank memory allocation (min/avg/max) = 18.65 | 18.65 | 18.65 Mbytes
 Step Temp E_pair E_mol TotEng Press 
-       0            0            0            0            0            0 
-    2000            0            0            0            0            0 
-    4000            0            0            0            0            0 
-    6000            0            0            0            0            0 
-    8000            0            0            0            0            0 
-   10000            0            0            0            0            0 
-Loop time of 34.2804 on 1 procs for 10000 steps with 50688 atoms
-
-Performance: 25.204 ns/day, 0.952 hours/ns, 291.712 timesteps/s
-99.2% CPU use with 1 MPI tasks x no OpenMP threads
-
-MPI task timing breakdown:
-Section |  min time  |  avg time  |  max time  |%varavg| %total
----------------------------------------------------------------
-Pair    | 13.521     | 13.521     | 13.521     |   0.0 | 39.44
-Neigh   | 0          | 0          | 0          |   0.0 |  0.00
-Comm    | 1.5912     | 1.5912     | 1.5912     |   0.0 |  4.64
-Output  | 0.57566    | 0.57566    | 0.57566    |   0.0 |  1.68
-Modify  | 13.991     | 13.991     | 13.991     |   0.0 | 40.81
-Other   |            | 4.602      |            |       | 13.42
-
-Nlocal:        50688.0 ave       50688 max       50688 min
-Histogram: 1 0 0 0 0 0 0 0 0 0
-Nghost:        8043.00 ave        8043 max        8043 min
-Histogram: 1 0 0 0 0 0 0 0 0 0
-Neighs:        87715.0 ave       87715 max       87715 min
-Histogram: 1 0 0 0 0 0 0 0 0 0
-
-Total # of neighbors = 87715
-Ave neighs/atom = 1.7304885
-Neighbor list builds = 0
-Dangerous builds = 0
-
-Total wall time: 0:00:34
+       0            0    43.468345            0    43.468345    139.47381 
+ERROR: Lost atoms: original 50688 current 50468 (../thermo.cpp:427)
+Last command:    run             ${t_eq}
