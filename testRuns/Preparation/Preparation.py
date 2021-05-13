@@ -17,7 +17,7 @@ def makeOAR( EXEC_DIR, node, core, time, PYFIL ):
 	OUT_PATH = '.'
 	if SCRATCH:
 		OUT_PATH = '/scratch/${SLURM_JOB_ID}'
-	print >> someFile, "$EXEC_DIR/lmp_serial < in.txt -var OUT_PATH %s pair_coeff_args $MEAM_library_DIR/library_CoNiCrFeMn.meam Co Ni Cr Fe Mn $MEAM_library_DIR/parameters.meam Co Ni Cr Fe Mn" %( OUT_PATH )
+	print >> someFile, "$EXEC_DIR/%s < in.txt -var OUT_PATH %s pair_coeff_args $MEAM_library_DIR/library_CoNiCrFeMn.meam Co Ni Cr Fe Mn $MEAM_library_DIR/parameters.meam Co Ni Cr Fe Mn" %( EXEC, OUT_PATH )
 	someFile.close()										  
 
 
@@ -31,6 +31,7 @@ if __name__ == '__main__':
 	EXEC_DIR = '/home/kamran.karimi1/Project/git/CrystalPlasticity/lammps-29Oct20/src' #--- path for executable file
 	MEAM_library_DIR='/home/kamran.karimi1/Project/git/CrystalPlasticity/testRuns/dataFiles' #--- meam potential parameters
 	PYFIL = '/home/kamran.karimi1/Project/git/CrystalPlasticity/py'
+	EXEC = 'lmp_serial'
 	durtn = '47:59:59'
 	SCRATCH = None
 	partition = 'single' #'parallel'
@@ -51,7 +52,7 @@ if __name__ == '__main__':
 		os.system( 'mkdir -p %s' % ( writPath ) ) # --- create folder
 		if irun == 0: #--- cp to directory
 			path=os.getcwd() + '/%s' % ( jobname)
-			os.system( 'cp %s/%s %s' % ( EXEC_DIR, PYFIL, path ) ) # --- create folder & mv oar scrip & cp executable
+			os.system( 'cp %s/%s %s' % ( EXEC_DIR, EXEC, path ) ) # --- create folder & mv oar scrip & cp executable
 		#---
 		os.system( 'cp in_equilibrate.txt %s/in.txt ' % writPath ) #--- lammps script: periodic x, pxx, vy, load
 		#---
