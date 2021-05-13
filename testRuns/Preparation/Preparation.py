@@ -18,7 +18,7 @@ def makeOAR( EXEC_DIR, node, core, time, PYFIL ):
 		OUT_PATH = '/scratch/${SLURM_JOB_ID}'
 #	print >> someFile, "$EXEC_DIR/%s < in.txt -var OUT_PATH %s -var MEAM_library_DIR %s"%( EXEC, OUT_PATH, MEAM_library_DIR )
 	cutoff = 1.0 / rho ** (1.0/3.0)
-	print >> someFile, "$EXEC_DIR/%s < in.txt -var OUT_PATH %s -var MEAM_library_DIR %s -var cutoff %s"%( EXEC, OUT_PATH, MEAM_library_DIR, cutoff )
+	print >> someFile, "$EXEC_DIR/%s < in.txt -screen echo -var OUT_PATH %s -var MEAM_library_DIR %s -var cutoff %s"%( EXEC, OUT_PATH, MEAM_library_DIR, cutoff )
 	someFile.close()										  
 
 
@@ -33,7 +33,7 @@ if __name__ == '__main__':
 	MEAM_library_DIR='/home/kamran.karimi1/Project/git/CrystalPlasticity/testRuns/dataFiles' #--- meam potential parameters
 	PYFIL = '/home/kamran.karimi1/Project/git/CrystalPlasticity/py'
 	EXEC = 'lmp_serial'
-	durtn = '47:59:59'
+	durtn = '00:29:59'
 	SCRATCH = None
 	partition = 'single' #'parallel'
 	#--- sim. parameters
