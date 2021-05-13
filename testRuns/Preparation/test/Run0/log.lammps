@@ -2,18 +2,11 @@ LAMMPS (29 Oct 2020)
 #----------------------------------------------------------------------------------------#
 
 #------------------------------ General variables ---------------------------------------#
- # Simulation variables
-
-  variable        T         equal     300
 
  # Time variables
 
-  variable        t_eq      equal     100000        # Equlibration time
-  variable        dt        equal     0.001         # Time step
-  variable        damp_t    equal     200*${dt}     # Thermostat damping
-  variable        damp_t    equal     200*0.001     
-  variable        damp_p    equal     2500*${dt}    # Barostat damping
-  variable        damp_p    equal     2500*0.001    
+  variable        t_eq      equal     10000        # Equlibration time
+  variable        dt        equal     0.01         # Time step
   variable        nthermo   equal     1000     		# output frequency
 #----------------------------------------------------------------------------------------#
 
@@ -25,32 +18,20 @@ Reading data file ...
   1 by 1 by 1 MPI processor grid
   reading atoms ...
   50688 atoms
-  read_data CPU = 0.125 seconds
+  read_data CPU = 0.132 seconds
 
 # Interatomic potential information.
 
   neigh_modify    delay   0
-  pair_style      meam/c
-  pair_coeff      * *  ${MEAM_library_DIR}/library_CoNiCrFeMn.meam Co Ni Cr Fe Mn ${MEAM_library_DIR}/parameters.meam Co Ni Cr Fe Mn
-  pair_coeff      * *  /home/kamran.karimi1/Project/git/CrystalPlasticity/testRuns/dataFiles/library_CoNiCrFeMn.meam Co Ni Cr Fe Mn ${MEAM_library_DIR}/parameters.meam Co Ni Cr Fe Mn
-  pair_coeff      * *  /home/kamran.karimi1/Project/git/CrystalPlasticity/testRuns/dataFiles/library_CoNiCrFeMn.meam Co Ni Cr Fe Mn /home/kamran.karimi1/Project/git/CrystalPlasticity/testRuns/dataFiles/parameters.meam Co Ni Cr Fe Mn
+  pair_style      soft ${cutoff}
+  pair_style      soft 2.15443469003
+  pair_coeff      * *  10.0
   timestep        ${dt}
-  timestep        0.001
+  timestep        0.01
 
-#---------------------------------   Equilibrate in NPT ensemble  ----------------------#
-#  fix             1         all npt temp $T $T ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
-#  run             ${t_eq}
-#  thermo          0
-#  unfix           1
-#  reset_timestep  0
 
 
 #-------------------                 Simulation & output setup    ---------------------------
-  fix             1             all npt temp $T $T ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
-  fix             1             all npt temp 300 $T ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
-  fix             1             all npt temp 300 300 ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
-  fix             1             all npt temp 300 300 0.2 iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
-  fix             1             all npt temp 300 300 0.2 iso 0.0 0.0 2.5 fixedpoint 0.0 0.0 0.0
   variable        energy        equal etotal/atoms
   variable        dU            equal pe/atoms
   variable        Temp          equal temp
