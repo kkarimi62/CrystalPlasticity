@@ -18,7 +18,7 @@ Reading data file ...
   1 by 1 by 1 MPI processor grid
   reading atoms ...
   50688 atoms
-  read_data CPU = 0.139 seconds
+  read_data CPU = 0.134 seconds
 
 # Interatomic potential information.
 
@@ -32,6 +32,16 @@ Reading data file ...
 
 
 #-------------------                 Simulation & output setup    ---------------------------
-  fix all viscous 1.0
-ERROR: Could not find fix group ID (../modify.cpp:815)
-Last command:   fix all viscous 1.0
+  fix 1 all viscous 1.0
+  thermo          ${nthermo}
+  thermo          1000
+  thermo_modify   lost      ignore
+  dump    1 all custom ${nthermo} ${OUT_PATH}/dumpFile.xyz id type x y z
+  dump    1 all custom 1000 ${OUT_PATH}/dumpFile.xyz id type x y z
+  dump    1 all custom 1000 ./dumpFile.xyz id type x y z
+  dump_modify 1 flush yes format line "%d %d %4.3e %4.3e %4.3e"
+#  reset_timestep  0
+   run             ${t_eq}
+   run             10000
+ERROR: Not all per-type masses are set (../atom.cpp:734)
+Last command:    run             ${t_eq}
