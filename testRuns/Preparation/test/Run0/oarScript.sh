@@ -8,4 +8,4 @@ module load mpich/3.2.1-gnu
 
 python pyScript.py
 
-$EXEC_DIR/lmp_serial < in.txt -var OUT_PATH . pair_coeff_args $MEAM_library_DIR/library_CoNiCrFeMn.meam Co Ni Cr Fe Mn $MEAM_library_DIR/parameters.meam Co Ni Cr Fe Mn
+$EXEC_DIR/lmp_serial < in.txt -var OUT_PATH . -var pair_coeff_args $MEAM_library_DIR/library_CoNiCrFeMn.meam Co Ni Cr Fe Mn $MEAM_library_DIR/parameters.meam Co Ni Cr Fe Mn

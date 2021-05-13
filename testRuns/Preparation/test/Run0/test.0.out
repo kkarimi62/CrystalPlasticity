@@ -4,5 +4,6 @@ Reading data file ...
   1 by 1 by 1 MPI processor grid
   reading atoms ...
   1000 atoms
-  read_data CPU = 0.003 seconds
-ERROR on proc 0: Substitution for illegal variable pair_coeff_args (../input.cpp:597)
+  read_data CPU = 0.002 seconds
+ERROR: Incorrect args for pair coefficients (../pair_meamc.cpp:212)
+Last command:   pair_coeff      * *  ${pair_coeff_args} #library_CoNiCrFeMn.meam Co Ni Cr Fe Mn parameters.meam Co Ni Cr Fe Mn
