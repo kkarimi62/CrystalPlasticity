@@ -5,7 +5,7 @@
  # Time variables
 
   variable        t_eq      equal     10000        # Equlibration time
-  variable        dt        equal     0.01         # Time step
+  variable        dt        equal     0.001         # Time step
   variable        nthermo   equal     2000     		# output frequency
 #----------------------------------------------------------------------------------------#
 
