@@ -2,7 +2,8 @@ def makeOAR( EXEC_DIR, node, core, time, PYFIL ):
 	someFile = open( 'oarScript.sh', 'w' )
 	print >> someFile, '#!/bin/bash\n'
 	print >> someFile, 'EXEC_DIR=%s\n' %( EXEC_DIR )
-	print >> someFile, 'module load mpich/3.2.1-gnu'
+	print >> someFile, 'MEAM_library_DIR=%s\n' %( MEAM_library_DIR )
+	print >> someFile, 'module load mpich/3.2.1-gnu\n'
 
 	#--- run python scri
 	print >> open( '%s/pyScripy.py'%writPath, 'w' ), 'import generate as gn; \
@@ -10,13 +11,13 @@ def makeOAR( EXEC_DIR, node, core, time, PYFIL ):
 			 							title = \'data.txt\', \
 			 							ratio1 = %s, ratio2 = %s, ratio3 = %s, ratio4 = %s, ratio5 = %s )' \
 										%(natom, ntypes, xlo, xhi, ylo, yhi, zlo, zhi, 0.05, 0.26, 0.02, 0.4, 0.27)
-	print >> someFile, 'python pyScripy.py; rm pyScripy.py'
+	print >> someFile, 'python pyScripy.py; rm pyScripy.py\n'
 
 	#--- run python script 
 	OUT_PATH = '.'
 	if SCRATCH:
 		OUT_PATH = '/scratch/${SLURM_JOB_ID}'
-	print >> someFile, "$EXEC_DIR/%s < in.txt -var OUT_PATH %s pair_coeff_args %s/library_CoNiCrFeMn.meam Co Ni Cr Fe Mn %s/parameters.meam Co Ni Cr Fe Mn" %( PYFIL, OUT_PATH, MEAM_library_DIR, MEAM_library_DIR )
+	print >> someFile, "$EXEC_DIR/%s < in.txt -var OUT_PATH %s pair_coeff_args \$MEAM_library_DIR/library_CoNiCrFeMn.meam Co Ni Cr Fe Mn $MEAM_library_DIR/parameters.meam Co Ni Cr Fe Mn" %( PYFIL, OUT_PATH )
 	someFile.close()										  
 
 
