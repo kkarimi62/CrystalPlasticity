@@ -22,13 +22,13 @@ if __name__ == '__main__':
 #	PHI = [[PHI[iphi],NTHRESH[inn]] for iphi in xrange( nphi ) for inn in xrange(nn)]
 #	nphi = len(PHI)
 	for iphi in xrange( nphi ):
-	#---	
-        inums = lnums[ 0 ] - 1
-        string[ inums ] = "\tjobname  = '%s'\n" % ('%s%s'%(jobname,iphi)) #--- change job name
-	#---	densities
-        inums = lnums[ 1 ] - 1
-#	    string[ inums ] = "\targv=\'-p\tmccc\t%e\t-p\tbvall\t%e\t-p\tDfff\t%e\'\n"%(mc, bval, df)
+		#---	
+		inums = lnums[ 0 ] - 1
+		string[ inums ] = "\tjobname  = '%s'\n" % ('%s%s'%(jobname,iphi)) #--- change job name
+		#---	densities
+		inums = lnums[ 1 ] - 1
+		string[ inums ] = "\targv=\'-p\tmccc\t%e\t-p\tbvall\t%e\t-p\tDfff\t%e\'\n"%(mc, bval, df)
 
-        sfile=open('junk%s.py'%iphi,'w');sfile.writelines(string);sfile.close()
-	    os.system( 'python junk%s.py'%iphi )
-	    os.system( 'rm junk%s.py'%iphi )
+		sfile=open('junk%s.py'%iphi,'w');sfile.writelines(string);sfile.close()
+		os.system( 'python junk%s.py'%iphi )
+		os.system( 'rm junk%s.py'%iphi )
