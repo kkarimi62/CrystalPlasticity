@@ -19,13 +19,13 @@ Reading data file ...
 WARNING: Atom style in data file differs from currently defined atom style (../read_data.cpp:515)
   reading atoms ...
   50688 atoms
-  read_data CPU = 0.086 seconds
+  read_data CPU = 0.080 seconds
 
 # Interatomic potential information.
 
   neigh_modify    delay   0
   pair_style      soft ${cutoff}
-  pair_style      soft 2.15443469003
+  pair_style      soft 1.07721734502
   pair_coeff      * *  10.0
   timestep        ${dt}
   timestep        0.01
@@ -37,7 +37,7 @@ WARNING: Atom style in data file differs from currently defined atom style (../r
   fix 2 all viscous 1.0
   thermo          ${nthermo}
   thermo          2000
-  thermo_modify   lost      ignore
+#  thermo_modify   lost      ignore
   dump    1 all custom ${nthermo} ${OUT_PATH}/dumpFile.xyz id type x y z
   dump    1 all custom 2000 ${OUT_PATH}/dumpFile.xyz id type x y z
   dump    1 all custom 2000 ./dumpFile.xyz id type x y z
@@ -48,48 +48,17 @@ WARNING: Atom style in data file differs from currently defined atom style (../r
 Neighbor list info ...
   update every 1 steps, delay 0 steps, check yes
   max neighbors/atom: 2000, page size: 100000
-  master list distance cutoff = 4.1544347
-  ghost atom cutoff = 4.1544347
-  binsize = 2.0772173, bins = 39 39 39
+  master list distance cutoff = 3.0772173
+  ghost atom cutoff = 3.0772173
+  binsize = 1.5386087, bins = 52 52 52
   1 neighbor lists, perpetual/occasional/extra = 1 0 0
   (1) pair soft, perpetual
       attributes: half, newton on
       pair build: half/bin/atomonly/newton
       stencil: half/bin/3d/newton
       bin: standard
-Per MPI rank memory allocation (min/avg/max) = 22.34 | 22.34 | 22.34 Mbytes
+Per MPI rank memory allocation (min/avg/max) = 18.50 | 18.50 | 18.50 Mbytes
 Step Temp E_pair E_mol TotEng Press 
-       0            0    416038.31            0    416038.31    1314689.2 
-    2000            0            0            0            0            0 
-    4000            0            0            0            0            0 
-    6000            0            0            0            0            0 
-    8000            0            0            0            0            0 
-   10000            0            0            0            0            0 
-Loop time of 0.151925 on 1 procs for 10000 steps with 14 atoms
-
-Performance: 56870.223 ns/day, 0.000 hours/ns, 65822.017 timesteps/s
-98.3% CPU use with 1 MPI tasks x no OpenMP threads
-
-MPI task timing breakdown:
-Section |  min time  |  avg time  |  max time  |%varavg| %total
----------------------------------------------------------------
-Pair    | 0.025933   | 0.025933   | 0.025933   |   0.0 | 17.07
-Neigh   | 0.1015     | 0.1015     | 0.1015     |   0.0 | 66.81
-Comm    | 0.009861   | 0.009861   | 0.009861   |   0.0 |  6.49
-Output  | 0.00026464 | 0.00026464 | 0.00026464 |   0.0 |  0.17
-Modify  | 0.0077522  | 0.0077522  | 0.0077522  |   0.0 |  5.10
-Other   |            | 0.006616   |            |       |  4.35
-
-Nlocal:        14.0000 ave          14 max          14 min
-Histogram: 1 0 0 0 0 0 0 0 0 0
-Nghost:        2.00000 ave           2 max           2 min
-Histogram: 1 0 0 0 0 0 0 0 0 0
-Neighs:        0.00000 ave           0 max           0 min
-Histogram: 1 0 0 0 0 0 0 0 0 0
-
-Total # of neighbors = 0
-Ave neighs/atom = 0.0000000
-Neighbor list builds = 5
-Dangerous builds = 5
-
-Total wall time: 0:00:00
+       0            0    50994.696            0    50994.696    165070.64 
+ERROR: Lost atoms: original 50688 current 21950 (../thermo.cpp:427)
+Last command:    run             ${t_eq}
