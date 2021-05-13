@@ -6,11 +6,11 @@ def makeOAR( EXEC_DIR, node, core, time, PYFIL ):
 	print >> someFile, 'module load mpich/3.2.1-gnu\n'
 
 	#--- run python scri
-	print >> open( '%s/pyScripy.py'%writPath, 'w' ), 'import generate as gn; \
-				   						Generate( %s, %s,(%s,%s), (%s, %s), (%s, %s), \
-			 							title = \'data.txt\', \
-			 							ratio1 = %s, ratio2 = %s, ratio3 = %s, ratio4 = %s, ratio5 = %s )' \
-										%(natom, ntypes, xlo, xhi, ylo, yhi, zlo, zhi, 0.05, 0.26, 0.02, 0.4, 0.27)
+	print >> open( '%s/pyScripy.py'%writPath, 'w' ), 'import imp; gn=imp.load_source(\'generate.name\',%s/generate.py);  \
+							   						gn.Generate( %s, %s,(%s,%s), (%s, %s), (%s, %s), \
+						 							title = \'data.txt\', \
+			 										ratio1 = %s, ratio2 = %s, ratio3 = %s, ratio4 = %s, ratio5 = %s )' \
+													%(natom, ntypes, xlo, xhi, ylo, yhi, zlo, zhi, 0.05, 0.26, 0.02, 0.4, 0.27)
 	print >> someFile, 'python pyScripy.py\n'
 
 	#--- run python script 
@@ -30,7 +30,7 @@ if __name__ == '__main__':
 #	sourcePath = os.getcwd() + '/dataFiles'
 	EXEC_DIR = '/home/kamran.karimi1/Project/git/CrystalPlasticity/lammps-29Oct20/src' #--- path for executable file
 	MEAM_library_DIR='/home/kamran.karimi1/Project/git/CrystalPlasticity/testRuns/dataFiles' #--- meam potential parameters
-	PYFIL = 'lmp_serial' 
+	PYFIL = '/Users/Home/Desktop/Tmp/txt/git/CrystalPlasticity/py' 
 	durtn = '47:59:59'
 	SCRATCH = None
 	partition = 'single' #'parallel'
