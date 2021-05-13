@@ -47,4 +47,4 @@ Traceback (most recent call last):
     raise DeadKernelError("Kernel died")
 nbconvert.preprocessors.execute.DeadKernelError: Kernel died
 ls: cannot access 'output.html': No such file or directory
-slurmstepd: error: Detected 1 oom-kill event(s) in step 9533895.batch cgroup. Some of your processes may have been killed by the cgroup out-of-memory handler.
+slurmstepd: error: Detected 1 oom-kill event(s) in step 9533897.batch cgroup. Some of your processes may have been killed by the cgroup out-of-memory handler.
