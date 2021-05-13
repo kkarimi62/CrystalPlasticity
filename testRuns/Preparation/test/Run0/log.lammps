@@ -6,7 +6,7 @@ LAMMPS (29 Oct 2020)
  # Time variables
 
   variable        t_eq      equal     10000        # Equlibration time
-  variable        dt        equal     0.01         # Time step
+  variable        dt        equal     0.001         # Time step
   variable        nthermo   equal     2000     		# output frequency
 #----------------------------------------------------------------------------------------#
 
@@ -28,7 +28,7 @@ WARNING: Atom style in data file differs from currently defined atom style (../r
   pair_style      soft 0.215443469003
   pair_coeff      * *  10.0
   timestep        ${dt}
-  timestep        0.01
+  timestep        0.001
 
 
 
@@ -57,8 +57,8 @@ Neighbor list info ...
       pair build: half/bin/atomonly/newton
       stencil: half/bin/3d/newton
       bin: standard
-Per MPI rank memory allocation (min/avg/max) = 18.64 | 18.64 | 18.64 Mbytes
+Per MPI rank memory allocation (min/avg/max) = 18.66 | 18.66 | 18.66 Mbytes
 Step Temp E_pair E_mol TotEng Press 
-       0            0    355.65713            0    355.65713    1055.7728 
-ERROR: Lost atoms: original 50688 current 50522 (../thermo.cpp:427)
+       0            0    339.31673            0    339.31673    1220.7195 
+ERROR: Lost atoms: original 50688 current 50482 (../thermo.cpp:427)
 Last command:    run             ${t_eq}
