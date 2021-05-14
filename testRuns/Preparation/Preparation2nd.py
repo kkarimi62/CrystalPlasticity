@@ -6,10 +6,9 @@ def makeOAR( EXEC_DIR, node, core, time, PYFIL ):
 	print >> someFile, 'module load mpich/3.2.1-gnu'
 
 	#--- run python script 
-	#--- run python script
 	pyScript = open( '%s/pyScript.py'%writPath, 'w' )
 	print >> pyScript, 'import imp\ngn=imp.load_source(\'generate.name\',\'%s/generate.py\')'%(PYFIL)
-	print >> pyScript, 'gn.Generate( %s, %s, %s,title = \'data.txt\',ratio1 = %s, ratio2 = %s, ratio3 = %s, ratio4 = %s, ratio5 = %s )'%(natom, ntypes, rho, 0.05, 0.26, 0.02, 0.4, 0.27)
+	print >> pyScript, 'gn.GenerateDataFromDump( %s/Run%s/%s,title = \'data.txt\')'%(sourcePath, irun, 'dumpFileCords.xyz') #--- generate data file from a dump file
 	pyScript.close()
 	print >> someFile, 'python pyScript.py\n'
 
@@ -24,7 +23,8 @@ def makeOAR( EXEC_DIR, node, core, time, PYFIL ):
 	OUT_PATH = '.'
 	if SCRATCH:
 		OUT_PATH = '/scratch/${SLURM_JOB_ID}'
-	print >> someFile, "mpirun -np %s $EXEC_DIR/%s < in.txt -var OUT_PATH %s -var MEAM_library_DIR %s -echo screen" %( nThreads, EXEC, OUT_PATH, MEAM_library_DIR )
+#	print >> someFile, "mpirun -np %s $EXEC_DIR/%s < in.txt -var OUT_PATH %s -var MEAM_library_DIR %s -echo screen" %( nThreads, EXEC, OUT_PATH, MEAM_library_DIR )
+	print >> someFile, "$EXEC_DIR/%s < in.txt -var OUT_PATH %s -var MEAM_library_DIR %s -echo screen" %( EXEC, OUT_PATH, MEAM_library_DIR )
 	someFile.close()										  
 
 
@@ -57,8 +57,6 @@ if __name__ == '__main__':
 			os.system( 'cp %s/%s %s' % ( EXEC_DIR, PYFIL, path ) ) # --- create folder & mv oar scrip & cp executable
 		#---
 		os.system( 'cp in_equilibrate.txt %s/in.txt ' % writPath ) #--- lammps script: periodic x, pxx, vy, load
-#		os.system( 'cp %s/Run%s/xyz_cords.dump %s/Run%s/dump.neighbors %s ' % (sourcePath, irun, sourcePath, irun, writPath) ) #--- lammps script: periodic x, pxx, vy, load
-		#---
 		#---
 		makeOAR( path, 1, nThreads, durtn, PYFIL ) # --- make oar script
 		os.system( 'chmod +x oarScript.sh; mv oarScript.sh %s' % ( writPath) ) # --- create folder & mv oar scrip & cp executable
