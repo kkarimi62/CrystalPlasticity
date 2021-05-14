@@ -33,6 +33,6 @@ boundary p p p
    run             ${t_eq}
 
   reset_timestep  0
-  dump    1 all custom 1 ${OUT_PATH}/dumpFileCords.xyz id type x y z 
-  dump_modify 1 flush yes format line "%d %d %4.3e %4.3e %4.3e"
+  dump    2 all custom 1 ${OUT_PATH}/dumpFileCords.xyz id type x y z 
+  dump_modify 2 flush yes format line "%d %d %4.3e %4.3e %4.3e"
   run	0
