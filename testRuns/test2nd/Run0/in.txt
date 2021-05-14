@@ -52,12 +52,14 @@ variable strainxy equal "(xy)/v_L0y"
 variable  tmp3 equal "vol"
 variable Volume equal ${tmp3}
 compute		reducedstress all reduce sum c_1[22]
+compute		reducedstress2 all reduce sum c_1[4]
 variable	stress equal (c_reducedstress)/(${Volume})
+variable	stress2 equal (c_reducedstress2)/(${Volume})
 variable s1xy equal "v_stress"
 #variable p1xy equal "v_strainxy"
 #variable p1 equal "-pxy/10000"
 thermo 1
-thermo_style	custom step v_strainxy v_stress #ke pe press temp 
+thermo_style	custom step v_strainxy v_stress v_stress2 #ke pe press temp 
 thermo_modify format line "%d %f %3.2e"
 
 #fix def1 all print 1 "${p1xy} ${p1} ${s1xy}" append NiFe_glass-${initTemp}-${srate}.txt 
