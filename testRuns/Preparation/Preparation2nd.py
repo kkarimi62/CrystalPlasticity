@@ -38,7 +38,7 @@ if __name__ == '__main__':
 	EXEC_DIR = '/home/kamran.karimi1/Project/git/CrystalPlasticity/lammps-29Oct20/src' #--- path for executable file
 	MEAM_library_DIR='/home/kamran.karimi1/Project/git/CrystalPlasticity/testRuns/dataFiles' #--- meam potential parameters
 	PYFIL = '/home/kamran.karimi1/Project/git/CrystalPlasticity/py'
-	EXEC = 'lmp_mpi' 
+	EXEC = 'lmp_serial' 
 	durtn = '00:59:59'
 	SCRATCH = None
 	partition = 'single' #'parallel'
@@ -54,7 +54,7 @@ if __name__ == '__main__':
 		os.system( 'mkdir -p %s' % ( writPath ) ) # --- create folder
 		if irun == 0: #--- cp to directory
 			path=os.getcwd() + '/%s' % ( jobname)
-			os.system( 'cp %s/%s %s' % ( EXEC_DIR, PYFIL, path ) ) # --- create folder & mv oar scrip & cp executable
+			os.system( 'cp %s/%s %s' % ( EXEC_DIR, EXEC, path ) ) # --- create folder & mv oar scrip & cp executable
 		#---
 		os.system( 'cp in_equilibrate.txt %s/in.txt ' % writPath ) #--- lammps script: periodic x, pxx, vy, load
 		#---
