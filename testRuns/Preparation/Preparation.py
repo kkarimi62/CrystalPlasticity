@@ -40,7 +40,7 @@ if __name__ == '__main__':
 #	(xlo, xhi ) = (0.0, 1.0)
 #	(ylo, yhi ) = (0.0, 1.0)
 #	(zlo, zhi ) = (0.0, 1.0)
-	natom = 1000 #50688 
+	natom = 10000 #50688 
 	ntypes = 5
 	rho = 0.1
 	#---
