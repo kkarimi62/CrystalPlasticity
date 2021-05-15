@@ -5,6 +5,7 @@
 
 using namespace LAMMPS_NS;
 #include <iostream>
+#include <stdio.h>
 
 using namespace std;
 
@@ -97,7 +98,9 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
   double rik, rjk;
   double rik2, rjk2;
   double dtsq_ave_i[3], dtsq_ave_j[3];
-
+  
+  FILE* outFile = fopen("potential.txt","w");
+  
   third = 1.0 / 3.0;
   sixth = 1.0 / 6.0;
 
@@ -947,6 +950,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         dUdrij = phip * sij + frhop[i] * drhodr1 + frhop[j] * drhodr2; //--- Eq. 4.41(a)
         ddUddrij = phipp * sij + ( frhopp[i] * drhodr1 * drhodr1 + frhop[i] * ddrhodrdr1 ) + //--- 1st deriv. of Eq. 4.41(a) wrt r
                                  ( frhopp[j] * drhodr2 * drhodr2 + frhop[j] * ddrhodrdr2 );
+        fprintf(outFile,"%e\t%e\n",rij, phipp)
         dUdsij = 0.0;
         if (!iszero(dscrfcn[fnoffset + jn])) {
           dUdsij = phi + frhop[i] * drhods1 + frhop[j] * drhods2; //--- Eq. 4.41(b)
