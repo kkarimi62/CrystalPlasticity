@@ -36,7 +36,7 @@ boundary p p p
 #  thermo_modify   lost      ignore
   dump    1 all custom ${nthermo} ${OUT_PATH}/dumpFile.xyz id type x y z 
   dump_modify 1 flush yes format line "%d %d %4.3e %4.3e %4.3e"
-   run             ${t_eq}
+  run             ${t_eq}
 
   reset_timestep  0
   dump    2 all custom 1 ${OUT_PATH}/dumpFileCords.xyz id type x y z 
