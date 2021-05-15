@@ -1259,5 +1259,5 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
     }
     //     end of j loop
   }
-  fclose(pFile);
+//   fclose(pFile);
 }
