@@ -98,8 +98,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
   double rik, rjk;
   double rik2, rjk2;
   double dtsq_ave_i[3], dtsq_ave_j[3];
-  FILE * pFile;
-  pFile = fopen ("myfile.txt","w");
+//   FILE * pFile;
+//   pFile = fopen ("myfile.txt","w");
   
   third = 1.0 / 3.0;
   sixth = 1.0 / 6.0;
@@ -143,7 +143,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         phi = ((this->phirar3[ind][kk] * pp + this->phirar2[ind][kk]) * pp + this->phirar1[ind][kk]) * pp + this->phirar[ind][kk]; //--- additional terms from the smoothing function
         phip = (this->phirar6[ind][kk] * pp + this->phirar5[ind][kk]) * pp + this->phirar4[ind][kk]; //--- (d/dr){\phi/S_{ij}}: polynomial smoothing function
         phipp = (this->phirar8[ind][kk]) * pp + this->phirar7[ind][kk]; //--- (d^2/dr^2){\phi/S_{ij}}
-        fprintf (pFile, "%e %e %e %e\n",rij, phi, phip, phipp);
+//         fprintf (pFile, "%e %e %e %e\n",rij, phi, phip, phipp);
         if (eflag_either != 0) {
           double phi_sc = phi * scaleij; //--- scaled energy: scaleij = 1/zij0
           if (eflag_global != 0)
