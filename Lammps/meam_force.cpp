@@ -95,7 +95,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
   double ddt3drds1, ddt3drds2;
   double rik, rjk;
   double rik2, rjk2;
-
+  double dtsq_ave_i[3], dtsq_ave_j[3];
 
   third = 1.0 / 3.0;
   sixth = 1.0 / 6.0;
@@ -491,7 +491,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         t3j = t_ave[j][2];
 
             if (this->ialloy == 1) {   //--- not included in the report? (skipped)
-
+  
           a1i = fdiv_zero(drhoa0j * sij, tsq_ave[i][0]); 
           a1j = fdiv_zero(drhoa0i * sij, tsq_ave[j][0]);
           a2i = fdiv_zero(drhoa0j * sij, tsq_ave[i][1]);
@@ -505,13 +505,27 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           dt2dr2 = a2j * (t2mi - t2j * MathSpecial::square(t2mi));
           dt3dr1 = a3i * (t3mj - t3i * MathSpecial::square(t3mj));
           dt3dr2 = a3j * (t3mi - t3j * MathSpecial::square(t3mi));
+          // 2nd deriv of 4.32(a) wrt r
+          dtsq_ave_i[0] = t1mj * t1mj * drhoa0j;
+          dtsq_ave_i[1] = t2mj * t2mj * drhoa0j;
+          dtsq_ave_i[2] = t3mj * t3mj * drhoa0j;
+          dtsq_ave_j[0] = t1mi * t1mi * drhoa0i;
+          dtsq_ave_j[1] = t2mi * t2mi * drhoa0i;
+          dtsq_ave_j[2] = t3mi * t3mi * drhoa0i;
               
-          ddt1drdr1 = 0.0;
-          ddt1drdr2 = 0.0;
-          ddt2drdr1 = 0.0;
-          ddt2drdr2 = 0.0;
-          ddt3drdr1 = 0.0;
-          ddt3drdr2 = 0.0;
+          da1i = fdiv_zero((ddrhoa0j*tsq_ave[i][0]-drhoa0j*dtsq_ave[i][0]) * sij, tsq_ave[i][0] * tsq_ave[i][0]); 
+          da1j = fdiv_zero((ddrhoa0i*tsq_ave[j][0]-drhoa0i*dtsq_ave[j][0]) * sij, tsq_ave[j][0] * tsq_ave[j][0]);
+          da2i = fdiv_zero((ddrhoa0j*tsq_ave[i][1]-drhoa0j*dtsq_ave[i][1]) * sij, tsq_ave[i][1] * tsq_ave[i][1]);
+          da2j = fdiv_zero((ddrhoa0i*tsq_ave[j][1]-drhoa0i*dtsq_ave[j][1]) * sij, tsq_ave[j][1] * tsq_ave[j][1]);
+          da3i = fdiv_zero((ddrhoa0j*tsq_ave[i][2]-drhoa0j*dtsq_ave[i][2]) * sij, tsq_ave[i][2] * tsq_ave[i][2]);
+          da3j = fdiv_zero((ddrhoa0i*tsq_ave[j][2]-drhoa0i*dtsq_ave[j][2]) * sij, tsq_ave[j][2] * tsq_ave[j][2]);
+              
+          ddt1drdr1 = da1i * dt1dr1 / a1i + a1i * (- t1mj * t1mj * dt1dr1 );
+          ddt1drdr2 = da1j * dt1dr2 / a1j + a1j * (- t1mi * t1mi * dt1dr2 );
+          ddt2drdr1 = da2i * dt2dr1 / a2i + a2i * (- t2mj * t2mj * dt2dr1 );
+          ddt2drdr2 = da2j * dt2dr2 / a2j + a2j * (- t2mi * t2mi * dt2dr2 );
+          ddt3drdr1 = da3i * dt3dr1 / a3i + a3i * (- t3mj * t3mj * dt3dr1 );
+          ddt3drdr2 = da3j * dt3dr2 / a3j + a3j * (- t3mi * t3mi * dt3dr2 );
 
         } else if (this->ialloy == 2) {
 
