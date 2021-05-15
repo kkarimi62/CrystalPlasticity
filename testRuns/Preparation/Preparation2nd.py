@@ -39,7 +39,7 @@ if __name__ == '__main__':
 	MEAM_library_DIR='/home/kamran.karimi1/Project/git/CrystalPlasticity/testRuns/dataFiles' #--- meam potential parameters
 	PYFIL = '/home/kamran.karimi1/Project/git/CrystalPlasticity/py'
 	EXEC = 'lmp_serial' 
-	durtn = '00:59:59'
+	durtn = '23:59:59'
 	SCRATCH = None
 	partition = 'single' #'parallel'
 	#--- update data.txt and lammps script

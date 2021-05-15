@@ -37,7 +37,7 @@ if __name__ == '__main__':
 	SCRATCH = None
 	partition = 'single' #'parallel'
 	#--- sim. parameters
-	natom = 10000 #50688 
+	natom = 5000 #50688 
 	ntypes = 5
 	rho = 0.1
 	#---

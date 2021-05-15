@@ -4,6 +4,7 @@
  # Simulation variables
 
   variable        T         equal     300
+  variable		  P    		equal     0.01
 
  # Time variables
 
@@ -34,7 +35,7 @@
 
 
 #-------------------                 Simulation & output setup    ---------------------------
-   fix             1             all npt temp $T $T ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
+   fix             1             all npt temp $T $T ${damp_t} iso ${P} ${P} ${damp_p} fixedpoint 0.0 0.0 0.0
    thermo          ${nthermo}
    #
    dump    1 all custom ${nthermo} ${OUT_PATH}/dumpFile.xyz id type x y z 
