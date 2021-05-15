@@ -1108,6 +1108,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 
             dsij1 = 0.0;
             dsij2 = 0.0;
+            ddsddrik = 0.0;
+            ddsddrjk = 0.0;
             if (!iszero(sij) && !isone(sij)) {
               const double rbound = rij2 * this->ebound_meam[elti][eltj];
               delc = Cmax - Cmin;
@@ -1136,8 +1138,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                       dsij1 = a * dCikj1; //--- 4.22b/rik: units of s/r^2
                       dsij2 = a * dCikj2; //--- 4.22c/rjk
 //
-                      
-                     ddCfunc2(rik, rjk, rij2, rik2, rjk2, ddCikj1, ddCikj2);
+                      ddCfunc2(rik, rjk, rij2, rik2, rjk2, ddCikj1, ddCikj2);
                       dCikj1 *= rik;
                       dCikj2 *= rjk;
                       
@@ -1158,7 +1159,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
               }
             }
 
-            if (!iszero(dsij1) || !iszero(dsij2) ){// || !iszero(ddsddrik) || !iszero(ddsddrjk) ) { uncomment????
+            if (!iszero(dsij1) || !iszero(dsij2) || !iszero(ddsddrik) || !iszero(ddsddrjk) ) {
               force1 = dUdsij * dsij1;
               force2 = dUdsij * dsij2;
             //--- add stiffness
