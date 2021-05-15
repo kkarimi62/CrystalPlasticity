@@ -8,10 +8,10 @@
 
  # Time variables
 
-  variable        t_eq      equal     100000        # Equlibration time
+  variable        t_eq      equal     10000        # Equlibration time
   variable        dt        equal     0.001         # Time step
-  variable        damp_t    equal     100*${dt}     # Thermostat damping
-  variable        damp_p    equal     100*${dt}    # Barostat damping
+  variable        damp_t    equal     10*${dt}     # Thermostat damping
+  variable        damp_p    equal     10*${dt}    # Barostat damping
   variable        nthermo   equal     100     		# output frequency
 #----------------------------------------------------------------------------------------#
 
