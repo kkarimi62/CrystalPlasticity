@@ -1108,8 +1108,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 
             dsij1 = 0.0;
             dsij2 = 0.0;
-            ddsddrik = 0.0;
-            ddsddrjk = 0.0;
+//            ddsddrik = 0.0; uncomment
+//            ddsddrjk = 0.0;
             if (!iszero(sij) && !isone(sij)) {
               const double rbound = rij2 * this->ebound_meam[elti][eltj];
               delc = Cmax - Cmin;
