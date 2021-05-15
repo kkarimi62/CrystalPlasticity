@@ -24,6 +24,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
   double recip, phi, phip, phipp;
   double sij;
   double a1, a1i, a1j, a2, a2i, a2j;
+  double da1i, da1j, da2i, da2j, da3i, da3j;
   double a3i, a3j;
   double shpi[3], shpj[3];
   double ai, aj, ro0i, ro0j, invrei, invrej;
@@ -95,7 +96,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
   double ddt3drds1, ddt3drds2;
   double rik, rjk;
   double rik2, rjk2;
-
+  double dtsq_ave_i[3], dtsq_ave_j[3];
 
   third = 1.0 / 3.0;
   sixth = 1.0 / 6.0;
@@ -490,8 +491,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         t2j = t_ave[j][1];
         t3j = t_ave[j][2];
 
-            if (this->ialloy == 1) {   //--- not included in the report? (skipped)
-
+        if (this->ialloy == 1) {   //--- not included in the report? (skipped)
+  
           a1i = fdiv_zero(drhoa0j * sij, tsq_ave[i][0]); 
           a1j = fdiv_zero(drhoa0i * sij, tsq_ave[j][0]);
           a2i = fdiv_zero(drhoa0j * sij, tsq_ave[i][1]);
@@ -505,13 +506,27 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           dt2dr2 = a2j * (t2mi - t2j * MathSpecial::square(t2mi));
           dt3dr1 = a3i * (t3mj - t3i * MathSpecial::square(t3mj));
           dt3dr2 = a3j * (t3mi - t3j * MathSpecial::square(t3mi));
+          // 2nd deriv of 4.32(a) wrt r
+          dtsq_ave_i[0] = t1mj * t1mj * drhoa0j;
+          dtsq_ave_i[1] = t2mj * t2mj * drhoa0j;
+          dtsq_ave_i[2] = t3mj * t3mj * drhoa0j;
+          dtsq_ave_j[0] = t1mi * t1mi * drhoa0i;
+          dtsq_ave_j[1] = t2mi * t2mi * drhoa0i;
+          dtsq_ave_j[2] = t3mi * t3mi * drhoa0i;
               
-          ddt1drdr1 = 0.0;
-          ddt1drdr2 = 0.0;
-          ddt2drdr1 = 0.0;
-          ddt2drdr2 = 0.0;
-          ddt3drdr1 = 0.0;
-          ddt3drdr2 = 0.0;
+          da1i = fdiv_zero((ddrhoa0j*tsq_ave[i][0]-drhoa0j*dtsq_ave_i[0]) * sij, tsq_ave[i][0] * tsq_ave[i][0]); 
+          da1j = fdiv_zero((ddrhoa0i*tsq_ave[j][0]-drhoa0i*dtsq_ave_j[0]) * sij, tsq_ave[j][0] * tsq_ave[j][0]);
+          da2i = fdiv_zero((ddrhoa0j*tsq_ave[i][1]-drhoa0j*dtsq_ave_i[1]) * sij, tsq_ave[i][1] * tsq_ave[i][1]);
+          da2j = fdiv_zero((ddrhoa0i*tsq_ave[j][1]-drhoa0i*dtsq_ave_j[1]) * sij, tsq_ave[j][1] * tsq_ave[j][1]);
+          da3i = fdiv_zero((ddrhoa0j*tsq_ave[i][2]-drhoa0j*dtsq_ave_i[2]) * sij, tsq_ave[i][2] * tsq_ave[i][2]);
+          da3j = fdiv_zero((ddrhoa0i*tsq_ave[j][2]-drhoa0i*dtsq_ave_j[2]) * sij, tsq_ave[j][2] * tsq_ave[j][2]);
+              
+          ddt1drdr1 = da1i * dt1dr1 / a1i + a1i * (- t1mj * t1mj * dt1dr1 );
+          ddt1drdr2 = da1j * dt1dr2 / a1j + a1j * (- t1mi * t1mi * dt1dr2 );
+          ddt2drdr1 = da2i * dt2dr1 / a2i + a2i * (- t2mj * t2mj * dt2dr1 );
+          ddt2drdr2 = da2j * dt2dr2 / a2j + a2j * (- t2mi * t2mi * dt2dr2 );
+          ddt3drdr1 = da3i * dt3dr1 / a3i + a3i * (- t3mj * t3mj * dt3dr1 );
+          ddt3drdr2 = da3j * dt3dr2 / a3j + a3j * (- t3mi * t3mi * dt3dr2 );
 
         } else if (this->ialloy == 2) {
 
@@ -751,7 +766,45 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
             dt2ds2 = a2j * (t2mi - t2j * MathSpecial::square(t2mi));
             dt3ds1 = a3i * (t3mj - t3i * MathSpecial::square(t3mj));
             dt3ds2 = a3j * (t3mi - t3j * MathSpecial::square(t3mi));
+            
+            da1i = fdiv_zero(-rhoa0j * dt1ds1, tsq_ave[i][0] * tsq_ave[i][0]);
+            da1j = fdiv_zero(-rhoa0i * dt1ds2, tsq_ave[j][0] * tsq_ave[j][0]);
+            da2i = fdiv_zero(-rhoa0j * dt2ds1, tsq_ave[i][1] * tsq_ave[i][1]);
+            da2j = fdiv_zero(-rhoa0i * dt2ds2, tsq_ave[j][1] * tsq_ave[j][1]);
+            da3i = fdiv_zero(-rhoa0j * dt3ds1, tsq_ave[i][2] * tsq_ave[i][2]);
+            da3j = fdiv_zero(-rhoa0i * dt3ds2, tsq_ave[j][2] * tsq_ave[j][2]);
+            
+            ddt1dsds1 = - a1i * dt1ds1 * t1mj * t1mj + da1i * dt1ds1 / a1i; 
+            ddt1dsds2 = - a1j * dt1ds2 * t1mi * t1mi + da1j * dt1ds2 / a1j; 
+            ddt2dsds1 = - a2i * dt2ds1 * t2mj * t2mj + da2i * dt2ds1 / a2i; 
+            ddt2dsds2 = - a2j * dt2ds2 * t2mi * t2mi + da2j * dt2ds2 / a2j; 
+            ddt3dsds1 = - a3i * dt3ds1 * t3mj * t3mj + da3i * dt3ds1 / a3i; 
+            ddt3dsds2 = - a3j * dt3ds2 * t3mi * t3mi + da3j * dt3ds2 / a3j;
+            
+            
+            //--- redefine a: ln.503
+            
+            a1i = fdiv_zero(drhoa0j * sij, tsq_ave[i][0]); 
+            a1j = fdiv_zero(drhoa0i * sij, tsq_ave[j][0]);
+            a2i = fdiv_zero(drhoa0j * sij, tsq_ave[i][1]);
+            a2j = fdiv_zero(drhoa0i * sij, tsq_ave[j][1]);
+            a3i = fdiv_zero(drhoa0j * sij, tsq_ave[i][2]);
+            a3j = fdiv_zero(drhoa0i * sij, tsq_ave[j][2]);
+            
+            da1i = (drhoa0j * (tsq_ave[i][0]-dt1ds1*sij) , tsq_ave[i][0] * tsq_ave[i][0]);
+            da1j = (drhoa0i * (tsq_ave[j][0]-dt1ds2*sij) , tsq_ave[j][0] * tsq_ave[j][0]);
+            da2i = (drhoa0j * (tsq_ave[i][1]-dt2ds1*sij) , tsq_ave[i][1] * tsq_ave[i][1]);
+            da2j = (drhoa0i * (tsq_ave[j][1]-dt2ds2*sij) , tsq_ave[j][1] * tsq_ave[j][1]);
+            da3i = (drhoa0j * (tsq_ave[i][2]-dt3ds1*sij) , tsq_ave[i][2] * tsq_ave[i][2]);
+            da3j = (drhoa0i * (tsq_ave[j][2]-dt3ds2*sij) , tsq_ave[j][2] * tsq_ave[j][2]);
 
+            ddt1drds1 = da1i * dt1dr1 / a1i + a1i * (-dt1ds1*t1mj*t1mj);
+            ddt1drds2 = da1j * dt1dr2 / a1j + a1j * (-dt1ds2*t1mi*t1mi);
+            ddt2drds1 = da2i * dt2dr1 / a2i + a2i * (-dt2ds1*t2mj*t2mj);
+            ddt2drds2 = da2j * dt2dr2 / a2j + a2j * (-dt2ds2*t2mi*t2mi);
+            ddt3drds1 = da3i * dt3dr1 / a3i + a3i * (-dt3ds1*t3mj*t3mj);
+            ddt3drds2 = da3j * dt3dr2 / a3j + a3j * (-dt3ds2*t3mi*t3mi);
+            
           } else if (this->ialloy == 2) {
 
             dt1ds1 = 0.0;
@@ -1105,8 +1158,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
               }
             }
 
-            if (!iszero(dsij1) || !iszero(dsij2) ){ 
-              // || !iszero(ddsij1) || !iszero(ddsij2) )
+            if (!iszero(dsij1) || !iszero(dsij2) || !iszero(ddsddrik) || !iszero(ddsddrjk) ) {
               force1 = dUdsij * dsij1;
               force2 = dUdsij * dsij2;
             //--- add stiffness
