@@ -521,12 +521,12 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           da3i = fdiv_zero((ddrhoa0j*tsq_ave[i][2]-drhoa0j*dtsq_ave_i[2]) * sij, tsq_ave[i][2] * tsq_ave[i][2]);
           da3j = fdiv_zero((ddrhoa0i*tsq_ave[j][2]-drhoa0i*dtsq_ave_j[2]) * sij, tsq_ave[j][2] * tsq_ave[j][2]);
               
-          ddt1drdr1 = 0.0;//da1i * dt1dr1 / a1i + a1i * (- t1mj * t1mj * dt1dr1 ); uncomment?????
-          ddt1drdr2 = 0.0;//da1j * dt1dr2 / a1j + a1j * (- t1mi * t1mi * dt1dr2 );
-          ddt2drdr1 = 0.0;//da2i * dt2dr1 / a2i + a2i * (- t2mj * t2mj * dt2dr1 );
-          ddt2drdr2 = 0.0;//da2j * dt2dr2 / a2j + a2j * (- t2mi * t2mi * dt2dr2 );
-          ddt3drdr1 = 0.0;//da3i * dt3dr1 / a3i + a3i * (- t3mj * t3mj * dt3dr1 );
-          ddt3drdr2 = 0.0;//da3j * dt3dr2 / a3j + a3j * (- t3mi * t3mi * dt3dr2 );
+          ddt1drdr1 = da1i * dt1dr1 / a1i + a1i * (- t1mj * t1mj * dt1dr1 );
+          ddt1drdr2 = da1j * dt1dr2 / a1j + a1j * (- t1mi * t1mi * dt1dr2 );
+          ddt2drdr1 = da2i * dt2dr1 / a2i + a2i * (- t2mj * t2mj * dt2dr1 );
+          ddt2drdr2 = da2j * dt2dr2 / a2j + a2j * (- t2mi * t2mi * dt2dr2 );
+          ddt3drdr1 = da3i * dt3dr1 / a3i + a3i * (- t3mj * t3mj * dt3dr1 );
+          ddt3drdr2 = da3j * dt3dr2 / a3j + a3j * (- t3mi * t3mi * dt3dr2 );
 
         } else if (this->ialloy == 2) {
 
