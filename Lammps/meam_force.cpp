@@ -24,6 +24,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
   double recip, phi, phip, phipp;
   double sij;
   double a1, a1i, a1j, a2, a2i, a2j;
+  double da1i, da1j, da2i, da2j, da3i, da3j;
   double a3i, a3j;
   double shpi[3], shpj[3];
   double ai, aj, ro0i, ro0j, invrei, invrej;
