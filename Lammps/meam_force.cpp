@@ -1158,7 +1158,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
               }
             }
 
-            if (!iszero(dsij1) || !iszero(dsij2) ) || !iszero(ddsij1) || !iszero(ddsij2) ) {
+            if (!iszero(dsij1) || !iszero(dsij2) ) || !iszero(ddsddrik) || !iszero(ddsddrjk) ) {
               force1 = dUdsij * dsij1;
               force2 = dUdsij * dsij2;
             //--- add stiffness
