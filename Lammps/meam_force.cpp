@@ -779,10 +779,10 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
             ddt2dsds1 = - a2i * dt2ds1 * t2mj * t2mj + da2i * dt2ds1 / a2i; 
             ddt2dsds2 = - a2j * dt2ds2 * t2mi * t2mi + da2j * dt2ds2 / a2j; 
             ddt3dsds1 = - a3i * dt3ds1 * t3mj * t3mj + da3i * dt3ds1 / a3i; 
-            ddt4dsds2 = - a3j * dt3ds2 * t3mi * t3mi + da3j * dt3ds2 / a3j;
+            ddt3dsds2 = - a3j * dt3ds2 * t3mi * t3mi + da3j * dt3ds2 / a3j;
             
             
-            //--- redefine a ln: 503
+            //--- redefine a: ln.503
             
             a1i = fdiv_zero(drhoa0j * sij, tsq_ave[i][0]); 
             a1j = fdiv_zero(drhoa0i * sij, tsq_ave[j][0]);
