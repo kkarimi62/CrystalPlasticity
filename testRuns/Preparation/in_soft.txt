@@ -5,7 +5,7 @@ boundary p p p
 
  # Time variables
 
-  variable        t_eq      equal     10000        # Equlibration time
+  variable        t_eq      equal     20000        # Equlibration time
   variable        dt        equal     0.001         # Time step
   variable        nthermo   equal     1000     		# output frequency
   variable		  Pstart    equal     0.01

@@ -34,39 +34,7 @@
 
 
 #-------------------                 Simulation & output setup    ---------------------------
-  fix             1             all npt temp $T $T ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
-#  variable        energy        equal etotal/atoms
-#  variable        dU            equal pe/atoms
-#  variable        Temp          equal temp
-#  variable        vol           equal ((vol/atoms)*0.6022)
-#  variable        E2            equal v_energy*v_energy
-#  variable        V2            equal v_vol*v_vol
-#  thermo_style    custom        step temp etotal pe v_energy v_dU v_vol v_E2 v_Temp
-#  fix             vec1          all vector  1 v_vol
-#  fix             vec2          all vector  1 v_energy
-#  fix             vec3          all vector  1 v_Temp
-#  fix             Esq           all vector  1 v_E2
-#  fix             Vsq           all vector  1 v_V2
+   fix             1             all npt temp $T $T ${damp_t} iso 0.0 0.0 ${damp_p} fixedpoint 0.0 0.0 0.0
    thermo          ${nthermo}
-#  thermo_modify   lost      ignore
-#  dump    1 all custom ${nthermo} ${OUT_PATH}/dumpFile.xyz id type x y z 
-#  dump_modify 1 flush yes format line "%d %d %4.3e %4.3e %4.3e"
-##  run ${t_eq}
-#  print   "# Temp    T_ave      vol_med   vol2_med   std_vol   E_med   E2_med  std_E  "   file    Thermo_C.dat
-#  variable        vol_med       equal ave(f_vec1)
-#  variable        vol2_med      equal ave(f_Vsq)
-#  variable        std_vol       equal (${vol2_med}-(${vol_med}*${vol_med}))
-#  variable        E_med         equal ave(f_vec2)
-#  variable        E2_med        equal ave(f_Esq)
-#  variable        std_E         equal (${E2_med}-(${E_med}*${E_med}))
-#  variable        T_ave         equal ave(f_vec3)
-#  print   "  300  ${T_ave}  ${vol_med}  ${vol2_med}  ${std_vol}  ${E_med}  ${E2_med}  ${std_E}"   append  Thermo_C.dat
-#  unfix 1
-#  unfix vec1
-#  unfix vec2
-#  unfix vec3
-#  unfix Esq
-#  unfix Vsq
-#  reset_timestep  0
    run             ${t_eq}
   
