@@ -9,7 +9,7 @@ boundary p p p
   variable        dt        equal     0.001         # Time step
   variable        nthermo   equal     1000     		# output frequency
   variable		  Pstart    equal     0.01
-  variable		  Pdamp		equal     10*${dt}
+  variable		  Pdamp		equal     100*${dt}
   variable		  Pstop    equal      ${Pstart}
 
 #----------------------------------------------------------------------------------------#
