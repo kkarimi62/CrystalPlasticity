@@ -514,12 +514,12 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           dtsq_ave_j[1] = t2mi * t2mi * drhoa0i;
           dtsq_ave_j[2] = t3mi * t3mi * drhoa0i;
               
-          da1i = fdiv_zero((ddrhoa0j*tsq_ave[i][0]-drhoa0j*dtsq_ave[i][0]) * sij, tsq_ave[i][0] * tsq_ave[i][0]); 
-          da1j = fdiv_zero((ddrhoa0i*tsq_ave[j][0]-drhoa0i*dtsq_ave[j][0]) * sij, tsq_ave[j][0] * tsq_ave[j][0]);
-          da2i = fdiv_zero((ddrhoa0j*tsq_ave[i][1]-drhoa0j*dtsq_ave[i][1]) * sij, tsq_ave[i][1] * tsq_ave[i][1]);
-          da2j = fdiv_zero((ddrhoa0i*tsq_ave[j][1]-drhoa0i*dtsq_ave[j][1]) * sij, tsq_ave[j][1] * tsq_ave[j][1]);
-          da3i = fdiv_zero((ddrhoa0j*tsq_ave[i][2]-drhoa0j*dtsq_ave[i][2]) * sij, tsq_ave[i][2] * tsq_ave[i][2]);
-          da3j = fdiv_zero((ddrhoa0i*tsq_ave[j][2]-drhoa0i*dtsq_ave[j][2]) * sij, tsq_ave[j][2] * tsq_ave[j][2]);
+          da1i = fdiv_zero((ddrhoa0j*tsq_ave[i][0]-drhoa0j*dtsq_ave_i[0]) * sij, tsq_ave[i][0] * tsq_ave[i][0]); 
+          da1j = fdiv_zero((ddrhoa0i*tsq_ave[j][0]-drhoa0i*dtsq_ave_j[0]) * sij, tsq_ave[j][0] * tsq_ave[j][0]);
+          da2i = fdiv_zero((ddrhoa0j*tsq_ave[i][1]-drhoa0j*dtsq_ave_i[1]) * sij, tsq_ave[i][1] * tsq_ave[i][1]);
+          da2j = fdiv_zero((ddrhoa0i*tsq_ave[j][1]-drhoa0i*dtsq_ave_j[1]) * sij, tsq_ave[j][1] * tsq_ave[j][1]);
+          da3i = fdiv_zero((ddrhoa0j*tsq_ave[i][2]-drhoa0j*dtsq_ave_i[2]) * sij, tsq_ave[i][2] * tsq_ave[i][2]);
+          da3j = fdiv_zero((ddrhoa0i*tsq_ave[j][2]-drhoa0i*dtsq_ave_j[2]) * sij, tsq_ave[j][2] * tsq_ave[j][2]);
               
           ddt1drdr1 = da1i * dt1dr1 / a1i + a1i * (- t1mj * t1mj * dt1dr1 );
           ddt1drdr2 = da1j * dt1dr2 / a1j + a1j * (- t1mi * t1mi * dt1dr2 );
