@@ -41,7 +41,7 @@ fix             2 all deform 1  xy erate ${srate1}  units box  remap v
 compute 	1 all stress/atom NULL pair
 #dump      1 all custom 1 NiFe_glass-${initTemp}-${srate}.dump id type x y z vx vy vz  meam_force.cpp ln.967: 15+6+1
 dump    11 all custom ${NTHERMO} ${OUT_PATH}/virialStress.xyz id type x y z c_1[1] c_1[2] c_1[3] c_1[4] c_1[5] c_1[6] c_1[22] 
-dump_modify 11 flush yes format line "%d %d %4.3e %4.3e %4.3e %4.3e" # %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e"
+dump_modify 11 flush yes format line "%d %d %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e"
 #dump 2 all custom 10000 dump.NiFe_glass-${initTemp}-${srate}.unwrap id type xu yu zu 
 variable strainxy equal "(xy)/v_L0y"
 variable  tmp3 equal "vol"
