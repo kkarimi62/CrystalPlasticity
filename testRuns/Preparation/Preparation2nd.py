@@ -41,7 +41,7 @@ if __name__ == '__main__':
 	EXEC = 'lmp_serial' 
 	durtn = '23:59:59'
 	SCRATCH = None
-	partition = 'single' #'parallel'
+	partition = 'bigmem' #'parallel'
 	mem = '16gb'
 	#--- update data.txt and lammps script
 	#---
