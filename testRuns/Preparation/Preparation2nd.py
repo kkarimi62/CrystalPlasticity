@@ -42,6 +42,7 @@ if __name__ == '__main__':
 	durtn = '23:59:59'
 	SCRATCH = None
 	partition = 'single' #'parallel'
+	mem = '16gb'
 	#--- update data.txt and lammps script
 	#---
 	os.system( 'rm -rf %s' % jobname ) #--- rm existing
@@ -60,9 +61,9 @@ if __name__ == '__main__':
 		#---
 		makeOAR( path, 1, nThreads, durtn, PYFIL ) # --- make oar script
 		os.system( 'chmod +x oarScript.sh; mv oarScript.sh %s' % ( writPath) ) # --- create folder & mv oar scrip & cp executable
-		os.system( 'sbatch --partition=%s --time=%s --job-name %s.%s --output %s.%s.out --error %s.%s.err \
+		os.system( 'sbatch --partition=%s --mem=%s --time=%s --job-name %s.%s --output %s.%s.out --error %s.%s.err \
 						    --chdir %s -c %s -n %s %s/oarScript.sh >> jobID.txt'\
-						   % ( partition, durtn, jobname, counter, jobname, counter, jobname, counter \
+						   % ( partition, mem, durtn, jobname, counter, jobname, counter, jobname, counter \
 						       , writPath, nThreads, 1, writPath ) ) # --- runs oarScript.sh! 
 		counter += 1
 											 
