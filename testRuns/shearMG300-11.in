@@ -1,7 +1,7 @@
 # Amin Esfandiarpour - Amin.esfandiarpour@ncbj.gov.pl- Am.esfandiyarpour@gmail.com
 
 #--- set control parameters
-variable initTemp equal 300          	# desired temperature
+variable initTemp equal 1.0 #300          	# desired temperature
 variable runTime equal 10000 #2000000   	# number of increment 
 #variable srate equal 1.0e-4 
 variable srate equal 1.0e-2 
@@ -35,8 +35,7 @@ variable L0z equal ${tmpz}
 # DEFORMATION
 
 timestep 0.001
-#fix 		1 all nvt/sllod temp ${initTemp} ${initTemp} 1
-fix 		1 all nve 
+fix 		1 all nvt/sllod temp ${initTemp} ${initTemp} 1
 variable srate1 equal ${srate} #"v_srate / 1.0e12"
 fix             2 all deform 1  xy erate ${srate1}  units box  remap v
 compute 	1 all stress/atom NULL pair
