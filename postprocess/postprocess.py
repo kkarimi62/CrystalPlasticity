@@ -10,7 +10,7 @@ if __name__ == '__main__':
 	import os
 #
 	nruns	 = 1
-	jobname  = 'test4th' 
+	jobname  = 'test4th-2' 
 	readPath = os.getcwd() + '/../testRuns/test4th' # --- source
 	EXEC_DIR = '.'     #--- path for executable file
 	durtn = '23:59:59'
@@ -20,8 +20,9 @@ if __name__ == '__main__':
 	argv2nd = "" #lambdc 1.0e5"
 	PYFILdic = { 
 		0:'ElasticConstants.ipynb',
+		1:'analyzePlasticity.ipynb',
 		}
-	keyno = 0
+	keyno = 1
 #---
 #---
 	PYFIL = PYFILdic[ keyno ] 
