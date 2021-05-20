@@ -22,7 +22,7 @@ if __name__ == '__main__':
 		0:'ElasticConstants.ipynb',
 		1:'analyzePlasticity.ipynb',
 		}
-	keyno = 1
+	keyno = 0
 #---
 #---
 	PYFIL = PYFILdic[ keyno ] 
