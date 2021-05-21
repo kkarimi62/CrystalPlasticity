@@ -10,8 +10,8 @@ if __name__ == '__main__':
 	import os
 #
 	nruns	 = 1
-	jobname  = 'test4th' 
-	readPath = os.getcwd() + '/../testRuns/test4th' # --- source
+	jobname  = 'test8thUnwrapped' 
+	readPath = os.getcwd() + '/../testRuns/test8thUnwrapped' # --- source
 	EXEC_DIR = '.'     #--- path for executable file
 	durtn = '23:59:59'
 	mem = '128gb'
