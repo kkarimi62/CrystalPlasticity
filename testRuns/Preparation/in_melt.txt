@@ -2,7 +2,7 @@
 #--- Model parameters
 #-----------------------------
 
-variable natom	equal ${natom}  #--- system size 
+variable natoms	equal ${natom}  #--- system size 
 variable Ntype	equal 5		#--- number of atom types
 variable a      equal ${cutoff}   #--- lattice constant
 variable Dt		equal 0.001 #--- discretization time
@@ -21,7 +21,7 @@ variable tDampPress 	equal ${tDampTemp}   #--- barostat equilibration time scale
 variable	nRunEquilibrate	equal	${tEquilibrate}/${Dt}
 variable	tMelting		equal	(${Tfinal}-${Tinit})/${Trate}
 variable	nRunMelting		equal	${tMelting}/${Dt}
-variable	volume			equal	${natom}*${a}^3.0/4.0 #--- natom * vol. of the voronoi cell
+variable	volume			equal	${natoms}*${a}^3.0/4.0 #--- natom * vol. of the voronoi cell
 variable 	lx				equal	${volume}^(1.0/3.0) 
 
 #-----------------------------
