@@ -53,7 +53,8 @@ if __name__ == '__main__':
 			path=os.getcwd() + '/%s' % ( jobname)
 			os.system( 'cp %s/%s %s' % ( EXEC_DIR, EXEC, path ) ) # --- create folder & mv oar scrip & cp executable
 		#---
-		os.system( 'cp in_soft.txt %s/in.txt ' % writPath ) #--- lammps script: periodic x, pxx, vy, load
+#		os.system( 'cp in_soft.txt %s/in.txt ' % writPath ) #--- lammps script: periodic x, pxx, vy, load
+		os.system( 'cp in_melt.txt %s/in.txt ' % writPath ) #--- lammps script: periodic x, pxx, vy, load
 		#---
 		#---
 		makeOAR( path, 1, nThreads, durtn, PYFIL ) # --- make oar script
