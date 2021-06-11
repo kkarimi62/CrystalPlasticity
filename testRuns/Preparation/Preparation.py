@@ -43,8 +43,8 @@ if __name__ == '__main__':
 	#--- sim. parameters
 	natom = 5000 #50688 
 	ntypes = 5
-    cutoff = 3.58
-    #cutoffs = np.linspace((1.0-0.5)*cutoff,(1+0.5)*cutoff,nruns)
+        cutoff = 3.58
+    #   cutoffs = np.linspace((1.0-0.5)*cutoff,(1+0.5)*cutoff,nruns)
 #	rho = 0.1
 	#---
 	os.system( 'rm -rf %s' % jobname ) #--- rm existing
@@ -52,7 +52,7 @@ if __name__ == '__main__':
 	# --- loop for submitting multiple jobs
 	counter = 0
 	for irun in xrange( nruns ):
-#        cutoff = cutoffs[ irun ]
+#               cutoff = cutoffs[ irun ]
 		print ' i = %s' % counter
 		writPath = os.getcwd() + '/%s/Run%s' % ( jobname, counter ) # --- curr. dir
 		os.system( 'mkdir -p %s' % ( writPath ) ) # --- create folder
