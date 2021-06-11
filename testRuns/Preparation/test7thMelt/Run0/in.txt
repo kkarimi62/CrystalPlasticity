@@ -2,8 +2,8 @@
 #--- Model parameters
 #-----------------------------
 
-#variable natom	equal 4000  #--- system size 
-variable lx		equal 20.0  #--- system size 
+variable natom	equal 4000  #--- system size 
+#variable lx		equal 20.0  #--- system size 
 variable Ntype	equal 5		#--- number of atom types
 variable a      equal 3.58   #--- lattice constant
 variable Dt		equal 0.001 #--- discretization time
@@ -23,7 +23,7 @@ variable	nRunEquilibrate	equal	${tEquilibrate}/${Dt}
 variable	tMelting		equal	(${Tfinal}-${Tinit})/${Trate}
 variable	nRunMelting		equal	${tMelting}/${Dt}
 #variable a		equal	${1/RHO^(1.0/3.0)} #--- lattice constant
-#variable lx		equal	${natom}^(1.0/3.0)*${a} #--- length
+variable lx		equal	${natom}^(1.0/3.0)*${a}/2.0^(1.0/6.0) #--- length
 
 #-----------------------------
 #--- system details
@@ -37,33 +37,33 @@ boundary	p p p
 #-----------------------------
 #read_data       FeNi_glass_${initTemp}.data
 
+#-----------------------------
 #--- define box & lattice
+#-----------------------------
 lattice fcc ${a} 
 region mybox block 0.0 ${lx} 0.0 ${lx} 0.0 ${lx}
 create_box ${Ntype} mybox  
 
 
+#-----------------------------
 #--- assign particle types
+#-----------------------------
 #create_atoms 4  box ratio 0.5 7467  #--- seed
 #create_atoms 2  box ratio 0.5 2465 
 #create_atoms 3 box ratio 0.2 524658
 #create_atoms 4 box ratio 0.2 4658
 #create_atoms 5 box ratio 0.2 9224658
 #change_box all triclinic
-
 #--- 2nd method
 create_atoms    ${Ntype} box
 group fe_group type ${Ntype}
 set group fe_group type/fraction 4 0.5  940248
 group ni_group type ${Ntype}
 set group ni_group type 2
-#group ni_group type 2
-#group ni_group subtract all fe_group
-#set group ni_group type/fraction 2 0.5 54011
 
-neigh_modify delay 0
-neighbor    0.3 bin 
-neigh_modify    delay 5
+#neigh_modify delay 0
+#neighbor    0.3 bin 
+#neigh_modify    delay 5
 
 #-----------------------------
 #--- interactions
