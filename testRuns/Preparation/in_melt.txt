@@ -4,7 +4,7 @@
 
 variable natom	equal 4000  #--- system size 
 variable Ntype	equal 5		#--- number of atom types
-variable a      equal 3.58   #--- lattice constant
+variable a      equal ${cutoff}   #--- lattice constant
 variable Dt		equal 0.001 #--- discretization time
 variable Tinit 	equal 300.0  #--- initial temperature
 variable Tfinal equal 3000.0 #--- final temperature
