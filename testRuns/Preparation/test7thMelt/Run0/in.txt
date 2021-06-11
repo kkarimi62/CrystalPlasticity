@@ -40,8 +40,8 @@ boundary	p p p
 #-----------------------------
 #--- define box & lattice
 #-----------------------------
-lattice fcc ${a} 
 region mybox block 0.0 ${lx} 0.0 ${lx} 0.0 ${lx}
+lattice fcc ${a} 
 create_box ${Ntype} mybox  
 
 
