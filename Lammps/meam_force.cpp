@@ -997,7 +997,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         }
 
         //--- add stiffness (units of u/r^2)
-        stiff = ddUddrij - dUdrij * recip; 
+//kam        stiff = ddUddrij - dUdrij * recip; 
+        stiff = ddUddrij + dUdrij * recip; 
         stiff0 = 0.0; 
         stiff1 = 0.0;
         stiff2 = 0.0;
