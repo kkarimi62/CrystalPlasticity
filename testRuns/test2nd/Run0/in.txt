@@ -2,7 +2,7 @@
 
 variable initTemp equal 0 #300          	# desired temperature
 variable runTime equal 4 #0000 #2000000   	# number of increment 
-variable srate equal 1.0e13 
+variable srate equal 1.0e12 
 #log	     	shearCoNiFe_glass${initTemp}-${srate}.log
 units		metal
 atom_style	atomic
