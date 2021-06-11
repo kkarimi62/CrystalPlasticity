@@ -23,7 +23,7 @@ variable	nRunEquilibrate	equal	${tEquilibrate}/${Dt}
 variable	tMelting		equal	(${Tfinal}-${Tinit})/${Trate}
 variable	nRunMelting		equal	${tMelting}/${Dt}
 #variable a		equal	${1/RHO^(1.0/3.0)} #--- lattice constant
-variable lx		equal	${natom}^(1.0/3.0)*${a}/2.0^(1.0/6.0) #--- length
+variable lx		equal	${natom}^(1.0/3.0)*${a}/4.0^(1.0/3.0) #--- length
 
 #-----------------------------
 #--- system details
