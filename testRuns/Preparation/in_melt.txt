@@ -2,7 +2,7 @@
 #--- Model parameters
 #-----------------------------
 
-variable natom	equal 4000  #--- system size 
+variable natom	equal ${natom}  #--- system size 
 variable Ntype	equal 5		#--- number of atom types
 variable a      equal ${cutoff}   #--- lattice constant
 variable Dt		equal 0.001 #--- discretization time
@@ -101,3 +101,14 @@ run		${nRunMelting}
 unfix	fix_melt
 fix		fix_finalEq	all npt temp ${Tfinal} ${Tfinal} ${tDampTemp} iso ${Pinit} ${Pinit} ${tDampPress}  
 run 	${nRunEquilibrate}
+
+#--- quench
+unfix	fix_finalEq
+fix		fix_quench	all npt temp ${Tfinal} ${Tinit} ${tDampTemp} iso ${Pinit} ${Pinit} ${tDampPress}  
+run		${nRunMelting}
+
+#--- final equilibration
+unfix	fix_quench
+fix		fix_finalEq	all npt temp ${Tinit} ${Tinit} ${tDampTemp} iso ${Pinit} ${Pinit} ${tDampPress}  
+run 	${nRunEquilibrate}
+

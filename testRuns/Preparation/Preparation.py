@@ -20,7 +20,7 @@ def makeOAR( EXEC_DIR, node, core, time, PYFIL ):
 		OUT_PATH = '/scratch/${SLURM_JOB_ID}'
 #	print >> someFile, "$EXEC_DIR/%s < in.txt -var OUT_PATH %s -var MEAM_library_DIR %s"%( EXEC, OUT_PATH, MEAM_library_DIR )
 #	cutoff = 1.0 / rho ** (1.0/3.0)
-	print >> someFile, "$EXEC_DIR/%s < in.txt -echo screen -var OUT_PATH %s -var MEAM_library_DIR %s -var cutoff %s"%( EXEC, OUT_PATH, MEAM_library_DIR, cutoff )
+	print >> someFile, "$EXEC_DIR/%s < in.txt -echo screen -var OUT_PATH %s -var MEAM_library_DIR %s -var cutoff %s -var natom %s"%( EXEC, OUT_PATH, MEAM_library_DIR, cutoff, natom )
 	someFile.close()										  
 
 
@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
 	nruns	 = 1
 	nThreads = 1
-	jobname  = 'test8thMelt'
+	jobname  = 'test9thMelt'
 #	sourcePath = os.getcwd() + '/dataFiles'
 	EXEC_DIR = '/home/kamran.karimi1/Project/git/CrystalPlasticity/lammps-29Oct20/src' #--- path for executable file
 	MEAM_library_DIR='/home/kamran.karimi1/Project/git/CrystalPlasticity/testRuns/dataFiles' #--- meam potential parameters
@@ -41,7 +41,7 @@ if __name__ == '__main__':
 	mem = '8gb'
 	partition = 'single' #'parallel'
 	#--- sim. parameters
-	natom = 5000 #50688 
+	natom = 4000 
 	ntypes = 5
         cutoff = 3.58
     #   cutoffs = np.linspace((1.0-0.5)*cutoff,(1+0.5)*cutoff,nruns)
