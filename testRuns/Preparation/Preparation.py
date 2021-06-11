@@ -5,29 +5,32 @@ def makeOAR( EXEC_DIR, node, core, time, PYFIL ):
 	print >> someFile, 'MEAM_library_DIR=%s\n' %( MEAM_library_DIR )
 	print >> someFile, 'module load mpich/3.2.1-gnu\n'
 
+        '''
 	#--- run python script
 	pyScript = open( '%s/pyScript.py'%writPath, 'w' )
 	print >> pyScript, 'import imp\ngn=imp.load_source(\'generate.name\',\'%s/generate.py\')'%(PYFIL)
 	print >> pyScript, 'gn.Generate( %s, %s, %s,title = \'data.txt\',ratio1 = %s, ratio2 = %s, ratio3 = %s, ratio4 = %s, ratio5 = %s )'%(natom, ntypes, rho, 0.05, 0.26, 0.02, 0.4, 0.27)
 	pyScript.close()
 	print >> someFile, 'python pyScript.py\n'
+        '''
 
 	#--- run python script 
 	OUT_PATH = '.'
 	if SCRATCH:
 		OUT_PATH = '/scratch/${SLURM_JOB_ID}'
 #	print >> someFile, "$EXEC_DIR/%s < in.txt -var OUT_PATH %s -var MEAM_library_DIR %s"%( EXEC, OUT_PATH, MEAM_library_DIR )
-	cutoff = 1.0 / rho ** (1.0/3.0)
+#	cutoff = 1.0 / rho ** (1.0/3.0)
 	print >> someFile, "$EXEC_DIR/%s < in.txt -echo screen -var OUT_PATH %s -var MEAM_library_DIR %s -var cutoff %s"%( EXEC, OUT_PATH, MEAM_library_DIR, cutoff )
 	someFile.close()										  
 
 
 if __name__ == '__main__':
 	import os
+        import numpy as np
 
-	nruns	 = 1
+	nruns	 = 128
 	nThreads = 1
-	jobname  = 'test2nd'
+	jobname  = 'test7thMelt'
 #	sourcePath = os.getcwd() + '/dataFiles'
 	EXEC_DIR = '/home/kamran.karimi1/Project/git/CrystalPlasticity/lammps-29Oct20/src' #--- path for executable file
 	MEAM_library_DIR='/home/kamran.karimi1/Project/git/CrystalPlasticity/testRuns/dataFiles' #--- meam potential parameters
@@ -35,17 +38,21 @@ if __name__ == '__main__':
 	EXEC = 'lmp_serial'
 	durtn = '23:59:59'
 	SCRATCH = None
+	mem = '8gb'
 	partition = 'single' #'parallel'
 	#--- sim. parameters
 	natom = 5000 #50688 
 	ntypes = 5
-	rho = 0.1
+        cutoff = 2.8
+        cutoffs = np.linspace((1.0-0.5)*cutoff,(1+0.5)*cutoff,nruns)
+#	rho = 0.1
 	#---
 	os.system( 'rm -rf %s' % jobname ) #--- rm existing
 	os.system( 'rm jobID.txt' )
 	# --- loop for submitting multiple jobs
 	counter = 0
 	for irun in xrange( nruns ):
+                cutoff = cutoffs[ irun ]
 		print ' i = %s' % counter
 		writPath = os.getcwd() + '/%s/Run%s' % ( jobname, counter ) # --- curr. dir
 		os.system( 'mkdir -p %s' % ( writPath ) ) # --- create folder
@@ -54,14 +61,15 @@ if __name__ == '__main__':
 			os.system( 'cp %s/%s %s' % ( EXEC_DIR, EXEC, path ) ) # --- create folder & mv oar scrip & cp executable
 		#---
 #		os.system( 'cp in_soft.txt %s/in.txt ' % writPath ) #--- lammps script: periodic x, pxx, vy, load
-		os.system( 'cp in_melt.txt %s/in.txt ' % writPath ) #--- lammps script: periodic x, pxx, vy, load
+#		os.system( 'cp in_melt.txt %s/in.txt ' % writPath ) #--- lammps script: periodic x, pxx, vy, load
+		os.system( 'cp in.txt %s/in.txt ' % writPath ) #--- lammps script: periodic x, pxx, vy, load
 		#---
 		#---
 		makeOAR( path, 1, nThreads, durtn, PYFIL ) # --- make oar script
 		os.system( 'chmod +x oarScript.sh; mv oarScript.sh %s' % ( writPath) ) # --- create folder & mv oar scrip & cp executable
-		os.system( 'sbatch --partition=%s --time=%s --job-name %s.%s --output %s.%s.out --error %s.%s.err \
+		os.system( 'sbatch --partition=%s --mem=%s --time=%s --job-name %s.%s --output %s.%s.out --error %s.%s.err \
 						    --chdir %s -c %s -n %s %s/oarScript.sh >> jobID.txt'\
-						   % ( partition, durtn, jobname, counter, jobname, counter, jobname, counter \
+						   % ( partition, mem, durtn, jobname, counter, jobname, counter, jobname, counter \
 						       , writPath, nThreads, 1, writPath ) ) # --- runs oarScript.sh! 
 		counter += 1
 											 
