@@ -2,32 +2,27 @@
 #--- Model parameters
 #-----------------------------
 
-variable Lx		equal 40.0  #--- system size 
+variable natom	equal 4000  #--- system size 
 variable Ntype	equal 5		#--- number of atom types
-#variable Rho	equal 0.1	#--- number density
-variable a      equal 2.5   #--- lattice constant
+variable a      equal 3.58   #--- lattice constant
 variable Dt		equal 0.001 #--- discretization time
-variable Tinit 		equal 300.0  #--- initial temperature
-variable Tfinal 	equal 3000.0 #--- final temperature
+variable Tinit 	equal 300.0  #--- initial temperature
+variable Tfinal equal 3000.0 #--- final temperature
 variable tDampTemp 	equal 10*${Dt}   #--- thermostat equilibration time scale
 variable Trate 	equal 50.0   #--- melting rate
-variable tEquilibrate	equal 10*${tDampTemp}  #--- equilibration time
-#variable Nrun	equal 1000  #--- number of time steps
 variable Pinit	equal 1.0132  #--- number of time steps
-variable tDampPress 	equal {tDampTemp}   #--- barostat equilibration time scale
-variable Nfreq	equal 10  #--- number of time steps
+variable Nfreq	equal 100  #--- number of time steps
+variable tEquilibrate	equal 1000*${tDampTemp}  #--- equilibration time
+variable tDampPress 	equal ${tDampTemp}   #--- barostat equilibration time scale
 
 #-----------------------------
 #--- Compute Variables
 #-----------------------------
-variable	nRunEquilibrate	equal	${t_equilibrate}/${Dt}
+variable	nRunEquilibrate	equal	${tEquilibrate}/${Dt}
 variable	tMelting		equal	(${Tfinal}-${Tinit})/${Trate}
 variable	nRunMelting		equal	${tMelting}/${Dt}
-
-#-----------------------------
-#--- other parameters
-#-----------------------------
-#variable a		equal	${1/RHO**(1.0/3.0)} #--- lattice constant
+variable	volume			equal	${natom}*${a}^3.0/4.0 #--- natom * vol. of the voronoi cell
+variable 	lx				equal	${volume}^(1.0/3.0) 
 
 #-----------------------------
 #--- system details
@@ -37,80 +32,72 @@ atom_style	atomic
 boundary	p p p
 
 #-----------------------------
-#--- read data file
-#-----------------------------
-#read_data       FeNi_glass_${initTemp}.data
-
 #--- define box & lattice
-region mybox block 0.0 ${Lx} 0.0 ${Lx} 0.0 ${Lx}
-create_box ${Ntype} mybox
+#-----------------------------
+region mybox block 0.0 ${lx} 0.0 ${lx} 0.0 ${lx}
 lattice fcc ${a} 
-create_atoms 1 box ratio 0.5 74637  #--- seed
-create_atoms 2 box ratio 0.5 24658 
+create_box ${Ntype} mybox  
+
+#-----------------------------
+#--- assign particle types
+#-----------------------------
+#create_atoms 4  box ratio 0.5 7467  #--- seed
+#create_atoms 2  box ratio 0.5 2465 
 #create_atoms 3 box ratio 0.2 524658
 #create_atoms 4 box ratio 0.2 4658
 #create_atoms 5 box ratio 0.2 9224658
 #change_box all triclinic
+#--- 2nd method
+create_atoms    ${Ntype} box
+group fe_group type ${Ntype}
+set group fe_group type/fraction 4 0.5  940248
+group ni_group type ${Ntype}
+set group ni_group type 2
 
-#-----------------------------
-#--- define mass
-#-----------------------------
-#mass 1 58.993
-#mass 2 58.6934
-#mass 3 51.9961
-#mass 4 55.845
-#mass 5 54.9380
+#neigh_modify delay 0
+#neighbor    0.3 bin 
+#neigh_modify    delay 5
 
 #-----------------------------
 #--- interactions
 #-----------------------------
-#neigh_modify delay 0
 pair_style meam/c
 pair_coeff * * ${MEAM_library_DIR}/library_CoNiCrFeMn.meam Co Ni Cr Fe Mn ${MEAM_library_DIR}/parameters.meam Co Ni Cr Fe Mn
+
+#--- print temperature
+variable varPress equal press
+variable varTemp equal temp
+variable varStep equal step
+fix extra all print ${Nfreq} "${varStep} ${varTemp} " file temperature.txt
+
+#--- thermo
+thermo	${Nfreq}
+thermo_style	custom step ke pe press temp 
 
 #-----------------------------
 #--- set dynamics
 #-----------------------------
 timestep ${Dt}
 
+#-----------------------------
+#--- compute & dump variables
+#-----------------------------
+dump      	1 all custom ${Nfreq} xyz.dump id type x y z 
+
+
+#-----------------------------
+#--- melt & quench
+#-----------------------------
 #--- initial equilibration
 fix		fix_initEq	all npt temp ${Tinit} ${Tinit} ${tDampTemp} iso ${Pinit} ${Pinit} ${tDampPress}  
 run 	${nRunEquilibrate}
 
 #--- melting
 unfix	fix_initEq
-fix		fix_melt	all npt temp ${Tinit} ${Tfinal} ${tMelting} iso ${Pinit} ${Pinit} ${tDampPress}  
+fix		fix_melt	all npt temp ${Tinit} ${Tfinal} ${tDampTemp} iso ${Pinit} ${Pinit} ${tDampPress}  
 run		${nRunMelting}
 
 #--- final equilibration
 unfix	fix_melt
 fix		fix_finalEq	all npt temp ${Tfinal} ${Tfinal} ${tDampTemp} iso ${Pinit} ${Pinit} ${tDampPress}  
 run 	${nRunEquilibrate}
-
-#-----------------------------
-#--- compute & dump variables
-#-----------------------------
-compute 	1 all stress/atom NULL pair
-#dump      1 all custom 1 NiFe_glass-${initTemp}-${srate}.dump id type x y z vx vy vz  meam_force.cpp ln.967: 15+6+1
-dump    11 all custom ${Nfreq} virialStress.xyz id type x y z #c_1[1] c_1[2] c_1[3] c_1[4] c_1[5] c_1[6] c_1[22] 
-#dump 2 all custom 10000 dump.NiFe_glass-${initTemp}-${srate}.unwrap id type xu yu zu 
-#variable strainxy equal "(xy)/v_L0y"
-#variable  tmp3 equal "vol"
-#variable Volume equal ${tmp3}
-#compute		reducedstress all reduce sum c_1[22]
-#compute		reducedstress2 all reduce sum c_1[4]
-#variable	stress equal (c_reducedstress)/(${Volume})
-#variable	stress2 equal (c_reducedstress2)/(${Volume})
-#variable s1xy equal "v_stress"
-#variable p1xy equal "v_strainxy"
-#variable p1 equal "-pxy/10000"
-thermo ${Nfreq}
-#thermo_style	custom step v_strainxy v_stress v_stress2 #ke pe press temp 
-#thermo_modify format line "%d %f %3.2e %3.2e"
-#fix def1 all print 1 "${p1xy} ${p1} ${s1xy}" append NiFe_glass-${initTemp}-${srate}.txt 
-
-#-----------------------------
-#--- run
-#-----------------------------
-#run ${Nrun}    
-
