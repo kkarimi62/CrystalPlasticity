@@ -1,8 +1,8 @@
 # Amin Esfandiarpour - Amin.esfandiarpour@ncbj.gov.pl- Am.esfandiyarpour@gmail.com
 
 variable initTemp equal 0 #300          	# desired temperature
-variable runTime equal 4 #0000 #2000000   	# number of increment 
-variable srate equal 1.0e11 
+variable runTime equal 400 #0000 #2000000   	# number of increment 
+variable srate equal 0.0 #1.0e11 
 #log	     	shearCoNiFe_glass${initTemp}-${srate}.log
 units		metal
 atom_style	atomic
@@ -64,8 +64,8 @@ variable s1xy equal "v_stress"
 #variable p1xy equal "v_strainxy"
 #variable p1 equal "-pxy/10000"
 thermo 1
-thermo_style	custom step v_strainxy v_stress v_stress2 #ke pe press temp 
-thermo_modify format line "%d %f %3.2e %3.2e"
+thermo_style	custom step v_strainxy v_stress v_stress2 ke pe press temp 
+#thermo_modify format line "%d %f %3.2e %3.2e"
 
 #fix def1 all print 1 "${p1xy} ${p1} ${s1xy}" append NiFe_glass-${initTemp}-${srate}.txt 
 run ${runTime}    
