@@ -56,7 +56,7 @@ create_atoms    ${Ntype} box
 group fe_group type ${Ntype}
 set group fe_group type/fraction 4 0.5  940248
 group ni_group type ${Ntype}
-set group ni_group type/fraction 2 0.5  54011
+set type ni_group type 2
 #group ni_group type 2
 #group ni_group subtract all fe_group
 #set group ni_group type/fraction 2 0.5 54011
