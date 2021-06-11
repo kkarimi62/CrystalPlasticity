@@ -11,9 +11,12 @@ boundary	p p p
 #--- define lattice
 region mybox block -40.0 40.0 -44.0 44.0 -44.0 44.0
 create_box 5 mybox
-#lattice fcc 3.7 #keyword values ...
-lattice bcc 3.7 #keyword values ...
-create_atoms 3 box  
+
+lattice fcc 3.7 #keyword values ...
+create_atoms 2 box  
+
+#lattice bcc 3.7 #keyword values ...
+#create_atoms 3 box  
 change_box all triclinic
 
 
