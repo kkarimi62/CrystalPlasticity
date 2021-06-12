@@ -928,6 +928,7 @@ void Pair::ev_tally(int i, int j, int nlocal, int newton_pair,
                    double c, double n0, double n1,double n2)
 {
   double evdwlhalf,ecoulhalf,epairhalf,v[6],vm[21],stiff;
+  int nv2, nv3, m, n;
 
   if (eflag_either) {
     if (eflag_global) {
