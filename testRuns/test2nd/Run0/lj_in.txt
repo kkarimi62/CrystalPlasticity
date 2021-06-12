@@ -14,10 +14,14 @@ dimension	2
 region mybox block -40.0 40.0 -40.0 40.0 -0.5 0.5
 
 lattice sq 1.0 #keyword values ...
+#lattice bcc 3.7 #keyword values ...
+
+create_box 1 box  
 create_atoms 1 box  
 
-#lattice bcc 3.7 #keyword values ...
+#create_box 1 box  
 #create_atoms 3 box  
+
 change_box all triclinic
 
 
