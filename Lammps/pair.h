@@ -135,7 +135,7 @@ class Pair : protected Pointers {
 
   void v_tally(int, double *, double *);
   void ev_tally(int, int, int, int, double, double, double,
-                double, double, double);
+                double, double, double,double=0.0,double=0.0,double=0.0,double=0.0);
   void ev_tally3(int, int, int, double, double,
                  double *, double *, double *, double *);
   void v_tally3(int, int, int, double *, double *, double *, double *);
