@@ -924,9 +924,10 @@ void Pair::ev_unset()
 
 void Pair::ev_tally(int i, int j, int nlocal, int newton_pair,
                     double evdwl, double ecoul, double fpair,
-                    double delx, double dely, double delz)
+                    double delx, double dely, double delz,
+                   double c, double n0, double n1,double n2)
 {
-  double evdwlhalf,ecoulhalf,epairhalf,v[6];
+  double evdwlhalf,ecoulhalf,epairhalf,v[6],vm[21],stiff;
 
   if (eflag_either) {
     if (eflag_global) {
@@ -960,7 +961,34 @@ void Pair::ev_tally(int i, int j, int nlocal, int newton_pair,
     v[3] = delx*dely*fpair;
     v[4] = delx*delz*fpair;
     v[5] = dely*delz*fpair;
-
+    //--- per-atom modulus
+    stiff = c;
+    vm[ 0 ]  = -0.5 * stiff * n0 * n0 * n0 * n0;
+    vm[ 1 ]  = -0.5 * stiff * n0 * n0 * n1 * n1;
+    vm[ 2 ]  = -0.5 * stiff * n0 * n0 * n2 * n2;
+    vm[ 3 ]  = -0.5 * stiff * n0 * n0 * n0 * n1;
+    vm[ 4 ]  = -0.5 * stiff * n0 * n0 * n0 * n2;
+    vm[ 5 ]  = -0.5 * stiff * n0 * n0 * n1 * n2;
+    //
+    vm[ 6 ]  = -0.5 * stiff * n1 * n1 * n1 * n1;
+    vm[ 7 ]  = -0.5 * stiff * n1 * n1 * n2 * n2;
+    vm[ 8 ]  = -0.5 * stiff * n1 * n1 * n0 * n1;
+    vm[ 9 ]  = -0.5 * stiff * n1 * n1 * n0 * n2;
+    vm[ 10 ] = -0.5 * stiff * n1 * n1 * n1 * n2;
+    //
+    vm[ 11 ] = -0.5 * stiff * n2 * n2 * n2 * n2;
+    vm[ 12 ] = -0.5 * stiff * n2 * n2 * n0 * n1;
+    vm[ 13 ] = -0.5 * stiff * n2 * n2 * n0 * n2;
+    vm[ 14 ] = -0.5 * stiff * n2 * n2 * n1 * n2;
+    //
+    vm[ 15 ] = -0.5 * stiff * n0 * n1 * n0 * n1;
+    vm[ 16 ] = -0.5 * stiff * n0 * n1 * n0 * n2;
+    vm[ 17 ] = -0.5 * stiff * n0 * n1 * n1 * n2;
+    //
+    vm[ 18 ] = -0.5 * stiff * n0 * n2 * n0 * n2;
+    vm[ 19 ] = -0.5 * stiff * n0 * n2 * n1 * n2;
+    //
+    vm[ 20 ] = -0.5 * stiff * n1 * n2 * n1 * n2;  
     if (vflag_global) {
       if (newton_pair) {
         virial[0] += v[0];
@@ -997,6 +1025,15 @@ void Pair::ev_tally(int i, int j, int nlocal, int newton_pair,
         vatom[i][3] += 0.5*v[3];
         vatom[i][4] += 0.5*v[4];
         vatom[i][5] += 0.5*v[5];
+        nv3 = 0;
+        nv2 = 6;
+        for (m = 0; m < 6; m++) {
+          for (n = m; n < 6; n++) {
+             vatom[i][nv2] += 0.5*vm[nv3]; 
+             nv2++;
+             nv3++;
+          }
+        }
       }
       if (newton_pair || j < nlocal) {
         vatom[j][0] += 0.5*v[0];
@@ -1005,6 +1042,15 @@ void Pair::ev_tally(int i, int j, int nlocal, int newton_pair,
         vatom[j][3] += 0.5*v[3];
         vatom[j][4] += 0.5*v[4];
         vatom[j][5] += 0.5*v[5];
+        nv3 = 0;
+        nv2 = 6;
+        for (m = 0; m < 6; m++) {
+          for (n = m; n < 6; n++) {
+             vatom[j][nv2] += 0.5*vm[nv3];
+             nv2++;
+             nv3++;
+          }
+        }
       }
     }
   }
