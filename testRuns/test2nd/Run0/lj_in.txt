@@ -7,7 +7,7 @@ variable srate equal 1.0e12
 units		lj #metal
 atom_style	atomic
 boundary	p p p
-dimension	2
+dimension	3
 #read_data       FeNi_glass_${initTemp}.data
 
 #--- define lattice
