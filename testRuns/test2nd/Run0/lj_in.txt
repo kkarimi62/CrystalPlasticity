@@ -9,7 +9,7 @@ atom_style	atomic
 boundary	p p p
 #read_data       FeNi_glass_${initTemp}.data
 #--- define lattice
-region mybox block -40.0 40.0 -44.0 44.0 -44.0 44.0
+region mybox block -40.0 40.0 -40.0 40.0 # -44.0 44.0
 create_box 5 mybox
 
 lattice sq 1.0 #keyword values ...
@@ -17,7 +17,7 @@ create_atoms 1 box
 
 #lattice bcc 3.7 #keyword values ...
 #create_atoms 3 box  
-change_box all triclinic
+#change_box all triclinic
 
 
 mass 1 58.993
