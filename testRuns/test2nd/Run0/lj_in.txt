@@ -6,7 +6,7 @@ variable srate equal 1.0e11
 #log	     	shearCoNiFe_glass${initTemp}-${srate}.log
 units		lj #metal
 atom_style	atomic
-boundary	p p p
+boundary	p p # p
 #read_data       FeNi_glass_${initTemp}.data
 #--- define lattice
 region mybox block -40.0 40.0 -44.0 44.0 -44.0 44.0
