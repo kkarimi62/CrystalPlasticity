@@ -71,7 +71,8 @@ void PairLJCut::compute(int eflag, int vflag)
   double xtmp,ytmp,ztmp,delx,dely,delz,evdwl,fpair;
   double rsq,r2inv,r6inv,forcelj,factor_lj;
   int *ilist,*jlist,*numneigh,**firstneigh;
-
+  double rinv,c,n0,n1,n2,dforcelj;
+   
   evdwl = 0.0;
   ev_init(eflag,vflag);
 
@@ -111,9 +112,17 @@ void PairLJCut::compute(int eflag, int vflag)
 
       if (rsq < cutsq[itype][jtype]) {
         r2inv = 1.0/rsq;
+        rinv = pow(r2inv,0.5);
+        n0 = delx * rinv;
+        n1 = dely * rinv;
+        n2 = delz * rinv;
         r6inv = r2inv*r2inv*r2inv;
         forcelj = r6inv * (lj1[itype][jtype]*r6inv - lj2[itype][jtype]);
         fpair = factor_lj*forcelj*r2inv;
+
+        dforcelj = - 6.0 * forcelj * rinv - ( 6.0 * lj1[itype][jtype]*r6inv*r6inv*rinv);
+        c = forcelj * r2inv - dforcelj * rinv; //--- e/r^2
+        c *= rsq; //--- energy
 
         f[i][0] += delx*fpair;
         f[i][1] += dely*fpair;
@@ -131,7 +140,7 @@ void PairLJCut::compute(int eflag, int vflag)
         }
 
         if (evflag) ev_tally(i,j,nlocal,newton_pair,
-                             evdwl,0.0,fpair,delx,dely,delz);
+                             evdwl,0.0,fpair,delx,dely,delz,c,n0,n1,n2);
       }
     }
   }
