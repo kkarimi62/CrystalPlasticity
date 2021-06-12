@@ -123,7 +123,8 @@ void PairLJCut::compute(int eflag, int vflag)
         dforcelj = - 6.0 * forcelj * rinv - ( 6.0 * lj1[itype][jtype]*r6inv*r6inv*rinv);
         c = forcelj * r2inv - dforcelj * rinv; //--- e/r^2
         c *= rsq; //--- energy
-
+        c -= forcelj;
+         
         f[i][0] += delx*fpair;
         f[i][1] += dely*fpair;
         f[i][2] += delz*fpair;
