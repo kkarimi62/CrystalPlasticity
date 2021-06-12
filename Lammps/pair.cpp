@@ -925,9 +925,9 @@ void Pair::ev_unset()
 void Pair::ev_tally(int i, int j, int nlocal, int newton_pair,
                     double evdwl, double ecoul, double fpair,
                     double delx, double dely, double delz,
-                   double c, double n0, double n1,double n2)
+                   double stiff, double n0, double n1,double n2)
 {
-  double evdwlhalf,ecoulhalf,epairhalf,v[6],vm[21],stiff;
+  double evdwlhalf,ecoulhalf,epairhalf,v[6],vm[21];
   int nv2, nv3, m, n;
 
   if (eflag_either) {
@@ -963,7 +963,6 @@ void Pair::ev_tally(int i, int j, int nlocal, int newton_pair,
     v[4] = delx*delz*fpair;
     v[5] = dely*delz*fpair;
     //--- per-atom modulus
-    stiff = c;
     vm[ 0 ]  = -0.5 * stiff * n0 * n0 * n0 * n0;
     vm[ 1 ]  = -0.5 * stiff * n0 * n0 * n1 * n1;
     vm[ 2 ]  = -0.5 * stiff * n0 * n0 * n2 * n2;
