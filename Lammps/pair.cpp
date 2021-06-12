@@ -963,32 +963,32 @@ void Pair::ev_tally(int i, int j, int nlocal, int newton_pair,
     v[4] = delx*delz*fpair;
     v[5] = dely*delz*fpair;
     //--- per-atom modulus
-    vm[ 0 ]  = 0.5 * stiff * n0 * n0 * n0 * n0;
-    vm[ 1 ]  = 0.5 * stiff * n0 * n0 * n1 * n1;
-    vm[ 2 ]  = 0.5 * stiff * n0 * n0 * n2 * n2;
-    vm[ 3 ]  = 0.5 * stiff * n0 * n0 * n0 * n1;
-    vm[ 4 ]  = 0.5 * stiff * n0 * n0 * n0 * n2;
-    vm[ 5 ]  = 0.5 * stiff * n0 * n0 * n1 * n2;
+    vm[ 0 ]  = -0.5 * stiff * n0 * n0 * n0 * n0;
+    vm[ 1 ]  = -0.5 * stiff * n0 * n0 * n1 * n1;
+    vm[ 2 ]  = -0.5 * stiff * n0 * n0 * n2 * n2;
+    vm[ 3 ]  = -0.5 * stiff * n0 * n0 * n0 * n1;
+    vm[ 4 ]  = -0.5 * stiff * n0 * n0 * n0 * n2;
+    vm[ 5 ]  = -0.5 * stiff * n0 * n0 * n1 * n2;
     //
-    vm[ 6 ]  = 0.5 * stiff * n1 * n1 * n1 * n1;
-    vm[ 7 ]  = 0.5 * stiff * n1 * n1 * n2 * n2;
-    vm[ 8 ]  = 0.5 * stiff * n1 * n1 * n0 * n1;
-    vm[ 9 ]  = 0.5 * stiff * n1 * n1 * n0 * n2;
-    vm[ 10 ] = 0.5 * stiff * n1 * n1 * n1 * n2;
+    vm[ 6 ]  = -0.5 * stiff * n1 * n1 * n1 * n1;
+    vm[ 7 ]  = -0.5 * stiff * n1 * n1 * n2 * n2;
+    vm[ 8 ]  = -0.5 * stiff * n1 * n1 * n0 * n1;
+    vm[ 9 ]  = -0.5 * stiff * n1 * n1 * n0 * n2;
+    vm[ 10 ] = -0.5 * stiff * n1 * n1 * n1 * n2;
     //
-    vm[ 11 ] = 0.5 * stiff * n2 * n2 * n2 * n2;
-    vm[ 12 ] = 0.5 * stiff * n2 * n2 * n0 * n1;
-    vm[ 13 ] = 0.5 * stiff * n2 * n2 * n0 * n2;
-    vm[ 14 ] = 0.5 * stiff * n2 * n2 * n1 * n2;
+    vm[ 11 ] = -0.5 * stiff * n2 * n2 * n2 * n2;
+    vm[ 12 ] = -0.5 * stiff * n2 * n2 * n0 * n1;
+    vm[ 13 ] = -0.5 * stiff * n2 * n2 * n0 * n2;
+    vm[ 14 ] = -0.5 * stiff * n2 * n2 * n1 * n2;
     //
-    vm[ 15 ] = 0.5 * stiff * n0 * n1 * n0 * n1;
-    vm[ 16 ] = 0.5 * stiff * n0 * n1 * n0 * n2;
-    vm[ 17 ] = 0.5 * stiff * n0 * n1 * n1 * n2;
+    vm[ 15 ] = -0.5 * stiff * n0 * n1 * n0 * n1;
+    vm[ 16 ] = -0.5 * stiff * n0 * n1 * n0 * n2;
+    vm[ 17 ] = -0.5 * stiff * n0 * n1 * n1 * n2;
     //
-    vm[ 18 ] = 0.5 * stiff * n0 * n2 * n0 * n2;
-    vm[ 19 ] = 0.5 * stiff * n0 * n2 * n1 * n2;
+    vm[ 18 ] = -0.5 * stiff * n0 * n2 * n0 * n2;
+    vm[ 19 ] = -0.5 * stiff * n0 * n2 * n1 * n2;
     //
-    vm[ 20 ] = 0.5 * stiff * n1 * n2 * n1 * n2;  
+    vm[ 20 ] = -0.5 * stiff * n1 * n2 * n1 * n2;  
     if (vflag_global) {
       if (newton_pair) {
         virial[0] += v[0];
