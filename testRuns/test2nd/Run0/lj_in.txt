@@ -11,7 +11,7 @@ dimension	2
 #read_data       FeNi_glass_${initTemp}.data
 #--- define lattice
 region mybox block -40.0 40.0 -40.0 40.0 -0.5 0.5
-create_box 5 mybox
+create_box 1 mybox
 
 lattice sq 1.0 #keyword values ...
 create_atoms 1 box  
