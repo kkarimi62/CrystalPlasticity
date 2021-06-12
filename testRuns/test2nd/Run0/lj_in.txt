@@ -17,10 +17,10 @@ lattice sq 1.0 #keyword values ...
 #lattice bcc 3.7 #keyword values ...
 
 create_box 1 mybox  
-create_atoms 1 mybox  
+create_atoms 1 box  
 
 #create_box 1 mybox  
-#create_atoms 3 mybox  
+#create_atoms 3 box  
 
 change_box all triclinic
 
