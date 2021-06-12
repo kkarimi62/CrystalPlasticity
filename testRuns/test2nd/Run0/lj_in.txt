@@ -18,7 +18,7 @@ create_atoms 1 box
 
 #lattice bcc 3.7 #keyword values ...
 #create_atoms 3 box  
-#change_box all triclinic
+change_box all triclinic
 
 
 mass 1 58.993
