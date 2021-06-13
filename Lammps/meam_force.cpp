@@ -947,8 +947,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         }
 
         //     Compute derivatives of energy wrt rij, sij and rij[3]
-        dUdrij = phip ;//kam* sij + frhop[i] * drhodr1 + frhop[j] * drhodr2; //--- Eq. 4.41(a)
-        ddUddrij = phipp;//kam * sij;//kam + ( frhopp[i] * drhodr1 * drhodr1 + frhop[i] * ddrhodrdr1 ) + //--- 1st deriv. of Eq. 4.41(a) wrt r
+        dUdrij = pow(rij2,0.5); //phip ;//kam* sij + frhop[i] * drhodr1 + frhop[j] * drhodr2; //--- Eq. 4.41(a)
+        ddUddrij = 1.0;//phipp;//kam * sij;//kam + ( frhopp[i] * drhodr1 * drhodr1 + frhop[i] * ddrhodrdr1 ) + //--- 1st deriv. of Eq. 4.41(a) wrt r
                                //  ( frhopp[j] * drhodr2 * drhodr2 + frhop[j] * ddrhodrdr2 );
         dUdsij = 0.0;
         if (!iszero(dscrfcn[fnoffset + jn])) {
