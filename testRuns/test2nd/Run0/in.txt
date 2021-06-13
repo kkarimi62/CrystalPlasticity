@@ -9,7 +9,7 @@ atom_style	atomic
 boundary	p p p
 #read_data       FeNi_glass_${initTemp}.data
 #--- define lattice
-region mybox block -40.0 40.0 -44.0 44.0 -44.0 44.0
+region mybox block -10.0 10.0 -10.0 10.0 -10.0 10.0
 
 lattice fcc 3.7 #keyword values ...
 
