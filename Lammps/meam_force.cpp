@@ -947,8 +947,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         }
 
         //     Compute derivatives of energy wrt rij, sij and rij[3]
-        dUdrij = 2.0*pow(rij2,0.5); //phip ;//kam* sij + frhop[i] * drhodr1 + frhop[j] * drhodr2; //--- Eq. 4.41(a)
-        ddUddrij = 2.0;//phipp;//kam * sij;//kam + ( frhopp[i] * drhodr1 * drhodr1 + frhop[i] * ddrhodrdr1 ) + //--- 1st deriv. of Eq. 4.41(a) wrt r
+        dUdrij = 1.0*pow(rij2,0.5); //phip ;//kam* sij + frhop[i] * drhodr1 + frhop[j] * drhodr2; //--- Eq. 4.41(a)
+        ddUddrij = 1.0;//phipp;//kam * sij;//kam + ( frhopp[i] * drhodr1 * drhodr1 + frhop[i] * ddrhodrdr1 ) + //--- 1st deriv. of Eq. 4.41(a) wrt r
                                //  ( frhopp[j] * drhodr2 * drhodr2 + frhop[j] * ddrhodrdr2 );
         dUdsij = 0.0;
         if (!iszero(dscrfcn[fnoffset + jn])) {
@@ -997,7 +997,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         }
 
         //--- add stiffness (units of u/r^2)
-        stiff = ddUddrij - dUdrij * recip; 
+        stiff = ddUddrij;//kam - dUdrij * recip; 
         stiff0 = 0.0; 
         stiff1 = 0.0;
         stiff2 = 0.0;
