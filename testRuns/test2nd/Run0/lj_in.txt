@@ -34,9 +34,9 @@ mass 1 58.993
 
 
 neigh_modify delay 0
-#pair_style lj/cut 2.5 #meam/c
-pair_coeff * * library_CoNiCrFeMn.meam Co Ni Cr Fe Mn parameters.meam Co Ni Cr Fe Mn
-#pair_coeff * * 1 1
+pair_style lj/cut 2.5 #meam/c
+#pair_coeff * * library_CoNiCrFeMn.meam Co Ni Cr Fe Mn parameters.meam Co Ni Cr Fe Mn
+pair_coeff * * 1 1
 
 # Store final cell length for strain calculations
 variable tmp equal "lx"
