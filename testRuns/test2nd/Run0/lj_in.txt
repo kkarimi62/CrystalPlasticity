@@ -16,7 +16,7 @@ region mybox block -10.0 10.0 -10.0 10.0 -10.0 10.0
 
 lattice fcc 3.7 #keyword values ...
 
-#create_box 1 mybox  
+create_box 5 mybox  
 #create_atoms 1 box  
 
 create_box 5 mybox  
@@ -26,10 +26,10 @@ change_box all triclinic
 
 
 mass 1 58.993
-#mass 2 58.6934
-#mass 3 51.9961
-#mass 4 55.845
-#mass 5 54.9380
+mass 2 58.6934
+mass 3 51.9961
+mass 4 55.845
+mass 5 54.9380
 
 
 neigh_modify delay 0
