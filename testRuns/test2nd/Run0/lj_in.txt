@@ -4,7 +4,8 @@ variable initTemp equal 0 #300          	# desired temperature
 variable runTime equal 4 #0000 #2000000   	# number of increment 
 variable srate equal 1.0e12 
 #log	     	shearCoNiFe_glass${initTemp}-${srate}.log
-units		lj #metal
+
+units		metal #lj #metal
 atom_style	atomic
 boundary	p p p
 dimension	3
@@ -15,11 +16,11 @@ region mybox block -10.0 10.0 -10.0 10.0 -10.0 10.0
 
 lattice fcc 3.7 #keyword values ...
 
-create_box 1 mybox  
-create_atoms 1 box  
+#create_box 1 mybox  
+#create_atoms 1 box  
 
-#create_box 5 mybox  
-#create_atoms 2 box  
+create_box 5 mybox  
+create_atoms 2 box  
 
 change_box all triclinic
 
