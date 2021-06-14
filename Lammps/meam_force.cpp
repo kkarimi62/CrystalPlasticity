@@ -1171,15 +1171,15 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
               stif2 =  0.0;//kamddUddsij * dsij2 * dsij2 * rjk2 + ddUdrijds * 2.0 * dsij2 * rjk + dUdsij * ( - dsij2 + ddsddrjk  );
               stif2 *= rjk2;
               //
-              f[i][0] += force1 * dxik;
-              f[i][1] += force1 * dyik;
-              f[i][2] += force1 * dzik;
-              f[j][0] += force2 * dxjk;
-              f[j][1] += force2 * dyjk;
-              f[j][2] += force2 * dzjk;
-              f[k][0] -= force1 * dxik + force2 * dxjk;
-              f[k][1] -= force1 * dyik + force2 * dyjk;
-              f[k][2] -= force1 * dzik + force2 * dzjk;
+//kam               f[i][0] += force1 * dxik;
+//               f[i][1] += force1 * dyik;
+//               f[i][2] += force1 * dzik;
+//               f[j][0] += force2 * dxjk;
+//               f[j][1] += force2 * dyjk;
+//               f[j][2] += force2 * dzjk;
+//               f[k][0] -= force1 * dxik + force2 * dxjk;
+//               f[k][1] -= force1 * dyik + force2 * dyjk;
+//               f[k][2] -= force1 * dzik + force2 * dzjk;
 
               //     Tabulate per-atom virial as symmetrized stress tensor
 
@@ -1198,9 +1198,9 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                 v[5] = -sixth * (dyik * fi[2] + dyjk * fj[2] + dzik * fi[1] + dzjk * fj[1]);
 
                 for (m = 0; m < 6; m++) { 
-                  vatom[i][m] = vatom[i][m] + v[m];
-                  vatom[j][m] = vatom[j][m] + v[m];
-                  vatom[k][m] = vatom[k][m] + v[m];
+//kam                   vatom[i][m] = vatom[i][m] + v[m];
+//                   vatom[j][m] = vatom[j][m] + v[m];
+//                   vatom[k][m] = vatom[k][m] + v[m];
                 }
           //--- per-atom modulus
                n0 = dxik / rik;
@@ -1240,9 +1240,9 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
               nv2 = 6;
               for (m = 0; m < 6; m++) {
                 for (n = m; n < 6; n++) {
-                    vatom[i][nv2] += vm[nv3];
-                    vatom[j][nv2] += vm[nv3];
-                    vatom[k][nv2] += vm[nv3];
+//kam                     vatom[i][nv2] += vm[nv3];
+//                     vatom[j][nv2] += vm[nv3];
+//                     vatom[k][nv2] += vm[nv3];
                    nv2++;
                    nv3++;
                 }
