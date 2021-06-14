@@ -999,9 +999,9 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         c *= rsq; //--- energy
         c += forcelj;
         
-        force = dUdrij * recip;//kam + dUdsij * dscrfcn[fnoffset + jn]; //-- recip = 1/r_{ij}
+//        force = dUdrij * recip;//kam + dUdsij * dscrfcn[fnoffset + jn]; //-- recip = 1/r_{ij}
         for (m = 0; m < 3; m++) {
-          forcem = delij[m] * force;//kam + dUdrijm[m]; //--- Eq. (4.40)
+//          forcem = delij[m] * force;//kam + dUdrijm[m]; //--- Eq. (4.40)
 //           f[i][m] = f[i][m] + forcem;
 //           f[j][m] = f[j][m] - forcem;
         f[i][m] += (-delij[m]*fpair);
@@ -1047,9 +1047,9 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         
         //     Tabulate per-atom virial as symmetrized stress tensor
         if (vflag_atom != 0) {
-          fi[0] = delij[0] * force + dUdrijm[0];
-          fi[1] = delij[1] * force + dUdrijm[1];
-          fi[2] = delij[2] * force + dUdrijm[2];
+          fi[0] = -delij[0]*fpair;//delij[0] * force;//kam + dUdrijm[0];
+          fi[1] = -delij[1]*fpair;//delij[1] * force;//kam + dUdrijm[1];
+          fi[2] = -delij[2]*fpair;//delij[2] * force;//kam + dUdrijm[2];
           v[0] = -0.5 * (delij[0] * fi[0]);
           v[1] = -0.5 * (delij[1] * fi[1]);
           v[2] = -0.5 * (delij[2] * fi[2]);
