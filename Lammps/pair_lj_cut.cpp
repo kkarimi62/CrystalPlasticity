@@ -117,7 +117,7 @@ void PairLJCut::compute(int eflag, int vflag)
         n1 = dely * rinv;
         n2 = delz * rinv;
         r6inv = r2inv*r2inv*r2inv;
-        forcelj = -1.0*(rij-1.0);//kam r6inv * (lj1[itype][jtype]*r6inv - lj2[itype][jtype]);
+        forcelj = -1.0*(1.0/rinv-1.0);//kam r6inv * (lj1[itype][jtype]*r6inv - lj2[itype][jtype]);
         fpair = factor_lj*forcelj*r2inv;
 
 
