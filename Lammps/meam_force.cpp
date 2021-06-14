@@ -988,19 +988,33 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         }
 
         //     Add the part of the force due to dUdrij and dUdsij
-
+        double rinv = 1/rij;
+        double rsq = rij*rij;
+        double r2inv = rinv * rinv;
+        double r6inv = pow(r2inv,3);
+        double forcelj = r6inv * (1.0*r6inv - 1.0);
+        double fpair = 1.0*forcelj*r2inv;
+        double dforcelj = - 6.0 * forcelj * rinv - ( 6.0 * 1.0*r6inv*r6inv*rinv);
+        double c = forcelj * r2inv - dforcelj * rinv; //--- e/r^2
+        c *= rsq; //--- energy
+        c += forcelj;
+        
         force = dUdrij * recip;//kam + dUdsij * dscrfcn[fnoffset + jn]; //-- recip = 1/r_{ij}
         for (m = 0; m < 3; m++) {
           forcem = delij[m] * force;//kam + dUdrijm[m]; //--- Eq. (4.40)
-          f[i][m] = f[i][m] + forcem;
-          f[j][m] = f[j][m] - forcem;
+//           f[i][m] = f[i][m] + forcem;
+//           f[j][m] = f[j][m] - forcem;
+        f[i][m] += (-delij[m]*fpair);
+        f[j][m] += (delij[m]*fpair);
         }
 
         //--- add stiffness (units of u/r^2)
-        stiff = ddUddrij - dUdrij * recip; 
-        stiff0 = 0.0; 
-        stiff1 = 0.0;
-        stiff2 = 0.0;
+      stiff = c;        
+        
+//         stiff = ddUddrij - dUdrij * recip; 
+//         stiff0 = 0.0; 
+//         stiff1 = 0.0;
+//         stiff2 = 0.0;
         nv2 = 0;
         for (m = 0; m < 3; m++) {
 //kam          stiff0 += - dUdrijm[m] * delij[m];
@@ -1010,7 +1024,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
             nv2++;
           }
         }
-        stiff += ( ( stiff0 + stiff2 ) * recip  + stiff1 ) * recip;
+//        stiff += ( ( stiff0 + stiff2 ) * recip  + stiff1 ) * recip;
         
         
         //--- sij contribution
@@ -1048,7 +1062,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
             vatom[j][m] = vatom[j][m] + v[m];
             nv2++;
           }
-
+          dUdrij = -forcelj;
           //--- per-atom modulus
           vm[ 0 ]  = -0.5 * (stiff * n0 * n0 * n0 * n0+dUdrij * recip*n0 * n0);
           vm[ 1 ]  = -0.5 * stiff * n0 * n0 * n1 * n1;
@@ -1081,8 +1095,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           nv2 = 6;
           for (m = 0; m < 6; m++) {
             for (n = m; n < 6; n++) {
-               vatom[i][nv2] += vm[nv3] * rij2; //--- *r^2 to get energy
-               vatom[j][nv2] += vm[nv3] * rij2;
+               vatom[i][nv2] += vm[nv3];// * rij2; //--- *r^2 to get energy
+               vatom[j][nv2] += vm[nv3];// * rij2;
                nv2++;
                nv3++;
             }
