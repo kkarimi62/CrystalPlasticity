@@ -17,11 +17,11 @@ region mybox block -40.0 40.0 -40.0 40.0 -0.5 0.5
 #lattice custom 1.0 a1 1.0 0.0 0.0 a2 0.0 1.0 0.0 a3 0.0 0.0 1.0 basis 0.0 0.0 0.0  
 lattice fcc 3.7 #keyword values ...
 
-#create_box 1 mybox  
-#create_atoms 1 box  
+create_box 1 mybox  
+create_atoms 1 box  
 
-create_box 2 mybox  
-create_atoms 2 box  
+#create_box 2 mybox  
+#create_atoms 2 box  
 
 change_box all triclinic
 
