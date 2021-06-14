@@ -863,7 +863,7 @@ MEAM::Get_ddrhodrmds( int i, int elti, //--- deriv. of Eq. 4.36(c) wrt. r
           }
 }
 
-double MEAM::GetModulus(int alpha, int beta, int gamma,  double r3,double ds, double dds, double recip,
+double MEAM::GetModulus(int alpha, int beta, int gamma, int delta,  double r3,double ds, double dds, double recip,
                         double dUdrij, double dUdsij, double ddUddrij, double ddUdrijds, double ddUddsij,
                         double* dUdrijm, double* delij, double* ddUdrdrijm, double* ddUdrijmds, double* ddUdrmdrn){
                         
