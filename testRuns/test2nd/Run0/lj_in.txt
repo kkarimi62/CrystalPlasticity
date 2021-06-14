@@ -16,7 +16,7 @@ region mybox block -10.0 10.0 -10.0 10.0 -10.0 10.0
 
 lattice fcc 3.7 #keyword values ...
 
-create_box 5 mybox  
+#create_box 5 mybox  
 #create_atoms 1 box  
 
 create_box 5 mybox  
