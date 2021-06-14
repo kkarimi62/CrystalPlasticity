@@ -991,7 +991,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 //        dUdrij = phip;//(rij-1.0);
         force = dUdrij * recip + dUdsij * dscrfcn[fnoffset + jn]; //-- recip = 1/r_{ij}
         for (m = 0; m < 3; m++) {
-         forcem = delij[m] * force;//kam + dUdrijm[m]; //--- Eq. (4.40)
+         forcem = delij[m] * force + dUdrijm[m]; //--- Eq. (4.40)
           f[i][m] = f[i][m] + forcem;
           f[j][m] = f[j][m] - forcem;
         }
