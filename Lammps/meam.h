@@ -7,6 +7,12 @@
 
 #define maxelt 5
 
+struct MyStruct {
+  double r3,ds, dds, recip;
+  double dUdrij, dUdsij, ddUddrij, ddUdrijds, ddUddsij;
+  double* dUdrijm, delij, ddUdrdrijm, ddUdrijmds, ddUdrmdrn, delij;
+};
+
 namespace LAMMPS_NS {
 class Memory;
 
@@ -359,6 +365,7 @@ protected:
                         double* drhodrm,
                         double* ddrhodrmds //--- modify
                        );
+  double GetModulus(int alpha, int beta, int gamma, myStruct& mst );
   
   static double zbl(const double r, const int z1, const int z2);
   double embedding(const double A, const double Ec, const double rhobar, double& dF, double& ddF ) const;
@@ -437,12 +444,6 @@ public:
   void meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int vflag_atom, double* eng_vdwl,
                   double* eatom, int ntype, int* type, int* fmap, double** scale, double** x, int numneigh, int* firstneigh,
                   int numneigh_full, int* firstneigh_full, int fnoffset, double** f, double** vatom);
-  
-  Struct MyStruct {
-  double r3,ds, dds, recip;
-  double dUdrij, dUdsij, ddUddrij, ddUdrijds, ddUddsij;
-  double* dUdrijm, delij, ddUdrdrijm, ddUdrijmds, ddUdrmdrn, delij;
-};
 };
 
 // Functions we need for compat
