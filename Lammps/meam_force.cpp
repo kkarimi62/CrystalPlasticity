@@ -988,28 +988,29 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         }
 
         //     Add the part of the force due to dUdrij and dUdsij
-        double rinv = 1/rij;
-        double rsq = rij*rij;
-        double r2inv = rinv * rinv;
-        double r6inv = pow(r2inv,3);
-        double forcelj = r6inv * (1.0*r6inv - 1.0);
-        double fpair = 1.0*forcelj*r2inv;
-        double dforcelj = - 6.0 * forcelj * rinv - ( 6.0 * 1.0*r6inv*r6inv*rinv);
-        double c = forcelj * r2inv - dforcelj * rinv; //--- e/r^2
-        c *= rsq; //--- energy
-        c += forcelj;
-        
-//        force = dUdrij * recip;//kam + dUdsij * dscrfcn[fnoffset + jn]; //-- recip = 1/r_{ij}
+//         double rinv = 1/rij;
+//         double rsq = rij*rij;
+//         double r2inv = rinv * rinv;
+//         double r6inv = pow(r2inv,3);
+//         double forcelj = r6inv * (1.0*r6inv - 1.0);
+//         double fpair = 1.0*forcelj*r2inv;
+//         double dforcelj = - 6.0 * forcelj * rinv - ( 6.0 * 1.0*r6inv*r6inv*rinv);
+//         double c = forcelj * r2inv - dforcelj * rinv; //--- e/r^2
+//         c *= rsq; //--- energy
+//         c += forcelj;
+        dUdrij = (rij-1.0);
+        force = dUdrij * recip;//kam + dUdsij * dscrfcn[fnoffset + jn]; //-- recip = 1/r_{ij}
         for (m = 0; m < 3; m++) {
-//          forcem = delij[m] * force;//kam + dUdrijm[m]; //--- Eq. (4.40)
-//           f[i][m] = f[i][m] + forcem;
-//           f[j][m] = f[j][m] - forcem;
-        f[i][m] += (-delij[m]*fpair);
-        f[j][m] += (delij[m]*fpair);
+         forcem = delij[m] * force;//kam + dUdrijm[m]; //--- Eq. (4.40)
+          f[i][m] = f[i][m] + forcem;
+          f[j][m] = f[j][m] - forcem;
+//         f[i][m] += (-delij[m]*fpair);
+//         f[j][m] += (delij[m]*fpair);
         }
 
         //--- add stiffness (units of u/r^2)
-      stiff = c;        
+//      stiff = c;        
+      stiff = (1-dUdrij/rij)*rij*rij;        
         
 //         stiff = ddUddrij - dUdrij * recip; 
 //         stiff0 = 0.0; 
@@ -1047,9 +1048,9 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         
         //     Tabulate per-atom virial as symmetrized stress tensor
         if (vflag_atom != 0) {
-          fi[0] = -delij[0]*fpair;//delij[0] * force;//kam + dUdrijm[0];
-          fi[1] = -delij[1]*fpair;//delij[1] * force;//kam + dUdrijm[1];
-          fi[2] = -delij[2]*fpair;//delij[2] * force;//kam + dUdrijm[2];
+          fi[0] = delij[0] * force;//-delij[0]*fpair;//delij[0] * force;//kam + dUdrijm[0];
+          fi[1] = delij[1] * force;//kam-delij[1]*fpair;//delij[1] * force;//kam + dUdrijm[1];
+          fi[2] = delij[2] * force;//-delij[2]*fpair;//delij[2] * force;//kam + dUdrijm[2];
           v[0] = -0.5 * (delij[0] * fi[0]);
           v[1] = -0.5 * (delij[1] * fi[1]);
           v[2] = -0.5 * (delij[2] * fi[2]);
@@ -1062,34 +1063,34 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
             vatom[j][m] = vatom[j][m] + v[m];
             nv2++;
           }
-          dUdrij = -forcelj;
+ //         dUdrij = -forcelj;
           //--- per-atom modulus
-          vm[ 0 ]  = -0.5 * (stiff * n0 * n0 * n0 * n0+dUdrij * recip*n0 * n0);
+          vm[ 0 ]  = -0.5 * (stiff * n0 * n0 * n0 * n0+dUdrij * rij*n0 * n0);
           vm[ 1 ]  = -0.5 * stiff * n0 * n0 * n1 * n1;
           vm[ 2 ]  = -0.5 * stiff * n0 * n0 * n2 * n2;
-          vm[ 3 ]  = -0.5 * (stiff * n0 * n0 * n0 * n1+dUdrij * recip*n0 * n1);
-          vm[ 4 ]  = -0.5 * (stiff * n0 * n0 * n0 * n2+dUdrij * recip*n0 * n2);
+          vm[ 3 ]  = -0.5 * (stiff * n0 * n0 * n0 * n1+dUdrij * rij*n0 * n1);
+          vm[ 4 ]  = -0.5 * (stiff * n0 * n0 * n0 * n2+dUdrij * rij*n0 * n2);
           vm[ 5 ]  = -0.5 * stiff * n0 * n0 * n1 * n2;
           //
-          vm[ 6 ]  = -0.5 * (stiff * n1 * n1 * n1 * n1+dUdrij * recip*n1 * n1);
+          vm[ 6 ]  = -0.5 * (stiff * n1 * n1 * n1 * n1+dUdrij * rij*n1 * n1);
           vm[ 7 ]  = -0.5 * stiff * n1 * n1 * n2 * n2;
           vm[ 8 ]  = -0.5 * stiff * n1 * n1 * n0 * n1;
           vm[ 9 ]  = -0.5 * stiff * n1 * n1 * n0 * n2;
-          vm[ 10 ] = -0.5 * (stiff * n1 * n1 * n1 * n2+dUdrij * recip*n1 * n2);
+          vm[ 10 ] = -0.5 * (stiff * n1 * n1 * n1 * n2+dUdrij * rij*n1 * n2);
           //
-          vm[ 11 ] = -0.5 * (stiff * n2 * n2 * n2 * n2+dUdrij * recip*n2 * n2);
+          vm[ 11 ] = -0.5 * (stiff * n2 * n2 * n2 * n2+dUdrij * rij*n2 * n2);
           vm[ 12 ] = -0.5 * stiff * n2 * n2 * n0 * n1;
           vm[ 13 ] = -0.5 * stiff * n2 * n2 * n0 * n2;
           vm[ 14 ] = -0.5 * stiff * n2 * n2 * n1 * n2;
           //
-          vm[ 15 ] = -0.5 * (stiff * n0 * n1 * n0 * n1+dUdrij * recip*n1 * n1);
-          vm[ 16 ] = -0.5 * (stiff * n0 * n1 * n0 * n2+dUdrij * recip*n1 * n2);
+          vm[ 15 ] = -0.5 * (stiff * n0 * n1 * n0 * n1+dUdrij * rij*n1 * n1);
+          vm[ 16 ] = -0.5 * (stiff * n0 * n1 * n0 * n2+dUdrij * rij*n1 * n2);
           vm[ 17 ] = -0.5 * stiff * n0 * n1 * n1 * n2;
           //
-          vm[ 18 ] = -0.5 * (stiff * n0 * n2 * n0 * n2+dUdrij * recip*n2 * n2);
+          vm[ 18 ] = -0.5 * (stiff * n0 * n2 * n0 * n2+dUdrij * rij*n2 * n2);
           vm[ 19 ] = -0.5 * stiff * n0 * n2 * n1 * n2;
           //
-          vm[ 20 ] = -0.5 * (stiff * n1 * n2 * n1 * n2+dUdrij * recip*n2 * n2);  
+          vm[ 20 ] = -0.5 * (stiff * n1 * n2 * n1 * n2+dUdrij * rij*n2 * n2);  
           //
           nv3 = 0;
           nv2 = 6;
