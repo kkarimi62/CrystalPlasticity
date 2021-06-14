@@ -142,7 +142,7 @@ void PairLJCut::compute(int eflag, int vflag)
         }
 
         if (evflag) ev_tally(i,j,nlocal,newton_pair,
-                             evdwl,0.0,fpair,delx,dely,delz,c,n0,n1,n2);
+                             evdwl,0.0,fpair,delx,dely,delz,c,n0,n1,n2,-forcelj);
       }
     }
   }
