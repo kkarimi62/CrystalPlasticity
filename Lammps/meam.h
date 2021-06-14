@@ -7,14 +7,15 @@
 
 #define maxelt 5
 
-struct MyStruct {
-  double r3,ds, dds, recip;
-  double dUdrij, dUdsij, ddUddrij, ddUdrijds, ddUddsij;
-  double* dUdrijm, delij, ddUdrdrijm, ddUdrijmds, ddUdrmdrn, delij;
-};
 
 namespace LAMMPS_NS {
 class Memory;
+  
+struct MyStruct {
+  double r3,ds, dds, recip;
+  double dUdrij, dUdsij, ddUddrij, ddUdrijds, ddUddsij;
+  double* dUdrijm, delij, ddUdrdrijm, ddUdrijmds, ddUdrmdrn;
+};
 
 typedef enum { FCC, BCC, HCP, DIM, DIA, DIA3, B1, C11, L12, B2, CH4, LIN, ZIG, TRI } lattice_t;
 
