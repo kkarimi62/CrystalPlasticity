@@ -863,7 +863,7 @@ MEAM::Get_ddrhodrmds( int i, int elti, //--- deriv. of Eq. 4.36(c) wrt. r
           }
 }
 
-double MEAM::GetModulus(int alpha, int beta, int gamma, MyStruct& mst ){
+double MEAM::GetModulus(int alpha, int beta, int gamma, myStruct& mst ){
      int nv2=0,m,n;
      for(m=0;m<alpha+1;m++){
        for(n=m;n<gamma+1;n++){
