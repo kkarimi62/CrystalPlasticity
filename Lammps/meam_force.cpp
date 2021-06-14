@@ -988,6 +988,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         }
 
         //     Add the part of the force due to dUdrij and dUdsij
+        double rinv = 1/rij;
+        double r2inv = rinv * rinv;
         double r6inv = pow(r2inv,3);
         double forcelj = r6inv * (1.0*r6inv - 1.0);
         double fpair = 1.0*forcelj*r2inv;
