@@ -989,6 +989,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 
         //     Add the part of the force due to dUdrij and dUdsij
         double rinv = 1/rij;
+        double rsq = rij*rij;
         double r2inv = rinv * rinv;
         double r6inv = pow(r2inv,3);
         double forcelj = r6inv * (1.0*r6inv - 1.0);
@@ -1003,8 +1004,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           forcem = delij[m] * force;//kam + dUdrijm[m]; //--- Eq. (4.40)
 //           f[i][m] = f[i][m] + forcem;
 //           f[j][m] = f[j][m] - forcem;
-        f[i][m] += (-delx*fpair);
-        f[j][m] += (delx*fpair);
+        f[i][m] += (-delij[m]*fpair);
+        f[j][m] += (delij[m]*fpair);
         }
 
         //--- add stiffness (units of u/r^2)
