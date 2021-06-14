@@ -5,7 +5,7 @@ variable runTime equal 4 #0000 #2000000   	# number of increment
 variable srate equal 1.0e12 
 #log	     	shearCoNiFe_glass${initTemp}-${srate}.log
 
-units		lj #metal #lj #metal
+units		metal #lj #metal
 atom_style	atomic
 boundary	p p p
 dimension	3
@@ -16,11 +16,11 @@ region mybox block -10.0 10.0 -10.0 10.0 -10.0 10.0
 
 lattice fcc 3.7 #keyword values ...
 
-create_box 5 mybox  
-create_atoms 1 box  
-
 #create_box 5 mybox  
-#create_atoms 2 box  
+#create_atoms 1 box  
+
+create_box 5 mybox  
+create_atoms 2 box  
 
 change_box all triclinic
 
@@ -34,11 +34,11 @@ mass 5 54.9380
 
 neigh_modify delay 0
 
-pair_style lj/cut 2.5 #meam/c
-pair_coeff * * 1 1
+#pair_style lj/cut 2.5 #meam/c
+#pair_coeff * * 1 1
 
-#pair_style meam/c
-#pair_coeff * * library_CoNiCrFeMn.meam Co Ni Cr Fe Mn parameters.meam Co Ni Cr Fe Mn
+pair_style meam/c
+pair_coeff * * library_CoNiCrFeMn.meam Co Ni Cr Fe Mn parameters.meam Co Ni Cr Fe Mn
 
 # Store final cell length for strain calculations
 variable tmp equal "lx"
