@@ -967,7 +967,7 @@ void Pair::ev_tally(int i, int j, int nlocal, int newton_pair,
     vm[ 1 ]  = -0.5 * stiff * n0 * n0 * n1 * n1;
     vm[ 2 ]  = -0.5 * stiff * n0 * n0 * n2 * n2;
     vm[ 3 ]  = -0.5 * (stiff * n0 * n0 * n0 * n1+rdudr*n0 * n1);
-    vm[ 4 ]  = -0.5 * stiff * n0 * n0 * n0 * n2+rdudr*n0 * n2);
+    vm[ 4 ]  = -0.5 * (stiff * n0 * n0 * n0 * n2+rdudr*n0 * n2);
     vm[ 5 ]  = -0.5 * stiff * n0 * n0 * n1 * n2;
     //
     vm[ 6 ]  = -0.5 * (stiff * n1 * n1 * n1 * n1+rdudr*n1 * n1);
