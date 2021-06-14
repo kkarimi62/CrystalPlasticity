@@ -1063,7 +1063,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           vm[ 9 ]  = -0.5 * stiff * n1 * n1 * n0 * n2;
           vm[ 10 ] = -0.5 * (stiff * n1 * n1 * n1 * n2+dUdrij * recip*n1 * n2);
           //
-          vm[ 11 ] = -0.5 * (stiff * n2 * n2 * n2 * n2+rdudUdrij * recipdr*n2 * n2);
+          vm[ 11 ] = -0.5 * (stiff * n2 * n2 * n2 * n2+dUdrij * recip*n2 * n2);
           vm[ 12 ] = -0.5 * stiff * n2 * n2 * n0 * n1;
           vm[ 13 ] = -0.5 * stiff * n2 * n2 * n0 * n2;
           vm[ 14 ] = -0.5 * stiff * n2 * n2 * n1 * n2;
