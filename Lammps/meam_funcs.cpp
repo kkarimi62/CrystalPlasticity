@@ -863,3 +863,20 @@ MEAM::Get_ddrhodrmds( int i, int elti, //--- deriv. of Eq. 4.36(c) wrt. r
           }
 }
 
+double MEAM::GetModulus(int alpha, int beta, int gamma, MyStruct& mst ){
+     int nv2=0,m,n;
+     for(m=0;m<alpha+1;m++){
+       for(n=m;n<gamma+1;n++){
+         nv2++;
+     }
+     double arg1 = mst.recip;
+     double arg2 = mst.dUdrij + mst.dUdsij * mst.ds; // units of ds
+     double arg3 = mst.dUdrijm[ alpha ];
+     double darg2 =(mst.recip * ( mst.ddUddrij + mst.ddUdrijds * mst.ds + mst.ds * ( mst.ddUdrijds + mst.ddUddsij * mst.ds + mst.dUdsij * mst.dds ) ) * mst.delij[gamma]+
+            ( mst.ddUdrdrijm[gamma]+mst.ddUdrijmds[gamma]*mst.ds))*mst.delij[lambda];
+     double darg3 = (mst.recip*(mst.ddUdrdrijm[alpha]+mst.ddUdrijmds[alpha]*mst.ds)*mst.delij[gamma]+mst.ddUdrmdrn[nv2])*mst.delij[lambda];  
+     return
+       (((-mst.delij[gamma]*mst.delij[lambda]/mst.r3)*arg2+mst.recip*darg2)*mst.delij[alpha] + 
+        mst.recip*arg2*(alpha == gamma ? 1 : 0])*mst.delij[lambda]+ darg3)*mst.delij[beta];
+ };
+
