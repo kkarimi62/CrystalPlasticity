@@ -13,14 +13,12 @@ dimension	3
 #--- define lattice
 region mybox block -10.0 10.0 -10.0 10.0 -10.0 10.0
 
-#lattice hex 1.0 
-#lattice custom 1.0 a1 1.0 0.0 0.0 a2 0.0 1.0 0.0 a3 0.0 0.0 1.0 basis 0.0 0.0 0.0  
 lattice fcc 3.7 #keyword values ...
 
 create_box 1 mybox  
 create_atoms 1 box  
 
-#create_box 2 mybox  
+#create_box 5 mybox  
 #create_atoms 2 box  
 
 change_box all triclinic
@@ -34,9 +32,12 @@ mass 1 58.993
 
 
 neigh_modify delay 0
+
 pair_style lj/cut 2.5 #meam/c
-#pair_coeff * * library_CoNiCrFeMn.meam Co Ni Cr Fe Mn parameters.meam Co Ni Cr Fe Mn
 pair_coeff * * 1 1
+
+#pair_style meam/c
+#pair_coeff * * library_CoNiCrFeMn.meam Co Ni Cr Fe Mn parameters.meam Co Ni Cr Fe Mn
 
 # Store final cell length for strain calculations
 variable tmp equal "lx"
