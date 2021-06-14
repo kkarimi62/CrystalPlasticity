@@ -11,11 +11,11 @@
 namespace LAMMPS_NS {
 class Memory;
   
-struct MyStruct {
-  double r3,ds, dds, recip;
-  double dUdrij, dUdsij, ddUddrij, ddUdrijds, ddUddsij;
-  double* dUdrijm, delij, ddUdrdrijm, ddUdrijmds, ddUdrmdrn;
-};
+// struct MyStruct {
+//   double r3,ds, dds, recip;
+//   double dUdrij, dUdsij, ddUddrij, ddUdrijds, ddUddsij;
+//   double* dUdrijm, delij, ddUdrdrijm, ddUdrijmds, ddUdrmdrn;
+// };
 
 typedef enum { FCC, BCC, HCP, DIM, DIA, DIA3, B1, C11, L12, B2, CH4, LIN, ZIG, TRI } lattice_t;
 
@@ -366,7 +366,9 @@ protected:
                         double* drhodrm,
                         double* ddrhodrmds //--- modify
                        );
-  double GetModulus(int alpha, int beta, int gamma, myStruct& mst );
+  double GetModulus(int alpha, int beta, int gamma  double r3,double ds, double dds, double recip,
+                        double dUdrij, double dUdsij, double ddUddrij, double ddUdrijds, double ddUddsij,
+                        double* dUdrijm, double* delij, double* ddUdrdrijm, double* ddUdrijmds, double* ddUdrmdrn);
   
   static double zbl(const double r, const int z1, const int z2);
   double embedding(const double A, const double Ec, const double rhobar, double& dF, double& ddF ) const;
