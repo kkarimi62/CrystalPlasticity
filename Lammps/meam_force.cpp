@@ -1051,33 +1051,55 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
             nv2++;
           }
           //--- per-atom modulus
+
+            
+       
+
+          MyStruct mst;
+          mst.recip = recip;
+          mst.r3 = rij*rsq;
+          mst.ds = dscrfcn[fnoffset + jn] * rij;
+          mst.dds = dds = ddscrfcn[fnoffset + jn];
+          mst.dUdrij = dUdrij;
+          mst.dUdsij = dUdsij;
+          mst.ddUddrij = ddUddrij; 
+          mst.ddUdrijds = ddUdrijds;
+          mst.ddUddsij = ddUddsij;
+          mst.dUdrijm = dUdrijm;
+          mst.ddUdrdrijm = ddUdrdrijm;
+          mst.ddUdrijmds = ddUdrijmds;
+          mst.ddUdrmdrn = ddUdrmdrn;
+          mst.delij = delij;
+                      
+
+            
           stiff *= rij2; //--- *r^2 to get energy
-          vm[ 0 ]  = -0.5 * (stiff * n0 * n0 * n0 * n0+dUdrij * rij*n0 * n0);
-          vm[ 1 ]  = -0.5 * stiff * n0 * n0 * n1 * n1;
-          vm[ 2 ]  = -0.5 * stiff * n0 * n0 * n2 * n2;
-          vm[ 3 ]  = -0.5 * (stiff * n0 * n0 * n0 * n1+dUdrij * rij*n0 * n1);
-          vm[ 4 ]  = -0.5 * (stiff * n0 * n0 * n0 * n2+dUdrij * rij*n0 * n2);
-          vm[ 5 ]  = -0.5 * stiff * n0 * n0 * n1 * n2;
+          vm[ 0 ]  = -0.5*GetModulus(0,0,0,0,mst); //-0.5 * (stiff * n0 * n0 * n0 * n0+dUdrij * rij*n0 * n0);
+          vm[ 1 ]  = -0.5*GetModulus(0,0,1,1,mst); //-0.5 * stiff * n0 * n0 * n1 * n1;
+          vm[ 2 ]  = -0.5*GetModulus(0,0,2,2,mst); //-0.5 * stiff * n0 * n0 * n2 * n2;
+          vm[ 3 ]  = -0.5*GetModulus(0,0,0,1,mst); //-0.5 * (stiff * n0 * n0 * n0 * n1+dUdrij * rij*n0 * n1);
+          vm[ 4 ]  = -0.5*GetModulus(0,0,0,2,mst); //-0.5 * (stiff * n0 * n0 * n0 * n2+dUdrij * rij*n0 * n2);
+          vm[ 5 ]  = -0.5*GetModulus(0,0,1,2,mst); //-0.5 * stiff * n0 * n0 * n1 * n2;
           //
-          vm[ 6 ]  = -0.5 * (stiff * n1 * n1 * n1 * n1+dUdrij * rij*n1 * n1);
-          vm[ 7 ]  = -0.5 * stiff * n1 * n1 * n2 * n2;
-          vm[ 8 ]  = -0.5 * stiff * n1 * n1 * n0 * n1;
-          vm[ 9 ]  = -0.5 * stiff * n1 * n1 * n0 * n2;
-          vm[ 10 ] = -0.5 * (stiff * n1 * n1 * n1 * n2+dUdrij * rij*n1 * n2);
+          vm[ 6 ]  = -0.5*GetModulus(1,1,1,1,mst); //-0.5 * (stiff * n1 * n1 * n1 * n1+dUdrij * rij*n1 * n1);
+          vm[ 7 ]  = -0.5*GetModulus(1,1,2,2,mst); //-0.5 * stiff * n1 * n1 * n2 * n2;
+          vm[ 8 ]  = -0.5*GetModulus(1,1,0,1,mst); //-0.5 * stiff * n1 * n1 * n0 * n1;
+          vm[ 9 ]  = -0.5*GetModulus(1,1,0,2,mst); //-0.5 * stiff * n1 * n1 * n0 * n2;
+          vm[ 10 ] = -0.5*GetModulus(1,1,1,2,mst); //-0.5 * (stiff * n1 * n1 * n1 * n2+dUdrij * rij*n1 * n2);
           //
-          vm[ 11 ] = -0.5 * (stiff * n2 * n2 * n2 * n2+dUdrij * rij*n2 * n2);
-          vm[ 12 ] = -0.5 * stiff * n2 * n2 * n0 * n1;
-          vm[ 13 ] = -0.5 * stiff * n2 * n2 * n0 * n2;
-          vm[ 14 ] = -0.5 * stiff * n2 * n2 * n1 * n2;
+          vm[ 11 ] = -0.5*GetModulus(2,2,2,2,mst); //-0.5 * (stiff * n2 * n2 * n2 * n2+dUdrij * rij*n2 * n2);
+          vm[ 12 ] = -0.5*GetModulus(2,2,0,1,mst); //-0.5 * stiff * n2 * n2 * n0 * n1;
+          vm[ 13 ] = -0.5*GetModulus(2,2,0,2,mst); //-0.5 * stiff * n2 * n2 * n0 * n2;
+          vm[ 14 ] = -0.5*GetModulus(2,2,1,2,mst); //-0.5 * stiff * n2 * n2 * n1 * n2;
           //
-          vm[ 15 ] = -0.5 * (stiff * n0 * n1 * n0 * n1+dUdrij * rij*n1 * n1);
-          vm[ 16 ] = -0.5 * (stiff * n0 * n1 * n0 * n2+dUdrij * rij*n1 * n2);
-          vm[ 17 ] = -0.5 * stiff * n0 * n1 * n1 * n2;
+          vm[ 15 ] = -0.5*GetModulus(0,1,0,1,mst); //-0.5 * (stiff * n0 * n1 * n0 * n1+dUdrij * rij*n1 * n1);
+          vm[ 16 ] = -0.5*GetModulus(0,1,0,2,mst); //-0.5 * (stiff * n0 * n1 * n0 * n2+dUdrij * rij*n1 * n2);
+          vm[ 17 ] = -0.5*GetModulus(0,1,1,2,mst); //-0.5 * stiff * n0 * n1 * n1 * n2;
           //
-          vm[ 18 ] = -0.5 * (stiff * n0 * n2 * n0 * n2+dUdrij * rij*n2 * n2);
-          vm[ 19 ] = -0.5 * stiff * n0 * n2 * n1 * n2;
+          vm[ 18 ] = -0.5*GetModulus(0,2,0,2,mst); //-0.5 * (stiff * n0 * n2 * n0 * n2+dUdrij * rij*n2 * n2);
+          vm[ 19 ] = -0.5*GetModulus(0,2,1,2,mst); //-0.5 * stiff * n0 * n2 * n1 * n2;
           //
-          vm[ 20 ] = -0.5 * (stiff * n1 * n2 * n1 * n2+dUdrij * rij*n2 * n2);  
+          vm[ 20 ] = -0.5*GetModulus(1,2,1,2,mst); //-0.5 * (stiff * n1 * n2 * n1 * n2+dUdrij * rij*n2 * n2);  
           //
           nv3 = 0;
           nv2 = 6;
