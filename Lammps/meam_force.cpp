@@ -947,7 +947,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         }
 
         //     Compute derivatives of energy wrt rij, sij, and rij[3]
-        sij=rij; //kam
+        sij=rij*rij; //kam
         dUdrij = phip * sij;//kam + frhop[i] * drhodr1 + frhop[j] * drhodr2; //--- Eq. 4.41(a)
         ddUddrij = phipp * sij;//kam + ( frhopp[i] * drhodr1 * drhodr1 + frhop[i] * ddrhodrdr1 ) + //--- 1st deriv. of Eq. 4.41(a) wrt r
                                  //kam( frhopp[j] * drhodr2 * drhodr2 + frhop[j] * ddrhodrdr2 );
@@ -990,7 +990,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 
         //     Add the part of the force due to dUdrij and dUdsij
 //        dUdrij = phip;//(rij-1.0);
-        force = dUdrij * recip + dUdsij * 1.0 * recip;//dscrfcn[fnoffset + jn]; //-- recip = 1/r_{ij}
+        force = dUdrij * recip + dUdsij * rij * recip;//dscrfcn[fnoffset + jn]; //-- recip = 1/r_{ij}
         for (m = 0; m < 3; m++) {
          forcem = delij[m] * force + dUdrijm[m]; //--- Eq. (4.40)
           f[i][m] = f[i][m] + forcem;
@@ -1000,34 +1000,34 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         //--- add stiffness (units of u/r^2)
 //      stiff = (phipp-dUdrij/rij)*rij*rij;        
         
-         stiff = ddUddrij - dUdrij * recip; 
-         stiff0 = 0.0; 
-         stiff1 = 0.0;
-         stiff2 = 0.0;
-        nv2 = 0;
-        for (m = 0; m < 3; m++) {
-          stiff0 += - dUdrijm[m] * delij[m];
-          stiff1 += ddUdrdrijm[m] * delij[m];
-          for (n = m; n < 3; n++) {
-            stiff2 += ddUdrmdrn[nv2] * delij[m] * delij[n];
-            nv2++;
-          }
-        }
-        stiff += ( ( stiff0 + stiff2 ) * recip  + stiff1 ) * recip;
+//          stiff = ddUddrij - dUdrij * recip; 
+//          stiff0 = 0.0; 
+//          stiff1 = 0.0;
+//          stiff2 = 0.0;
+//         nv2 = 0;
+//         for (m = 0; m < 3; m++) {
+//           stiff0 += - dUdrijm[m] * delij[m];
+//           stiff1 += ddUdrdrijm[m] * delij[m];
+//           for (n = m; n < 3; n++) {
+//             stiff2 += ddUdrmdrn[nv2] * delij[m] * delij[n];
+//             nv2++;
+//           }
+//         }
+//         stiff += ( ( stiff0 + stiff2 ) * recip  + stiff1 ) * recip;
         
         
         //--- sij contribution
-        stiff0 = 0.0;
-        if (!iszero(dscrfcn[fnoffset + jn]) or !iszero(ddscrfcn[fnoffset + jn])) { //--- dscrfcn and ddscrfcn have units of s/r^2.
-          stiff += ddUddsij * dscrfcn[fnoffset + jn] * dscrfcn[fnoffset + jn] * rij2 +
-                   ddUdrijds * 2.0 * dscrfcn[fnoffset + jn] * rij +
-                   dUdsij * ( ddscrfcn[fnoffset + jn] - dscrfcn[fnoffset + jn] );
-          for (m = 0; m < 3; m++) {
-            stiff0 += ddUdrijmds[m] * delij[m];
-          }
-          stiff0 *= 2.0 * dscrfcn[fnoffset + jn];
-          stiff +=  stiff0;
-        }
+//         stiff0 = 0.0;
+//         if (!iszero(dscrfcn[fnoffset + jn]) or !iszero(ddscrfcn[fnoffset + jn])) { //--- dscrfcn and ddscrfcn have units of s/r^2.
+//           stiff += ddUddsij * dscrfcn[fnoffset + jn] * dscrfcn[fnoffset + jn] * rij2 +
+//                    ddUdrijds * 2.0 * dscrfcn[fnoffset + jn] * rij +
+//                    dUdsij * ( ddscrfcn[fnoffset + jn] - dscrfcn[fnoffset + jn] );
+//           for (m = 0; m < 3; m++) {
+//             stiff0 += ddUdrijmds[m] * delij[m];
+//           }
+//           stiff0 *= 2.0 * dscrfcn[fnoffset + jn];
+//           stiff +=  stiff0;
+//         }
         
         
         n0 = delij[0] * recip;
@@ -1057,8 +1057,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
        
 
           double r3 = rij*rij*rij;
-          double ds = 1.0;//dscrfcn[fnoffset + jn] * rij; //???????
-          double dds = 0.0;//ddscrfcn[fnoffset + jn];
+          double ds = rij;//dscrfcn[fnoffset + jn] * rij; //???????
+          double dds = 1.0;//ddscrfcn[fnoffset + jn];
                       
 
             
