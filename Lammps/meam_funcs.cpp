@@ -871,6 +871,7 @@ double MEAM::GetModulus(int alpha, int beta, int gamma, int lambda,  double r3,d
      for(m=0;m<alpha+1;m++){
        for(n=m;n<gamma+1;n++){
          nv2++;
+       }
      }
      double arg1 = recip;
      double arg2 = dUdrij + dUdsij * ds; // units of ds
