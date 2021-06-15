@@ -366,7 +366,7 @@ protected:
                         double* drhodrm,
                         double* ddrhodrmds //--- modify
                        );
-  double GetModulus(int alpha, int beta, int gamma, int delta,  double r3,double ds, double dds, double recip,
+  double GetModulus(int alpha, int beta, int gamma, int lambda,  double r3,double ds, double dds, double recip,
                         double dUdrij, double dUdsij, double ddUddrij, double ddUdrijds, double ddUddsij,
                         double* dUdrijm, double* delij, double* ddUdrdrijm, double* ddUdrijmds, double* ddUdrmdrn);
   
