@@ -880,6 +880,6 @@ double MEAM::GetModulus(int alpha, int beta, int gamma, int lambda,  double r3,d
      double darg3 = (recip*(ddUdrdrijm[alpha]+ddUdrijmds[alpha]*ds)*delij[gamma]+ddUdrmdrn[nv2])*delij[lambda];  
      return
        (((-delij[gamma]*delij[lambda]/r3)*arg2+recip*darg2)*delij[alpha] + 
-        recip*arg2*(alpha == gamma ? 1 : 0])*delij[lambda]+ darg3)*delij[beta];
+        recip*arg2*(alpha == gamma ? 1 : 0))*delij[lambda]+ darg3)*delij[beta];
  };
 
