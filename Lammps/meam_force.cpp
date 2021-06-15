@@ -947,12 +947,14 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         }
 
         //     Compute derivatives of energy wrt rij, sij, and rij[3]
-//        sij=1.0/rij;//0.5*; //kam
         dUdrij = phip * sij;//kam + frhop[i] * drhodr1 + frhop[j] * drhodr2; //--- Eq. 4.41(a)
         ddUddrij = phipp * sij;//kam + ( frhopp[i] * drhodr1 * drhodr1 + frhop[i] * ddrhodrdr1 ) + //--- 1st deriv. of Eq. 4.41(a) wrt r
                                  //kam( frhopp[j] * drhodr2 * drhodr2 + frhop[j] * ddrhodrdr2 );
         dUdsij = 0.0;
-//        if (!iszero(dscrfcn[fnoffset + jn])) {
+        ddUddsij = 0.0;
+        for (m = 0; m < 3; m++) ddUdrijmds[m] = 0.0;
+        ddUdrijds = 0.0;
+        if (!iszero(dscrfcn[fnoffset + jn])) {
           dUdsij = phi ;//kam+ frhop[i] * drhods1 + frhop[j] * drhods2; //--- Eq. 4.41(b)
           ddUddsij = 0.0;//kamfrhopp[i] * drhods1 * drhods1 + frhop[i] * ddrhodsds1 +
                      ;//kamfrhopp[j] * drhods2 * drhods2 + frhop[j] * ddrhodsds2;
@@ -960,7 +962,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                                                   ;//kamfrhopp[j] * drhods2 * drhodrm2[m] + frhop[j] * ddrhodrmds2[m];
           ddUdrijds = phip ;//kam+ frhopp[i] * drhods1 * drhodr1 + frhop[i] * ddrhodrds1 +
                              ;//kamfrhopp[j] * drhods2 * drhodr2 + frhop[j] * ddrhodrds2;
-//        }
+        }
         nv2 = 0;
         for (m = 0; m < 3; m++) {
           dUdrijm[m] = 0.0;//kamfrhop[i] * drhodrm1[m] + frhop[j] * drhodrm2[m]; //--- Eq. 4.41(c)
@@ -989,8 +991,6 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         }
 
         //     Add the part of the force due to dUdrij and dUdsij (-1.0/(rij*rij))
-//        dUdrij = phip;//(rij-1.0);
-//        force = dUdrij * recip + dUdsij * (-1/rij/rij) * recip;
         force = dUdrij * recip + dUdsij * dscrfcn[fnoffset + jn]; //-- recip = 1/r_{ij}
         for (m = 0; m < 3; m++) {
          forcem = delij[m] * force + dUdrijm[m]; //--- Eq. (4.40)
