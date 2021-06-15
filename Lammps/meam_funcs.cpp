@@ -875,7 +875,7 @@ double MEAM::GetModulus(int alpha, int beta, int gamma, int lambda,  double r3,d
      double arg1 = recip;
      double arg2 = dUdrij + dUdsij * ds; // units of ds
      double arg3 = dUdrijm[ alpha ];
-     double darg2 =(recip * ( ddUddrij + ddUdrijds * ds + ds * ( .ddUdrijds + ddUddsij * ds + dUdsij * dds ) ) * delij[gamma]+
+     double darg2 =(recip * ( ddUddrij + ddUdrijds * ds + ds * ( ddUdrijds + ddUddsij * ds + dUdsij * dds ) ) * delij[gamma]+
             ( ddUdrdrijm[gamma]+ddUdrijmds[gamma]*ds))*delij[lambda];
      double darg3 = (recip*(ddUdrdrijm[alpha]+ddUdrijmds[alpha]*ds)*delij[gamma]+ddUdrmdrn[nv2])*delij[lambda];  
      return
