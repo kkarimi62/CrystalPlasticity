@@ -947,17 +947,17 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         }
 
         //     Compute derivatives of energy wrt rij, sij, and rij[3]
-        dUdrij = phip * sij;//kam + frhop[i] * drhodr1 + frhop[j] * drhodr2; //--- Eq. 4.41(a)
-        ddUddrij = phipp * sij;//kam + ( frhopp[i] * drhodr1 * drhodr1 + frhop[i] * ddrhodrdr1 ) + //--- 1st deriv. of Eq. 4.41(a) wrt r
-                                 ( frhopp[j] * drhodr2 * drhodr2 + frhop[j] * ddrhodrdr2 );
+        dUdrij = phip;//kam * sij + frhop[i] * drhodr1 + frhop[j] * drhodr2; //--- Eq. 4.41(a)
+        ddUddrij = phipp;//kam * sij + ( frhopp[i] * drhodr1 * drhodr1 + frhop[i] * ddrhodrdr1 ) + //--- 1st deriv. of Eq. 4.41(a) wrt r
+                            //     ( frhopp[j] * drhodr2 * drhodr2 + frhop[j] * ddrhodrdr2 );
         dUdsij = 0.0;
         if (!iszero(dscrfcn[fnoffset + jn])) {
-          dUdsij = phi;//kam + frhop[i] * drhods1 + frhop[j] * drhods2; //--- Eq. 4.41(b)
+          dUdsij = 0.0;//phi + frhop[i] * drhods1 + frhop[j] * drhods2; //--- Eq. 4.41(b)
           ddUddsij = 0.0;//kamfrhopp[i] * drhods1 * drhods1 + frhop[i] * ddrhodsds1 +
                      //frhopp[j] * drhods2 * drhods2 + frhop[j] * ddrhodsds2;
           for (m = 0; m < 3; m++) ddUdrijmds[m] = 0.0;//frhopp[i] * drhods1 * drhodrm1[m] + frhop[i] * ddrhodrmds1[m] +
                                                  //frhopp[j] * drhods2 * drhodrm2[m] + frhop[j] * ddrhodrmds2[m];
-          ddUdrijds = phip;//kam + frhopp[i] * drhods1 * drhodr1 + frhop[i] * ddrhodrds1 +
+          ddUdrijds = 0.0;//phip + frhopp[i] * drhods1 * drhodr1 + frhop[i] * ddrhodrds1 +
                            //  frhopp[j] * drhods2 * drhodr2 + frhop[j] * ddrhodrds2;
         }
         nv2 = 0;
@@ -1064,72 +1064,93 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 //          stiff *= rij2; //--- *r^2 to get energy
           vm[ 0 ]  = -0.5*GetModulus(0,0,0,0,r3, ds,  dds,  recip,
                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //-0.5 * (stiff * n0 * n0 * n0 * n0+dUdrij * rij*n0 * n0);
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          vm[ 0 ]  =-0.5 * (stiff * n0 * n0 * n0 * n0+dUdrij * rij*n0 * n0);
           vm[ 1 ]  = -0.5*GetModulus(0,0,1,1,r3, ds,  dds,  recip,
                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //-0.5 * stiff * n0 * n0 * n1 * n1;
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); 
+          vm[ 1 ]  = -0.5 * stiff * n0 * n0 * n1 * n1;
           vm[ 2 ]  = -0.5*GetModulus(0,0,2,2,r3, ds,  dds,  recip,
                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //-0.5 * stiff * n0 * n0 * n2 * n2;
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          vm[ 2 ]  =-0.5 * stiff * n0 * n0 * n2 * n2;
           vm[ 3 ]  = -0.5*GetModulus(0,0,0,1,r3, ds,  dds,  recip,
                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //-0.5 * (stiff * n0 * n0 * n0 * n1+dUdrij * rij*n0 * n1);
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          vm[ 3 ]  =-0.5 * (stiff * n0 * n0 * n0 * n1+dUdrij * rij*n0 * n1);
           vm[ 4 ]  = -0.5*GetModulus(0,0,0,2,r3, ds,  dds,  recip,
                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //-0.5 * (stiff * n0 * n0 * n0 * n2+dUdrij * rij*n0 * n2);
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          vm[ 4 ]  =-0.5 * (stiff * n0 * n0 * n0 * n2+dUdrij * rij*n0 * n2);
           vm[ 5 ]  = -0.5*GetModulus(0,0,1,2,r3, ds,  dds,  recip,
                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //-0.5 * stiff * n0 * n0 * n1 * n2;
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          vm[ 5 ]  =-0.5 * stiff * n0 * n0 * n1 * n2;
           //
           vm[ 6 ]  = -0.5*GetModulus(1,1,1,1,r3, ds,  dds,  recip,
                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //-0.5 * (stiff * n1 * n1 * n1 * n1+dUdrij * rij*n1 * n1);
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          vm[ 6 ]  =-0.5 * (stiff * n1 * n1 * n1 * n1+dUdrij * rij*n1 * n1);
           vm[ 7 ]  = -0.5*GetModulus(1,1,2,2,r3, ds,  dds,  recip,
                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //-0.5 * stiff * n1 * n1 * n2 * n2;
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          vm[ 7 ]  =-0.5 * stiff * n1 * n1 * n2 * n2;
           vm[ 8 ]  = -0.5*GetModulus(1,1,0,1,r3, ds,  dds,  recip,
                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //-0.5 * stiff * n1 * n1 * n0 * n1;
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          vm[ 8 ]  =-0.5 * stiff * n1 * n1 * n0 * n1;
           vm[ 9 ]  = -0.5*GetModulus(1,1,0,2,r3, ds,  dds,  recip,
                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //-0.5 * stiff * n1 * n1 * n0 * n2;
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          vm[ 9 ]  =-0.5 * stiff * n1 * n1 * n0 * n2;
           vm[ 10 ] = -0.5*GetModulus(1,1,1,2,r3, ds,  dds,  recip,
                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //-0.5 * (stiff * n1 * n1 * n1 * n2+dUdrij * rij*n1 * n2);
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          vm[ 10 ] =-0.5 * (stiff * n1 * n1 * n1 * n2+dUdrij * rij*n1 * n2);
           //
           vm[ 11 ] = -0.5*GetModulus(2,2,2,2,r3, ds,  dds,  recip,
                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //-0.5 * (stiff * n2 * n2 * n2 * n2+dUdrij * rij*n2 * n2);
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          vm[ 11 ] =-0.5 * (stiff * n2 * n2 * n2 * n2+dUdrij * rij*n2 * n2);
           vm[ 12 ] = -0.5*GetModulus(2,2,0,1,r3, ds,  dds,  recip,
                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //-0.5 * stiff * n2 * n2 * n0 * n1;
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          vm[ 12 ] =-0.5 * stiff * n2 * n2 * n0 * n1;
           vm[ 13 ] = -0.5*GetModulus(2,2,0,2,r3, ds,  dds,  recip,
                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //-0.5 * stiff * n2 * n2 * n0 * n2;
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          vm[ 13 ] =-0.5 * stiff * n2 * n2 * n0 * n2;
           vm[ 14 ] = -0.5*GetModulus(2,2,1,2,r3, ds,  dds,  recip,
                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //-0.5 * stiff * n2 * n2 * n1 * n2;
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          vm[ 14 ] =-0.5 * stiff * n2 * n2 * n1 * n2;
           //
           vm[ 15 ] = -0.5*GetModulus(0,1,0,1,r3, ds,  dds,  recip,
                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //-0.5 * (stiff * n0 * n1 * n0 * n1+dUdrij * rij*n1 * n1);
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          vm[ 15 ] =-0.5 * (stiff * n0 * n1 * n0 * n1+dUdrij * rij*n1 * n1);
           vm[ 16 ] = -0.5*GetModulus(0,1,0,2,r3, ds,  dds,  recip,
                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //-0.5 * (stiff * n0 * n1 * n0 * n2+dUdrij * rij*n1 * n2);
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          vm[ 16 ] =-0.5 * (stiff * n0 * n1 * n0 * n2+dUdrij * rij*n1 * n2);
           vm[ 17 ] = -0.5*GetModulus(0,1,1,2,r3, ds,  dds,  recip,
                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //-0.5 * stiff * n0 * n1 * n1 * n2;
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          vm[ 17 ] = -0.5 * stiff * n0 * n1 * n1 * n2;
           //
           vm[ 18 ] = -0.5*GetModulus(0,2,0,2,r3, ds,  dds,  recip,
                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //-0.5 * (stiff * n0 * n2 * n0 * n2+dUdrij * rij*n2 * n2);
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          vm[ 18 ] = -0.5 * (stiff * n0 * n2 * n0 * n2+dUdrij * rij*n2 * n2);
           vm[ 19 ] = -0.5*GetModulus(0,2,1,2,r3, ds,  dds,  recip,
                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //-0.5 * stiff * n0 * n2 * n1 * n2;
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          vm[ 19 ] =-0.5 * stiff * n0 * n2 * n1 * n2;
           //
           vm[ 20 ] = -0.5*GetModulus(1,2,1,2,r3, ds,  dds,  recip,
                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //-0.5 * (stiff * n1 * n2 * n1 * n2+dUdrij * rij*n2 * n2);  
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          vm[ 20 ] =-0.5 * (stiff * n1 * n2 * n1 * n2+dUdrij * rij*n2 * n2);  
           //
           nv3 = 0;
           nv2 = 6;
