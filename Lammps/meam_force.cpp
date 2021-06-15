@@ -947,17 +947,17 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         }
 
         //     Compute derivatives of energy wrt rij, sij, and rij[3]
-        dUdrij = phip;//kam * sij + frhop[i] * drhodr1 + frhop[j] * drhodr2; //--- Eq. 4.41(a)
-        ddUddrij = phipp;//kam * sij + ( frhopp[i] * drhodr1 * drhodr1 + frhop[i] * ddrhodrdr1 ) + //--- 1st deriv. of Eq. 4.41(a) wrt r
+        dUdrij = phip * sij;//kam + frhop[i] * drhodr1 + frhop[j] * drhodr2; //--- Eq. 4.41(a)
+        ddUddrij = phipp * sij;//kam + ( frhopp[i] * drhodr1 * drhodr1 + frhop[i] * ddrhodrdr1 ) + //--- 1st deriv. of Eq. 4.41(a) wrt r
                             //     ( frhopp[j] * drhodr2 * drhodr2 + frhop[j] * ddrhodrdr2 );
         dUdsij = 0.0;
         if (!iszero(dscrfcn[fnoffset + jn])) {
-          dUdsij = 0.0;//phi + frhop[i] * drhods1 + frhop[j] * drhods2; //--- Eq. 4.41(b)
+          dUdsij = phi;// + frhop[i] * drhods1 + frhop[j] * drhods2; //--- Eq. 4.41(b)
           ddUddsij = 0.0;//kamfrhopp[i] * drhods1 * drhods1 + frhop[i] * ddrhodsds1 +
                      //frhopp[j] * drhods2 * drhods2 + frhop[j] * ddrhodsds2;
           for (m = 0; m < 3; m++) ddUdrijmds[m] = 0.0;//frhopp[i] * drhods1 * drhodrm1[m] + frhop[i] * ddrhodrmds1[m] +
                                                  //frhopp[j] * drhods2 * drhodrm2[m] + frhop[j] * ddrhodrmds2[m];
-          ddUdrijds = 0.0;//phip + frhopp[i] * drhods1 * drhodr1 + frhop[i] * ddrhodrds1 +
+          ddUdrijds = phip;// + frhopp[i] * drhods1 * drhodr1 + frhop[i] * ddrhodrds1 +
                            //  frhopp[j] * drhods2 * drhodr2 + frhop[j] * ddrhodrds2;
         }
         nv2 = 0;
@@ -1056,8 +1056,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
        
 
           double r3 = rij*rij*rij;
-          double ds = 0.0;//kam dscrfcn[fnoffset + jn] * rij;
-          double dds = 0.0;//kam ddscrfcn[fnoffset + jn];
+          double ds = dscrfcn[fnoffset + jn] * rij;
+          double dds = ddscrfcn[fnoffset + jn];
                       
 
             
