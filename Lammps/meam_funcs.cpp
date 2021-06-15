@@ -866,7 +866,7 @@ MEAM::Get_ddrhodrmds( int i, int elti, //--- deriv. of Eq. 4.36(c) wrt. r
 double MEAM::GetModulus(int alpha, int beta, int gamma, int lambda,  double r3,double ds, double dds, double recip,
                         double dUdrij, double dUdsij, double ddUddrij, double ddUdrijds, double ddUddsij,
                         double* dUdrijm, double* delij, double* ddUdrdrijm, double* ddUdrijmds, double* ddUdrmdrn){
-     dds=0.0; //kam      
+//     dds=0.0; //kam      
      int nv2=0,m,n;
      for(m=0;m<alpha+1;m++){
        for(n=m;n<gamma+1;n++){
@@ -876,7 +876,7 @@ double MEAM::GetModulus(int alpha, int beta, int gamma, int lambda,  double r3,d
      double arg1 = recip;
      double arg2 = dUdrij + dUdsij * ds; // units of ds
      double arg3 = dUdrijm[ alpha ];
-     double darg2 =(recip * ( ddUddrij + ddUdrijds * ds + ds * ( ddUdrijds + ddUddsij * ds ) + 2.0 * dUdsij * dds ) * delij[gamma]+
+     double darg2 =(recip * ( ddUddrij + ddUdrijds * ds + ds * ( ddUdrijds + ddUddsij * ds ) + 1.0 * dUdsij * dds ) * delij[gamma]+
             ( ddUdrdrijm[gamma]+ddUdrijmds[gamma]*ds))*delij[lambda];
      double darg3 = (recip*(ddUdrdrijm[alpha]+ddUdrijmds[alpha]*ds)*delij[gamma]+ddUdrmdrn[nv2])*delij[lambda];  
      return
