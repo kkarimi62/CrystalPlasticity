@@ -972,25 +972,25 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
             nv2++;
           }  
         }
-        if (!isone(scaleij)) { //--- add higher order derivatives
-          dUdrij *= scaleij;
-          dUdsij *= scaleij;
-          dUdrijm[0] *= scaleij;
-          dUdrijm[1] *= scaleij;
-          dUdrijm[2] *= scaleij;
-          //
-          ddUddrij *= scaleij;
-          for(m=0;m<3;m++) ddUdrdrijm[m] *= scaleij;
-          for(m=0;m<6;m++) ddUdrmdrn[m] *= scaleij;
-          //
-          ddUddsij *= scaleij;
-          ddUdrijds *= scaleij;
-          for(m=0;m<3;m++) ddUdrijmds[m] *= scaleij;
-        }
+//         if (!isone(scaleij)) { //--- add higher order derivatives
+//           dUdrij *= scaleij;
+//           dUdsij *= scaleij;
+//           dUdrijm[0] *= scaleij;
+//           dUdrijm[1] *= scaleij;
+//           dUdrijm[2] *= scaleij;
+//           //
+//           ddUddrij *= scaleij;
+//           for(m=0;m<3;m++) ddUdrdrijm[m] *= scaleij;
+//           for(m=0;m<6;m++) ddUdrmdrn[m] *= scaleij;
+//           //
+//           ddUddsij *= scaleij;
+//           ddUdrijds *= scaleij;
+//           for(m=0;m<3;m++) ddUdrijmds[m] *= scaleij;
+//         }
 
         //     Add the part of the force due to dUdrij and dUdsij
 //        dUdrij = phip;//(rij-1.0);
-        force = dUdrij * recip + dUdsij * 2*rij * recip;//dscrfcn[fnoffset + jn]; //-- recip = 1/r_{ij}
+        force = dUdrij * recip + dUdsij * 2*1.0 * recip;//dscrfcn[fnoffset + jn]; //-- recip = 1/r_{ij}
         for (m = 0; m < 3; m++) {
          forcem = delij[m] * force + dUdrijm[m]; //--- Eq. (4.40)
           f[i][m] = f[i][m] + forcem;
