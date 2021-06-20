@@ -477,14 +477,20 @@ class ComputeRdf( Compute, Wrap ):
 ####### compute radial pair correlation function
 ####### in a periodic system
 ############################################################
-    def __init__( self, atoms, box, cutoff = 1.0, NMAX = 1000, 
-                 n_neigh_per_atom = 20):
+    def __init__( self, atoms, box, cutoff = 1.0, NMAX = 1000):#, 
+#                 n_neigh_per_atom = 20):
         Compute.__init__( self, atoms, box )
         Wrap.__init__( self, atoms, box )
         
         self.cutoff = cutoff
         self.NMAX = NMAX
-        self.n_neigh_per_atom = n_neigh_per_atom
+        
+        #--- number density
+        CellVectorOrtho, VectorNorm = GetOrthogonalBasis( self.CellVector )
+        volume = np.linalg.det( CellVectorOrtho )
+        self.rho = len( self.x ) / volume
+        
+        self.n_neigh_per_atom = 2 * int( self.rho * self.cutoff * self.cutoff * self.cutoff * 4.0 * np.pi / 3.0 )
         
         
     def GetXYZ( self ): #--- overwrite GetXYZ in Wrap
@@ -544,15 +550,12 @@ class ComputeRdf( Compute, Wrap ):
         count, bin_edges = np.histogram( slist, bins = bins ) #--- n_i
         rmean /= count #--- average distance: \sum r_i/n_i
 
-        #--- number density
-        CellVectorOrtho, VectorNorm = GetOrthogonalBasis( self.CellVector )
-        volume = np.linalg.det( CellVectorOrtho )
-        rho = len( self.x ) / volume
+
 
 
         hist *= len( slist ) #--- 
         hist /= 4*np.pi*rmean*rmean*self.NMAX
-        hist /= rho    
+        hist /= self.rho    
         
         self.rmean = rmean
         self.hist = hist
@@ -568,9 +571,9 @@ class ComputeCrltn( ComputeRdf ):
 ############################################################    
     def __init__( self, atoms, box, val, 
                  cutoff = 1.0, dx = 1.0,
-                 NMAX = 1000, n_neigh_per_atom = 20):
-        ComputeRdf.__init__( self, atoms, box, cutoff = cutoff, NMAX = NMAX, 
-                             n_neigh_per_atom = n_neigh_per_atom )
+                 NMAX = 1000):#, n_neigh_per_atom = 20):
+        ComputeRdf.__init__( self, atoms, box, cutoff = cutoff, NMAX = NMAX)#, 
+#                             n_neigh_per_atom = n_neigh_per_atom )
         #--- zscore values
         self.value = val - np.mean(val)
         self.value /= np.std(self.value)
