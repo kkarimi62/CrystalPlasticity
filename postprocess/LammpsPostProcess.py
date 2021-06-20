@@ -28,6 +28,50 @@ def shiftBeta( xyzDimensionless_j, diff ):
     
     return beta0_j
 
+def GetOrthogonalBasis( CellVector ): 
+    a0 = CellVector[:,0]
+    l0 = np.dot(a0,a0)**0.5
+    n0 = a0 / l0 
+    #
+    a1 = CellVector[:,1]
+    a1_perp = a1 - np.dot( a1, n0 ) * n0
+    l1 = np.dot( a1_perp, a1_perp) ** 0.5
+    #
+    a2 = CellVector[:,2]
+    l2 = np.dot(a2,a2)**0.5
+    
+    return np.c_[a0, a1_perp, a2], [l0, l1, l2]
+
+def GetCubicGrid( CellOrigin, CellVector, dmean, margin  ):
+
+    CellVectorOrtho, VectorNorm = GetOrthogonalBasis( CellVector )
+    
+    volume = np.linalg.det( CellVectorOrtho )
+
+
+    [nx, ny, nz] = map( int, (np.array(VectorNorm)+2*margin) / dmean )
+    if nx%2 == 0:
+        nx += 1
+    if ny%2 == 0:
+        ny += 1
+    if nz%2 == 0:
+        nz += 1
+    
+    x = np.linspace( CellOrigin[0] - margin, CellOrigin[0] + VectorNorm[ 0 ] + margin, nx,endpoint=True)
+    y = np.linspace( CellOrigin[1] - margin, CellOrigin[1] + VectorNorm[ 1 ] + margin, ny,endpoint=True)
+    z = np.linspace( CellOrigin[2] - margin, CellOrigin[2] + VectorNorm[ 2 ] + margin, nz,endpoint=True)
+
+    return (x, y, z), np.meshgrid(x, y,z)
+
+def GetIndex((iy,ix,iz), (ny,nx,nz)):
+    return iy * ( nx * nz ) + ix * nz + iz
+
+def linfunc(x,m,c):
+    return m*x+c
+
+def SqError( xdata, ydata):
+    z = np.polyfit(np.array(xdata), np.array(ydata), 1)
+    return (np.array(ydata)-linfunc(np.array(xdata),*z))**2
 
 
 ############################################################
@@ -110,6 +154,16 @@ class Atoms:
             self.ym = kwargs['ym']
         if 'zm' in kwargs:
             self.zm = kwargs['zm']
+        if 'dx' in kwargs:
+            self.dx = kwargs['dx']
+        if 'dy' in kwargs:
+            self.dy = kwargs['dy']
+        if 'dz' in kwargs:
+            self.dz = kwargs['dz']
+        if 'exy' in kwargs:
+            self.exy = kwargs['exy']
+        if 'd2min' in kwargs:
+            self.d2min = kwargs['d2min']
             
 ############################################################
 #######  class with simulation cell attributes 
@@ -244,19 +298,16 @@ class Copy( Atoms, Wrap ):
         
     def FullCopies( self ):
         #--- concat. coordinates
-        XYZ_shifted, attr0 = ConcatAttr( self, ['x','y','z','xu','yu','zu','xm','ym','zm'] )
+        XYZ_shifted, attr0 = ConcatAttr( self, ['x','y','z','xu','yu','zu','xm','ym','zm'] ) #--- add every coord. based attr
         xyz_original = XYZ_shifted.copy()
         assert XYZ_shifted.shape[1] % 3 == 0, 'shifted coordinates must be integer multiple of 3!'
-        #--- add other attributes to xyz 
-#        attr_list = list(coord_atoms_broken.keys()) 
-
-    #     #--- exclude xyz
-        ID_TYPE_shifted, attr1 = ConcatAttr( self, ['id','type'])
+        #
+        ID_TYPE_shifted, attr1 = ConcatAttr( self, ['id','type','dx','dy','dz','exy','d2min']) #--- add remaining 'Atoms' attrs
         id_type_original = ID_TYPE_shifted.copy()
 		
         #--- cell copies
         for i in [-1,0,1]:
-            for j in [-1,0,1]:
+            for j in [-1,0,1]: 
                 for k in [-1,0,1]:
         #            print i,j,k
                     if i == j == k == 0:
@@ -282,29 +333,30 @@ class Copy( Atoms, Wrap ):
         return Atoms( **self.df.to_dict(orient = 'list') ) #--- return atom object
 
 
-    def Expand( self, ev = 0.1):
+    def Expand( self, epsilon = 0.1, mode = 'isotropic'):
     ############################################################
-    ####### Get atoms inside an expanded box
+    ####### Get atoms in original box and expand
     ############################################################    
         assert 'xm' in dir(self) and 'ym' in dir(self) and 'zm' in dir(self), 'mapped coordinates are needed!'
         self.FullCopies() #--- full copies
         atomsCopied = self.Get() #--- new atom object
 
         indices =  self.isInsideExpanded(np.c_[atomsCopied.xm, atomsCopied.ym, atomsCopied.zm], #--- give mapped coordinates
-                                         ev = ev,)
+                                         epsilon = epsilon, mode = mode)
         #--- filter!!
         self.df = pd.DataFrame(atomsCopied.__dict__,)[indices]
         
-    def isInsideExpanded( self, xyz, ev = 0.2 ):
+    def isInsideExpanded( self, xyz, epsilon = 0.1, mode = 'isotropic'  ):
     ############################################################
-    ####### Get atoms inside an expanded box
+    ####### Get atoms inside an expanded original box
     ############################################################    
         #--- tensor associated with dilation
-        strainTensor = np.array([[ev/3.0,0,0],
-                                [0,ev/3.0,0],
-                                [0,0,ev/3.0]])
-        #
         identityMat = np.array([[1,0,0],[0,1,0],[0,0,1]])
+        if mode == 'isotropic':
+	        strainTensor = epsilon * identityMat
+        if mode == 'x':
+	        strainTensor = epsilon * np.array([[1,0,0],[0,0,0],[0,0,0]])
+        #
         #
         CellVectorOrtho, VectorNorm = GetOrthogonalBasis( self.CellVector ) #GetOrthogonalBasis?
 
@@ -331,6 +383,310 @@ class Compute( Atoms, Box ):
         Atoms.__init__(self, **atoms.__dict__) 
         Box.__init__(self, CellOrigin = box.CellOrigin, CellVector = box.CellVector )
 
+    def Get( self, attrs = [] ):
+	############################################################
+	####### get function returning an atom object
+	############################################################
+		assert np.all(map((self.__dict__).has_key, attrs )), 'not all attributes are available!'
+		values = map(self.__dict__.get,attrs)
+		df = pd.DataFrame(np.c_[values].T, columns = attrs )
+		return Atoms(**df.to_dict(orient = 'list ') )
+
+    def Set( self, value, attrs=[]):
+	############################################################
+	####### set function calling atom class constructor
+	############################################################
+#        pdb.set_trace()
+        Atoms.__init__( self, **pd.DataFrame(value,columns=attrs).to_dict(orient='list'))
+#		self.=value[:,0]
+
+
+class ComputeD2min( Compute ):
+    def __init__( self, atoms, box, delx ):
+        Compute.__init__( self, atoms, box )
+        self.delx = delx
+
+    def Partition( self ):
+        #--- cubic grid
+        (xlin, ylin, zlin), (xv, yv, zv) = GetCubicGrid( self.CellOrigin, 
+                                                         self.CellVector, 
+                                                         self.delx,
+                                                         margin = 0.0 )        #--- assign index
+         #--- set bounds
+        (ny,nx,nz) = xv.shape
+        xlo, ylo, zlo = np.min(xlin), np.min(ylin), np.min(zlin)
+        xhi, yhi, zhi = np.max(xlin), np.max(ylin), np.max(zlin)
+        lx, ly, lz = xhi-xlo, yhi-ylo, zhi-zlo 
+        
+        ix = (nx*(np.c_[self.xm]-xlo)/lx).astype(int).flatten() #--- type  self.xm???
+        assert np.all([ix>=0,ix<nx])
+
+        iy = (ny*(np.c_[self.ym]-ylo)/ly).astype(int).flatten()
+        assert np.all([iy>=0,iy<ny])
+
+        iz = (nz*(np.c_[self.zm]-zlo)/lz).astype(int).flatten()
+        assert np.all([iz>=0,iz<nz])
+
+        self.blockid = GetIndex((iy,ix,iz), (ny,nx,nz))
+        (self.ny,self.nx,self.nz) = (ny,nx,nz)
+
+    def D2min( self ):
+        #--- loop over partitions and compute F_{\alpha\beta}=\partial u_\alpha/x_\beta
+        natoms = len( self.xm )
+        d2min = np.zeros( natoms * 6 ).reshape((natoms,6))
+        natoms0 = natoms
+        natoms = 0
+        
+        for indx in xrange(self.ny*self.nx*self.nz):
+    
+            #--- filtering
+            atomi = Atoms(**pd.DataFrame(np.c_[self.id,self.type,self.xm,self.ym,self.zm,self.dx,self.dy,self.dz],
+                    columns = ['id','type','xm','ym','zm','dx','dy','dz'])[self.blockid == indx].to_dict(orient='list'))
+        
+
+            natom = len( atomi.xm )
+            if natom == 0:
+                continue
+
+
+            #--- deformation gradients
+            D2min =  SqError(atomi.xm, atomi.dx)
+            D2min += SqError(atomi.ym, atomi.dx)
+            D2min += SqError(atomi.zm, atomi.dx)
+            D2min += SqError(atomi.xm, atomi.dy)
+            D2min += SqError(atomi.ym, atomi.dy)
+            D2min += SqError(atomi.zm, atomi.dy)
+            D2min += SqError(atomi.xm, atomi.dz)
+            D2min += SqError(atomi.ym, atomi.dz)
+            D2min += SqError(atomi.zm, atomi.dz)
+
+            #--- store
+            d2min[ natoms : natoms + natom ] = np.c_[atomi.id,atomi.type,atomi.xm,atomi.ym,atomi.zm,D2min]
+
+            natoms += natom
+        assert natoms == natoms0
+        assert len(set(d2min[:,0])) == len( d2min ), 'boxes are overlapping!'
+        
+        
+                          
+        self.Set( d2min, attrs=['id','type','xm','ym','zm','d2min'])
+        
+	
+class ComputeRdf( Compute, Wrap ):
+############################################################
+####### compute radial pair correlation function
+####### in a periodic system
+############################################################
+    def __init__( self, atoms, box, cutoff = 1.0, NMAX = 1000, 
+                 n_neigh_per_atom = 20):
+        Compute.__init__( self, atoms, box )
+        Wrap.__init__( self, atoms, box )
+        
+        self.cutoff = cutoff
+        self.NMAX = NMAX
+        self.n_neigh_per_atom = n_neigh_per_atom
+        
+        
+    def GetXYZ( self ): #--- overwrite GetXYZ in Wrap
+    ############################################################
+    ####### compute coords of atoms given 
+    ####### corresponding dimensionless coords
+    ############################################################
+        return np.matmul( self.CellVector, self.beta.T ).T #--- xyz in reference state
+
+    
+    def Distance( self, WRAP = True ):
+        self.GetDimensionlessCords() #--- dimensionless cords
+        eta = self.beta 
+        #---    
+        nmax = min(self.NMAX, len( self.x ))
+        i = 0
+        nr = 0
+        self.rlist = np.zeros(nmax*self.n_neigh_per_atom)
+        while i < nmax: #--- pair-wise dist.
+            #--- distance matrix
+            df_dx = eta[ i+1:,0 ] - eta[ i, 0 ] #--- avoid double counting
+            df_dy = eta[ i+1:,1 ] - eta[ i, 1 ]
+            df_dz = eta[ i+1:,2 ] - eta[ i, 2 ]
+            if WRAP: #--- pbc effects
+                df_dx -= (df_dx > 0.5 )*1
+                df_dx += (df_dx < - 0.5 )*1
+                df_dy -= (df_dy > 0.5 )*1
+                df_dy += (df_dy < - 0.5)*1
+                df_dz -= (df_dz > 0.5)*1
+                df_dz += (df_dz < - 0.5)*1
+
+                
+            self.beta = np.c_[df_dx,df_dy,df_dz] #--- relative dimensionless coordinates
+            #--- distance vector
+            disp_vector = self.GetXYZ() 
+            disp2 = disp_vector * disp_vector
+            #--- distance
+            df_sq = ( disp2[:,0]+disp2[:,1]+disp2[:,2] ) ** 0.5 
+            df_sq = df_sq[ df_sq < self.cutoff ] #--- filtering        
+            #--- concatenate
+            assert nr+len(df_sq) <= self.rlist.shape[0], '%s, %s increase buffer size!'%(nr+len(df_sq),self.rlist.shape[0])
+            self.rlist[nr:nr+len(df_sq)] = df_sq
+            #---
+            i += 1
+            nr += len( df_sq )
+
+    def PairCrltn( self, nbins = 32 ):
+        #--- histogram
+        slist = self.rlist[self.rlist>0]
+        rmin = slist.min()
+        rmax = slist.max()
+        #ndecades =  int(np.ceil(np.log10(rmax/rmin)))
+        bins = np.linspace(rmin,rmax,nbins) #np.logspace(np.log10(rmin),np.log10(rmax),ndecades*4)
+        hist, bin_edges = np.histogram( slist, bins = bins, density=True  ) #--- normalized g(r)
+
+        rmean, bin_edges = np.histogram( slist, bins = bins, weights = slist ) #--- \sum r_i
+        count, bin_edges = np.histogram( slist, bins = bins ) #--- n_i
+        rmean /= count #--- average distance: \sum r_i/n_i
+
+        #--- number density
+        CellVectorOrtho, VectorNorm = GetOrthogonalBasis( self.CellVector )
+        volume = np.linalg.det( CellVectorOrtho )
+        rho = len( self.x ) / volume
+
+
+        hist *= len( slist ) #--- 
+        hist /= 4*np.pi*rmean*rmean*self.NMAX
+        hist /= rho    
+        
+        self.rmean = rmean
+        self.hist = hist
+        self.err = hist / count ** 0.5
+
+    def Get( self ):
+        return self.rmean, self.hist, self.err
+
+class ComputeCrltn( ComputeRdf ):
+############################################################
+####### compute CrltnFunc for data defined over 
+####### an unstructured grid point
+############################################################    
+    def __init__( self, atoms, box, val, 
+                 cutoff = 1.0, dx = 1.0,
+                 NMAX = 1000, n_neigh_per_atom = 20):
+        ComputeRdf.__init__( self, atoms, box, cutoff = cutoff, NMAX = NMAX, 
+                             n_neigh_per_atom = n_neigh_per_atom )
+        #--- zscore values
+        self.value = val - np.mean(val)
+        self.value /= np.std(self.value)
+        self.dx = dx #--- discretization length: 1st peak in rdf
+
+
+    
+    def Distance( self, WRAP = True ):
+        self.GetDimensionlessCords() #--- dimensionless cords
+        eta = self.beta 
+        #---    
+        nmax = min(self.NMAX, len( self.x ))
+        i = 0
+        nr = 0
+        self.rlist = np.zeros(nmax*self.n_neigh_per_atom)
+        self.rvect = np.zeros(nmax*self.n_neigh_per_atom*3).reshape((nmax*self.n_neigh_per_atom,3))
+        self.flist = np.zeros(nmax*self.n_neigh_per_atom)
+    
+    
+        while i < nmax: #--- pair-wise dist.
+            #--- distance matrix
+            df_dx = eta[ i+1:,0 ] - eta[ i, 0 ] #--- avoid double counting
+            df_dy = eta[ i+1:,1 ] - eta[ i, 1 ]
+            df_dz = eta[ i+1:,2 ] - eta[ i, 2 ]
+            product = self.value[i+1:]*self.value[i]
+            if WRAP: #--- pbc effects
+                df_dx -= (df_dx > 0.5 )*1
+                df_dx += (df_dx < - 0.5 )*1
+                df_dy -= (df_dy > 0.5 )*1
+                df_dy += (df_dy < - 0.5)*1
+                df_dz -= (df_dz > 0.5)*1
+                df_dz += (df_dz < - 0.5)*1
+
+                
+            self.beta = np.c_[df_dx,df_dy,df_dz] #--- relative dimensionless coordinates
+            #--- distance vector
+            disp_vector = self.GetXYZ() 
+            disp2 = disp_vector * disp_vector
+            #--- distance
+            df_sq = ( disp2[:,0]+disp2[:,1]+disp2[:,2] ) ** 0.5 
+            #--- filtering
+            disp_vector = disp_vector[ df_sq < self.cutoff ]
+            product = product[ df_sq < self.cutoff ]
+            df_sq = df_sq[ df_sq < self.cutoff ]    
+            #--- concatenate
+            assert nr+len(df_sq) <= self.rlist.shape[0], '%s, %s increase buffer size!'%(nr+len(df_sq),self.rlist.shape[0])
+            self.rlist[nr:nr+len(df_sq)] = df_sq
+            self.rvect[nr:nr+len(df_sq)] = disp_vector
+            self.flist[nr:nr+len(df_sq)] = product.flatten()
+        
+        #---
+            i += 1
+            nr += len( df_sq )
+
+    def AutoCrltn( self, RADIAL = True ):
+        self.RADIAL = RADIAL
+        #--- histogram
+        slist = self.rlist[self.rlist>0]
+        self.rvect = self.rvect[self.rlist>0]
+        self.flist = self.flist[self.rlist>0]
+        rmin = slist.min()
+        rmax = slist.max()
+
+        if RADIAL:
+            nbin = int((rmax-rmin)/self.dx)
+            bins = np.linspace(rmin,rmax,nbin) #np.logspace(np.log10(rmin),np.log10(rmax),ndecades*4)
+            self.fmean, bin_edges = np.histogram( slist, bins = bins, weights = self.flist ) #--- \sum f_i.fj
+            self.rmean, bin_edges = np.histogram( slist, bins = bins, weights = slist ) #--- \sum r_i
+            self.count, bin_edges = np.histogram( slist, bins = bins ) #--- n_i
+            #
+            self.rmean /= self.count #--- average distance: \sum r_i/n_i
+            self.fmean /= self.count
+
+        else: #--- 3d correlations
+            xmin, xmax = self.rvect[:,0].min(), self.rvect[:,0].max()
+            ymin, ymax = self.rvect[:,1].min(), self.rvect[:,1].max()
+            zmin, zmax = self.rvect[:,2].min(), self.rvect[:,2].max()
+            nbinx = int((xmax-xmin)/self.dx)
+            nbiny = int((ymax-ymin)/self.dx)
+            nbinz = int((zmax-zmin)/self.dx)
+            bins_yxz = ( np.linspace( ymin, ymax, nbiny + 1, endpoint = True ), \
+                         np.linspace( xmin, xmax, nbinx + 1, endpoint = True ), \
+                         np.linspace( zmin, zmax, nbinz + 1, endpoint = True ) )
+
+            #--- append negative r and corresponding f (c is hermitian)
+            self.rvect = np.concatenate((self.rvect,-self.rvect),axis=0)
+            self.flist = np.concatenate((self.flist,self.flist),axis=0)
+
+            #--- swap columns
+            rxcol = self.rvect[:,0]
+            rycol = self.rvect[:,1]
+            rzcol = self.rvect[:,2]
+            self.rvect = np.c_[ rycol, rxcol, rzcol ]
+
+            #--- histograms
+            self.fmean, bin_edges = np.histogramdd( self.rvect, bins = bins_yxz, weights = self.flist ) #--- 3d histogram
+            self.rx, bin_edges = np.histogramdd( self.rvect, bins = bins_yxz, weights = rxcol ) #--- \sum r_i
+            self.ry, bin_edges = np.histogramdd( self.rvect, bins = bins_yxz, weights = rycol ) #--- \sum r_i
+            self.rz, bin_edges = np.histogramdd( self.rvect, bins = bins_yxz, weights = rzcol ) #--- \sum r_i
+            self.count, bin_edges = np.histogramdd( self.rvect, bins = bins_yxz ) #--- n_i
+
+
+            #---- zero count????
+            self.count[self.count==0] = 1
+            self.rx /= self.count 
+            self.ry /= self.count 
+            self.rz /= self.count 
+            self.fmean /= self.count
+
+
+    def Get( self ):
+        if self.RADIAL:
+            return self.rmean, self.fmean, 1/self.count**0.5
+        else:
+            return self.rx, self.ry, self.rz,  self.fmean, 1/self.count**0.5
+
 
 class ComputeDisp( Compute, Wrap ):
 ############################################################
@@ -350,20 +706,26 @@ class ComputeDisp( Compute, Wrap ):
                'unwrapped coordinates are needed!'
        #--- displacement: r^{unwrpd}_j - r^{wrpd}_i
         disp = np.c_[self.xu,self.yu,self.zu] - np.c_[self.atoms0.xu,self.atoms0.yu,self.atoms0.zu]
-        self.dx = disp[:,0]
-        self.dy = disp[:,1]
-        self.dz = disp[:,2]
+        self.atoms0.dx = disp[:,0]
+        self.atoms0.dy = disp[:,1]
+        self.atoms0.dz = disp[:,2]
         #--- 
         
     def SetWrapped( self ):
 		self.EstimateUnwrappedCord()    
         #--- displacement: r^{unwrpd}_j - r^{wrpd}_i
 		disp = np.c_[self.x,self.y,self.z] - np.c_[self.atoms0.x,self.atoms0.y,self.atoms0.z]
-		self.dx = disp[:,0]
-		self.dy = disp[:,1]
-		self.dz = disp[:,2]
+		self.atoms0.dx = disp[:,0]
+		self.atoms0.dy = disp[:,1]
+		self.atoms0.dz = disp[:,2]
 		print 'warning: attributes x, y, z are now unwrapped!'
         #--- 
+
+    def Get( self, attrs = [] ): #--- overwrite the base function
+		assert np.all(map((self.atoms0.__dict__).has_key, attrs )), 'not all attributes are available!'
+		values = map(self.atoms0.__dict__.get,attrs)
+		df = pd.DataFrame(np.c_[values].T, columns = attrs )
+		return Atoms(**df.to_dict(orient = 'list ') )
  
     def EstimateUnwrappedCord( self ):
         #--- dimensionless cords
@@ -384,18 +746,130 @@ class ComputeDisp( Compute, Wrap ):
         #--- unwrapped cords at deformed state
         self.GetXYZ()
 
+class ComputeStrn( Compute ):
+############################################################
+####### compute atomistic strains 
+############################################################
+    def __init__( self, atoms, box ):
+        Compute.__init__( self, atoms, box )
+    
+    def Reshape( self, (xlin, ylin, zlin) ):
+    #--- reshape matrix
+        nx,ny,nz = len(xlin), len(ylin),len(zlin)
+#         lx = xlin[-1]-xlin[0]
+#         ly = ylin[-1]-ylin[0]
+#         lz = zlin[-1]-zlin[0]
+        self.ux = np.c_[self.dx].reshape((ny,nx,nz))
+        self.uy = np.c_[self.dy].reshape((ny,nx,nz))
+        self.uz = np.c_[self.dz].reshape((ny,nx,nz))
+        self.bins = (xlin, ylin, zlin)
+        
+    def Gradient( self ):
+        (xlin, ylin, zlin) = self.bins
+        #
+        self.ux_x = np.gradient(self.ux,xlin,axis=1,edge_order=2).flatten()
+        self.ux_y = np.gradient(self.ux,ylin,axis=0,edge_order=2).flatten()
+        self.ux_z = np.gradient(self.ux,zlin,axis=2,edge_order=2).flatten()
+        #
+        self.uy_x = np.gradient(self.uy,xlin,axis=1,edge_order=2).flatten()
+        self.uy_y = np.gradient(self.uy,ylin,axis=0,edge_order=2).flatten()
+        self.uy_z = np.gradient(self.uy,zlin,axis=2,edge_order=2).flatten()
+        #
+        self.uz_x = np.gradient(self.uz,xlin,axis=1,edge_order=2).flatten()
+        self.uz_y = np.gradient(self.uz,ylin,axis=0,edge_order=2).flatten()
+        self.uz_z = np.gradient(self.uz,zlin,axis=2,edge_order=2).flatten()
+        
+#             #--- gradient
+#         if method == 'diff':
+#             appendd=ux[:,0,:].reshape((ny,1,nz))
+#             ux_x = np.diff(ux, axis=1,append=appendd)
+#             appendd=ux[0,:,:].reshape((1,nx,nz))
+#             ux_y = np.diff(ux, axis=0,append=appendd)
+#             appendd=ux[:,:,0].reshape((ny,nx,1))
+#             ux_z = np.diff(ux, axis=2,append=appendd)
+
+#             appendd=uy[:,0,:].reshape((ny,1,nz))
+#             uy_x = np.diff(uy, axis=1,append=appendd)
+#             appendd=uy[0,:,:].reshape((1,nx,nz))
+#             uy_y = np.diff(uy, axis=0,append=appendd)
+#             appendd=uy[:,:,0].reshape((ny,nx,1))
+#             uy_z = np.diff(uy, axis=2,append=appendd)
+
+#             appendd=uz[:,0,:].reshape((ny,1,nz))
+#             uz_x = np.diff(uz, axis=1,append=appendd)
+#             appendd=uz[0,:,:].reshape((1,nx,nz))
+#             uz_y = np.diff(uz, axis=0,append=appendd)
+#             appendd=uz[:,:,0].reshape((ny,nx,1))
+#             uz_z = np.diff(uz, axis=2,append=appendd)
+
+#         if method == 'fft':
+#             ux_x = GetDerivX( ux,lx ) 
+#             ux_y = GetDerivY( ux,lx ) 
+#             ux_z = GetDerivZ( ux,lx ) 
+
+#             uy_x = GetDerivX( uy,ly ) 
+#             uy_y = GetDerivY( uy,ly ) 
+#             uy_z = GetDerivZ( uy,ly ) 
+
+#             uz_x = GetDerivX( uz,lz ) 
+#             uz_y = GetDerivY( uz,lz ) 
+#             uz_z = GetDerivZ( uz,lz ) 
+
+    def SetStrn( self, component ):
+        if component == 'exx':
+            self.exx = self.ux_x
+            self.exx -= np.mean(self.exx)
+        if component == 'exy':
+            self.exy = self.eyx = 0.5 * ( self.ux_y + self.uy_x )
+            self.exy -= np.mean(self.exy)
+            self.eyx -= np.mean(self.eyx)
+        if component == 'exz':
+            self.exz = self.ezx = 0.5 * ( self.ux_z + self.uz_x )
+            self.exz -= np.mean(self.exz)
+            self.ezx -= np.mean(self.ezx)
+        if component == 'eyy':
+            self.eyy = self.uy_y
+            self.eyy -= np.mean(self.eyy)
+        if component == 'eyz':
+            self.eyz = self.ezy = 0.5 * ( self.uy_z + self.uz_y )
+            self.eyz -= np.mean(self.eyz)
+            self.ezy -= np.mean(self.ezy)
+        if component == 'ezz':
+            self.ezz = self.uz_z
+            self.ezz -= np.mean(self.ezz)
+
+#    def GetStrn( self, attrs = [] ):
+#		assert np.all(map((self.__dict__).has_key, attrs )), 'not all attributes are available!'
+#		values = map(self.__dict__.get,attrs)
+#		df = pd.DataFrame(np.c_[values].T, columns = attrs )
+#		return Atoms(**df.to_dict(orient = 'list ') )
+
 
 if __name__ in '__main__':
 
-	fileName = '/Users/Home/Desktop/Tmp/txt/git/CrystalPlasticity/BmgData/FeNi_glass.dump'
-	myRDF = ReadDumpFile( fileName )
-	myRDF.GetCords( ncount = sys.maxint )
+    fileName = '/Users/Home/Desktop/Tmp/txt/git/CrystalPlasticity/BmgData/FeNi_glass.dump'
+    myRDF = ReadDumpFile( fileName )
+    myRDF.GetCords( ncount = sys.maxint )
 
-	#
-	myAtoms = Atoms( **myRDF.coord_atoms_broken[0].to_dict(orient='list') )
-	#
-	pdb.set_trace()
-	myBox = Box( BoxBounds = myRDF.BoxBounds[0] )
-	myBox.BasisVectors()
+    #
+    myAtoms = Atoms( **myRDF.coord_atoms_broken[0].to_dict(orient='list') )
+    #
+    pdb.set_trace()
+    myBox = Box( BoxBounds = myRDF.BoxBounds[0] )
+    myBox.BasisVectors()
 
-
+#--- test on random data
+    n=1000
+    xyz = np.random.random((n,3)) 
+    atom_tmp = Atoms(**pd.DataFrame(np.c_[np.arange(n),np.ones(n),xyz],
+                                       columns=['id','type','x','y','z']).to_dict(orient='list'))
+    box_tmp = lp.Box(CellOrigin=np.array([0,0,0]),CellVector=np.array([[1,0,0],[0,1,0],[0,0,1]]))
+    val = np.random.random(n) #np.sin(2*np.pi*xyz[:,0])
+    crltn = ComputeCrltn(    atom_tmp, box_tmp,
+                                 val,
+                                 cutoff=1.0*3**.5, dx=0.05,
+                                 NMAX = n, n_neigh_per_atom = 10000,
+                         )
+    crltn.Distance()
+    crltn.AutoCrltn(RADIAL = True)
+    bin_edges,  hist, err = crltn.Get()
