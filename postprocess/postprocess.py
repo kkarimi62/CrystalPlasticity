@@ -19,7 +19,6 @@ if __name__ == '__main__':
 	partition = 'single' #'cpu2019' #'bigmem' #'single' #'parallel' #'single'
 	argv = " -p path \'%s"%(readPath) #--- don't change! 
 	argv2nd = " -p itime %s"%(2000000) 
-	argv2nd = "" #lambdc 1.0e5"
 	PYFILdic = { 
 		0:'ElasticConstants.ipynb',
 		1:'analyzePlasticity.ipynb',
