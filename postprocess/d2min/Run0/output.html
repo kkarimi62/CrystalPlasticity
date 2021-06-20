@@ -13116,39 +13116,9 @@ div#notebook {
 <span class="c1">#</span>
 <span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;text.usetex&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
-
-<span class="c1">#--- user modules</span>
-<span class="kn">import</span> <span class="nn">LammpsPostProcess</span> <span class="kn">as</span> <span class="nn">lp</span>
-<span class="nb">reload</span><span class="p">(</span><span class="n">lp</span><span class="p">)</span>
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_text output_error">
-<pre>
-
-<span class="ansi-red-fg">ImportError</span>Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-2-bdca9d231e06&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-intense-fg ansi-bold">     17</span> 
-<span class="ansi-green-intense-fg ansi-bold">     18</span> <span class="ansi-red-fg">#--- user modules</span>
-<span class="ansi-green-fg">---&gt; 19</span><span class="ansi-red-fg"> </span><span class="ansi-green-fg">import</span> LammpsPostProcess <span class="ansi-green-fg">as</span> lp
-<span class="ansi-green-intense-fg ansi-bold">     20</span> reload<span class="ansi-blue-fg">(</span>lp<span class="ansi-blue-fg">)</span>
-
-<span class="ansi-red-fg">ImportError</span>: No module named LammpsPostProcess</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -13509,9 +13479,33 @@ div#notebook {
             <span class="s1">&#39;CoNiCrFe_glass.dump&#39;</span><span class="p">,</span>
             <span class="s1">&#39;CoCrFeMn_glass.dump&#39;</span><span class="p">,</span>
             <span class="s1">&#39;Co5Cr2Fe40Mn27Ni26_glass.dump&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span><span class="c1">#--- parse cords</span>
+
+<span class="c1">#--- user modules</span>
+<span class="kn">import</span> <span class="nn">LammpsPostProcess</span> <span class="kn">as</span> <span class="nn">lp</span>
+<span class="nb">reload</span><span class="p">(</span><span class="n">lp</span><span class="p">)</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[4]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;module &#39;LammpsPostProcess&#39; from &#39;LammpsPostProcess.pyc&#39;&gt;</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -13853,32 +13847,6 @@ div#notebook {
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_text output_error">
-<pre>
-
-<span class="ansi-red-fg">NameError</span>Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-9-dd18901bed22&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-intense-fg ansi-bold">      4</span> 
-<span class="ansi-green-intense-fg ansi-bold">      5</span> <span class="ansi-red-fg">#--- parse lammps data</span>
-<span class="ansi-green-fg">----&gt; 6</span><span class="ansi-red-fg"> </span>lmpData <span class="ansi-blue-fg">=</span> lp<span class="ansi-blue-fg">.</span>ReadDumpFile<span class="ansi-blue-fg">(</span> fileName <span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      7</span> lmpData<span class="ansi-blue-fg">.</span>GetCords<span class="ansi-blue-fg">(</span> ncount <span class="ansi-blue-fg">=</span> sys<span class="ansi-blue-fg">.</span>maxint <span class="ansi-blue-fg">)</span>
-
-<span class="ansi-red-fg">NameError</span>: name &#39;lp&#39; is not defined</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
@@ -13977,7 +13945,7 @@ div#notebook {
 <span class="ansi-green-intense-fg ansi-bold">      4</span> <span class="ansi-red-fg">#</span>
 <span class="ansi-green-intense-fg ansi-bold">      5</span> box <span class="ansi-blue-fg">=</span> lp<span class="ansi-blue-fg">.</span>Box<span class="ansi-blue-fg">(</span> BoxBounds <span class="ansi-blue-fg">=</span> lmpData<span class="ansi-blue-fg">.</span>BoxBounds<span class="ansi-blue-fg">[</span>itime<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">)</span>
 
-<span class="ansi-red-fg">NameError</span>: name &#39;lp&#39; is not defined</pre>
+<span class="ansi-red-fg">NameError</span>: name &#39;itime&#39; is not defined</pre>
 </div>
 </div>
 
@@ -14115,7 +14083,7 @@ div#notebook {
 <span class="ansi-green-intense-fg ansi-bold">      4</span> 
 <span class="ansi-green-intense-fg ansi-bold">      5</span> rdf<span class="ansi-blue-fg">.</span>Distance<span class="ansi-blue-fg">(</span>WRAP <span class="ansi-blue-fg">=</span> True<span class="ansi-blue-fg">)</span>
 
-<span class="ansi-red-fg">NameError</span>: name &#39;lp&#39; is not defined</pre>
+<span class="ansi-red-fg">NameError</span>: name &#39;atoms&#39; is not defined</pre>
 </div>
 </div>
 
@@ -14222,7 +14190,7 @@ div#notebook {
 <span class="ansi-green-intense-fg ansi-bold">      4</span> indices = cptmp.isInsideExpanded( np.c_[xatoms0.xm,xatoms0.ym,xatoms0.zm], 
 <span class="ansi-green-intense-fg ansi-bold">      5</span>                                   epsilon = 0.0, mode = &#39;isotropic&#39; )
 
-<span class="ansi-red-fg">NameError</span>: name &#39;lp&#39; is not defined</pre>
+<span class="ansi-red-fg">NameError</span>: name &#39;atoms0&#39; is not defined</pre>
 </div>
 </div>
 
@@ -14709,7 +14677,7 @@ div#notebook {
 <span class="ansi-green-intense-fg ansi-bold">      4</span>                                   epsilon = 0.2, mode = &#39;isotropic&#39; )
 <span class="ansi-green-intense-fg ansi-bold">      5</span> 
 
-<span class="ansi-red-fg">NameError</span>: name &#39;lp&#39; is not defined</pre>
+<span class="ansi-red-fg">NameError</span>: name &#39;atoms0&#39; is not defined</pre>
 </div>
 </div>
 
@@ -14817,7 +14785,7 @@ div#notebook {
 <span class="ansi-green-intense-fg ansi-bold">      4</span> csn<span class="ansi-blue-fg">.</span>SetStrn<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;exy&#39;</span><span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">      5</span> Exy <span class="ansi-blue-fg">=</span> csn<span class="ansi-blue-fg">.</span>Get<span class="ansi-blue-fg">(</span>attrs <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;x&#39;</span><span class="ansi-blue-fg">,</span><span class="ansi-blue-fg">&#39;y&#39;</span><span class="ansi-blue-fg">,</span><span class="ansi-blue-fg">&#39;z&#39;</span><span class="ansi-blue-fg">,</span><span class="ansi-blue-fg">&#39;exy&#39;</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
 
-<span class="ansi-red-fg">NameError</span>: name &#39;lp&#39; is not defined</pre>
+<span class="ansi-red-fg">NameError</span>: name &#39;uintrp&#39; is not defined</pre>
 </div>
 </div>
 
