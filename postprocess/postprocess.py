@@ -17,9 +17,9 @@ if __name__ == '__main__':
 	durtn = '23:59:59'
 	mem = '8gb' #'128gb'
 	partition = 'single' #'cpu2019' #'bigmem' #'single' #'parallel' #'single'
-	argv = " -p path \'%s"%(readPath) 
-#	argv = " -p path %s -p itime %s"%(readPath,2000000) 
-#	argv2nd = "" #lambdc 1.0e5"
+	argv = " -p path \'%s"%(readPath) #--- don't change! 
+	argv2nd = " -p itime %s"%(2000000) 
+	argv2nd = "" #lambdc 1.0e5"
 	PYFILdic = { 
 		0:'ElasticConstants.ipynb',
 		1:'analyzePlasticity.ipynb',
