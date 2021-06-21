@@ -571,9 +571,9 @@ class ComputeCrltn( ComputeRdf ):
 ############################################################    
     def __init__( self, atoms, box, val, 
                  cutoff = 1.0, dx = 1.0,
-                 NMAX = 1000):#, n_neigh_per_atom = 20):
-        ComputeRdf.__init__( self, atoms, box, cutoff = cutoff, NMAX = NMAX)#, 
-#                             n_neigh_per_atom = n_neigh_per_atom )
+                 NMAX = 1000):
+        ComputeRdf.__init__( self, atoms, box, cutoff = cutoff, NMAX = NMAX)
+     
         #--- zscore values
         self.value = val - np.mean(val)
         self.value /= np.std(self.value)
