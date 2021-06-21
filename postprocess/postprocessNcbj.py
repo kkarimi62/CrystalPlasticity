@@ -20,8 +20,9 @@ if __name__ == '__main__':
 	PYFILdic = { 
 		0:'ElasticConstants.ipynb',
 		1:'analyzePlasticity.ipynb',
+		2:'test.ipynb',
 		}
-	keyno = 1
+	keyno = 2
 #---
 #---
 	PYFIL = PYFILdic[ keyno ] 
