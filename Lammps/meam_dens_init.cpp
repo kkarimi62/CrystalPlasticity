@@ -153,9 +153,9 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
   elti = fmap[type[i]];
   if (elti < 0) return;
 
-  xitmp = x[i][0]+scalee*(rand() / double(RAND_MAX)-0.5); //--- perturb!!!!!!!!!!!!!
-  yitmp = x[i][1]+scalee*(rand() / double(RAND_MAX)-0.5);
-  zitmp = x[i][2]+scalee*(rand() / double(RAND_MAX)-0.5);
+  xitmp = x[i][0]; //--- perturb!!!!!!!!!!!!!
+  yitmp = x[i][1];
+  zitmp = x[i][2];
 
   for (jn = 0; jn < numneigh; jn++) {
     j = firstneigh[jn];
@@ -164,9 +164,9 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
     if (eltj < 0) continue;
 
     //     First compute screening function itself, sij
-    xjtmp = x[j][0]+scalee*(rand() / double(RAND_MAX)-0.5);
-    yjtmp = x[j][1]+scalee*(rand() / double(RAND_MAX)-0.5);
-    zjtmp = x[j][2]+scalee*(rand() / double(RAND_MAX)-0.5);
+    xjtmp = x[j][0];
+    yjtmp = x[j][1];
+    zjtmp = x[j][2];
     delxij = xjtmp - xitmp;
     delyij = yjtmp - yitmp;
     delzij = zjtmp - zitmp;
@@ -192,9 +192,9 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
       eltk = fmap[type[k]];
       if (eltk < 0) continue;
 
-      xktmp = x[k][0]+scalee*(rand() / double(RAND_MAX)-0.5);
-      yktmp = x[k][1]+scalee*(rand() / double(RAND_MAX)-0.5);
-      zktmp = x[k][2]+scalee*(rand() / double(RAND_MAX)-0.5);
+      xktmp = x[k][0];
+      yktmp = x[k][1];
+      zktmp = x[k][2];
 
       delxjk = xktmp - xjtmp;
       delyjk = yktmp - yjtmp;
