@@ -10,7 +10,7 @@ if __name__ == '__main__':
 	import os
 #
 	nruns	 = 1
-	jobname  = 'd2minCrltnUnst' 
+	jobname  = 'd2minCrltnUnst2nd' 
 #	readPath = os.getcwd() + '/../testRuns/test8thUnwrapped' # --- source
 	readPath = os.getcwd() + '/../BmgData' # --- source
 	EXEC_DIR = '.'     #--- path for executable file
