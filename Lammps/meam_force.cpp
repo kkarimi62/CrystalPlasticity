@@ -5,6 +5,7 @@
 
 using namespace LAMMPS_NS;
 #include <iostream>
+#include <stdio.h>
 
 using namespace std;
 
@@ -23,7 +24,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
   double ddUddsij, ddUdrijmds[ 3 ], ddUdrijds;
   double recip, phi, phip, phipp;
   double sij;
-  double a1, a1i, a1j, a2, a2i, a2j;
+  double a1,  a1i, a1j, a2, a2i, a2j;
+  double da1i, da1j, da2i, da2j, da3i, da3j;
   double a3i, a3j;
   double shpi[3], shpj[3];
   double ai, aj, ro0i, ro0j, invrei, invrej;
@@ -95,8 +97,10 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
   double ddt3drds1, ddt3drds2;
   double rik, rjk;
   double rik2, rjk2;
-
-
+  double dtsq_ave_i[3], dtsq_ave_j[3];
+//   FILE * pFile;
+//   pFile = fopen ("myfile.txt","w");
+  
   third = 1.0 / 3.0;
   sixth = 1.0 / 6.0;
 
@@ -139,7 +143,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         phi = ((this->phirar3[ind][kk] * pp + this->phirar2[ind][kk]) * pp + this->phirar1[ind][kk]) * pp + this->phirar[ind][kk]; //--- additional terms from the smoothing function
         phip = (this->phirar6[ind][kk] * pp + this->phirar5[ind][kk]) * pp + this->phirar4[ind][kk]; //--- (d/dr){\phi/S_{ij}}: polynomial smoothing function
         phipp = (this->phirar8[ind][kk]) * pp + this->phirar7[ind][kk]; //--- (d^2/dr^2){\phi/S_{ij}}
-
+//         fprintf (pFile, "%e %e %e %e\n",rij, phi, phip, phipp);
         if (eflag_either != 0) {
           double phi_sc = phi * scaleij; //--- scaled energy: scaleij = 1/zij0
           if (eflag_global != 0)
@@ -490,8 +494,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         t2j = t_ave[j][1];
         t3j = t_ave[j][2];
 
-            if (this->ialloy == 1) {   //--- not included in the report? (skipped)
-
+        if (this->ialloy == 1) {   //--- not included in the report? (skipped)
+  
           a1i = fdiv_zero(drhoa0j * sij, tsq_ave[i][0]); 
           a1j = fdiv_zero(drhoa0i * sij, tsq_ave[j][0]);
           a2i = fdiv_zero(drhoa0j * sij, tsq_ave[i][1]);
@@ -505,13 +509,27 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           dt2dr2 = a2j * (t2mi - t2j * MathSpecial::square(t2mi));
           dt3dr1 = a3i * (t3mj - t3i * MathSpecial::square(t3mj));
           dt3dr2 = a3j * (t3mi - t3j * MathSpecial::square(t3mi));
+          // 2nd deriv of 4.32(a) wrt r
+          dtsq_ave_i[0] = t1mj * t1mj * drhoa0j;
+          dtsq_ave_i[1] = t2mj * t2mj * drhoa0j;
+          dtsq_ave_i[2] = t3mj * t3mj * drhoa0j;
+          dtsq_ave_j[0] = t1mi * t1mi * drhoa0i;
+          dtsq_ave_j[1] = t2mi * t2mi * drhoa0i;
+          dtsq_ave_j[2] = t3mi * t3mi * drhoa0i;
               
-          ddt1drdr1 = 0.0;
-          ddt1drdr2 = 0.0;
-          ddt2drdr1 = 0.0;
-          ddt2drdr2 = 0.0;
-          ddt3drdr1 = 0.0;
-          ddt3drdr2 = 0.0;
+          da1i = fdiv_zero((ddrhoa0j*tsq_ave[i][0]-drhoa0j*dtsq_ave_i[0]) * sij, tsq_ave[i][0] * tsq_ave[i][0]); 
+          da1j = fdiv_zero((ddrhoa0i*tsq_ave[j][0]-drhoa0i*dtsq_ave_j[0]) * sij, tsq_ave[j][0] * tsq_ave[j][0]);
+          da2i = fdiv_zero((ddrhoa0j*tsq_ave[i][1]-drhoa0j*dtsq_ave_i[1]) * sij, tsq_ave[i][1] * tsq_ave[i][1]);
+          da2j = fdiv_zero((ddrhoa0i*tsq_ave[j][1]-drhoa0i*dtsq_ave_j[1]) * sij, tsq_ave[j][1] * tsq_ave[j][1]);
+          da3i = fdiv_zero((ddrhoa0j*tsq_ave[i][2]-drhoa0j*dtsq_ave_i[2]) * sij, tsq_ave[i][2] * tsq_ave[i][2]);
+          da3j = fdiv_zero((ddrhoa0i*tsq_ave[j][2]-drhoa0i*dtsq_ave_j[2]) * sij, tsq_ave[j][2] * tsq_ave[j][2]);
+              
+          ddt1drdr1 = da1i * dt1dr1 / a1i + a1i * (- t1mj * t1mj * dt1dr1 );
+          ddt1drdr2 = da1j * dt1dr2 / a1j + a1j * (- t1mi * t1mi * dt1dr2 );
+          ddt2drdr1 = da2i * dt2dr1 / a2i + a2i * (- t2mj * t2mj * dt2dr1 );
+          ddt2drdr2 = da2j * dt2dr2 / a2j + a2j * (- t2mi * t2mi * dt2dr2 );
+          ddt3drdr1 = da3i * dt3dr1 / a3i + a3i * (- t3mj * t3mj * dt3dr1 );
+          ddt3drdr2 = da3j * dt3dr2 / a3j + a3j * (- t3mi * t3mi * dt3dr2 );
 
         } else if (this->ialloy == 2) {
 
@@ -735,7 +753,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
             ddrho3drmds2[m] += -rhoa3i * rhoa3i * sij * delij[m] * ( a3 * rij - a3a  / rij ); //--- del ji???
           }
           
-          
+              
           
           if (this->ialloy == 1) {   // couldn't find in the report?????
             a1i = fdiv_zero(rhoa0j, tsq_ave[i][0]);
@@ -751,7 +769,45 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
             dt2ds2 = a2j * (t2mi - t2j * MathSpecial::square(t2mi));
             dt3ds1 = a3i * (t3mj - t3i * MathSpecial::square(t3mj));
             dt3ds2 = a3j * (t3mi - t3j * MathSpecial::square(t3mi));
+            
+            da1i = fdiv_zero(-rhoa0j * dt1ds1, tsq_ave[i][0] * tsq_ave[i][0]);
+            da1j = fdiv_zero(-rhoa0i * dt1ds2, tsq_ave[j][0] * tsq_ave[j][0]);
+            da2i = fdiv_zero(-rhoa0j * dt2ds1, tsq_ave[i][1] * tsq_ave[i][1]);
+            da2j = fdiv_zero(-rhoa0i * dt2ds2, tsq_ave[j][1] * tsq_ave[j][1]);
+            da3i = fdiv_zero(-rhoa0j * dt3ds1, tsq_ave[i][2] * tsq_ave[i][2]);
+            da3j = fdiv_zero(-rhoa0i * dt3ds2, tsq_ave[j][2] * tsq_ave[j][2]);
+            
+            ddt1dsds1 = - a1i * dt1ds1 * t1mj * t1mj + da1i * dt1ds1 / a1i;
+            ddt1dsds2 = - a1j * dt1ds2 * t1mi * t1mi + da1j * dt1ds2 / a1j; 
+            ddt2dsds1 = - a2i * dt2ds1 * t2mj * t2mj + da2i * dt2ds1 / a2i; 
+            ddt2dsds2 = - a2j * dt2ds2 * t2mi * t2mi + da2j * dt2ds2 / a2j; 
+            ddt3dsds1 = - a3i * dt3ds1 * t3mj * t3mj + da3i * dt3ds1 / a3i; 
+            ddt3dsds2 = - a3j * dt3ds2 * t3mi * t3mi + da3j * dt3ds2 / a3j;
+            
+            
+            //--- redefine a: ln.503
+            
+            a1i = fdiv_zero(drhoa0j * sij, tsq_ave[i][0]); 
+            a1j = fdiv_zero(drhoa0i * sij, tsq_ave[j][0]);
+            a2i = fdiv_zero(drhoa0j * sij, tsq_ave[i][1]);
+            a2j = fdiv_zero(drhoa0i * sij, tsq_ave[j][1]);
+            a3i = fdiv_zero(drhoa0j * sij, tsq_ave[i][2]);
+            a3j = fdiv_zero(drhoa0i * sij, tsq_ave[j][2]);
+            
+            da1i = (drhoa0j * (tsq_ave[i][0]-dt1ds1*sij) , tsq_ave[i][0] * tsq_ave[i][0]);
+            da1j = (drhoa0i * (tsq_ave[j][0]-dt1ds2*sij) , tsq_ave[j][0] * tsq_ave[j][0]);
+            da2i = (drhoa0j * (tsq_ave[i][1]-dt2ds1*sij) , tsq_ave[i][1] * tsq_ave[i][1]);
+            da2j = (drhoa0i * (tsq_ave[j][1]-dt2ds2*sij) , tsq_ave[j][1] * tsq_ave[j][1]);
+            da3i = (drhoa0j * (tsq_ave[i][2]-dt3ds1*sij) , tsq_ave[i][2] * tsq_ave[i][2]);
+            da3j = (drhoa0i * (tsq_ave[j][2]-dt3ds2*sij) , tsq_ave[j][2] * tsq_ave[j][2]);
 
+            ddt1drds1 = da1i * dt1dr1 / a1i + a1i * (-dt1ds1*t1mj*t1mj);
+            ddt1drds2 = da1j * dt1dr2 / a1j + a1j * (-dt1ds2*t1mi*t1mi);
+            ddt2drds1 = da2i * dt2dr1 / a2i + a2i * (-dt2ds1*t2mj*t2mj);
+            ddt2drds2 = da2j * dt2dr2 / a2j + a2j * (-dt2ds2*t2mi*t2mi);
+            ddt3drds1 = da3i * dt3dr1 / a3i + a3i * (-dt3ds1*t3mj*t3mj);
+            ddt3drds2 = da3j * dt3dr2 / a3j + a3j * (-dt3ds2*t3mi*t3mi);
+            
           } else if (this->ialloy == 2) {
 
             dt1ds1 = 0.0;
@@ -890,17 +946,20 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                        );         
         }
 
-        //     Compute derivatives of energy wrt rij, sij and rij[3]
+        //     Compute derivatives of energy wrt rij, sij, and rij[3]
         dUdrij = phip * sij + frhop[i] * drhodr1 + frhop[j] * drhodr2; //--- Eq. 4.41(a)
         ddUddrij = phipp * sij + ( frhopp[i] * drhodr1 * drhodr1 + frhop[i] * ddrhodrdr1 ) + //--- 1st deriv. of Eq. 4.41(a) wrt r
                                  ( frhopp[j] * drhodr2 * drhodr2 + frhop[j] * ddrhodrdr2 );
         dUdsij = 0.0;
+        ddUddsij = 0.0;
+        for (m = 0; m < 3; m++) ddUdrijmds[m] = 0.0;
+        ddUdrijds = 0.0;
         if (!iszero(dscrfcn[fnoffset + jn])) {
           dUdsij = phi + frhop[i] * drhods1 + frhop[j] * drhods2; //--- Eq. 4.41(b)
           ddUddsij = frhopp[i] * drhods1 * drhods1 + frhop[i] * ddrhodsds1 +
                      frhopp[j] * drhods2 * drhods2 + frhop[j] * ddrhodsds2;
           for (m = 0; m < 3; m++) ddUdrijmds[m] = frhopp[i] * drhods1 * drhodrm1[m] + frhop[i] * ddrhodrmds1[m] +
-                                                 frhopp[j] * drhods2 * drhodrm2[m] + frhop[j] * ddrhodrmds2[m];
+                                                  frhopp[j] * drhods2 * drhodrm2[m] + frhop[j] * ddrhodrmds2[m];
           ddUdrijds = phip + frhopp[i] * drhods1 * drhodr1 + frhop[i] * ddrhodrds1 +
                              frhopp[j] * drhods2 * drhodr2 + frhop[j] * ddrhodrds2;
         }
@@ -911,7 +970,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                           frhopp[j] * drhodr2 * drhodrm2[m] + frhop[i] * ddrhodrmdr2[m]; //--- deriv of Eq. 4.41(c) wrt r
           for (n = m; n < 3; n++) {
             ddUdrmdrn[nv2] =  frhopp[i] * drhodrm1[m] * drhodrm1[n] + frhop[i] * ddrhodrmdrn1[nv2]+
-                                   frhopp[j] * drhodrm2[m] * drhodrm2[n] + frhop[j] * ddrhodrmdrn2[nv2];
+                              frhopp[j] * drhodrm2[m] * drhodrm2[n] + frhop[j] * ddrhodrmdrn2[nv2];
             nv2++;
           }  
         }
@@ -931,44 +990,45 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           for(m=0;m<3;m++) ddUdrijmds[m] *= scaleij;
         }
 
-        //     Add the part of the force due to dUdrij and dUdsij
-
+        //     Add the part of the force due to dUdrij and dUdsij (-1.0/(rij*rij))
         force = dUdrij * recip + dUdsij * dscrfcn[fnoffset + jn]; //-- recip = 1/r_{ij}
         for (m = 0; m < 3; m++) {
-          forcem = delij[m] * force + dUdrijm[m]; //--- Eq. (4.40)
+         forcem = delij[m] * force + dUdrijm[m]; //--- Eq. (4.40)
           f[i][m] = f[i][m] + forcem;
           f[j][m] = f[j][m] - forcem;
         }
 
         //--- add stiffness (units of u/r^2)
-        stiff = ddUddrij - dUdrij * recip; 
-        stiff0 = 0.0; 
-        stiff1 = 0.0;
-        stiff2 = 0.0;
-        nv2 = 0;
-        for (m = 0; m < 3; m++) {
-          stiff0 += - dUdrijm[m] * delij[m];
-          stiff1 += ddUdrdrijm[m] * delij[m];
-          for (n = m; n < 3; n++) {
-            stiff2 += ddUdrmdrn[nv2] * delij[m] * delij[n];
-            nv2++;
-          }
-        }
-        stiff += ( ( stiff0 + stiff2 ) * recip  + stiff1 ) * recip;
+//      stiff = (phipp-dUdrij/rij)*rij*rij;        
+        
+//          stiff = ddUddrij - dUdrij * recip; 
+//          stiff0 = 0.0; 
+//          stiff1 = 0.0;
+//          stiff2 = 0.0;
+//         nv2 = 0;
+//         for (m = 0; m < 3; m++) {
+//           stiff0 += - dUdrijm[m] * delij[m];
+//           stiff1 += ddUdrdrijm[m] * delij[m];
+//           for (n = m; n < 3; n++) {
+//             stiff2 += ddUdrmdrn[nv2] * delij[m] * delij[n];
+//             nv2++;
+//           }
+//         }
+//         stiff += ( ( stiff0 + stiff2 ) * recip  + stiff1 ) * recip;
         
         
         //--- sij contribution
-        stiff0 = 0.0;
-        if (!iszero(dscrfcn[fnoffset + jn]) or !iszero(ddscrfcn[fnoffset + jn])) { //--- dscrfcn and ddscrfcn have units of s/r^2.
-          stiff += ddUddsij * dscrfcn[fnoffset + jn] * dscrfcn[fnoffset + jn] * rij2 +
-                   ddUdrijds * 2.0 * dscrfcn[fnoffset + jn] * rij +
-                   dUdsij * ( ddscrfcn[fnoffset + jn] - dscrfcn[fnoffset + jn] );
-          for (m = 0; m < 3; m++) {
-            stiff0 += ddUdrijmds[m] * delij[m];
-          }
-          stiff0 *= 2.0 * dscrfcn[fnoffset + jn];
-          stiff +=  stiff0;
-        }
+//         stiff0 = 0.0;
+//         if (!iszero(dscrfcn[fnoffset + jn]) or !iszero(ddscrfcn[fnoffset + jn])) { //--- dscrfcn and ddscrfcn have units of s/r^2.
+//           stiff += ddUddsij * dscrfcn[fnoffset + jn] * dscrfcn[fnoffset + jn] * rij2 +
+//                    ddUdrijds * 2.0 * dscrfcn[fnoffset + jn] * rij +
+//                    dUdsij * ( ddscrfcn[fnoffset + jn] - dscrfcn[fnoffset + jn] );
+//           for (m = 0; m < 3; m++) {
+//             stiff0 += ddUdrijmds[m] * delij[m];
+//           }
+//           stiff0 *= 2.0 * dscrfcn[fnoffset + jn];
+//           stiff +=  stiff0;
+//         }
         
         
         n0 = delij[0] * recip;
@@ -992,41 +1052,112 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
             vatom[j][m] = vatom[j][m] + v[m];
             nv2++;
           }
-
           //--- per-atom modulus
-          vm[ 0 ]  = -0.5 * stiff * n0 * n0 * n0 * n0;
-          vm[ 1 ]  = -0.5 * stiff * n0 * n0 * n1 * n1;
-          vm[ 2 ]  = -0.5 * stiff * n0 * n0 * n2 * n2;
-          vm[ 3 ]  = -0.5 * stiff * n0 * n0 * n0 * n1;
-          vm[ 4 ]  = -0.5 * stiff * n0 * n0 * n0 * n2;
-          vm[ 5 ]  = -0.5 * stiff * n0 * n0 * n1 * n2;
+
+            
+       
+
+          double r3 = rij*rij*rij;
+          double ds = dscrfcn[fnoffset + jn] * rij; //???????
+          double dds = ddscrfcn[fnoffset + jn];
+                      
+//          stiff *= rij2; //--- *r^2 to get energy
+          vm[ 0 ]  = -0.5*GetModulus(0,0,0,0,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+//          vm[ 0 ]  =-0.5 * (stiff * n0 * n0 * n0 * n0+dUdrij * rij*n0 * n0);
+          vm[ 1 ]  = -0.5*GetModulus(0,0,1,1,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); 
+  //        vm[ 1 ]  = -0.5 * stiff * n0 * n0 * n1 * n1;
+          vm[ 2 ]  = -0.5*GetModulus(0,0,2,2,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+    //      vm[ 2 ]  =-0.5 * stiff * n0 * n0 * n2 * n2;
+          vm[ 3 ]  = -0.5*GetModulus(0,0,0,1,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+      //    vm[ 3 ]  =-0.5 * (stiff * n0 * n0 * n0 * n1+dUdrij * rij*n0 * n1);
+          vm[ 4 ]  = -0.5*GetModulus(0,0,0,2,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+        //  vm[ 4 ]  =-0.5 * (stiff * n0 * n0 * n0 * n2+dUdrij * rij*n0 * n2);
+          vm[ 5 ]  = -0.5*GetModulus(0,0,1,2,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          //vm[ 5 ]  =-0.5 * stiff * n0 * n0 * n1 * n2;
           //
-          vm[ 6 ]  = -0.5 * stiff * n1 * n1 * n1 * n1;
-          vm[ 7 ]  = -0.5 * stiff * n1 * n1 * n2 * n2;
-          vm[ 8 ]  = -0.5 * stiff * n1 * n1 * n0 * n1;
-          vm[ 9 ]  = -0.5 * stiff * n1 * n1 * n0 * n2;
-          vm[ 10 ] = -0.5 * stiff * n1 * n1 * n1 * n2;
+          vm[ 6 ]  = -0.5*GetModulus(1,1,1,1,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          //vm[ 6 ]  =-0.5 * (stiff * n1 * n1 * n1 * n1+dUdrij * rij*n1 * n1);
+          vm[ 7 ]  = -0.5*GetModulus(1,1,2,2,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          //vm[ 7 ]  =-0.5 * stiff * n1 * n1 * n2 * n2;
+          vm[ 8 ]  = -0.5*GetModulus(1,1,0,1,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          //vm[ 8 ]  =-0.5 * stiff * n1 * n1 * n0 * n1;
+          vm[ 9 ]  = -0.5*GetModulus(1,1,0,2,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          //vm[ 9 ]  =-0.5 * stiff * n1 * n1 * n0 * n2;
+          vm[ 10 ] = -0.5*GetModulus(1,1,1,2,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          //vm[ 10 ] =-0.5 * (stiff * n1 * n1 * n1 * n2+dUdrij * rij*n1 * n2);
           //
-          vm[ 11 ] = -0.5 * stiff * n2 * n2 * n2 * n2;
-          vm[ 12 ] = -0.5 * stiff * n2 * n2 * n0 * n1;
-          vm[ 13 ] = -0.5 * stiff * n2 * n2 * n0 * n2;
-          vm[ 14 ] = -0.5 * stiff * n2 * n2 * n1 * n2;
+          vm[ 11 ] = -0.5*GetModulus(2,2,2,2,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          //vm[ 11 ] =-0.5 * (stiff * n2 * n2 * n2 * n2+dUdrij * rij*n2 * n2);
+          vm[ 12 ] = -0.5*GetModulus(2,2,0,1,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          //vm[ 12 ] =-0.5 * stiff * n2 * n2 * n0 * n1;
+          vm[ 13 ] = -0.5*GetModulus(2,2,0,2,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          //vm[ 13 ] =-0.5 * stiff * n2 * n2 * n0 * n2;
+          vm[ 14 ] = -0.5*GetModulus(2,2,1,2,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          //vm[ 14 ] =-0.5 * stiff * n2 * n2 * n1 * n2;
           //
-          vm[ 15 ] = -0.5 * stiff * n0 * n1 * n0 * n1;
-          vm[ 16 ] = -0.5 * stiff * n0 * n1 * n0 * n2;
-          vm[ 17 ] = -0.5 * stiff * n0 * n1 * n1 * n2;
+          vm[ 15 ] = -0.5*GetModulus(0,1,0,1,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          //vm[ 15 ] =-0.5 * (stiff * n0 * n1 * n0 * n1+dUdrij * rij*n1 * n1);
+          vm[ 16 ] = -0.5*GetModulus(0,1,0,2,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          //vm[ 16 ] =-0.5 * (stiff * n0 * n1 * n0 * n2+dUdrij * rij*n1 * n2);
+          vm[ 17 ] = -0.5*GetModulus(0,1,1,2,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          //vm[ 17 ] = -0.5 * stiff * n0 * n1 * n1 * n2;
           //
-          vm[ 18 ] = -0.5 * stiff * n0 * n2 * n0 * n2;
-          vm[ 19 ] = -0.5 * stiff * n0 * n2 * n1 * n2;
+          vm[ 18 ] = -0.5*GetModulus(0,2,0,2,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          //vm[ 18 ] = -0.5 * (stiff * n0 * n2 * n0 * n2+dUdrij * rij*n2 * n2);
+          vm[ 19 ] = -0.5*GetModulus(0,2,1,2,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          //vm[ 19 ] =-0.5 * stiff * n0 * n2 * n1 * n2;
           //
-          vm[ 20 ] = -0.5 * stiff * n1 * n2 * n1 * n2;
+          vm[ 20 ] = -0.5*GetModulus(1,2,1,2,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          //vm[ 20 ] =-0.5 * (stiff * n1 * n2 * n1 * n2+dUdrij * rij*n2 * n2);  
           //
           nv3 = 0;
           nv2 = 6;
           for (m = 0; m < 6; m++) {
             for (n = m; n < 6; n++) {
-               vatom[i][nv2] += vm[nv3] * rij2; //--- *r^2 to get energy
-               vatom[j][nv2] += vm[nv3] * rij2;
+               vatom[i][nv2] += vm[nv3];
+               vatom[j][nv2] += vm[nv3];
                nv2++;
                nv3++;
             }
@@ -1055,6 +1186,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 
             dsij1 = 0.0;
             dsij2 = 0.0;
+            ddsddrik = 0.0; //uncomment ??? must be initialized
+            ddsddrjk = 0.0;
             if (!iszero(sij) && !isone(sij)) {
               const double rbound = rij2 * this->ebound_meam[elti][eltj];
               delc = Cmax - Cmin;
@@ -1083,8 +1216,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                       dsij1 = a * dCikj1; //--- 4.22b/rik: units of s/r^2
                       dsij2 = a * dCikj2; //--- 4.22c/rjk
 //
-                      
-                     ddCfunc2(rik, rjk, rij2, rik2, rjk2, ddCikj1, ddCikj2);
+                      ddCfunc2(rik, rjk, rij2, rik2, rjk2, ddCikj1, ddCikj2);
                       dCikj1 *= rik;
                       dCikj2 *= rjk;
                       
@@ -1105,25 +1237,24 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
               }
             }
 
-            if (!iszero(dsij1) || !iszero(dsij2) ){ 
-              // || !iszero(ddsij1) || !iszero(ddsij2) )
-              force1 = dUdsij * dsij1;
-              force2 = dUdsij * dsij2;
-            //--- add stiffness
-              stif1 =  ddUddsij * dsij1 * dsij1 * rik2 + ddUdrijds * 2.0 * dsij1 * rik + dUdsij * ( - dsij1 + ddsddrik  ); //--- units of u/r^2 
+            if (!iszero(dsij1) || !iszero(dsij2) || !iszero(ddsddrik) || !iszero(ddsddrjk) ) {
+              force1 = 0.0;//kamdUdsij * dsij1;
+              force2 = 0.0;//kamdUdsij * dsij2;
+            //--- add stiffness uncomment!!!!!!!!
+              stif1 =  0.0;//kamddUddsij * dsij1 * dsij1 * rik2 + ddUdrijds * 2.0 * dsij1 * rik + dUdsij * ( - dsij1 + ddsddrik  ); //--- units of u/r^2 
               stif1 *= rik2; //--- units of energy
-              stif2 =  ddUddsij * dsij2 * dsij2 * rjk2 + ddUdrijds * 2.0 * dsij2 * rjk + dUdsij * ( - dsij2 + ddsddrjk  );
+              stif2 =  0.0;//kamddUddsij * dsij2 * dsij2 * rjk2 + ddUdrijds * 2.0 * dsij2 * rjk + dUdsij * ( - dsij2 + ddsddrjk  );
               stif2 *= rjk2;
               //
-              f[i][0] += force1 * dxik;
-              f[i][1] += force1 * dyik;
-              f[i][2] += force1 * dzik;
-              f[j][0] += force2 * dxjk;
-              f[j][1] += force2 * dyjk;
-              f[j][2] += force2 * dzjk;
-              f[k][0] -= force1 * dxik + force2 * dxjk;
-              f[k][1] -= force1 * dyik + force2 * dyjk;
-              f[k][2] -= force1 * dzik + force2 * dzjk;
+//kam               f[i][0] += force1 * dxik;
+//               f[i][1] += force1 * dyik;
+//               f[i][2] += force1 * dzik;
+//               f[j][0] += force2 * dxjk;
+//               f[j][1] += force2 * dyjk;
+//               f[j][2] += force2 * dzjk;
+//               f[k][0] -= force1 * dxik + force2 * dxjk;
+//               f[k][1] -= force1 * dyik + force2 * dyjk;
+//               f[k][2] -= force1 * dzik + force2 * dzjk;
 
               //     Tabulate per-atom virial as symmetrized stress tensor
 
@@ -1142,9 +1273,9 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                 v[5] = -sixth * (dyik * fi[2] + dyjk * fj[2] + dzik * fi[1] + dzjk * fj[1]);
 
                 for (m = 0; m < 6; m++) { 
-                  vatom[i][m] = vatom[i][m] + v[m];
-                  vatom[j][m] = vatom[j][m] + v[m];
-                  vatom[k][m] = vatom[k][m] + v[m];
+//kam                   vatom[i][m] = vatom[i][m] + v[m];
+//                   vatom[j][m] = vatom[j][m] + v[m];
+//                   vatom[k][m] = vatom[k][m] + v[m];
                 }
           //--- per-atom modulus
                n0 = dxik / rik;
@@ -1184,9 +1315,9 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
               nv2 = 6;
               for (m = 0; m < 6; m++) {
                 for (n = m; n < 6; n++) {
-                    vatom[i][nv2] += vm[nv3];
-                    vatom[j][nv2] += vm[nv3];
-                    vatom[k][nv2] += vm[nv3];
+//kam                     vatom[i][nv2] += vm[nv3];
+//                     vatom[j][nv2] += vm[nv3];
+//                     vatom[k][nv2] += vm[nv3];
                    nv2++;
                    nv3++;
                 }
@@ -1203,4 +1334,5 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
     }
     //     end of j loop
   }
+//   fclose(pFile);
 }

@@ -1,0 +1,57 @@
+LAMMPS (29 Oct 2020)
+Created orthogonal box = (0.0000000 0.0000000 0.0000000) to (65.970888 65.970888 65.970888)
+  1 by 1 by 1 MPI processor grid
+Lattice spacing in x,y,z = 4.1559055 4.1559055 4.1559055
+Created 8192 atoms
+  create_atoms CPU = 0.003 seconds
+Created 8192 atoms
+  create_atoms CPU = 0.003 seconds
+Neighbor list info ...
+  update every 1 steps, delay 10 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 6.5
+  ghost atom cutoff = 6.5
+  binsize = 3.25, bins = 21 21 21
+  2 neighbor lists, perpetual/occasional/extra = 2 0 0
+  (1) pair meam/c, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+  (2) pair meam/c, perpetual, half/full from (1)
+      attributes: half, newton on
+      pair build: halffull/newton
+      stencil: none
+      bin: none
+4.15590551181102 -nan
+Per MPI rank memory allocation (min/avg/max) = 37.12 | 37.12 | 37.12 Mbytes
+Step KinEng PotEng Press Temp 
+       0            0   -49906.333         -nan            0 
+Loop time of 1.90735e-06 on 1 procs for 0 steps with 16384 atoms
+
+157.3% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.907e-06  |            |       |100.00
+
+Nlocal:        16384.0 ave       16384 max       16384 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        13407.0 ave       13407 max       13407 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:       471810.0 ave      471810 max      471810 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:     943620.0 ave      943620 max      943620 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 943620
+Ave neighs/atom = 57.593994
+Neighbor list builds = 0
+Dangerous builds = 0
+Total wall time: 0:00:01
