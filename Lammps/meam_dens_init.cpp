@@ -235,7 +235,7 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
 
     fc = dfcut(rnorm, dfc, ddfc);
     fcij = fc;
-    dfcij = dfc * drinv; 
+    dfcij = dfc * drinv;
     ddfcij = ddfc * drinv * drinv; 
 
     //     Now compute derivatives
@@ -291,7 +291,7 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
           dscrfcn[jn] = dscrfcn[jn] + coef1 * dCikj; //--- (4.21)/rij: sum over k
           dCikj *= rij;
           arg1_d += (1.0/delc)*( -(dfikj*dfikj*dCikj*dCikj)/delc/sikj/sikj+  
-                                (ddfikj*dCikj*dCikj/sikj) + 
+                                (ddfikj*dCikj*dCikj/sikj/delc) + 
                                 (dfikj*ddCikj/sikj)  ) ;
         }
       }
