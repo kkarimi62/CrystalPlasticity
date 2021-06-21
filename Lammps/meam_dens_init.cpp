@@ -3,6 +3,7 @@
 #include "memory.h"
 #include "math_special.h"
 #include <iostream>
+#include <cstdlib>
 
 using namespace LAMMPS_NS;
 using namespace std;
@@ -151,7 +152,7 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
   elti = fmap[type[i]];
   if (elti < 0) return;
 
-  xitmp = x[i][0];
+  xitmp = x[i][0]+rand() / double(RAND_MAX);
   yitmp = x[i][1];
   zitmp = x[i][2];
 
