@@ -301,7 +301,6 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
       dsij = sij * arg1;
       ddsij = dsij * arg1 + sij * arg1_d;
       dscrfcn[jn] = dscrfcn[jn] * coef1 - coef2; //--- (4.22a)/rij: units of s/r^2
-//      ddscrfcn[jn] = - drinv * dfcij * dsij + fcij * ddsij - drinv * ( dsij * dfcij- sij * ddfcij * drinv );
       ddscrfcn[jn] = - drinv * dfc * dsij + fcij * ddsij - drinv * ( dsij * dfc - sij * ddfc * drinv ); //--- units of s/r^2
     }
 
