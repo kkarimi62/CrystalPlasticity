@@ -1060,7 +1060,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           double r3 = rij*rij*rij;
           double ds = dscrfcn[fnoffset + jn] * rij; //???????
           double dds = ddscrfcn[fnoffset + jn];
-         fprintf (pFile, "%e %e %e\n",rij, ds, dds);
+//          fprintf (pFile, "%e %e %e\n",rij, ds, dds);
                       
 //          stiff *= rij2; //--- *r^2 to get energy
           vm[ 0 ]  = -0.5*GetModulus(0,0,0,0,r3, ds,  dds,  recip,
