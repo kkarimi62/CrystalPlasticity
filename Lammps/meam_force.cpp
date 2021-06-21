@@ -99,7 +99,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
   double rik2, rjk2;
   double dtsq_ave_i[3], dtsq_ave_j[3];
    FILE * pFile;
-   pFile = fopen ("myfile.txt","w");
+   pFile = fopen ("myfile.txt","a");
   
   third = 1.0 / 3.0;
   sixth = 1.0 / 6.0;
