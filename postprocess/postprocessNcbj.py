@@ -10,13 +10,13 @@ if __name__ == '__main__':
 	import os
 #
 	nruns	 = 1
-	jobname  = 'test' 
+	jobname  = 'd2minCrltnUnstNcbj' 
 	readPath = os.getcwd() + '/../testRuns/glassFeNi' # --- source
 	EXEC_DIR = '.'     #--- path for executable file
 	durtn = '00:59:59'
 	resources = {'mem':'4gb', 'partition':'a12h','nodes':1,'ppn':1}
 	argv = " -p path \'%s"%(readPath) 
-	argv2nd = "" #lambdc 1.0e5"
+	argv2nd = " -p itime %s"%(2000000) 
 	PYFILdic = { 
 		0:'ElasticConstants.ipynb',
 		1:'analyzePlasticity.ipynb',
