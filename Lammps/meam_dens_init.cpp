@@ -3,6 +3,7 @@
 #include "memory.h"
 #include "math_special.h"
 #include <iostream>
+#include <cstdlib>
 
 using namespace LAMMPS_NS;
 using namespace std;
@@ -146,12 +147,13 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
   double Cmin, Cmax, delc, /*ebound,*/ a, coef1, coef2;
   double dCikj, ddCikj;
   double rnorm, fc, dfc, ddfc, drinv;
-
+  double scalee = 0.5;
+  
   drinv = 1.0 / this->delr_meam;
   elti = fmap[type[i]];
   if (elti < 0) return;
 
-  xitmp = x[i][0];
+  xitmp = x[i][0]; //--- perturb!!!!!!!!!!!!!
   yitmp = x[i][1];
   zitmp = x[i][2];
 
@@ -233,7 +235,7 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
 
     fc = dfcut(rnorm, dfc, ddfc);
     fcij = fc;
-    dfcij = dfc * drinv; 
+    dfcij = dfc * drinv;
     ddfcij = ddfc * drinv * drinv; 
 
     //     Now compute derivatives
@@ -289,7 +291,7 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
           dscrfcn[jn] = dscrfcn[jn] + coef1 * dCikj; //--- (4.21)/rij: sum over k
           dCikj *= rij;
           arg1_d += (1.0/delc)*( -(dfikj*dfikj*dCikj*dCikj)/delc/sikj/sikj+  
-                                (ddfikj*dCikj*dCikj/sikj) + 
+                                (ddfikj*dCikj*dCikj/sikj/delc) + 
                                 (dfikj*ddCikj/sikj)  ) ;
         }
       }
@@ -299,7 +301,6 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
       dsij = sij * arg1;
       ddsij = dsij * arg1 + sij * arg1_d;
       dscrfcn[jn] = dscrfcn[jn] * coef1 - coef2; //--- (4.22a)/rij: units of s/r^2
-//      ddscrfcn[jn] = - drinv * dfcij * dsij + fcij * ddsij - drinv * ( dsij * dfcij- sij * ddfcij * drinv );
       ddscrfcn[jn] = - drinv * dfc * dsij + fcij * ddsij - drinv * ( dsij * dfc - sij * ddfc * drinv ); //--- units of s/r^2
     }
 

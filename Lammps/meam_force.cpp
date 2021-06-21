@@ -98,8 +98,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
   double rik, rjk;
   double rik2, rjk2;
   double dtsq_ave_i[3], dtsq_ave_j[3];
-//   FILE * pFile;
-//   pFile = fopen ("myfile.txt","w");
+//    FILE * pFile;
+//    pFile = fopen ("myfile.txt","a");
   
   third = 1.0 / 3.0;
   sixth = 1.0 / 6.0;
@@ -947,6 +947,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         }
 
         //     Compute derivatives of energy wrt rij, sij, and rij[3]
+        sij=rij*rij;
         dUdrij = phip * sij + frhop[i] * drhodr1 + frhop[j] * drhodr2; //--- Eq. 4.41(a)
         ddUddrij = phipp * sij + ( frhopp[i] * drhodr1 * drhodr1 + frhop[i] * ddrhodrdr1 ) + //--- 1st deriv. of Eq. 4.41(a) wrt r
                                  ( frhopp[j] * drhodr2 * drhodr2 + frhop[j] * ddrhodrdr2 );
@@ -954,23 +955,23 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         ddUddsij = 0.0;
         for (m = 0; m < 3; m++) ddUdrijmds[m] = 0.0;
         ddUdrijds = 0.0;
-        if (!iszero(dscrfcn[fnoffset + jn])) {
-          dUdsij = phi + frhop[i] * drhods1 + frhop[j] * drhods2; //--- Eq. 4.41(b)
-          ddUddsij = frhopp[i] * drhods1 * drhods1 + frhop[i] * ddrhodsds1 +
-                     frhopp[j] * drhods2 * drhods2 + frhop[j] * ddrhodsds2;
-          for (m = 0; m < 3; m++) ddUdrijmds[m] = frhopp[i] * drhods1 * drhodrm1[m] + frhop[i] * ddrhodrmds1[m] +
-                                                  frhopp[j] * drhods2 * drhodrm2[m] + frhop[j] * ddrhodrmds2[m];
-          ddUdrijds = phip + frhopp[i] * drhods1 * drhodr1 + frhop[i] * ddrhodrds1 +
-                             frhopp[j] * drhods2 * drhodr2 + frhop[j] * ddrhodrds2;
-        }
+//        if (!iszero(dscrfcn[fnoffset + jn])) {
+          dUdsij = phi;// + frhop[i] * drhods1 + frhop[j] * drhods2; //--- Eq. 4.41(b)
+          ddUddsij = 0.0;//frhopp[i] * drhods1 * drhods1 + frhop[i] * ddrhodsds1 +
+                     //frhopp[j] * drhods2 * drhods2 + frhop[j] * ddrhodsds2;
+          for (m = 0; m < 3; m++) ddUdrijmds[m] = 0.0;//frhopp[i] * drhods1 * drhodrm1[m] + frhop[i] * ddrhodrmds1[m] +
+                                                  //frhopp[j] * drhods2 * drhodrm2[m] + frhop[j] * ddrhodrmds2[m];
+          ddUdrijds = phip;// + frhopp[i] * drhods1 * drhodr1 + frhop[i] * ddrhodrds1 +
+                             //frhopp[j] * drhods2 * drhodr2 + frhop[j] * ddrhodrds2;
+//        }
         nv2 = 0;
         for (m = 0; m < 3; m++) {
-          dUdrijm[m] = frhop[i] * drhodrm1[m] + frhop[j] * drhodrm2[m]; //--- Eq. 4.41(c)
-          ddUdrdrijm[m] = frhopp[i] * drhodr1 * drhodrm1[m] + frhop[i] * ddrhodrmdr1[m] + 
-                          frhopp[j] * drhodr2 * drhodrm2[m] + frhop[i] * ddrhodrmdr2[m]; //--- deriv of Eq. 4.41(c) wrt r
+          dUdrijm[m] = 0.0;//frhop[i] * drhodrm1[m] + frhop[j] * drhodrm2[m]; //--- Eq. 4.41(c)
+          ddUdrdrijm[m] = 0.0;//frhopp[i] * drhodr1 * drhodrm1[m] + frhop[i] * ddrhodrmdr1[m] + 
+                          //frhopp[j] * drhodr2 * drhodrm2[m] + frhop[i] * ddrhodrmdr2[m]; //--- deriv of Eq. 4.41(c) wrt r
           for (n = m; n < 3; n++) {
-            ddUdrmdrn[nv2] =  frhopp[i] * drhodrm1[m] * drhodrm1[n] + frhop[i] * ddrhodrmdrn1[nv2]+
-                              frhopp[j] * drhodrm2[m] * drhodrm2[n] + frhop[j] * ddrhodrmdrn2[nv2];
+            ddUdrmdrn[nv2] =  0.0;//frhopp[i] * drhodrm1[m] * drhodrm1[n] + frhop[i] * ddrhodrmdrn1[nv2]+
+                              //frhopp[j] * drhodrm2[m] * drhodrm2[n] + frhop[j] * ddrhodrmdrn2[nv2];
             nv2++;
           }  
         }
@@ -991,7 +992,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         }
 
         //     Add the part of the force due to dUdrij and dUdsij (-1.0/(rij*rij))
-        force = dUdrij * recip + dUdsij * dscrfcn[fnoffset + jn]; //-- recip = 1/r_{ij}
+ //       force = dUdrij * recip + dUdsij * dscrfcn[fnoffset + jn]; //-- recip = 1/r_{ij}
+        force = dUdrij * recip + dUdsij * (2*rij) * recip; //-- recip = 1/r_{ij}
         for (m = 0; m < 3; m++) {
          forcem = delij[m] * force + dUdrijm[m]; //--- Eq. (4.40)
           f[i][m] = f[i][m] + forcem;
@@ -1058,8 +1060,11 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
        
 
           double r3 = rij*rij*rij;
-          double ds = dscrfcn[fnoffset + jn] * rij; //???????
-          double dds = ddscrfcn[fnoffset + jn];
+//          double ds = dscrfcn[fnoffset + jn] * rij;
+          double ds = 2*rij;
+//          double dds = ddscrfcn[fnoffset + jn];
+          double dds = 2.0;
+//           fprintf (pFile, "%e %e %e %e\n",rij, sij, ds, dds);
                       
 //          stiff *= rij2; //--- *r^2 to get energy
           vm[ 0 ]  = -0.5*GetModulus(0,0,0,0,r3, ds,  dds,  recip,

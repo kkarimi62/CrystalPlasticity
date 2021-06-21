@@ -433,15 +433,15 @@ class ComputeD2min( Compute ):
     def D2min( self ):
         #--- loop over partitions and compute F_{\alpha\beta}=\partial u_\alpha/x_\beta
         natoms = len( self.xm )
-        d2min = np.zeros( natoms * 6 ).reshape((natoms,6))
+        d2min = np.zeros( natoms * 9 ).reshape((natoms,9))
         natoms0 = natoms
         natoms = 0
         
         for indx in xrange(self.ny*self.nx*self.nz):
     
             #--- filtering
-            atomi = Atoms(**pd.DataFrame(np.c_[self.id,self.type,self.xm,self.ym,self.zm,self.dx,self.dy,self.dz],
-                    columns = ['id','type','xm','ym','zm','dx','dy','dz'])[self.blockid == indx].to_dict(orient='list'))
+            atomi = Atoms(**pd.DataFrame(np.c_[self.id,self.type,self.x,self.y,self.z,self.xm,self.ym,self.zm,self.dx,self.dy,self.dz],
+                    columns = ['id','type','x','y','z','xm','ym','zm','dx','dy','dz'])[self.blockid == indx].to_dict(orient='list'))
         
 
             natom = len( atomi.xm )
@@ -461,7 +461,7 @@ class ComputeD2min( Compute ):
             D2min += SqError(atomi.zm, atomi.dz)
 
             #--- store
-            d2min[ natoms : natoms + natom ] = np.c_[atomi.id,atomi.type,atomi.xm,atomi.ym,atomi.zm,D2min]
+            d2min[ natoms : natoms + natom ] = np.c_[atomi.id,atomi.type,atomi.x,atomi.y,atomi.z,atomi.xm,atomi.ym,atomi.zm,D2min]
 
             natoms += natom
         assert natoms == natoms0
@@ -469,7 +469,7 @@ class ComputeD2min( Compute ):
         
         
                           
-        self.Set( d2min, attrs=['id','type','xm','ym','zm','d2min'])
+        self.Set( d2min, attrs=['id','type','x','y','z','xm','ym','zm','d2min'])
         
 	
 class ComputeRdf( Compute, Wrap ):
