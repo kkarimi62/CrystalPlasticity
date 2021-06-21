@@ -147,7 +147,7 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
   double Cmin, Cmax, delc, /*ebound,*/ a, coef1, coef2;
   double dCikj, ddCikj;
   double rnorm, fc, dfc, ddfc, drinv;
-  double scalee = 0.1;
+  double scalee = 0.5;
   
   drinv = 1.0 / this->delr_meam;
   elti = fmap[type[i]];
