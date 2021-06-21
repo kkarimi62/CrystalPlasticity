@@ -15,7 +15,7 @@ if __name__ == '__main__':
 	readPath = os.getcwd() + '/../BmgData' # --- source
 	EXEC_DIR = '.'     #--- path for executable file
 	durtn = '23:59:59'
-	mem = '128gb'
+	mem = '256gb'
 	partition = 'bigmem' #'cpu2019' #'bigmem' #'single' #'parallel' #'single'
 	argv = " -p path \'%s"%(readPath) #--- don't change! 
 	argv2nd = " -p itime %s"%(2000000) 
