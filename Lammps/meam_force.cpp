@@ -120,7 +120,6 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
     scaleij = scale[type[i]][type[j]];
 
     if (!iszero(scrfcn[fnoffset + jn]) && eltj >= 0) {
-
       sij = scrfcn[fnoffset + jn] * fcpair[fnoffset + jn]; //--- 4.11a
       delij[0] = x[j][0] - xitmp;
       delij[1] = x[j][1] - yitmp;
@@ -129,7 +128,11 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
       delji[ 1 ] = -delij[ 1 ];
       delji[ 2 ] = -delij[ 2 ];
       rij2 = delij[0] * delij[0] + delij[1] * delij[1] + delij[2] * delij[2];
-      sij = rij2;
+      
+      scrfcn[fnoffset + jn] = rij2;
+      sij = scrfcn[fnoffset + jn];
+      dscrfcn[fnoffset + jn] = 2*sqrt(rij2);
+      
       if (rij2 < this->cutforcesq) {
         rij = sqrt(rij2);
         recip = 1.0 / rij;
