@@ -682,7 +682,7 @@ class ComputeCrltn( ComputeRdf ):
             self.ry /= self.count 
             self.rz /= self.count 
             self.fmean /= self.count
-
+#            pdb.set_trace()
 
     def Get( self ):
         if self.RADIAL:
