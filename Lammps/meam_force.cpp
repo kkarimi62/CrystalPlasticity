@@ -129,6 +129,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
       delji[ 1 ] = -delij[ 1 ];
       delji[ 2 ] = -delij[ 2 ];
       rij2 = delij[0] * delij[0] + delij[1] * delij[1] + delij[2] * delij[2];
+      sij = rij2;
       if (rij2 < this->cutforcesq) {
         rij = sqrt(rij2);
         recip = 1.0 / rij;
@@ -947,10 +948,10 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         }
 
         //     Compute derivatives of energy wrt rij, sij, and rij[3]
-        sij=rij*rij;
-        dUdrij = phip * sij + frhop[i] * drhodr1 + frhop[j] * drhodr2; //--- Eq. 4.41(a)
-        ddUddrij = phipp * sij + ( frhopp[i] * drhodr1 * drhodr1 + frhop[i] * ddrhodrdr1 ) + //--- 1st deriv. of Eq. 4.41(a) wrt r
-                                 ( frhopp[j] * drhodr2 * drhodr2 + frhop[j] * ddrhodrdr2 );
+//        sij=rij*rij;
+        dUdrij = phip * sij;// + frhop[i] * drhodr1 + frhop[j] * drhodr2; //--- Eq. 4.41(a)
+        ddUddrij = phipp * sij;// + ( frhopp[i] * drhodr1 * drhodr1 + frhop[i] * ddrhodrdr1 ) + //--- 1st deriv. of Eq. 4.41(a) wrt r
+                                 //( frhopp[j] * drhodr2 * drhodr2 + frhop[j] * ddrhodrdr2 );
         dUdsij = 0.0;
         ddUddsij = 0.0;
         for (m = 0; m < 3; m++) ddUdrijmds[m] = 0.0;
