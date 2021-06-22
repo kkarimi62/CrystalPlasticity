@@ -672,7 +672,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                        );
           
         //     Compute derivatives wrt sij, but only if necessary wrt s
-        if (!iszero(dscrfcn[fnoffset + jn])) {
+//        if (!iszero(dscrfcn[fnoffset + jn])) {
         // rho0
           drho0ds1 = rhoa0j; //--- (4.26b)
           drho0ds2 = rhoa0i;
@@ -752,7 +752,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
             //
             ddrho3drmds1[m] += rhoa3j * rhoa3j * sij * delij[m] * ( a3 * rij - a3a  / rij );
             ddrho3drmds2[m] += -rhoa3i * rhoa3i * sij * delij[m] * ( a3 * rij - a3a  / rij ); //--- del ji???
-          }
+//          }
           
               
           
