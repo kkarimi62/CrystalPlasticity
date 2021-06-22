@@ -121,9 +121,9 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
     scaleij = scale[type[i]][type[j]];
     if (!iszero(scrfcn[fnoffset + jn]) && eltj >= 0) {
       sij = scrfcn[fnoffset + jn] * fcpair[fnoffset + jn]; //--- 4.11a
-      delij[0] = x[j][0] - xitmp + ((double) rand() / (RAND_MAX))-0.5; //kam
-      delij[1] = x[j][1] - yitmp +((double) rand() / (RAND_MAX))-0.5;
-      delij[2] = x[j][2] - zitmp +((double) rand() / (RAND_MAX))-0.5;
+      delij[0] = x[j][0] - xitmp + 0.1*(((double) rand() / (RAND_MAX))-0.5); //kam
+      delij[1] = x[j][1] - yitmp + 0.1*((double) rand() / (RAND_MAX))-0.5);
+      delij[2] = x[j][2] - zitmp + 0.1*((double) rand() / (RAND_MAX))-0.5);
       delji[ 0 ] = -delij[ 0 ];
       delji[ 1 ] = -delij[ 1 ];
       delji[ 2 ] = -delij[ 2 ];
@@ -181,6 +181,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           rhoa1j = ro0j * MathSpecial::fm_exp(-this->beta1_meam[eltj] * aj);
           drhoa1j = -this->beta1_meam[eltj] * invrej * rhoa1j;
           ddrhoa1j = -this->beta1_meam[eltj] * invrej * drhoa1j;
+          fprintf (pFile, "%e %e %e %e\n",rij, rhoa1j, drhoa1j, ddrhoa1j);
+
           rhoa2j = ro0j * MathSpecial::fm_exp(-this->beta2_meam[eltj] * aj);
           drhoa2j = -this->beta2_meam[eltj] * invrej * rhoa2j;
           ddrhoa2j = -this->beta2_meam[eltj] * invrej * drhoa2j;
@@ -338,7 +340,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                                      arg1i1,
                                      arg1i1_d
                     );
-        fprintf (pFile, "%e %e %e %e\n",rij, rho1, drho1dr1, ddrho1drdr1);
+//        fprintf (pFile, "%e %e %e %e\n",rij, rho1, drho1dr1, ddrho1drdr1);
 
         ddrho1drdr2 = Get_ddrho1drdr( j, 
                                      rij,  sij, 
