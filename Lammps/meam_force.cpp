@@ -141,7 +141,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         phi = ((this->phirar3[ind][kk] * pp + this->phirar2[ind][kk]) * pp + this->phirar1[ind][kk]) * pp + this->phirar[ind][kk]; //--- additional terms from the smoothing function
         phip = (this->phirar6[ind][kk] * pp + this->phirar5[ind][kk]) * pp + this->phirar4[ind][kk]; //--- (d/dr){\phi/S_{ij}}: polynomial smoothing function
         phipp = (this->phirar8[ind][kk]) * pp + this->phirar7[ind][kk]; //--- (d^2/dr^2){\phi/S_{ij}}
-        fprintf (pFile, "%e %e %e %e\n",rij, phi, phip, phipp);
+//         fprintf (pFile, "%e %e %e %e\n",rij, phi, phip, phipp);
         if (eflag_either != 0) {
           double phi_sc = phi * scaleij; //--- scaled energy: scaleij = 1/zij0
           if (eflag_global != 0)
@@ -162,6 +162,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         rhoa0i = ro0i * MathSpecial::fm_exp(-this->beta0_meam[elti] * ai); //--- Eq. (4.8)
         drhoa0i = -this->beta0_meam[elti] * invrei * rhoa0i; //--- drho/drij 
         ddrhoa0i = -this->beta0_meam[elti] * invrei * drhoa0i; //--- d^2rho/drij^2 
+        fprintf (pFile, "%e %e %e %e\n",rij, rhoa0i, drhoa0i, ddrhoa0i);
+        
         rhoa1i = ro0i * MathSpecial::fm_exp(-this->beta1_meam[elti] * ai);
         drhoa1i = -this->beta1_meam[elti] * invrei * rhoa1i;
         ddrhoa1i = -this->beta1_meam[elti] * invrei * drhoa1i;
