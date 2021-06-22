@@ -181,7 +181,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           rhoa1j = ro0j * MathSpecial::fm_exp(-this->beta1_meam[eltj] * aj);
           drhoa1j = -this->beta1_meam[eltj] * invrej * rhoa1j;
           ddrhoa1j = -this->beta1_meam[eltj] * invrej * drhoa1j;
-//          fprintf (pFile, "%e %e %e %e\n",rij, rhoa1j, drhoa1j, ddrhoa1j);
+          fprintf (pFile, "%e %e %e %e\n",rij, rhoa1j, drhoa1j, ddrhoa1j);
 
           rhoa2j = ro0j * MathSpecial::fm_exp(-this->beta2_meam[eltj] * aj);
           drhoa2j = -this->beta2_meam[eltj] * invrej * rhoa2j;
