@@ -6,6 +6,7 @@
 using namespace LAMMPS_NS;
 #include <iostream>
 #include <stdio.h>
+#include <cstdlib> 
 
 using namespace std;
 
@@ -98,8 +99,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
   double rik, rjk;
   double rik2, rjk2;
   double dtsq_ave_i[3], dtsq_ave_j[3];
-//    FILE * pFile;
-//    pFile = fopen ("myfile.txt","a");
+    FILE * pFile;
+    pFile = fopen ("myfile.txt","a");
   
   third = 1.0 / 3.0;
   sixth = 1.0 / 6.0;
@@ -118,25 +119,18 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
     j = firstneigh[jn];
     eltj = fmap[type[j]];
     scaleij = scale[type[i]][type[j]];
-
     if (!iszero(scrfcn[fnoffset + jn]) && eltj >= 0) {
       sij = scrfcn[fnoffset + jn] * fcpair[fnoffset + jn]; //--- 4.11a
-      delij[0] = x[j][0] - xitmp;
-      delij[1] = x[j][1] - yitmp;
-      delij[2] = x[j][2] - zitmp;
+      delij[0] = x[j][0] - xitmp + ((double) rand() / (RAND_MAX))-0.5; //kam
+      delij[1] = x[j][1] - yitmp +((double) rand() / (RAND_MAX))-0.5;
+      delij[2] = x[j][2] - zitmp +((double) rand() / (RAND_MAX))-0.5;
       delji[ 0 ] = -delij[ 0 ];
       delji[ 1 ] = -delij[ 1 ];
       delji[ 2 ] = -delij[ 2 ];
       rij2 = delij[0] * delij[0] + delij[1] * delij[1] + delij[2] * delij[2];
-      
-      scrfcn[fnoffset + jn] = rij2;
-      sij = scrfcn[fnoffset + jn];
-      dscrfcn[fnoffset + jn] = 2*sqrt(rij2);
-      
       if (rij2 < this->cutforcesq) {
         rij = sqrt(rij2);
         recip = 1.0 / rij;
-
         //     Compute phi and phip (potential function)
         ind = this->eltind[elti][eltj];
         pp = rij * this->rdrar;
@@ -147,7 +141,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         phi = ((this->phirar3[ind][kk] * pp + this->phirar2[ind][kk]) * pp + this->phirar1[ind][kk]) * pp + this->phirar[ind][kk]; //--- additional terms from the smoothing function
         phip = (this->phirar6[ind][kk] * pp + this->phirar5[ind][kk]) * pp + this->phirar4[ind][kk]; //--- (d/dr){\phi/S_{ij}}: polynomial smoothing function
         phipp = (this->phirar8[ind][kk]) * pp + this->phirar7[ind][kk]; //--- (d^2/dr^2){\phi/S_{ij}}
-//         fprintf (pFile, "%e %e %e %e\n",rij, phi, phip, phipp);
+        fprintf (pFile, "%e %e %e %e\n",rij, phi, phip, phipp);
         if (eflag_either != 0) {
           double phi_sc = phi * scaleij; //--- scaled energy: scaleij = 1/zij0
           if (eflag_global != 0)
@@ -1345,5 +1339,5 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
     }
     //     end of j loop
   }
-//   fclose(pFile);
+   fclose(pFile);
 }
