@@ -165,7 +165,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         rhoa1i = ro0i * MathSpecial::fm_exp(-this->beta1_meam[elti] * ai);
         drhoa1i = -this->beta1_meam[elti] * invrei * rhoa1i;
         ddrhoa1i = -this->beta1_meam[elti] * invrei * drhoa1i;
-        fprintf (pFile, "%e %e %e %e\n",rij, rhoa1i, drhoa1i, ddrhoa1i);
+//        fprintf (pFile, "%e %e %e %e\n",rij, rhoa1i, drhoa1i, ddrhoa1i);
         rhoa2i = ro0i * MathSpecial::fm_exp(-this->beta2_meam[elti] * ai);
         drhoa2i = -this->beta2_meam[elti] * invrei * rhoa2i;
         ddrhoa2i = -this->beta2_meam[elti] * invrei * drhoa2i;
@@ -339,7 +339,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                                      arg1i1,
                                      arg1i1_d
                     );
-//        fprintf (pFile, "%e %e %e %e\n",rij, rho1, drho1dr1, ddrho1drdr1);
+        fprintf (pFile, "%e %e %e %e\n",rij, arg1i1, arg1i1_d, arg1i1_d);
 
         ddrho1drdr2 = Get_ddrho1drdr( j, 
                                      rij,  sij, 
