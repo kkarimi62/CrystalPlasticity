@@ -6,14 +6,14 @@ if __name__ == '__main__':
 	lnums = [ 13, 21 ]
 	string=open('postprocess.py').readlines() #--- python script
 	#---
-	nphi = 4
 #        MC = [-0.25,-0.1,0.0,0.1,0.2]
 #        B = [1.1,1.2,1.3]
 #        DF = [1.3,1.4,1.5]
 #	PHI = np.logspace(-5.0,-2.0,nphi,endpoint=True)
 #	PHI = np.linspace(2.3,2.9,nphi,endpoint=True)
 #	PHI = np.linspace(0.05,0.45,nphi,endpoint=True)
-	PHI=[0,500000,1000000,1500000,2000000]
+	PHI=range(0,2000000+10000,10000) #[0,500000,1000000,1500000,2000000]
+	nphi = len(PHI)
 	#---
 #	nn = 4
 #	NTHRESH = np.linspace(0.05,0.11,nn,endpoint=True)
