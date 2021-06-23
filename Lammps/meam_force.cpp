@@ -953,7 +953,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           sij = rij*rij;
           double r3 = rij*rij*rij;
 //          double ds = dscrfcn[fnoffset + jn] * rij;
-        double ds = 2*rij;
+        double ds = 2*rij;dscrfcn[fnoffset + jn]=ds/rij;
 //          double dds = ddscrfcn[fnoffset + jn];
         double dds = 2.0;
         
