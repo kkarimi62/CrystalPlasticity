@@ -339,8 +339,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                                      arg1i1,
                                      arg1i1_d
                     );
-        if(i==1)
-          fprintf (pFile, "%e %e %e %e %e\n",rij, sij, arg1i1, arg1i1, arg1i1_d);
+//        if(i==1)
+              fprintf (pFile, "%e %e %e %e %e\n",rij, sij, arg1i1, arg1i1, arg1i1_d);
 
         ddrho1drdr2 = Get_ddrho1drdr( j, 
                                      rij,  sij, 
