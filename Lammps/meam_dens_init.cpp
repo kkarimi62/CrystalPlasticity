@@ -196,21 +196,21 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
       yktmp = x[k][1];
       zktmp = x[k][2];
 
-      delxjk = 0.1;//xktmp - xjtmp;
-      delyjk = 0.1;//yktmp - yjtmp;
-      delzjk = 0.1;//zktmp - zjtmp;
-      rjk2 = delxjk * delxjk + delyjk * delyjk + delzjk * delzjk;
+      delxjk = xktmp - xjtmp;
+      delyjk = yktmp - yjtmp;
+      delzjk = zktmp - zjtmp;
+      rjk2 = rbound/2;//delxjk * delxjk + delyjk * delyjk + delzjk * delzjk; //kam
       if (rjk2 > rbound) continue;
 
-      delxik = 0.1;//xktmp - xitmp;
-      delyik = 0.1;//yktmp - yitmp;
-      delzik = 0.1;//zktmp - zitmp;
-      rik2 = delxik * delxik + delyik * delyik + delzik * delzik;
+      delxik = xktmp - xitmp;
+      delyik = yktmp - yitmp;
+      delzik = zktmp - zitmp;
+      rik2 = rbound/2;//delxik * delxik + delyik * delyik + delzik * delzik; //kam
       if (rik2 > rbound) continue;
 
       xik = rik2 / rij2;
       xjk = rjk2 / rij2;
-      a = 1 - (xik - xjk) * (xik - xjk);
+      a = 0.5;//1 - (xik - xjk) * (xik - xjk); //kam
       //     if a < 0, then ellipse equation doesn't describe this case and
       //     atom k can't possibly screen i-j
       if (a <= 0.0) continue;
@@ -218,6 +218,7 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
       cikj = (2.0 * (xik + xjk) + a - 2.0) / a; //--- Eq. (4.11d)
       Cmax = this->Cmax_meam[elti][eltj][eltk];
       Cmin = this->Cmin_meam[elti][eltj][eltk];
+      cikj=0.5*(Cmin+Cmax); //kam
       if (cikj >= Cmax) continue;
       //     note that cikj may be slightly negative (within numerical
       //     tolerance) if atoms are colinear, so don't reject that case here
@@ -253,23 +254,24 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
         delxjk = x[k][0] - xjtmp;
         delyjk = x[k][1] - yjtmp;
         delzjk = x[k][2] - zjtmp;
-        rjk2 = delxjk * delxjk + delyjk * delyjk + delzjk * delzjk;
+        rjk2 = rbound/2;//kam delxjk * delxjk + delyjk * delyjk + delzjk * delzjk;
         if (rjk2 > rbound) continue;
 
         delxik = x[k][0] - xitmp;
         delyik = x[k][1] - yitmp;
         delzik = x[k][2] - zitmp;
-        rik2 = delxik * delxik + delyik * delyik + delzik * delzik;
+        rik2 = rbound/2;//kam delxik * delxik + delyik * delyik + delzik * delzik;
         if (rik2 > rbound) continue;
 
         xik = rik2 / rij2;
         xjk = rjk2 / rij2;
-        a = 1 - (xik - xjk) * (xik - xjk);
+        a = 0.5;//kam 1 - (xik - xjk) * (xik - xjk);
         //     if a < 0, then ellipse equation doesn't describe this case and
         //     atom k can't possibly screen i-j
         if (a <= 0.0) continue;
 
         cikj = (2.0 * (xik + xjk) + a - 2.0) / a;
+        cikj=0.5*(Cmin+Cmax); //kam
         Cmax = this->Cmax_meam[elti][eltj][eltk];
         Cmin = this->Cmin_meam[elti][eltj][eltk];
         if (cikj >= Cmax) {
