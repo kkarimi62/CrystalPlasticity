@@ -83,7 +83,7 @@ class ReadDumpFile:
         self.coord_atoms_broken = {}
         self.BoxBounds = {}
     
-    def GetCords( self, ncount = 1 ):
+    def GetCords( self, ncount = 1, columns = {} ):
         slist = open( self.path )    
         count = 0
         try:
@@ -102,6 +102,10 @@ class ReadDumpFile:
 
                 #--- reset index
                 self.coord_atoms_broken[ itime ].reset_index( drop=True, inplace=True )
+                
+                #---
+                if len(columns) > 0: #--- change column name
+                    self.coord_atoms_broken[ itime ].rename(index=str, columns=columns, inplace = True )
 
                 self.BoxBounds[ itime ] = cell_vector
 
@@ -162,6 +166,8 @@ class Atoms:
             self.dz = kwargs['dz']
         if 'exy' in kwargs:
             self.exy = kwargs['exy']
+        if 'sxy' in kwargs:
+            self.sxy = kwargs['sxy']
         if 'd2min' in kwargs:
             self.d2min = kwargs['d2min']
             
@@ -302,7 +308,7 @@ class Copy( Atoms, Wrap ):
         xyz_original = XYZ_shifted.copy()
         assert XYZ_shifted.shape[1] % 3 == 0, 'shifted coordinates must be integer multiple of 3!'
         #
-        ID_TYPE_shifted, attr1 = ConcatAttr( self, ['id','type','dx','dy','dz','exy','d2min']) #--- add remaining 'Atoms' attrs
+        ID_TYPE_shifted, attr1 = ConcatAttr( self, ['id','type','dx','dy','dz','exy','sxy','d2min']) #--- add remaining 'Atoms' attrs
         id_type_original = ID_TYPE_shifted.copy()
 		
         #--- cell copies
