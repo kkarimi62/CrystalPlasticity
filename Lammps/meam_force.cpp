@@ -319,10 +319,10 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         }
 
         //     rho0 terms
-        drho0dr1 = drhoa0j * sij; //--- 4.26(a)
-        drho0dr2 = drhoa0i * sij;
-        ddrho0drdr1 = ddrhoa0j * sij; 
-        ddrho0drdr2 = ddrhoa0i * sij;
+        drho0dr1 = drhoa0j;//kam * sij; //--- 4.26(a)
+        drho0dr2 = drhoa0i;//kam * sij;
+        ddrho0drdr1 = ddrhoa0j;//kam * sij; 
+        ddrho0drdr2 = ddrhoa0i;//kam * sij;
         for (m = 0; m < 3; m++) {
           drho0drm1[m] = 0.0; 
           drho0drm2[m] = 0.0; 
@@ -676,16 +676,16 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         //     Compute derivatives wrt sij, but only if necessary wrt s
         if (!iszero(dscrfcn[fnoffset + jn])) {
         // rho0
-          drho0ds1 = rhoa0j; //--- (4.26b)
-          drho0ds2 = rhoa0i;
+          drho0ds1 = 0.0;//kam rhoa0j; //--- (4.26b)
+          drho0ds2 = 0.0;//kam rhoa0i;
           ddrho0dsds1 = 0.0;
           ddrho0dsds2 = 0.0;
           for (m = 0; m < 3; m++) {
             ddrho0drmds1[m] = 0.0;
             ddrho0drmds2[m] = 0.0;
           }
-          ddrho0drds1 = drhoa0j; //--- (4.26b)
-          ddrho0drds2 = drhoa0i;
+          ddrho0drds1 = 0.0;//kam drhoa0j; //--- (4.26b)
+          ddrho0drds2 = 0.0;//kam drhoa0i;
         // rho1
           a1 = 2.0 / rij;
           drho1ds1 = a1 * rhoa1j * arg1i1; //--- (4.30b)
