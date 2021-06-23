@@ -29,7 +29,7 @@ if __name__ == '__main__':
 		#---	densities
 		inums = lnums[ 1 ] - 1
 #		string[ inums ] = "\targv=\'-p\tmccc\t%e\t-p\tbvall\t%e\t-p\tDfff\t%e\'\n"%(mc, bval, df)
-		string[ inums ] = "\targv2nd=\' -p\titime\t%s\n"%(PHI[iphi])
+		string[ inums ] = "\targv2nd=\' -p\titime\t%s\'"%(PHI[iphi])
 
 		sfile=open('junk%s.py'%iphi,'w');sfile.writelines(string);sfile.close()
 		os.system( 'python junk%s.py'%iphi )
