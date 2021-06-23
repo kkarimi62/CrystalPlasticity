@@ -987,7 +987,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
             nv2++;
           }  
           for (n = m; n < 3; n++) {
-             ddUdrmdrn[nv2] =  ddrho0drmdrn1[nv2]+ddrho0drmdrn2[nv2];
+             ddUdrmdrn[nv2] =  0.0;//ddrho0drmdrn1[nv2]+ddrho0drmdrn2[nv2];
              nv2++;
            }  
          }
