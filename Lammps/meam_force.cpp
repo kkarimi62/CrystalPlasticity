@@ -990,7 +990,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 //             ddUdrmdrn[nv2] =  ddrho0drmdrn1[nv2]+ddrho0drmdrn2[nv2];
 //             nv2++;
 //           }  
-//         }
+         }
         if (!isone(scaleij)) { //--- add higher order derivatives
           dUdrij *= scaleij;
           dUdsij *= scaleij;
