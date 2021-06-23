@@ -196,15 +196,15 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
       yktmp = x[k][1];
       zktmp = x[k][2];
 
-      delxjk = xktmp - xjtmp;
-      delyjk = yktmp - yjtmp;
-      delzjk = zktmp - zjtmp;
+      delxjk = 0.1;//xktmp - xjtmp;
+      delyjk = 0.1;//yktmp - yjtmp;
+      delzjk = 0.1;//zktmp - zjtmp;
       rjk2 = delxjk * delxjk + delyjk * delyjk + delzjk * delzjk;
       if (rjk2 > rbound) continue;
 
-      delxik = xktmp - xitmp;
-      delyik = yktmp - yitmp;
-      delzik = zktmp - zitmp;
+      delxik = 0.1;//xktmp - xitmp;
+      delyik = 0.1;//yktmp - yitmp;
+      delzik = 0.1;//zktmp - zitmp;
       rik2 = delxik * delxik + delyik * delyik + delzik * delzik;
       if (rik2 > rbound) continue;
 
