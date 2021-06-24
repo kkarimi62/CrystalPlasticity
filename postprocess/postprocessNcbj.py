@@ -10,7 +10,7 @@ if __name__ == '__main__':
 	import os
 #
 	nruns	 = 1
-	jobname  = 'd2minCrltnUnstNcbj' 
+	jobname  = 'test' 
 	readPath = os.getcwd() + '/../testRuns/glassFeNi' # --- source
 	EXEC_DIR = '.'     #--- path for executable file
 	durtn = '00:59:59'
