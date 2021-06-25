@@ -49,7 +49,7 @@ def GetCubicGrid( CellOrigin, CellVector, dmean, margin  ):
     volume = np.linalg.det( CellVectorOrtho )
 
 
-    [nx, ny, nz] = map( int, (np.array(VectorNorm)+2*margin) / dmean )
+    [nx, ny, nz] = list(map( int, (np.array(VectorNorm)+2*margin) / dmean ))
     if nx%2 == 0:
         nx += 1
     if ny%2 == 0:
@@ -63,7 +63,7 @@ def GetCubicGrid( CellOrigin, CellVector, dmean, margin  ):
 
     return (x, y, z), np.meshgrid(x, y,z)
 
-def GetIndex((iy,ix,iz), (ny,nx,nz)):
+def GetIndex(iy,ix,iz, ny,nx,nz):
     return iy * ( nx * nz ) + ix * nz + iz
 
 def linfunc(x,m,c):
@@ -94,8 +94,8 @@ class ReadDumpFile:
                 self.coord_atoms_broken[ itime ] = pd.DataFrame( np.c_[sarr].astype('float'), columns = cols )
 
                 #--- cast id and type to 'int'
-                self.coord_atoms_broken[ itime ]['id'] = map(int,self.coord_atoms_broken[ itime ]['id'].tolist())[:]
-                self.coord_atoms_broken[ itime ]['type'] = map(int,self.coord_atoms_broken[ itime ]['type'].tolist())[:]
+                self.coord_atoms_broken[ itime ]['id'] = list(map(int,self.coord_atoms_broken[ itime ]['id'].tolist()))[:]
+                self.coord_atoms_broken[ itime ]['type'] = list(map(int,self.coord_atoms_broken[ itime ]['type'].tolist()))[:]
 
                 #--- sort
                 self.coord_atoms_broken[ itime ].sort_values( by = 'id', inplace = True )
@@ -119,16 +119,16 @@ class ReadDumpFile:
         slist.readline()
         itime = int( slist.readline().split()[0] )
 
-        [slist.readline() for i in xrange(1)]
+        [slist.readline() for i in range(1)]
         nrows = int(slist.readline().split()[0])
 
-        [slist.readline() for i in xrange(1)]
+        [slist.readline() for i in range(1)]
 
-        CellVector = np.array([slist.readline().split() for i in xrange( 3 )])
+        CellVector = np.array([slist.readline().split() for i in range( 3 )])
 
         cols = slist.readline().split()[2:]
 
-        return np.array([slist.readline().split() for i in xrange( nrows )]), CellVector, itime, cols
+        return np.array([slist.readline().split() for i in range( nrows )]), CellVector, itime, cols
 
 ############################################################
 #######  class with atom-related attributes 
@@ -176,39 +176,38 @@ class Atoms:
 ############################################################    
 class Box:
     def __init__( self, **kwargs ):
-		if 'BoxBounds' in kwargs:
-			self.BoxBounds = kwargs['BoxBounds']
-		if 'CellOrigin' in kwargs:
-			self.CellOrigin = kwargs['CellOrigin']
-		if 'CellVector' in kwargs:
-			self.CellVector = kwargs['CellVector']
+        if 'BoxBounds' in kwargs:
+            self.BoxBounds = kwargs['BoxBounds']
+        if 'CellOrigin' in kwargs:
+            self.CellOrigin = kwargs['CellOrigin']
+        if 'CellVector' in kwargs:
+            self.CellVector = kwargs['CellVector']
 	#--- 2nd constructor
      
     def BasisVectors( self, **kwargs ):
 		#     CellVector[0] = np.c_[CellVector[0],['0.0','0.0','0.0']] #--- ref. state
-		if 'AddMissing' in kwargs:
-			extraColumn = kwargs['AddMissing']
-			if not self.BoxBounds.shape == (3,3):
-				self.BoxBounds = np.c_[self.BoxBounds,extraColumn]
-#				pdb.set_trace()
-				print 'BoxBounds.shape=%s,%s is not (3,3)!'%(self.BoxBounds.shape)
-				print 'add %s!'%(extraColumn)
+        if 'AddMissing' in kwargs:
+            extraColumn = kwargs['AddMissing']
+            if not self.BoxBounds.shape == (3,3):
+                self.BoxBounds = np.c_[self.BoxBounds,extraColumn]
+                print('BoxBounds.shape=%s,%s is not (3,3)!'%(self.BoxBounds.shape))
+                print('add %s!'%(extraColumn))
 
-		(xlo, xhi, xy) = map( float, self.BoxBounds[ 0 ] ) #--- xlo, xhi, xy
-		lx = xhi - xlo - xy
-		CellVector0 = np.array( [ lx, 0.0, 0.0 ] )
+        (xlo, xhi, xy) = list(map( float, self.BoxBounds[ 0 ] )) #--- xlo, xhi, xy
+        lx = xhi - xlo - xy
+        CellVector0 = np.array( [ lx, 0.0, 0.0 ] )
 
-		(ylo, yhi, junk) =  map( float, self.BoxBounds[ 1 ] ) #--- ylo, yhi, xy
-		ly = yhi - ylo
-		a1 = np.array( [ 0.0, ly, 0.0 ] )
-		CellVector1 = CellVector0 * ( xy / lx ) + a1
+        (ylo, yhi, junk) =  list(map( float, self.BoxBounds[ 1 ] )) #--- ylo, yhi, xy
+        ly = yhi - ylo
+        a1 = np.array( [ 0.0, ly, 0.0 ] )
+        CellVector1 = CellVector0 * ( xy / lx ) + a1
 
-		(zlo, zhi, junk) =  map( float, self.BoxBounds[ 2 ] ) #--- zlo, zhi, xy
-		lz = zhi - zlo
-		CellVector2 = np.array( [ 0.0, 0.0, lz ] )
+        (zlo, zhi, junk) =  list(map( float, self.BoxBounds[ 2 ] )) #--- zlo, zhi, xy
+        lz = zhi - zlo
+        CellVector2 = np.array( [ 0.0, 0.0, lz ] )
 
-		self.CellOrigin = np.array( [ xlo, ylo, zlo ] )
-		self.CellVector = np.c_[ CellVector0, CellVector1, CellVector2 ] 
+        self.CellOrigin = np.array( [ xlo, ylo, zlo ] )
+        self.CellVector = np.c_[ CellVector0, CellVector1, CellVector2 ] 
         
 
 class Wrap():
@@ -390,18 +389,19 @@ class Compute( Atoms, Box ):
         Box.__init__(self, CellOrigin = box.CellOrigin, CellVector = box.CellVector )
 
     def Get( self, attrs = [] ):
-	############################################################
-	####### get function returning an atom object
-	############################################################
-		assert np.all(map((self.__dict__).has_key, attrs )), 'not all attributes are available!'
-		values = map(self.__dict__.get,attrs)
-		df = pd.DataFrame(np.c_[values].T, columns = attrs )
-		return Atoms(**df.to_dict(orient = 'list ') )
+    ############################################################
+    ####### get function returning an atom object
+    ############################################################
+        assert np.all(np.array( [ item in self.__dict__ for item in attrs ] )), 'not all attributes are available!'
+#        assert np.all(map((self.__dict__).has_key, attrs )), 'not all attributes are available!'
+        values = list(map(self.__dict__.get,attrs))
+        df = pd.DataFrame(np.c_[values].T, columns = attrs )
+        return Atoms(**df.to_dict(orient = 'list ') )
 
     def Set( self, value, attrs=[]):
-	############################################################
-	####### set function calling atom class constructor
-	############################################################
+    ############################################################
+    ####### set function calling atom class constructor
+    ############################################################
 #        pdb.set_trace()
         Atoms.__init__( self, **pd.DataFrame(value,columns=attrs).to_dict(orient='list'))
 #		self.=value[:,0]
@@ -433,7 +433,7 @@ class ComputeD2min( Compute ):
         iz = (nz*(np.c_[self.zm]-zlo)/lz).astype(int).flatten()
         assert np.all([iz>=0,iz<nz])
 
-        self.blockid = GetIndex((iy,ix,iz), (ny,nx,nz))
+        self.blockid = GetIndex(iy,ix,iz, ny,nx,nz)
         (self.ny,self.nx,self.nz) = (ny,nx,nz)
 
     def D2min( self ):
@@ -443,7 +443,7 @@ class ComputeD2min( Compute ):
         natoms0 = natoms
         natoms = 0
         
-        for indx in xrange(self.ny*self.nx*self.nz):
+        for indx in range(self.ny*self.nx*self.nz):
     
             #--- filtering
             atomi = Atoms(**pd.DataFrame(np.c_[self.id,self.type,self.x,self.y,self.z,self.xm,self.ym,self.zm,self.dx,self.dy,self.dz],
@@ -721,20 +721,22 @@ class ComputeDisp( Compute, Wrap ):
         #--- 
         
     def SetWrapped( self ):
-		self.EstimateUnwrappedCord()    
+        self.EstimateUnwrappedCord()    
         #--- displacement: r^{unwrpd}_j - r^{wrpd}_i
-		disp = np.c_[self.x,self.y,self.z] - np.c_[self.atoms0.x,self.atoms0.y,self.atoms0.z]
-		self.atoms0.dx = disp[:,0]
-		self.atoms0.dy = disp[:,1]
-		self.atoms0.dz = disp[:,2]
-		print 'warning: attributes x, y, z are now unwrapped!'
+        disp = np.c_[self.x,self.y,self.z] - np.c_[self.atoms0.x,self.atoms0.y,self.atoms0.z]
+        self.atoms0.dx = disp[:,0]
+        self.atoms0.dy = disp[:,1]
+        self.atoms0.dz = disp[:,2]
+        print('warning: attributes x, y, z are now unwrapped!')
         #--- 
-
+   
     def Get( self, attrs = [] ): #--- overwrite the base function
-		assert np.all(map((self.atoms0.__dict__).has_key, attrs )), 'not all attributes are available!'
-		values = map(self.atoms0.__dict__.get,attrs)
-		df = pd.DataFrame(np.c_[values].T, columns = attrs )
-		return Atoms(**df.to_dict(orient = 'list ') )
+#        pdb.set_trace()
+        assert np.all(np.array( [ item in self.atoms0.__dict__ for item in attrs ] )), 'not all attributes are available!'
+#        assert np.all(map((self.atoms0.__dict__).has_key, attrs )), 'not all attributes are available!'
+        values = list(map(self.atoms0.__dict__.get,attrs))
+        df = pd.DataFrame(np.c_[values].T, columns = attrs )
+        return Atoms(**df.to_dict(orient = 'list ') )
  
     def EstimateUnwrappedCord( self ):
         #--- dimensionless cords
@@ -762,7 +764,7 @@ class ComputeStrn( Compute ):
     def __init__( self, atoms, box ):
         Compute.__init__( self, atoms, box )
     
-    def Reshape( self, (xlin, ylin, zlin) ):
+    def Reshape( self, xlin, ylin, zlin ):
     #--- reshape matrix
         nx,ny,nz = len(xlin), len(ylin),len(zlin)
 #         lx = xlin[-1]-xlin[0]
