@@ -1,0 +1,8 @@
+ 'binutils/2.28' load complete.
+ 'gcc/7.1.0' load complete.
+ 'python/3.6.1-x86_64-gcc71' load complete.
+ 'python/3.5.1-x86_64-gcc46' load complete.
+ 'python-jupyter/dev-x86_64-gcc46-python35' load complete.
+/var/spool/torque/mom_priv/jobs/6818860.torquesrv1.cis.gov.pl.SC: line 5: papermill: command not found
+[NbConvertApp] WARNING | pattern '/mnt/home/kkarimi/Project/git/CrystalPlasticity/postprocess/d2minFeNi/Run0/output.ipynb' matched no files
+ls: cannot access output.html: No such file or directory
