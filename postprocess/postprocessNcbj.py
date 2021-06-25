@@ -9,20 +9,20 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argv2nd):
 if __name__ == '__main__':
 	import os
 #
-	nruns	 = 1
-	jobname  = 'test' 
+	nruns	 = 3
+	jobname  = 'd2minFeNi' 
 	readPath = os.getcwd() + '/../testRuns/glassFeNi' # --- source
 	EXEC_DIR = '.'     #--- path for executable file
 	durtn = '00:59:59'
-	resources = {'mem':'4gb', 'partition':'a12h','nodes':1,'ppn':1}
+	resources = {'mem':'4gb', 'partition':'i12h','nodes':1,'ppn':1}
 	argv = " -p path \'%s"%(readPath) 
-	argv2nd = " -p itime %s"%(2000000) 
+	argv2nd = "" # -p itime %s"%(2000000) 
 	PYFILdic = { 
 		0:'ElasticConstants.ipynb',
 		1:'analyzePlasticity.ipynb',
 		2:'test.ipynb',
 		}
-	keyno = 2
+	keyno = 1
 #---
 #---
 	PYFIL = PYFILdic[ keyno ] 
