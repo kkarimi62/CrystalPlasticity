@@ -1,9 +1,9 @@
 def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argv2nd):
 	someFile = open( 'oarScript.sh', 'w' )
-	print >> someFile, '#!/bin/bash\n'
-	print >> someFile, 'EXEC_DIR=%s\n' %( EXEC_DIR )
-	print >> someFile, 'papermill --prepare-only %s/%s ./output.ipynb %s %s'%(EXEC_DIR,PYFIL,argv,argv2nd) #--- write notebook with a list of passed params
-	print >> someFile, 'jupyter nbconvert --execute %s/output.ipynb --ExecutePreprocessor.timeout=-1 --ExecutePreprocessor.allow_errors=True;ls output.html'%(EXEC_DIR)
+	print('#!/bin/bash\n', file=someFile)
+	print('EXEC_DIR=%s\n' %( EXEC_DIR ), file=someFile)
+	print('papermill --prepare-only %s/%s ./output.ipynb %s %s'%(EXEC_DIR,PYFIL,argv,argv2nd), file=someFile)
+	print('jupyter nbconvert --execute %s/output.ipynb --ExecutePreprocessor.timeout=-1 --ExecutePreprocessor.allow_errors=True;ls output.html'%(EXEC_DIR), file=someFile)
 	someFile.close()										  
 #
 if __name__ == '__main__':
