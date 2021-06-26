@@ -2,9 +2,9 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argv2nd):
 	someFile = open( 'oarScript.sh', 'w' )
 	print('#!/bin/bash\n', file=someFile)
 	print('EXEC_DIR=%s\n' %( EXEC_DIR ), file=someFile)
-	print('source activate test-env;papermill --prepare-only %s/%s ./output.ipynb %s %s'%(EXEC_DIR,PYFIL,argv,argv2nd), file=someFile)
-	print('JUPYT_DIR=/mnt/opt/tools/slc6/python-jupyter/dev-x86_64-gcc46-python35/bin/',file=someFile)
-	print('conda deactivate; \$JUPYT_DIR/jupyter nbconvert --execute \$EXEC_DIR/output.ipynb --to html --ExecutePreprocessor.timeout=-1 --ExecutePreprocessor.allow_errors=True;ls output.html', file=someFile)
+	print('JUPYT_DIR=/mnt/opt/tools/slc6/python-jupyter/dev-x86_64-gcc46-python35/bin\n',file=someFile)
+	print('source activate test-env;papermill --prepare-only $EXEC_DIR/%s ./output.ipynb %s %s\n'%(PYFIL,argv,argv2nd), file=someFile)
+	print('conda deactivate; $JUPYT_DIR/jupyter nbconvert --execute $EXEC_DIR/output.ipynb --to html --ExecutePreprocessor.timeout=-1 --ExecutePreprocessor.allow_errors=True;ls output.html', file=someFile)
 	someFile.close()										  
 #
 if __name__ == '__main__':
