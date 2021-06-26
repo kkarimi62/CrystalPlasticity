@@ -25,7 +25,8 @@ if __name__ == '__main__':
 	durtn = '00:59:59'
 	resources = {'mem':'4gb', 'partition':'i12h','nodes':1,'ppn':1}
 #	argv = " -p path \'%s"%(readPath) 
-	argv = "path=\'%s"%(readPath) #--- don't change! 
+#	argv = "path=\'%s"%(readPath) #--- don't change! 
+	argv = "path=%s"%(readPath) #--- don't change! 
 	argv2nd = "junk=None" 
 	PYFILdic = { 
 		0:'ElasticConstants.ipynb',
@@ -46,7 +47,8 @@ if __name__ == '__main__':
 		writPath = os.getcwd() + '/%s/Run%s' % ( jobname, counter ) # --- curr. dir
 		os.system( 'mkdir -p %s' % ( writPath ) ) # --- create folder
 		os.system( 'cp LammpsPostProcess.py %s' % ( writPath ) ) #--- cp python module
-		makeOAR( writPath, 1, 1, durtn, PYFIL, argv+"/Run%s\'"%irun, argv2nd) # --- make oar script
+#		makeOAR( writPath, 1, 1, durtn, PYFIL, argv+"/Run%s\'"%irun, argv2nd) # --- make oar script
+		makeOAR( writPath, 1, 1, durtn, PYFIL, argv+"/Run%s"%irun, argv2nd) # --- make oar script
 		os.system( 'chmod +x oarScript.sh; mv oarScript.sh .env %s; cp %s/%s %s' % ( writPath, EXEC_DIR, PYFIL, writPath ) ) # --- create folder & mv oar scrip & cp executable
 		os.system( 'qsub -q %s -l nodes=%s:ppn=%s -N %s.%s -o %s -e %s -d %s  %s/oarScript.sh'\
 			%( resources['partition'], resources['nodes'], resources['ppn'], jobname, counter, writPath, writPath, writPath , writPath ) ) # --- runs oarScript.sh!
