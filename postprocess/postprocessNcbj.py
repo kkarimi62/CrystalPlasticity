@@ -8,8 +8,7 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argv2nd):
 #
 if __name__ == '__main__':
 	import os
-#
-	#--- conda activate test-env:activate your virtual environment!
+
 	nruns	 = 3
 	jobname  = 'd2minFeNi' 
 	readPath = os.getcwd() + '/../testRuns/glassFeNi' # --- source
