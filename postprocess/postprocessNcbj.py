@@ -1,7 +1,7 @@
 def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argv2nd):
 	#--- set environment variables
 	sfile = open('.env','w')
-	print('%s\n%s'(argv,argv2nd),file=sfile)
+	print('%s\n%s'%(argv,argv2nd),file=sfile)
 	sfile.close()
 	#---
 	someFile = open( 'oarScript.sh', 'w' )
