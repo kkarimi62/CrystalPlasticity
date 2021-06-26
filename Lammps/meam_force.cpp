@@ -979,7 +979,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
            ddUdrijds = phip ;//+ frhopp[i] * drhods1 * drhodr1 + frhop[i] * ddrhodrds1 +
                               //frhopp[j] * drhods2 * drhodr2 + frhop[j] * ddrhodrds2;
 //          ddUdrijds = 0.0;//ddrho0drds1+ddrho0drds2;        
-//        }
+        }
         nv2 = 0;
         for (m = 0; m < 3; m++) {
           dUdrijm[m] = 0.0;//frhop[i] * drhodrm1[m] + frhop[j] * drhodrm2[m]; //--- Eq. 4.41(c)
