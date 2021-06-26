@@ -14328,7 +14328,22 @@ a.anchor-link {
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">ModuleNotFoundError</span>                       Traceback (most recent call last)
+<span class="ansi-red-fg">ImportError</span>                               Traceback (most recent call last)
+<span class="ansi-green-fg">~/Project/opt/anaconda3/envs/test-env/lib/python3.9/site-packages/pandas/__init__.py</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">     28</span> <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">---&gt; 29</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">from</span> pandas<span class="ansi-blue-fg">.</span>_libs <span class="ansi-green-fg">import</span> hashtable <span class="ansi-green-fg">as</span> _hashtable<span class="ansi-blue-fg">,</span> lib <span class="ansi-green-fg">as</span> _lib<span class="ansi-blue-fg">,</span> tslib <span class="ansi-green-fg">as</span> _tslib
+<span class="ansi-green-intense-fg ansi-bold">     30</span> <span class="ansi-green-fg">except</span> ImportError <span class="ansi-green-fg">as</span> e<span class="ansi-blue-fg">:</span>  <span class="ansi-red-fg"># pragma: no cover</span>
+
+<span class="ansi-green-fg">~/Project/opt/anaconda3/envs/test-env/lib/python3.9/site-packages/pandas/_libs/__init__.py</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">     12</span> 
+<span class="ansi-green-fg">---&gt; 13</span><span class="ansi-red-fg"> </span><span class="ansi-green-fg">from</span> pandas<span class="ansi-blue-fg">.</span>_libs<span class="ansi-blue-fg">.</span>interval <span class="ansi-green-fg">import</span> Interval
+<span class="ansi-green-intense-fg ansi-bold">     14</span> from pandas._libs.tslibs import (
+
+<span class="ansi-red-fg">ImportError</span>: /lib64/libc.so.6: version `GLIBC_2.14&#39; not found (required by /mnt/home/kkarimi/Project/opt/anaconda3/envs/test-env/lib/python3.9/site-packages/pandas/_libs/interval.cpython-39-x86_64-linux-gnu.so)
+
+The above exception was the direct cause of the following exception:
+
+<span class="ansi-red-fg">ImportError</span>                               Traceback (most recent call last)
 <span class="ansi-green-fg">&lt;ipython-input-2-6548d3cd98f2&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
 <span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-red-fg">#--- system libraries</span>
 <span class="ansi-green-intense-fg ansi-bold">      2</span> <span class="ansi-green-fg">import</span> pdb
@@ -14336,7 +14351,14 @@ a.anchor-link {
 <span class="ansi-green-intense-fg ansi-bold">      4</span> <span class="ansi-green-fg">import</span> numpy <span class="ansi-green-fg">as</span> np
 <span class="ansi-green-intense-fg ansi-bold">      5</span> <span class="ansi-green-fg">import</span> matplotlib<span class="ansi-blue-fg">.</span>pylab <span class="ansi-green-fg">as</span> plt
 
-<span class="ansi-red-fg">ModuleNotFoundError</span>: No module named &#39;pandas&#39;</pre>
+<span class="ansi-green-fg">~/Project/opt/anaconda3/envs/test-env/lib/python3.9/site-packages/pandas/__init__.py</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">     31</span>     <span class="ansi-red-fg"># hack but overkill to use re</span>
+<span class="ansi-green-intense-fg ansi-bold">     32</span>     module <span class="ansi-blue-fg">=</span> str<span class="ansi-blue-fg">(</span>e<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>replace<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;cannot import name &#34;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#34;&#34;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">---&gt; 33</span><span class="ansi-red-fg">     raise ImportError(
+</span><span class="ansi-green-intense-fg ansi-bold">     34</span>         <span class="ansi-blue-fg">f&#34;C extension: {module} not built. If you want to import &#34;</span>
+<span class="ansi-green-intense-fg ansi-bold">     35</span>         <span class="ansi-blue-fg">&#34;pandas from the source directory, you may need to run &#34;</span>
+
+<span class="ansi-red-fg">ImportError</span>: C extension: /lib64/libc.so.6: version `GLIBC_2.14&#39; not found (required by /mnt/home/kkarimi/Project/opt/anaconda3/envs/test-env/lib/python3.9/site-packages/pandas/_libs/interval.cpython-39-x86_64-linux-gnu.so) not built. If you want to import pandas from the source directory, you may need to run &#39;python setup.py build_ext --force&#39; to build the C extensions first.</pre>
 </div>
 </div>
 
