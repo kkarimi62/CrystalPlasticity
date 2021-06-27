@@ -904,6 +904,7 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
         if (iszero(sij) || isone(sij)) return mod2bdy; //: cont jn loop
         double dxik(0), dyik(0), dzik(0), dsij1, deljk[3], delki[3];
         double dxjk(0), dyjk(0), dzjk(0), dsij2;
+             double rij2 = 1.0/recip2;
          int kn,k,eltk,elti,eltj;
           elti = fmap[type[i]];
           eltj = fmap[type[j]];
@@ -916,17 +917,12 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
             double dCikj1, dCikj2;
             double ddCikj1, ddCikj2;
             double delc, rik2, rjk2, rik, rjk;
-             double rij2 = 1.0/recip2;
-//            double arg1, arg1_d;
             
-//            sij = scrfcn[jn+fnoffset] * fcpair[jn+fnoffset];
             const double Cmax = this->Cmax_meam[elti][eltj][eltk];
             const double Cmin = this->Cmin_meam[elti][eltj][eltk];
 
             dsij1 = 0.0;
             dsij2 = 0.0;
-//            ddsddrik = 0.0; //uncomment ??? must be initialized
-//            ddsddrjk = 0.0;
             if (!iszero(sij) && !isone(sij)) {
               const double rbound = rij2 * this->ebound_meam[elti][eltj];
               delc = Cmax - Cmin;
@@ -964,8 +960,8 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
               //
               //     Tabulate per-atom virial as symmetrized stress tensor
                
-           mod3bdy += dsg_alpha_beta_ds * dsij2 * deljk[gamma] * deljk[lambda] + //--- dsij1 is 4.22b/rik: units of s/r^2
-                      dsg_alpha_beta_ds * dsij1 * delki[gamma] * delki[lambda];
+           mod3bdy += dsg_alpha_beta_ds * (dsij2 * deljk[gamma] * deljk[lambda] + /* dsij1 is 4.22b/rik: units of s/r^2 */
+                                           dsij1 * delki[gamma] * delki[lambda]);
 
 
 
