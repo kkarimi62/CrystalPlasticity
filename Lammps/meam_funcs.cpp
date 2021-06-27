@@ -901,7 +901,7 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
 
         //     Now compute forces on other atoms k due to change in sij     stiffness ?
 
-        if (iszero(sij) || isone(sij)) return mod2bdy; //: cont jn loop
+//???????        if (iszero(sij) || isone(sij)) return mod2bdy; //: cont jn loop
         double dxik(0), dyik(0), dzik(0), dsij1, deljk[3], delki[3];
         double dxjk(0), dyjk(0), dzjk(0), dsij2;
              double rij2 = 1.0/recip2;
