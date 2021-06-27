@@ -871,7 +871,7 @@ MEAM::Get_ddrhodrmds( int i, int elti, //--- deriv. of Eq. 4.36(c) wrt. r
 double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh, int numneigh_full, int* firstneigh_full, int* type, int* fmap,
                         int alpha, int beta, int gamma, int lambda,  double r3,double ds, double dds, double recip,
                         double dUdrij, double dUdsij, double ddUddrij, double ddUdrijds, double ddUddsij,
-                        double* dUdrijm, double* delij,double* deljk,double* delki, double* ddUdrdrijm, double* ddUdrijmds, double* ddUdrmdrn){
+                        double* dUdrijm, double* delij, double* ddUdrdrijm, double* ddUdrijmds, double* ddUdrmdrn){
 //     dds=0.0; //kam      
      int nv2=0,m,n;
      for(m=0;m<alpha+1;m++){
