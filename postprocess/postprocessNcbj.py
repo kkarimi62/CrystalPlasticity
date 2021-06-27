@@ -14,8 +14,8 @@ if __name__ == '__main__':
 	import os
 
 	nruns	 = 3
-	jobname  = 'd2minCoNiFe' 
-	readPath = os.getcwd() + '/../testRuns/glassCoNiFe' # --- source
+	jobname  = 'd2minCoNiCrFeMn' 
+	readPath = os.getcwd() + '/../testRuns/glassCoNiCrFeMn' # --- source
 	EXEC_DIR = '.'     #--- path for executable file
 	durtn = '00:59:59'
 	resources = {'mem':'4gb', 'partition':'i12h','nodes':1,'ppn':1}
