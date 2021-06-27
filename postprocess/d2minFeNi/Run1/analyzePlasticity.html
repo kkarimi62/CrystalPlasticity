@@ -12245,7 +12245,8 @@ div#notebook {
 <span class="n">PairCorrelationFunction</span> <span class="o">=</span> <span class="kc">False</span>
 
 <span class="c1">#--- lammps output</span>
-<span class="c1">#path = &#39;/mnt/home/kkarimi/Project/git/CrystalPlasticity/testRuns/glassFeNi/Run0&#39;#&#39;/Users/Home/Desktop/Tmp/txt/git/CrystalPlasticity/BmgData&#39;</span>
+<span class="c1">#path = &#39;/mnt/home/kkarimi/Project/git/CrystalPlasticity/testRuns/glassFeNi/Run0&#39;</span>
+<span class="c1">#&#39;/Users/Home/Desktop/Tmp/txt/git/CrystalPlasticity/BmgData&#39;</span>
 
 <span class="c1">#--- stress files</span>
 <span class="n">fileNamee</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;FeNi.txt&#39;</span><span class="p">,</span> 
@@ -12518,9 +12519,12 @@ div#notebook {
 <span class="c1">#</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span><span class="s1">&#39;-.r&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">ey</span><span class="p">,</span><span class="n">ey</span><span class="p">],</span> <span class="p">[</span><span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">()[</span><span class="mi">2</span><span class="p">],</span><span class="n">sy</span><span class="p">],</span><span class="s1">&#39;-.r&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">em</span><span class="p">,</span><span class="n">em</span><span class="p">],</span> <span class="p">[</span><span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">()[</span><span class="mi">2</span><span class="p">],</span><span class="n">sm</span><span class="p">],</span><span class="s1">&#39;-.r&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">ef</span><span class="p">,</span><span class="n">ef</span><span class="p">],</span> <span class="p">[</span><span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">()[</span><span class="mi">2</span><span class="p">],</span><span class="n">sf</span><span class="p">],</span><span class="s1">&#39;-.r&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">AssignYieldTime</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">ey</span><span class="p">,</span><span class="n">ey</span><span class="p">],</span> <span class="p">[</span><span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">()[</span><span class="mi">2</span><span class="p">],</span><span class="n">sy</span><span class="p">],</span><span class="s1">&#39;-.r&#39;</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">AssignMaxDropTime</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">em</span><span class="p">,</span><span class="n">em</span><span class="p">],</span> <span class="p">[</span><span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">()[</span><span class="mi">2</span><span class="p">],</span><span class="n">sm</span><span class="p">],</span><span class="s1">&#39;-.r&#39;</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">AssignFlowTime</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">ef</span><span class="p">,</span><span class="n">ef</span><span class="p">],</span> <span class="p">[</span><span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">()[</span><span class="mi">2</span><span class="p">],</span><span class="n">sf</span><span class="p">],</span><span class="s1">&#39;-.r&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;fit.png&#39;</span><span class="p">,</span><span class="n">dpi</span><span class="o">=</span><span class="mi">75</span><span class="p">,</span><span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -12542,14 +12546,14 @@ div#notebook {
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
 <span class="ansi-red-fg">IndexError</span>                                Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-10-616613bf5f65&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">&lt;ipython-input-10-3ee5930767e4&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
 <span class="ansi-green-intense-fg ansi-bold">     32</span> x<span class="ansi-blue-fg">,</span> y <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>array<span class="ansi-blue-fg">(</span>strain<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> np<span class="ansi-blue-fg">.</span>array<span class="ansi-blue-fg">(</span>Virial<span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">     33</span> <span class="ansi-red-fg">#--- training points</span>
 <span class="ansi-green-fg">---&gt; 34</span><span class="ansi-red-fg"> </span>transfrm <span class="ansi-blue-fg">=</span> ReturnShapeFunc<span class="ansi-blue-fg">(</span>x<span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">10</span><span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">     35</span> 
 <span class="ansi-green-intense-fg ansi-bold">     36</span> <span class="ansi-red-fg">#--- train</span>
 
-<span class="ansi-green-fg">&lt;ipython-input-10-616613bf5f65&gt;</span> in <span class="ansi-cyan-fg">ReturnShapeFunc</span><span class="ansi-blue-fg">(x, df)</span>
+<span class="ansi-green-fg">&lt;ipython-input-10-3ee5930767e4&gt;</span> in <span class="ansi-cyan-fg">ReturnShapeFunc</span><span class="ansi-blue-fg">(x, df)</span>
 <span class="ansi-green-intense-fg ansi-bold">      7</span> <span class="ansi-red-fg">#    x4 = (x-eps1)**3</span>
 <span class="ansi-green-intense-fg ansi-bold">      8</span> <span class="ansi-red-fg">#    x5 = (x-eps2)**3</span>
 <span class="ansi-green-fg">----&gt; 9</span><span class="ansi-red-fg">     </span>transformed_x <span class="ansi-blue-fg">=</span> patsy<span class="ansi-blue-fg">.</span>bs<span class="ansi-blue-fg">(</span>x<span class="ansi-blue-fg">,</span> df<span class="ansi-blue-fg">=</span>df<span class="ansi-blue-fg">,</span>degree <span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">3</span><span class="ansi-blue-fg">,</span> include_intercept<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">False</span><span class="ansi-blue-fg">)</span>
@@ -13517,7 +13521,7 @@ div#notebook {
 <span class="n">xc</span><span class="p">,</span> <span class="n">yc</span> <span class="o">=</span> <span class="n">PltCrltnFunc</span><span class="p">(</span>   <span class="n">crltn</span><span class="p">,</span> 
                          <span class="n">xv</span><span class="p">,</span><span class="n">yv</span><span class="p">,</span>
                          <span class="n">fileName</span> <span class="o">=</span> <span class="s1">&#39;cr_d2min.</span><span class="si">%s</span><span class="s1">.png&#39;</span><span class="o">%</span><span class="k">itime</span>,
-                         <span class="n">title</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;$\epsilon=</span><span class="si">%3.2f</span><span class="s1">$&#39;</span><span class="o">%</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">ebulk</span><span class="p">),</span>
+                         <span class="n">title</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;$\gamma=</span><span class="si">%3.2f</span><span class="s1">$&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">ebulk</span><span class="p">),</span>
                          <span class="n">cTOL</span> <span class="o">=</span> <span class="mf">8.0e-2</span><span class="p">,</span>
             <span class="c1">#             dpi = 60,</span>
                         <span class="p">)</span>
@@ -13542,7 +13546,7 @@ div#notebook {
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
 <span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-27-c9d5dbc040fe&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">&lt;ipython-input-27-9722619d7abd&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
 <span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span><span class="ansi-blue-fg">(</span>nx<span class="ansi-blue-fg">,</span>ny<span class="ansi-blue-fg">,</span>nz<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">=</span> len<span class="ansi-blue-fg">(</span>xlin<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> len<span class="ansi-blue-fg">(</span>ylin<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span>len<span class="ansi-blue-fg">(</span>zlin<span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">      2</span> <span class="ansi-red-fg">#</span>
 <span class="ansi-green-intense-fg ansi-bold">      3</span> value <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>c_<span class="ansi-blue-fg">[</span>d2intrp<span class="ansi-blue-fg">.</span>d2min<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">.</span>reshape<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">(</span>ny<span class="ansi-blue-fg">,</span>nx<span class="ansi-blue-fg">,</span>nz<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
