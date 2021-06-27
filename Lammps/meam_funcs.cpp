@@ -902,9 +902,12 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
         //     Now compute forces on other atoms k due to change in sij     stiffness ?
 
         if (iszero(sij) || isone(sij)) return mod2bdy; //: cont jn loop
-        double dxik(0), dyik(0), dzik(0);
-        double dxjk(0), dyjk(0), dzjk(0);
-
+        double dxik(0), dyik(0), dzik(0), dsij1, deljk[3], delki[3];
+        double dxjk(0), dyjk(0), dzjk(0), dsij2;
+         int kn,k,eltk,elti,eltj;
+          elti = fmap[type[i]];
+          eltj = fmap[type[j]];
+         
         for (kn = 0; kn < numneigh_full; kn++) {
           k = firstneigh_full[kn];
           eltk = fmap[type[k]];
@@ -912,7 +915,8 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
             double xik, xjk, cikj, sikj, dfc, ddfc, a;
             double dCikj1, dCikj2;
             double ddCikj1, ddCikj2;
-            double delc; //, rik2, rjk2;
+            double delc, rik2, rjk2, rik, rjk;
+             double rij2 = 1.0/recip2;
 //            double arg1, arg1_d;
             
 //            sij = scrfcn[jn+fnoffset] * fcpair[jn+fnoffset];
@@ -926,15 +930,15 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
             if (!iszero(sij) && !isone(sij)) {
               const double rbound = rij2 * this->ebound_meam[elti][eltj];
               delc = Cmax - Cmin;
-              dxjk = x[k][0] - x[j][0];
-              dyjk = x[k][1] - x[j][1];
-              dzjk = x[k][2] - x[j][2];
+              dxjk = deljk[0]=x[k][0] - x[j][0];
+              dyjk = deljk[1]=x[k][1] - x[j][1];
+              dzjk = deljk[2]=x[k][2] - x[j][2];
               rjk2 = dxjk * dxjk + dyjk * dyjk + dzjk * dzjk;
               rjk = sqrt( rjk2 );
               if (rjk2 <= rbound) {
-                dxik = x[k][0] - x[i][0];
-                dyik = x[k][1] - x[i][1];
-                dzik = x[k][2] - x[i][2];
+                dxik = delki[0]=x[k][0] - x[i][0];
+                dyik = delki[1]=x[k][1] - x[i][1];
+                dzik = delki[2]=x[k][2] - x[i][2];
                 rik2 = dxik * dxik + dyik * dyik + dzik * dzik;
                 rik = sqrt( rik2 );
                 if (rik2 <= rbound) {
