@@ -903,8 +903,8 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
   int kn, k;
   int elti, eltj, eltk;
   double xitmp, yitmp, zitmp, delxij, delyij, delzij, rij2, rij;
-  double xjtmp, yjtmp, zjtmp, delxik, delyik, delzik, rik2 /*,rik*/;
-  double xktmp, yktmp, zktmp, delxjk, delyjk, delzjk, rjk2 /*,rjk*/;
+  double xjtmp, yjtmp, zjtmp, delxik, delyik, delzik, rik2,rik;
+  double xktmp, yktmp, zktmp, delxjk, delyjk, delzjk, rjk2,rjk;
   double xik, xjk,/*, sij, fcij, sfcij, dfcij, ddfcij, sikj, dfikj, ddfikj,*/ cikj;
   double Cmin, Cmax, /*delc, ebound,*/ a/*, coef1, coef2*/;
   double sig3bdy, sig_ikj;
@@ -993,7 +993,7 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
       } else {
 //        sikj = fcut(cikj); //--- Eq.(4.11c)
         sig_ikj = (1.0/rjk) * dsg_alpha_beta_ds * ds * deljk[gamma] * deljk[lambda] +
-                  (1.0/rki) * dsg_alpha_beta_ds * ds * delki[gamma] * delki[lambda];
+                  (1.0/rik) * dsg_alpha_beta_ds * ds * delki[gamma] * delki[lambda];
          
       }
 //      sij *= sikj; //--- \bar{s_{ij}} in Eq.(4.11a)
