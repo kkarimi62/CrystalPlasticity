@@ -12504,7 +12504,7 @@ div#notebook {
 
 <span class="c1">#--- flow stress</span>
 <span class="n">ydiff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">y_pred_arr</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
-<span class="n">indx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))[</span><span class="n">ydiff</span><span class="o">==</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">ydiff</span><span class="p">)[</span><span class="n">x</span><span class="o">&gt;</span><span class="n">em</span><span class="p">])][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">indx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))[</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">ydiff</span><span class="p">)</span><span class="o">==</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">ydiff</span><span class="p">)[</span><span class="n">x</span><span class="o">&gt;</span><span class="n">em</span><span class="p">])][</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">ef</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">indx</span><span class="p">]</span>
 <span class="n">sf</span> <span class="o">=</span>  <span class="n">y_pred_arr</span><span class="p">[</span><span class="n">indx</span><span class="p">]</span>
 
@@ -12542,14 +12542,14 @@ div#notebook {
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
 <span class="ansi-red-fg">IndexError</span>                                Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-10-86b90f388cf0&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">&lt;ipython-input-10-616613bf5f65&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
 <span class="ansi-green-intense-fg ansi-bold">     32</span> x<span class="ansi-blue-fg">,</span> y <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>array<span class="ansi-blue-fg">(</span>strain<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> np<span class="ansi-blue-fg">.</span>array<span class="ansi-blue-fg">(</span>Virial<span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">     33</span> <span class="ansi-red-fg">#--- training points</span>
 <span class="ansi-green-fg">---&gt; 34</span><span class="ansi-red-fg"> </span>transfrm <span class="ansi-blue-fg">=</span> ReturnShapeFunc<span class="ansi-blue-fg">(</span>x<span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">10</span><span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">     35</span> 
 <span class="ansi-green-intense-fg ansi-bold">     36</span> <span class="ansi-red-fg">#--- train</span>
 
-<span class="ansi-green-fg">&lt;ipython-input-10-86b90f388cf0&gt;</span> in <span class="ansi-cyan-fg">ReturnShapeFunc</span><span class="ansi-blue-fg">(x, df)</span>
+<span class="ansi-green-fg">&lt;ipython-input-10-616613bf5f65&gt;</span> in <span class="ansi-cyan-fg">ReturnShapeFunc</span><span class="ansi-blue-fg">(x, df)</span>
 <span class="ansi-green-intense-fg ansi-bold">      7</span> <span class="ansi-red-fg">#    x4 = (x-eps1)**3</span>
 <span class="ansi-green-intense-fg ansi-bold">      8</span> <span class="ansi-red-fg">#    x5 = (x-eps2)**3</span>
 <span class="ansi-green-fg">----&gt; 9</span><span class="ansi-red-fg">     </span>transformed_x <span class="ansi-blue-fg">=</span> patsy<span class="ansi-blue-fg">.</span>bs<span class="ansi-blue-fg">(</span>x<span class="ansi-blue-fg">,</span> df<span class="ansi-blue-fg">=</span>df<span class="ansi-blue-fg">,</span>degree <span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">3</span><span class="ansi-blue-fg">,</span> include_intercept<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">False</span><span class="ansi-blue-fg">)</span>
