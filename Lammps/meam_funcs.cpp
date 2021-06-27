@@ -869,7 +869,7 @@ MEAM::Get_ddrhodrmds( int i, int elti, //--- deriv. of Eq. 4.36(c) wrt. r
           }
 }
 
-double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh, int numneigh_full, int* firstneigh_full, int* type, int* fmap,
+double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh, int numneigh_full, int* firstneigh_full, int* type, int* fmap, double sij,
                         int alpha, int beta, int gamma, int lambda,  double r3,double ds, double dds, double recip,
                         double dUdrij, double dUdsij, double ddUddrij, double ddUdrijds, double ddUddsij,
                         double* dUdrijm, double* delij, double* ddUdrdrijm, double* ddUdrijmds, double* ddUdrmdrn){
@@ -886,8 +886,8 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
    double dsg_alpha_beta_ds = (recip*(ddUdrijds+ddUddsij*ds)*delij[alpha]+ddUdrijmds[alpha])*delij[beta];
    dsg_alpha_beta_drm[gamma] = (recip*((ddUdrdrijm[gamma]+ddUdrijmds[gamma]*ds)*delij[alpha]+(dUdrij+dUdsij*ds)*(alpha == gamma ? 1 : 0))+ddUdrmdrn[nv2])*delij[beta];
 
-   double sig2bdy = (recip*(dsg_alpha_beta_dr+dsg_alpha_beta_ds*ds)*delij[gamma]+dsg_alpha_beta_drm[gamma])*delij[lambda];
-
+   double mod2bdy = (recip*(dsg_alpha_beta_dr+dsg_alpha_beta_ds*ds)*delij[gamma]+dsg_alpha_beta_drm[gamma])*delij[lambda];
+   double mod3bdy = 0.0;
     
 //    double arg1 = recip;
 //      double arg2 = dUdrij + dUdsij * ds; // units of ds
@@ -898,112 +898,78 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
 //      return
 //        (((-delij[gamma]*delij[lambda]/r3)*arg2+recip*darg2)*delij[alpha] + 
 //         recip*arg2*(alpha == gamma ? 1 : 0)*delij[lambda]+ darg3)*delij[beta];
-   
-  double deljk[3],delki[3];
-  int kn, k;
-  int elti, eltj, eltk;
-  double xitmp, yitmp, zitmp, delxij, delyij, delzij, rij2, rij;
-  double xjtmp, yjtmp, zjtmp, delxik, delyik, delzik, rik2,rik;
-  double xktmp, yktmp, zktmp, delxjk, delyjk, delzjk, rjk2,rjk;
-  double xik, xjk,/*, sij, fcij, sfcij, dfcij, ddfcij, sikj, dfikj, ddfikj,*/ cikj;
-  double Cmin, Cmax, /*delc, ebound,*/ a/*, coef1, coef2*/;
-  double sig3bdy, sig_ikj;
-  
-  elti = fmap[type[i]];
-  assert (elti >= 0); 
-  if (elti >= 0){
 
-  xitmp = x[i][0]; 
-  yitmp = x[i][1];
-  zitmp = x[i][2];
+        //     Now compute forces on other atoms k due to change in sij     stiffness ?
 
-//  for (jn = 0; jn < numneigh; jn++) {
-//    j = firstneigh[jn];
+        if (iszero(sij) || isone(sij)) return mod2bdy; //: cont jn loop
+        double dxik(0), dyik(0), dzik(0);
+        double dxjk(0), dyjk(0), dzjk(0);
 
-    eltj = fmap[type[j]];
-    assert (eltj >= 0); 
-    if (eltj >= 0){
+        for (kn = 0; kn < numneigh_full; kn++) {
+          k = firstneigh_full[kn];
+          eltk = fmap[type[k]];
+          if (k != j && eltk >= 0) {
+            double xik, xjk, cikj, sikj, dfc, ddfc, a;
+            double dCikj1, dCikj2;
+            double ddCikj1, ddCikj2;
+            double delc; //, rik2, rjk2;
+//            double arg1, arg1_d;
+            
+//            sij = scrfcn[jn+fnoffset] * fcpair[jn+fnoffset];
+            const double Cmax = this->Cmax_meam[elti][eltj][eltk];
+            const double Cmin = this->Cmin_meam[elti][eltj][eltk];
 
-    //     First compute screening function itself, sij
-    xjtmp = x[j][0];
-    yjtmp = x[j][1];
-    zjtmp = x[j][2];
-    delxij = xjtmp - xitmp;
-    delyij = yjtmp - yitmp;
-    delzij = zjtmp - zitmp;
-    rij2 = delxij * delxij + delyij * delyij + delzij * delzij;
-    assert(fabs(delij[0]*delij[0]+delij[1]*delij[1]+delij[2]*delij[2]-rij2)<1.0e-6);
-    assert (rij2 <= this->cutforcesq); 
-    if (rij2 > this->cutforcesq) {
-//      dscrfcn[jn] = 0.0;
-//      scrfcn[jn] = 0.0;
-//      fcpair[jn] = 0.0;
-//      ddscrfcn[jn] = 0.0;
-//       continue;
-     }
+            dsij1 = 0.0;
+            dsij2 = 0.0;
+//            ddsddrik = 0.0; //uncomment ??? must be initialized
+//            ddsddrjk = 0.0;
+            if (!iszero(sij) && !isone(sij)) {
+              const double rbound = rij2 * this->ebound_meam[elti][eltj];
+              delc = Cmax - Cmin;
+              dxjk = x[k][0] - x[j][0];
+              dyjk = x[k][1] - x[j][1];
+              dzjk = x[k][2] - x[j][2];
+              rjk2 = dxjk * dxjk + dyjk * dyjk + dzjk * dzjk;
+              rjk = sqrt( rjk2 );
+              if (rjk2 <= rbound) {
+                dxik = x[k][0] - x[i][0];
+                dyik = x[k][1] - x[i][1];
+                dzik = x[k][2] - x[i][2];
+                rik2 = dxik * dxik + dyik * dyik + dzik * dzik;
+                rik = sqrt( rik2 );
+                if (rik2 <= rbound) {
+                  xik = rik2 / rij2;
+                  xjk = rjk2 / rij2;
+                  a = 1 - (xik - xjk) * (xik - xjk);
+                  if (!iszero(a)) {
+                    cikj = (2.0 * (xik + xjk) + a - 2.0) / a;
+                    if (cikj >= Cmin && cikj <= Cmax) {
+                      cikj = (cikj - Cmin) / delc;
+                      sikj = dfcut(cikj, dfc, ddfc);
+                      dCfunc2(rij2, rik2, rjk2, dCikj1, dCikj2); //--- 4.17b/rik, 4.17c/rjk
+                      a = sij / delc * dfc / sikj;
+                      dsij1 = a * dCikj1; //--- 4.22b/rik: units of s/r^2
+                      dsij2 = a * dCikj2; //--- 4.22c/rjk
+//                    
+                    }
+                  }
+                }
+              }
+            }
 
-     const double rbound = this->ebound_meam[elti][eltj] * rij2;
-//     rij = sqrt(rij2);
-//     rnorm = (this->cutforce - rij) * drinv;
-//     sij = 1.0;
-     sig3bdy = 0.0;
-    //     if rjk2 > ebound*rijsq, atom k is definitely outside the ellipse
-    for (kn = 0; kn < numneigh_full; kn++) {
-      k = firstneigh_full[kn];
-      if (k == j) continue;
-      eltk = fmap[type[k]];
-      if (eltk < 0) continue;
+              //
+              //     Tabulate per-atom virial as symmetrized stress tensor
+               
+           mod3bdy += dsg_alpha_beta_ds * dsij2 * deljk[gamma] * deljk[lambda] + //--- dsij1 is 4.22b/rik: units of s/r^2
+                      dsg_alpha_beta_ds * dsij1 * delki[gamma] * delki[lambda];
 
-      xktmp = x[k][0];
-      yktmp = x[k][1];
-      zktmp = x[k][2];
 
-      delxjk = deljk[0] = xktmp - xjtmp;
-      delyjk = deljk[1] = yktmp - yjtmp;
-      delzjk = deljk[2] = zktmp - zjtmp;
-      rjk2 = delxjk * delxjk + delyjk * delyjk + delzjk * delzjk;
-      rjk = sqrt(rjk2);
-      if (rjk2 > rbound) continue;
 
-      delxik = delki[0] = xktmp - xitmp;
-      delyik = delki[1] = yktmp - yitmp;
-      delzik = delki[2] = zktmp - zitmp;
-      rik2 = delxik * delxik + delyik * delyik + delzik * delzik;
-      rik = sqrt(rik2);
-      if (rik2 > rbound) continue;
-
-      xik = rik2 / rij2;
-      xjk = rjk2 / rij2;
-      a = 1 - (xik - xjk) * (xik - xjk);
-      //     if a < 0, then ellipse equation doesn't describe this case and
-      //     atom k can't possibly screen i-j
-      if (a <= 0.0) continue;
-
-      cikj = (2.0 * (xik + xjk) + a - 2.0) / a; //--- Eq. (4.11d)
-      Cmax = this->Cmax_meam[elti][eltj][eltk];
-      Cmin = this->Cmin_meam[elti][eltj][eltk];
-      if (cikj >= Cmax) continue;
-      //     note that cikj may be slightly negative (within numerical
-      //     tolerance) if atoms are colinear, so don't reject that case here
-      //     (other negative cikj cases were handled by the test on "a" above)
-      else if (cikj <= Cmin) {
-//        sij = 0.0;
-        sig3bdy = 0.0;
-        break;
-      } else {
-//        sikj = fcut(cikj); //--- Eq.(4.11c)
-        sig_ikj = (1.0/rjk) * dsg_alpha_beta_ds * ds * deljk[gamma] * deljk[lambda] +
-                  (1.0/rik) * dsg_alpha_beta_ds * ds * delki[gamma] * delki[lambda];
-         
-      }
-//      sij *= sikj; //--- \bar{s_{ij}} in Eq.(4.11a)
-      sig3bdy += sig_ikj;
-       
-    }
-  }
-  }
-     
-  return sig2bdy + sig3bdy;
+          }
+          //     end of k loop
+        }
+         return mod2bdy + mod3bdy;
      
  };
+
 
