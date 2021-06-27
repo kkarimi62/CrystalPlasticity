@@ -868,9 +868,10 @@ MEAM::Get_ddrhodrmds( int i, int elti, //--- deriv. of Eq. 4.36(c) wrt. r
           }
 }
 
-double MEAM::GetModulus(int alpha, int beta, int gamma, int lambda,  double r3,double ds, double dds, double recip,
+double MEAM::GetModulus(int i, double** x, int numneigh, int* firstneigh, int numneigh_full, int* firstneigh_full, int* type, int* fmap
+                        int alpha, int beta, int gamma, int lambda,  double r3,double ds, double dds, double recip,
                         double dUdrij, double dUdsij, double ddUddrij, double ddUdrijds, double ddUddsij,
-                        double* dUdrijm, double* delij, double* ddUdrdrijm, double* ddUdrijmds, double* ddUdrmdrn){
+                        double* dUdrijm, double* delij,double* deljk,double* delki, double* ddUdrdrijm, double* ddUdrijmds, double* ddUdrmdrn){
 //     dds=0.0; //kam      
      int nv2=0,m,n;
      for(m=0;m<alpha+1;m++){
@@ -878,14 +879,128 @@ double MEAM::GetModulus(int alpha, int beta, int gamma, int lambda,  double r3,d
          nv2++;
        }
      }
-     double arg1 = recip;
-     double arg2 = dUdrij + dUdsij * ds; // units of ds
-     double arg3 = dUdrijm[ alpha ];
-     double darg2 =(recip * ( ddUddrij + ddUdrijds * ds + ds * ( ddUdrijds + ddUddsij * ds ) + 1.0 * dUdsij * dds ) * delij[gamma]+
-            ( ddUdrdrijm[gamma]+ddUdrijmds[gamma]*ds))*delij[lambda];
-     double darg3 = (recip*(ddUdrdrijm[alpha]+ddUdrijmds[alpha]*ds)*delij[gamma]+ddUdrmdrn[nv2])*delij[lambda];  
-     return
-       (((-delij[gamma]*delij[lambda]/r3)*arg2+recip*darg2)*delij[alpha] + 
-        recip*arg2*(alpha == gamma ? 1 : 0)*delij[lambda]+ darg3)*delij[beta];
+   double dsg_alpha_beta_drm[3];
+   double recip2 = recip * recip;
+   double dsg_alpha_beta_dr = ((-recip2*(dUdrij+dUdsij*ds)+recip*(ddUddrij+ddUdrijds*ds+dUdsij*dds))*delij[alpha]+ddUdrdrijm[alpha])*delij[beta];
+   double dsg_alpha_beta_ds = (recip*(ddUdrijds+ddUddsij*ds)*delij[alpha]+ddUdrijmds[alpha])*delij[beta];
+   dsg_alpha_beta_drm[gamma] = (recip*((ddUdrdrijm[gamma]+ddUdrijmds[gamma]*ds)*delij[alpha]+(dUdrij+dUdsij*ds)*(alpha == gamma ? 1 : 0))+ddUdrmdrn[nv2])*delij[beta];
+
+   double sig2bdy = (recip*(dsg_alpha_beta_dr+dsg_alpha_beta_ds*ds)*delij[gamma]+dsg_alpha_beta_drm[gamma])*delij[lambda];
+
+    
+//    double arg1 = recip;
+//      double arg2 = dUdrij + dUdsij * ds; // units of ds
+//      double arg3 = dUdrijm[ alpha ];
+//      double darg2 =(recip * ( ddUddrij + ddUdrijds * ds + ds * ( ddUdrijds + ddUddsij * ds ) + 1.0 * dUdsij * dds ) * delij[gamma]+
+//             ( ddUdrdrijm[gamma]+ddUdrijmds[gamma]*ds))*delij[lambda];
+//      double darg3 = (recip*(ddUdrdrijm[alpha]+ddUdrijmds[alpha]*ds)*delij[gamma]+ddUdrmdrn[nv2])*delij[lambda];  
+//      return
+//        (((-delij[gamma]*delij[lambda]/r3)*arg2+recip*darg2)*delij[alpha] + 
+//         recip*arg2*(alpha == gamma ? 1 : 0)*delij[lambda]+ darg3)*delij[beta];
+   
+   
+  int jn, j, kn, k;
+  int elti, eltj, eltk;
+  double xitmp, yitmp, zitmp, delxij, delyij, delzij, rij2, rij;
+  double xjtmp, yjtmp, zjtmp, delxik, delyik, delzik, rik2 /*,rik*/;
+  double xktmp, yktmp, zktmp, delxjk, delyjk, delzjk, rjk2 /*,rjk*/;
+  double xik, xjk;//, sij, fcij, sfcij, dfcij, ddfcij, sikj, dfikj, ddfikj, cikj;
+  double Cmin, Cmax, /*delc, ebound,*/ a/*, coef1, coef2*/;
+  double sig3bdy, sig_ikj;
+  
+  elti = fmap[type[i]];
+  assert (elti >= 0); 
+  if (elti >= 0){
+
+  xitmp = x[i][0]; 
+  yitmp = x[i][1];
+  zitmp = x[i][2];
+
+//  for (jn = 0; jn < numneigh; jn++) {
+//    j = firstneigh[jn];
+
+    eltj = fmap[type[j]];
+    assert (eltj >= 0); 
+    if (eltj >= 0){
+
+    //     First compute screening function itself, sij
+    xjtmp = x[j][0];
+    yjtmp = x[j][1];
+    zjtmp = x[j][2];
+    delxij = xjtmp - xitmp;
+    delyij = yjtmp - yitmp;
+    delzij = zjtmp - zitmp;
+    rij2 = delxij * delxij + delyij * delyij + delzij * delzij;
+
+    assert (rij2 <= this->cutforcesq); 
+    if (rij2 > this->cutforcesq) {
+//      dscrfcn[jn] = 0.0;
+//      scrfcn[jn] = 0.0;
+//      fcpair[jn] = 0.0;
+//      ddscrfcn[jn] = 0.0;
+//       continue;
+     }
+
+//     const double rbound = this->ebound_meam[elti][eltj] * rij2;
+//     rij = sqrt(rij2);
+//     rnorm = (this->cutforce - rij) * drinv;
+//     sij = 1.0;
+     sig3bdy = 0.0;
+    //     if rjk2 > ebound*rijsq, atom k is definitely outside the ellipse
+    for (kn = 0; kn < numneigh_full; kn++) {
+      k = firstneigh_full[kn];
+      if (k == j) continue;
+      eltk = fmap[type[k]];
+      if (eltk < 0) continue;
+
+      xktmp = x[k][0];
+      yktmp = x[k][1];
+      zktmp = x[k][2];
+
+      delxjk = xktmp - xjtmp;
+      delyjk = yktmp - yjtmp;
+      delzjk = zktmp - zjtmp;
+      rjk2 = delxjk * delxjk + delyjk * delyjk + delzjk * delzjk;
+      if (rjk2 > rbound) continue;
+
+      delxik = xktmp - xitmp;
+      delyik = yktmp - yitmp;
+      delzik = zktmp - zitmp;
+      rik2 = delxik * delxik + delyik * delyik + delzik * delzik;
+      if (rik2 > rbound) continue;
+
+      xik = rik2 / rij2;
+      xjk = rjk2 / rij2;
+      a = 1 - (xik - xjk) * (xik - xjk);
+      //     if a < 0, then ellipse equation doesn't describe this case and
+      //     atom k can't possibly screen i-j
+      if (a <= 0.0) continue;
+
+      cikj = (2.0 * (xik + xjk) + a - 2.0) / a; //--- Eq. (4.11d)
+      Cmax = this->Cmax_meam[elti][eltj][eltk];
+      Cmin = this->Cmin_meam[elti][eltj][eltk];
+      if (cikj >= Cmax) continue;
+      //     note that cikj may be slightly negative (within numerical
+      //     tolerance) if atoms are colinear, so don't reject that case here
+      //     (other negative cikj cases were handled by the test on "a" above)
+      else if (cikj <= Cmin) {
+//        sij = 0.0;
+        sig3bdy = 0.0;
+        break;
+      } else {
+//        sikj = fcut(cikj); //--- Eq.(4.11c)
+        sig_ikj = recip_jk * dsg_alpha_beta_ds * ds * deljk[gamma] * deljk[lambda] +
+                  recip_ki * dsg_alpha_beta_ds * ds * delki[gamma] * delki[lambda];
+         
+      }
+//      sij *= sikj; //--- \bar{s_{ij}} in Eq.(4.11a)
+      sig3bdy += sig_ikj;
+       
+    }
+  }
+  }
+     
+  return sig2bdy + sig3bdy;
+     
  };
 
