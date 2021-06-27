@@ -18,6 +18,7 @@
 #include "meam.h"
 #include "math_special.h"
 #include <cmath>
+#include <cassert>
 
 using namespace LAMMPS_NS;
 
@@ -898,13 +899,13 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
 //        (((-delij[gamma]*delij[lambda]/r3)*arg2+recip*darg2)*delij[alpha] + 
 //         recip*arg2*(alpha == gamma ? 1 : 0)*delij[lambda]+ darg3)*delij[beta];
    
-   
-  int jn, j, kn, k;
+  double deljk[3],delki[3];
+  int kn, k;
   int elti, eltj, eltk;
   double xitmp, yitmp, zitmp, delxij, delyij, delzij, rij2, rij;
   double xjtmp, yjtmp, zjtmp, delxik, delyik, delzik, rik2 /*,rik*/;
   double xktmp, yktmp, zktmp, delxjk, delyjk, delzjk, rjk2 /*,rjk*/;
-  double xik, xjk;//, sij, fcij, sfcij, dfcij, ddfcij, sikj, dfikj, ddfikj, cikj;
+  double xik, xjk,/*, sij, fcij, sfcij, dfcij, ddfcij, sikj, dfikj, ddfikj,*/ cikj;
   double Cmin, Cmax, /*delc, ebound,*/ a/*, coef1, coef2*/;
   double sig3bdy, sig_ikj;
   
@@ -931,7 +932,7 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
     delyij = yjtmp - yitmp;
     delzij = zjtmp - zitmp;
     rij2 = delxij * delxij + delyij * delyij + delzij * delzij;
-
+    assert(fabs(delij[0]*delij[0]+delij[1]*delij[1]+delij[2]*delij[2]-rij2)<1.0e-6);
     assert (rij2 <= this->cutforcesq); 
     if (rij2 > this->cutforcesq) {
 //      dscrfcn[jn] = 0.0;
@@ -941,7 +942,7 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
 //       continue;
      }
 
-//     const double rbound = this->ebound_meam[elti][eltj] * rij2;
+     const double rbound = this->ebound_meam[elti][eltj] * rij2;
 //     rij = sqrt(rij2);
 //     rnorm = (this->cutforce - rij) * drinv;
 //     sij = 1.0;
@@ -957,16 +958,18 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
       yktmp = x[k][1];
       zktmp = x[k][2];
 
-      delxjk = xktmp - xjtmp;
-      delyjk = yktmp - yjtmp;
-      delzjk = zktmp - zjtmp;
+      delxjk = deljk[0] = xktmp - xjtmp;
+      delyjk = deljk[1] = yktmp - yjtmp;
+      delzjk = deljk[2] = zktmp - zjtmp;
       rjk2 = delxjk * delxjk + delyjk * delyjk + delzjk * delzjk;
+      rjk = sqrt(rjk2);
       if (rjk2 > rbound) continue;
 
-      delxik = xktmp - xitmp;
-      delyik = yktmp - yitmp;
-      delzik = zktmp - zitmp;
+      delxik = delki[0] = xktmp - xitmp;
+      delyik = delki[1] = yktmp - yitmp;
+      delzik = delki[2] = zktmp - zitmp;
       rik2 = delxik * delxik + delyik * delyik + delzik * delzik;
+      rik = sqrt(rik2);
       if (rik2 > rbound) continue;
 
       xik = rik2 / rij2;
@@ -989,8 +992,8 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
         break;
       } else {
 //        sikj = fcut(cikj); //--- Eq.(4.11c)
-        sig_ikj = recip_jk * dsg_alpha_beta_ds * ds * deljk[gamma] * deljk[lambda] +
-                  recip_ki * dsg_alpha_beta_ds * ds * delki[gamma] * delki[lambda];
+        sig_ikj = (1.0/rjk) * dsg_alpha_beta_ds * ds * deljk[gamma] * deljk[lambda] +
+                  (1.0/rki) * dsg_alpha_beta_ds * ds * delki[gamma] * delki[lambda];
          
       }
 //      sij *= sikj; //--- \bar{s_{ij}} in Eq.(4.11a)
