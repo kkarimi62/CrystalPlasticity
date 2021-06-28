@@ -14,11 +14,11 @@ if __name__ == '__main__':
 	import os
 
 	nruns	 = 3
-	jobname  = 'd2minTest5th' 
+	jobname  = 'd2minTest6th' 
 	readPath = os.getcwd() + '/../testRuns/glassFeNi' # --- source
 	EXEC_DIR = '.'     #--- path for executable file
 	durtn = '00:59:59'
-	resources = {'mem':'4gb', 'partition':'i12h','nodes':1,'ppn':1}
+	resources = {'mem':'8gb', 'partition':'i12h','nodes':1,'ppn':1}
 	argv = "path=%s"%(readPath) #--- don't change! 
 	argv2nd = "junk=None" 
 	PYFILdic = { 
