@@ -14,7 +14,7 @@ if __name__ == '__main__':
 	import os
 
 	nruns	 = 3
-	jobname  = 'd2minCoNiFe' 
+	jobname  = 'd2minCoNiFe2nd' 
 	readPath = os.getcwd() + '/../testRuns/glassCoNiFe' # --- source
 	EXEC_DIR = '.'     #--- path for executable file
 	durtn = '00:59:59'
