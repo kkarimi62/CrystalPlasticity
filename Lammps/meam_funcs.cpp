@@ -917,13 +917,13 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
 
         //     Now compute forces on other atoms k due to change in sij     stiffness ?
         
-        if (iszero(sij) || isone(sij) || iszero(ds) ) return mod2bdy; //: cont jn loop
+        if (iszero(sij) || isone(sij) ) return mod2bdy; //: cont jn loop
         double dxik(0), dyik(0), dzik(0), dsij1, deljk[3], delki[3];
         double dxjk(0), dyjk(0), dzjk(0), dsij2;
-             double rij2 = 1.0/recip2;
-         int kn,k,eltk,elti,eltj;
-          elti = fmap[type[i]];
-          eltj = fmap[type[j]];
+        double rij2 = 1.0/recip2;
+        int kn,k,eltk,elti,eltj;
+        elti = fmap[type[i]];
+        eltj = fmap[type[j]];
          
         for (kn = 0; kn < numneigh_full; kn++) {
           k = firstneigh_full[kn];
@@ -975,9 +975,9 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
 
               //
               //     Tabulate per-atom virial as symmetrized stress tensor
-               
-           mod3bdy += dsg_alpha_beta_ds * (dsij2 * deljk[gamma] * deljk[lambda] + /* dsij1 is 4.22b/rik: units of s/r^2 */
-                                           dsij1 * delki[gamma] * delki[lambda]);
+            if (!iszero(dsij1) || !iszero(dsij2) || !iszero(ddsddrik) || !iszero(ddsddrjk) )
+              mod3bdy += dsg_alpha_beta_ds * (dsij2 * deljk[gamma] * deljk[lambda] + /* dsij1 is 4.22b/rik: units of s/r^2 */
+                                              dsij1 * delki[gamma] * delki[lambda]);
 
 
 
