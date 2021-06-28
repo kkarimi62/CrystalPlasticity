@@ -880,6 +880,18 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
          nv2++;
        }
      }
+   //
+   double ddUdrijmds_tmp[ 3 ];
+   if (iszero(ds)) {
+     dUdsij = 0.0;
+     ddUddsij = 0.0;
+     for (m = 0; m < 3; m++){
+        ddUdrijmds_tmp[m] = ddUdrijmds[m];
+        ddUdrijmds[m] = 0.0;
+     }
+     ddUdrijds = 0.0;
+    }
+   
    double dsg_alpha_beta_drm[3];
    double recip2 = recip * recip;
    double dsg_alpha_beta_dr = ((-recip2*(dUdrij+dUdsij*ds)+recip*(ddUddrij+ddUdrijds*ds+dUdsij*dds))*delij[alpha]+ddUdrdrijm[alpha])*delij[beta];
@@ -888,7 +900,11 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
 
    double mod2bdy = (recip*(dsg_alpha_beta_dr+dsg_alpha_beta_ds*ds)*delij[gamma]+dsg_alpha_beta_drm[gamma])*delij[lambda];
    double mod3bdy = 0.0;
-    
+  
+  for (m = 0; m < 3; m++){
+     ddUdrijmds[m] = ddUdrijmds_tmp[m];
+  }
+   
 //    double arg1 = recip;
 //      double arg2 = dUdrij + dUdsij * ds; // units of ds
 //      double arg3 = dUdrijm[ alpha ];
