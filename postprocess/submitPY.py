@@ -3,7 +3,7 @@ if __name__ == '__main__':
 	import os
 	import numpy as np
 	#---
-	lnums = [ 13, 21 ]
+	lnums = [ 17, 23 ]
 	string=open('postprocess.py').readlines() #--- python script
 	#---
 #        MC = [-0.25,-0.1,0.0,0.1,0.2]
@@ -12,13 +12,14 @@ if __name__ == '__main__':
 #	PHI = np.logspace(-5.0,-2.0,nphi,endpoint=True)
 #	PHI = np.linspace(2.3,2.9,nphi,endpoint=True)
 #	PHI = np.linspace(0.05,0.45,nphi,endpoint=True)
-	PHI=range(0,2000000+10000,10000) #[0,500000,1000000,1500000,2000000]
+#	PHI=range(0,2000000+10000,10000) 
+	PHI = [0,500000,1000000,1500000,2000000]
 	nphi = len(PHI)
 	#---
 #	nn = 4
 #	NTHRESH = np.linspace(0.05,0.11,nn,endpoint=True)
 	#---
-	jobname = 'glassFeNi'
+	jobname = 'd2minMovie'
 
 #	PHI = [[PHI[iphi],NTHRESH[inn]] for iphi in xrange( nphi ) for inn in xrange(nn)]
 #	nphi = len(PHI)
