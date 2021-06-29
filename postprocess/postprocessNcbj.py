@@ -1,4 +1,4 @@
-def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argv2nd):
+def makeOAR( EXEC_DIR, node, core, partitionime, PYFIL, argv,argv2nd):
 	#--- set environment variables
 	sfile = open('.env','w')
 	print('%s\n%s'%(argv,argv2nd),file=sfile)

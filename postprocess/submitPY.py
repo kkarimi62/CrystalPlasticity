@@ -12,8 +12,8 @@ if __name__ == '__main__':
 #	PHI = np.logspace(-5.0,-2.0,nphi,endpoint=True)
 #	PHI = np.linspace(2.3,2.9,nphi,endpoint=True)
 #	PHI = np.linspace(0.05,0.45,nphi,endpoint=True)
-#	PHI=range(0,2000000+10000,10000) 
-	PHI = [0,500000,1000000,1500000,2000000]
+	PHI=range(0,2000000+10000,10000) 
+#	PHI = [0,500000,1000000,1500000,2000000]
 	nphi = len(PHI)
 	#---
 #	nn = 4
@@ -33,5 +33,5 @@ if __name__ == '__main__':
 		string[ inums ] = "\targv2nd=\' -p\titime\t%s\'\n"%(PHI[iphi])
 
 		sfile=open('junk%s.py'%iphi,'w');sfile.writelines(string);sfile.close()
-		os.system( 'python junk%s.py'%iphi )
+		os.system( 'python3 junk%s.py'%iphi )
 		os.system( 'rm junk%s.py'%iphi )
