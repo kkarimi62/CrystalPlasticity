@@ -20,7 +20,7 @@ if __name__ == '__main__':
 	durtn = '00:59:59'
 	resources = {'mem':'4gb', 'partition':'o12h','nodes':1,'ppn':1}
 	argv = "path=%s"%(readPath) #--- don't change! 
-	argv2nd = "junk=None" 
+	argv2nd = "itime=10000" 
 	PYFILdic = { 
 		0:'ElasticConstants.ipynb',
 		1:'analyzePlasticity.ipynb',
