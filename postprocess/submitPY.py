@@ -4,7 +4,7 @@ if __name__ == '__main__':
 	import numpy as np
 	#---
 	lnums = [ 17, 23 ]
-	string=open('postprocess.py').readlines() #--- python script
+	string=open('postprocessNcbj.py').readlines() #--- python script
 	#---
 #        MC = [-0.25,-0.1,0.0,0.1,0.2]
 #        B = [1.1,1.2,1.3]
