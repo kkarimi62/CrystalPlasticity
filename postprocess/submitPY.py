@@ -23,7 +23,7 @@ if __name__ == '__main__':
 
 #	PHI = [[PHI[iphi],NTHRESH[inn]] for iphi in xrange( nphi ) for inn in xrange(nn)]
 #	nphi = len(PHI)
-	for iphi in xrange( nphi ):
+	for iphi in range( nphi ):
 		#---	
 		inums = lnums[ 0 ] - 1
 		string[ inums ] = "\tjobname  = '%s'\n" % ('%s%s'%(jobname,iphi)) #--- change job name
