@@ -64,11 +64,12 @@ set group ni_group type 2
 pair_style meam/c
 pair_coeff * * ${MEAM_library_DIR}/library_CoNiCrFeMn.meam Co Ni Cr Fe Mn ${MEAM_library_DIR}/parameters.meam Co Ni Cr Fe Mn
 
-#--- print temperature
+#--- print temperature, pressure, and volume
 variable varPress equal press
 variable varTemp equal temp
 variable varStep equal step
-fix extra all print ${Nfreq} "${varStep} ${varTemp} " file temperature.txt
+variable varVolu equal vol
+fix extra all print ${Nfreq} "${varStep} ${varTemp} ${varPress} ${varVolu}" file temperature.txt
 
 #--- thermo
 thermo	${Nfreq}
@@ -83,6 +84,10 @@ timestep ${Dt}
 #--- compute & dump variables
 #-----------------------------
 dump      	1 all custom ${Nfreq} xyz.dump id type x y z 
+
+#--- minimization
+min_style 	cg
+minimize	0.0 1.0e-8 1000 100000
 
 
 #-----------------------------
