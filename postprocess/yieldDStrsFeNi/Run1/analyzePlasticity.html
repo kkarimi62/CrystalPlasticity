@@ -12206,6 +12206,25 @@ div#notebook {
             <span class="k">continue</span>
         <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
     <span class="k">return</span> <span class="n">sarr</span>
+
+<span class="k">def</span> <span class="nf">MultipleFrames2nd</span><span class="p">(</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">nrun</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">):</span>
+    <span class="n">i</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">append</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nrun</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">sarr0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/Run</span><span class="si">%s</span><span class="s1">/</span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">title</span><span class="p">))]</span><span class="o">.</span><span class="n">T</span>
+            <span class="c1">#        print i,sarr0</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">append</span><span class="p">:</span>
+                <span class="n">sarr</span> <span class="o">=</span> <span class="n">sarr0</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="n">append</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">sarr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">sarr</span><span class="p">,</span><span class="n">sarr0</span><span class="p">),</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
+    <span class="c1">#        traceback.print_exc()</span>
+            <span class="k">continue</span>
+        <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
+    <span class="k">return</span> <span class="n">sarr</span>
 </pre></div>
 
 </div>
@@ -12345,8 +12364,8 @@ div#notebook {
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#--- parse lammps data</span>
 <span class="n">lmpData</span> <span class="o">=</span> <span class="n">lp</span><span class="o">.</span><span class="n">ReadDumpFile</span><span class="p">(</span> <span class="n">fileName</span> <span class="p">)</span>
-<span class="c1">#lmpData.GetCords( ncount = sys.maxsize, columns = {&#39;c_mystress[4]&#39;:&#39;sxy&#39;} )</span>
-<span class="n">lmpData</span><span class="o">.</span><span class="n">GetCords</span><span class="p">(</span> <span class="n">ncount</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;c_mystress4&#39;</span><span class="p">:</span><span class="s1">&#39;sxy&#39;</span><span class="p">}</span> <span class="p">)</span> <span class="c1">#!!!!!!</span>
+<span class="n">lmpData</span><span class="o">.</span><span class="n">GetCords</span><span class="p">(</span> <span class="n">ncount</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;c_mystress[4]&#39;</span><span class="p">:</span><span class="s1">&#39;sxy&#39;</span><span class="p">}</span> <span class="p">)</span>
+<span class="c1">#lmpData.GetCords( ncount = sys.maxsize, columns = {&#39;c_mystress4&#39;:&#39;sxy&#39;} ) #!!!!!!</span>
 <span class="k">if</span> <span class="n">CommonNeighAnl</span><span class="p">:</span>
     <span class="n">lmpCna</span> <span class="o">=</span> <span class="n">lp</span><span class="o">.</span><span class="n">ReadDumpFile</span><span class="p">(</span> <span class="n">fileName2nd</span> <span class="p">)</span>
     <span class="n">lmpCna</span><span class="o">.</span><span class="n">GetCords</span><span class="p">(</span> <span class="n">ncount</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span><span class="p">)</span>
@@ -13114,6 +13133,72 @@ NGSUUmGlIaOUCqv/B1QDv51aqr7CAAAAAElFTkSuQmCC
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="multiple-frames">multiple frames<a class="anchor-link" href="#multiple-frames">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sarr</span> <span class="o">=</span> <span class="n">MultipleFrames2nd</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;yieldDStrsFeNi&#39;</span><span class="p">,</span><span class="n">nrun</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;YieldDelta.txt&#39;</span><span class="p">)</span>
+<span class="c1">#</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$\gamma$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Frequency&#39;</span><span class="p">)</span>
+<span class="c1">#ax.set_ylim(1e0,1e4)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="c1">#</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sarr</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">sarr</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;FCC&#39;</span><span class="p">)</span>
+<span class="c1">#</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="c1">#plt.savefig(&#39;StructureTypeGamma.png&#39;,dpi=75,bbox_inches=&#39;tight&#39;)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">UnboundLocalError</span>                         Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-16-5c459575e1ef&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>sarr <span class="ansi-blue-fg">=</span> MultipleFrames2nd<span class="ansi-blue-fg">(</span>path<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;yieldDStrsFeNi&#39;</span><span class="ansi-blue-fg">,</span>nrun<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">3</span><span class="ansi-blue-fg">,</span>title<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;YieldDelta.txt&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      2</span> <span class="ansi-red-fg">#</span>
+<span class="ansi-green-intense-fg ansi-bold">      3</span> fig <span class="ansi-blue-fg">=</span> plt<span class="ansi-blue-fg">.</span>figure<span class="ansi-blue-fg">(</span>figsize<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">4</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">4</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      4</span> ax <span class="ansi-blue-fg">=</span> fig<span class="ansi-blue-fg">.</span>add_subplot<span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">111</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      5</span> ax<span class="ansi-blue-fg">.</span>set_xlabel<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;$\gamma$&#39;</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">&lt;ipython-input-3-2c24d80eca0f&gt;</span> in <span class="ansi-cyan-fg">MultipleFrames2nd</span><span class="ansi-blue-fg">(path, title, nrun)</span>
+<span class="ansi-green-intense-fg ansi-bold">    361</span>             <span class="ansi-green-fg">continue</span>
+<span class="ansi-green-intense-fg ansi-bold">    362</span>         i<span class="ansi-blue-fg">+=</span><span class="ansi-cyan-fg">1</span>
+<span class="ansi-green-fg">--&gt; 363</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">return</span> sarr
+
+<span class="ansi-red-fg">UnboundLocalError</span>: local variable &#39;sarr&#39; referenced before assignment</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Plastic-Deformation">Plastic Deformation<a class="anchor-link" href="#Plastic-Deformation">&#182;</a></h1>
 </div>
 </div>
@@ -13128,7 +13213,7 @@ NGSUUmGlIaOUCqv/B1QDv51aqr7CAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#--- extract atom and box properties</span>
@@ -13213,7 +13298,7 @@ NGSUUmGlIaOUCqv/B1QDv51aqr7CAAAAAElFTkSuQmCC
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[16]:</div>
+<div class="prompt output_prompt">Out[17]:</div>
 
 
 
@@ -13333,7 +13418,7 @@ NGSUUmGlIaOUCqv/B1QDv51aqr7CAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># #--- shuffled displacements</span>
@@ -13362,7 +13447,7 @@ NGSUUmGlIaOUCqv/B1QDv51aqr7CAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#--- get a chunk</span>
@@ -13400,7 +13485,7 @@ NGSUUmGlIaOUCqv/B1QDv51aqr7CAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">PairCorrelationFunction</span><span class="p">:</span>
@@ -13431,7 +13516,7 @@ NGSUUmGlIaOUCqv/B1QDv51aqr7CAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">DminAnalysis</span><span class="p">:</span>
@@ -13466,7 +13551,7 @@ NGSUUmGlIaOUCqv/B1QDv51aqr7CAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">DminAnalysis</span><span class="p">:</span>
@@ -13513,7 +13598,7 @@ NGSUUmGlIaOUCqv/B1QDv51aqr7CAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">DminAnalysis</span><span class="p">:</span>
@@ -13564,7 +13649,7 @@ NGSUUmGlIaOUCqv/B1QDv51aqr7CAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">DminAnalysis</span><span class="p">:</span>
@@ -13601,7 +13686,7 @@ NGSUUmGlIaOUCqv/B1QDv51aqr7CAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">DminAnalysis</span> <span class="ow">and</span> <span class="n">CrltnFunctionUnstructured</span><span class="p">:</span>
@@ -13626,7 +13711,7 @@ NGSUUmGlIaOUCqv/B1QDv51aqr7CAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># n=1000*4</span>
@@ -13665,7 +13750,7 @@ NGSUUmGlIaOUCqv/B1QDv51aqr7CAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#--- load data</span>
@@ -13685,7 +13770,7 @@ NGSUUmGlIaOUCqv/B1QDv51aqr7CAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">DminAnalysis</span> <span class="ow">and</span> <span class="n">CrltnFunctionUnstructured</span><span class="p">:</span>
@@ -13732,7 +13817,7 @@ NGSUUmGlIaOUCqv/B1QDv51aqr7CAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">DminAnalysis</span><span class="p">:</span>
@@ -13800,7 +13885,7 @@ NGSUUmGlIaOUCqv/B1QDv51aqr7CAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sarr</span> <span class="o">=</span> <span class="n">MultipleFrames</span><span class="p">(</span><span class="s1">&#39;glassFeNi&#39;</span><span class="p">,</span><span class="s1">&#39;rc_d2min.txt&#39;</span><span class="p">)</span>
@@ -13837,17 +13922,19 @@ NGSUUmGlIaOUCqv/B1QDv51aqr7CAAAAAElFTkSuQmCC
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
 <span class="ansi-red-fg">UnboundLocalError</span>                         Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-29-c4813ec47885&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">&lt;ipython-input-30-c4813ec47885&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
 <span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>sarr <span class="ansi-blue-fg">=</span> MultipleFrames<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;glassFeNi&#39;</span><span class="ansi-blue-fg">,</span><span class="ansi-blue-fg">&#39;rc_d2min.txt&#39;</span><span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">      2</span> <span class="ansi-red-fg">#--- plot</span>
 <span class="ansi-green-intense-fg ansi-bold">      3</span> fig <span class="ansi-blue-fg">=</span> plt<span class="ansi-blue-fg">.</span>figure<span class="ansi-blue-fg">(</span> figsize <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">4</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">4</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">      4</span> ax <span class="ansi-blue-fg">=</span> fig<span class="ansi-blue-fg">.</span>add_subplot<span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">111</span><span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">      5</span> xstr <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">r&#39;$\gamma$&#39;</span>
 
-<span class="ansi-green-fg">&lt;ipython-input-3-0e1cd591488d&gt;</span> in <span class="ansi-cyan-fg">MultipleFrames</span><span class="ansi-blue-fg">(path, title, irun, nmax)</span>
+<span class="ansi-green-fg">&lt;ipython-input-3-2c24d80eca0f&gt;</span> in <span class="ansi-cyan-fg">MultipleFrames</span><span class="ansi-blue-fg">(path, title, irun, nmax)</span>
 <span class="ansi-green-intense-fg ansi-bold">    342</span>             <span class="ansi-green-fg">continue</span>
 <span class="ansi-green-intense-fg ansi-bold">    343</span>         i<span class="ansi-blue-fg">+=</span><span class="ansi-cyan-fg">1</span>
 <span class="ansi-green-fg">--&gt; 344</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">return</span> sarr
+<span class="ansi-green-intense-fg ansi-bold">    345</span> 
+<span class="ansi-green-intense-fg ansi-bold">    346</span> <span class="ansi-green-fg">def</span> MultipleFrames2nd<span class="ansi-blue-fg">(</span> path<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;&#39;</span><span class="ansi-blue-fg">,</span> title<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;&#39;</span><span class="ansi-blue-fg">,</span> nrun <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">0</span> <span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
 
 <span class="ansi-red-fg">UnboundLocalError</span>: local variable &#39;sarr&#39; referenced before assignment</pre>
 </div>
@@ -13867,7 +13954,7 @@ NGSUUmGlIaOUCqv/B1QDv51aqr7CAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">CommonNeighAnl</span><span class="p">:</span>
@@ -13890,7 +13977,7 @@ NGSUUmGlIaOUCqv/B1QDv51aqr7CAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">CommonNeighAnl</span><span class="p">:</span>
@@ -13900,7 +13987,7 @@ NGSUUmGlIaOUCqv/B1QDv51aqr7CAAAAAElFTkSuQmCC
     <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Type&#39;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Frequency&#39;</span><span class="p">)</span>
     <span class="c1">#</span>
-    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cna</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)[</span><span class="s1">&#39;StructureType&#39;</span><span class="p">],</span> <span class="n">return_counts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cna</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)[</span><span class="s1">&#39;StructureType&#39;</span><span class="p">],</span> <span class="n">return_counts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1">#bug !!! len(y)!=5</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
     <span class="c1">#</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -13929,7 +14016,7 @@ NGSUUmGlIaOUCqv/B1QDv51aqr7CAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">CommonNeighAnl</span><span class="p">:</span>
@@ -13968,7 +14055,7 @@ NGSUUmGlIaOUCqv/B1QDv51aqr7CAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[33]:</div>
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">CommonNeighAnl</span> <span class="ow">and</span> <span class="n">DminAnalysis</span><span class="p">:</span>
@@ -14011,7 +14098,7 @@ NGSUUmGlIaOUCqv/B1QDv51aqr7CAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="prompt input_prompt">In&nbsp;[35]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#--- mean dist between atoms </span>
@@ -14044,7 +14131,7 @@ NGSUUmGlIaOUCqv/B1QDv51aqr7CAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[35]:</div>
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">StrnAnalysis</span><span class="p">:</span>
@@ -14078,7 +14165,7 @@ NGSUUmGlIaOUCqv/B1QDv51aqr7CAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[36]:</div>
+<div class="prompt input_prompt">In&nbsp;[37]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">StrnAnalysis</span><span class="p">:</span>
@@ -14111,7 +14198,7 @@ NGSUUmGlIaOUCqv/B1QDv51aqr7CAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[37]:</div>
+<div class="prompt input_prompt">In&nbsp;[38]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">StrnAnalysis</span><span class="p">:</span>
@@ -14137,7 +14224,7 @@ NGSUUmGlIaOUCqv/B1QDv51aqr7CAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[38]:</div>
+<div class="prompt input_prompt">In&nbsp;[39]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">FilterMatrix</span><span class="p">(</span> <span class="n">CellVector</span><span class="p">,</span> <span class="n">CellOrigin</span><span class="p">,</span>
@@ -14214,7 +14301,7 @@ NGSUUmGlIaOUCqv/B1QDv51aqr7CAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[39]:</div>
+<div class="prompt input_prompt">In&nbsp;[40]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># fig=plt.figure(figsize=(4,4))</span>
@@ -14249,7 +14336,7 @@ NGSUUmGlIaOUCqv/B1QDv51aqr7CAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[40]:</div>
+<div class="prompt input_prompt">In&nbsp;[41]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># itime = np.max(Strain.keys())</span>
@@ -14289,7 +14376,7 @@ NGSUUmGlIaOUCqv/B1QDv51aqr7CAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[41]:</div>
+<div class="prompt input_prompt">In&nbsp;[42]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">StrnAnalysis</span><span class="p">:</span>
@@ -14330,7 +14417,7 @@ NGSUUmGlIaOUCqv/B1QDv51aqr7CAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[42]:</div>
+<div class="prompt input_prompt">In&nbsp;[43]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">GetAutoCorrelation</span><span class="p">(</span> <span class="n">val</span> <span class="p">):</span>
@@ -14385,7 +14472,7 @@ NGSUUmGlIaOUCqv/B1QDv51aqr7CAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[43]:</div>
+<div class="prompt input_prompt">In&nbsp;[44]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">StrnAnalysis</span><span class="p">:</span>
@@ -14438,7 +14525,7 @@ NGSUUmGlIaOUCqv/B1QDv51aqr7CAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[44]:</div>
+<div class="prompt input_prompt">In&nbsp;[45]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">StrnAnalysis</span><span class="p">:</span>
@@ -14466,7 +14553,7 @@ NGSUUmGlIaOUCqv/B1QDv51aqr7CAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[45]:</div>
+<div class="prompt input_prompt">In&nbsp;[46]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># #--- extract length</span>
