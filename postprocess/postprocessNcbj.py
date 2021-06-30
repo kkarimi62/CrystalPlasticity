@@ -13,7 +13,7 @@ def makeOAR( EXEC_DIR, node, core, partitionime, PYFIL, argv,argv2nd):
 if __name__ == '__main__':
 	import os
 
-	nruns	 = range(1)
+	nruns	 = range(3)
 	jobname  = 'yieldDStrsFeNi' 
 	readPath = os.getcwd() + '/../testRuns/glassFeNi' # --- source
 	EXEC_DIR = '.'     #--- path for executable file
