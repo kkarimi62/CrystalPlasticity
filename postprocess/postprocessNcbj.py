@@ -13,9 +13,9 @@ def makeOAR( EXEC_DIR, node, core, partitionime, PYFIL, argv,argv2nd):
 if __name__ == '__main__':
 	import os
 
-	nruns	 = range(3)
-	jobname  = 'yieldDStrsCo5Cr5Fe40Mn27Ni26' 
-	readPath = os.getcwd() + '/../testRuns/glassCo5Cr5Fe40Mn27Ni26' # --- source
+	nruns	 = range(1)
+	jobname  = 'yieldDStrsFeNi' 
+	readPath = os.getcwd() + '/../testRuns/glassFeNi' # --- source
 	EXEC_DIR = '.'     #--- path for executable file
 	durtn = '00:59:59'
 	resources = {'mem':'4gb', 'partition':'o12h','nodes':1,'ppn':1}
