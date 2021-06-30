@@ -12298,7 +12298,7 @@ div#notebook {
 <span class="c1">#path=&#39;/Users/Home/Desktop/Tmp/txt/git/CrystalPlasticity/BmgData&#39;</span>
 
 <span class="c1">#--- bulk stress files</span>
-<span class="n">indx</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">indx</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">fileNamee</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;FeNi.txt&#39;</span><span class="p">,</span> 
 <span class="c1">#              &#39;CoNiCr.txt&#39;, </span>
              <span class="s1">&#39;CoNiFe.txt&#39;</span><span class="p">,</span> 
@@ -12326,6 +12326,31 @@ div#notebook {
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">IndexError</span>                                Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-5-fea2eefac5d2&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">     53</span> fileName2nd = &#39;%s/%s&#39;%(path,[
+<span class="ansi-green-intense-fg ansi-bold">     54</span>             <span class="ansi-blue-fg">&#39;FeNi_Cna.xyz&#39;</span><span class="ansi-blue-fg">,</span>
+<span class="ansi-green-fg">---&gt; 55</span><span class="ansi-red-fg">                             ][indx]) 
+</span>
+<span class="ansi-red-fg">IndexError</span>: list index out of range</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -12348,51 +12373,6 @@ div#notebook {
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">OSError</span>                                   Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-6-06cccbcc7aa4&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> ReadStrsFromDump<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">----&gt; 2</span><span class="ansi-red-fg">     </span>stress <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>loadtxt<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;%s/%s&#39;</span><span class="ansi-blue-fg">%</span><span class="ansi-blue-fg">(</span>path<span class="ansi-blue-fg">,</span>fileNamee<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">/mnt/opt/tools/slc6/python/3.5.1-x86_64-gcc46/lib/python3.5/site-packages/numpy/lib/npyio.py</span> in <span class="ansi-cyan-fg">loadtxt</span><span class="ansi-blue-fg">(fname, dtype, comments, delimiter, converters, skiprows, usecols, unpack, ndmin, encoding, max_rows)</span>
-<span class="ansi-green-intense-fg ansi-bold">    953</span>             fname <span class="ansi-blue-fg">=</span> os_fspath<span class="ansi-blue-fg">(</span>fname<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    954</span>         <span class="ansi-green-fg">if</span> _is_string_like<span class="ansi-blue-fg">(</span>fname<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 955</span><span class="ansi-red-fg">             </span>fh <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>lib<span class="ansi-blue-fg">.</span>_datasource<span class="ansi-blue-fg">.</span>open<span class="ansi-blue-fg">(</span>fname<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;rt&#39;</span><span class="ansi-blue-fg">,</span> encoding<span class="ansi-blue-fg">=</span>encoding<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    956</span>             fencoding <span class="ansi-blue-fg">=</span> getattr<span class="ansi-blue-fg">(</span>fh<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;encoding&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;latin1&#39;</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    957</span>             fh <span class="ansi-blue-fg">=</span> iter<span class="ansi-blue-fg">(</span>fh<span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">/mnt/opt/tools/slc6/python/3.5.1-x86_64-gcc46/lib/python3.5/site-packages/numpy/lib/_datasource.py</span> in <span class="ansi-cyan-fg">open</span><span class="ansi-blue-fg">(path, mode, destpath, encoding, newline)</span>
-<span class="ansi-green-intense-fg ansi-bold">    264</span> 
-<span class="ansi-green-intense-fg ansi-bold">    265</span>     ds <span class="ansi-blue-fg">=</span> DataSource<span class="ansi-blue-fg">(</span>destpath<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">--&gt; 266</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">return</span> ds<span class="ansi-blue-fg">.</span>open<span class="ansi-blue-fg">(</span>path<span class="ansi-blue-fg">,</span> mode<span class="ansi-blue-fg">,</span> encoding<span class="ansi-blue-fg">=</span>encoding<span class="ansi-blue-fg">,</span> newline<span class="ansi-blue-fg">=</span>newline<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    267</span> 
-<span class="ansi-green-intense-fg ansi-bold">    268</span> 
-
-<span class="ansi-green-fg">/mnt/opt/tools/slc6/python/3.5.1-x86_64-gcc46/lib/python3.5/site-packages/numpy/lib/_datasource.py</span> in <span class="ansi-cyan-fg">open</span><span class="ansi-blue-fg">(self, path, mode, encoding, newline)</span>
-<span class="ansi-green-intense-fg ansi-bold">    622</span>                                       encoding=encoding, newline=newline)
-<span class="ansi-green-intense-fg ansi-bold">    623</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 624</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">raise</span> IOError<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;%s not found.&#34;</span> <span class="ansi-blue-fg">%</span> path<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    625</span> 
-<span class="ansi-green-intense-fg ansi-bold">    626</span> 
-
-<span class="ansi-red-fg">OSError</span>: /mnt/home/kkarimi/Project/git/CrystalPlasticity/postprocess/../testRuns/glassCoNiFe/Run2/FeNi.txt not found.</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -12409,48 +12389,14 @@ div#notebook {
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#--- parse lammps data</span>
 <span class="n">lmpData</span> <span class="o">=</span> <span class="n">lp</span><span class="o">.</span><span class="n">ReadDumpFile</span><span class="p">(</span> <span class="n">fileName</span> <span class="p">)</span>
-<span class="c1">#lmpData.GetCords( ncount = sys.maxsize, columns = {&#39;c_mystress[4]&#39;:&#39;sxy&#39;} )</span>
-<span class="n">lmpData</span><span class="o">.</span><span class="n">GetCords</span><span class="p">(</span> <span class="n">ncount</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;c_mystress4&#39;</span><span class="p">:</span><span class="s1">&#39;sxy&#39;</span><span class="p">}</span> <span class="p">)</span> <span class="c1">#!!!!!!</span>
+<span class="n">lmpData</span><span class="o">.</span><span class="n">GetCords</span><span class="p">(</span> <span class="n">ncount</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;c_mystress[4]&#39;</span><span class="p">:</span><span class="s1">&#39;sxy&#39;</span><span class="p">}</span> <span class="p">)</span>
+<span class="c1">#lmpData.GetCords( ncount = sys.maxsize, columns = {&#39;c_mystress4&#39;:&#39;sxy&#39;} ) #!!!!!!</span>
 <span class="k">if</span> <span class="n">CommonNeighAnl</span><span class="p">:</span>
     <span class="n">lmpCna</span> <span class="o">=</span> <span class="n">lp</span><span class="o">.</span><span class="n">ReadDumpFile</span><span class="p">(</span> <span class="n">fileName2nd</span> <span class="p">)</span>
     <span class="n">lmpCna</span><span class="o">.</span><span class="n">GetCords</span><span class="p">(</span> <span class="n">ncount</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span><span class="p">)</span>
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">FileNotFoundError</span>                         Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-7-6eaa528edc61&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-intense-fg ansi-bold">      2</span> lmpData <span class="ansi-blue-fg">=</span> lp<span class="ansi-blue-fg">.</span>ReadDumpFile<span class="ansi-blue-fg">(</span> fileName <span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      3</span> <span class="ansi-red-fg">#lmpData.GetCords( ncount = sys.maxsize, columns = {&#39;c_mystress[4]&#39;:&#39;sxy&#39;} )</span>
-<span class="ansi-green-fg">----&gt; 4</span><span class="ansi-red-fg"> </span>lmpData<span class="ansi-blue-fg">.</span>GetCords<span class="ansi-blue-fg">(</span> ncount <span class="ansi-blue-fg">=</span> sys<span class="ansi-blue-fg">.</span>maxsize<span class="ansi-blue-fg">,</span> columns <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">&#39;c_mystress4&#39;</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">&#39;sxy&#39;</span><span class="ansi-blue-fg">}</span> <span class="ansi-blue-fg">)</span> <span class="ansi-red-fg">#!!!!!!</span>
-<span class="ansi-green-intense-fg ansi-bold">      5</span> <span class="ansi-green-fg">if</span> CommonNeighAnl<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">      6</span>     lmpCna <span class="ansi-blue-fg">=</span> lp<span class="ansi-blue-fg">.</span>ReadDumpFile<span class="ansi-blue-fg">(</span> fileName2nd <span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">~/Project/git/CrystalPlasticity/postprocess/yieldDStrsCoNiFe/Run2/LammpsPostProcess.py</span> in <span class="ansi-cyan-fg">GetCords</span><span class="ansi-blue-fg">(self, ncount, columns)</span>
-<span class="ansi-green-intense-fg ansi-bold">     85</span> 
-<span class="ansi-green-intense-fg ansi-bold">     86</span>     <span class="ansi-green-fg">def</span> GetCords<span class="ansi-blue-fg">(</span> self<span class="ansi-blue-fg">,</span> ncount <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span> columns <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span> <span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">---&gt; 87</span><span class="ansi-red-fg">         </span>slist <span class="ansi-blue-fg">=</span> open<span class="ansi-blue-fg">(</span> self<span class="ansi-blue-fg">.</span>path <span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     88</span>         count <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">0</span>
-<span class="ansi-green-intense-fg ansi-bold">     89</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
-
-<span class="ansi-red-fg">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;/mnt/home/kkarimi/Project/git/CrystalPlasticity/postprocess/../testRuns/glassCoNiFe/Run2/FeNi_glass.dump&#39;</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -12560,19 +12506,182 @@ div#notebook {
 <div class="prompt"></div>
 
 
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-9-dafdfa33a84e&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-intense-fg ansi-bold">      8</span>     ax<span class="ansi-blue-fg">.</span>set_title<span class="ansi-blue-fg">(</span>fileNamee<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">-</span><span class="ansi-cyan-fg">4</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      9</span>     <span class="ansi-red-fg">#</span>
-<span class="ansi-green-fg">---&gt; 10</span><span class="ansi-red-fg">     </span>strain <span class="ansi-blue-fg">=</span> stress<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span>
-<span class="ansi-green-intense-fg ansi-bold">     11</span>     Virial <span class="ansi-blue-fg">=</span> stress<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span>
-<span class="ansi-green-intense-fg ansi-bold">     12</span>     ax<span class="ansi-blue-fg">.</span>plot<span class="ansi-blue-fg">(</span>strain<span class="ansi-blue-fg">,</span>Virial<span class="ansi-blue-fg">,</span><span class="ansi-blue-fg">&#39;-&#39;</span><span class="ansi-blue-fg">)</span>
 
-<span class="ansi-red-fg">NameError</span>: name &#39;stress&#39; is not defined</pre>
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+v63Onx52v4eA+lZsQ6wl8x6xR5fHAe8AnwLbJvWZ2AhcmVT/YWLN1WHA4cCjwDdA77C/t0J+5eC8
+9ANOAi4i1g/ptvj2SWF/b4X6yuacEOsYuRl4Bjgw6dU9o88P+z8gwP/oTsBjwCpgNfA/oCzpmLL4
+D/bvk8q3Bm4BvognoteA/mF/T8XwyvK8vBAvT3mF/X0V8qu+5wS4r7rzAbyQyWdr+hERiYxSuYck
+IgVACUlEIkMJSUQiQwlJRCJDCUlEIkMJSUQiQwlJRCJDCUlEIkMJSUQiQwlJIs3MuprZfWa20My+
+NbPFZjbZzBqHHZvkniZok8gys5bE5nJ+DbiA2ADn1kB7d98QZmySH0pIEmV9gXbEFliYCHzrsQUW
+pEhpcK1Elpm1JdZC2i1etNzdNYd5EVMLSaJsG2Jz69wCvAusCDccyTe1kCSSzKw5sUnCLnL3sWHH
+I8HQUzaJqkOJTRQ2K+xAJDi6ZJOoqlwF9R9mNhpYCnQABrj7j8MLS/JJLSSJJHd/DTiT2AIL9wJP
+A78lNrezFCndQxKRyFALSUQiQwlJRCJDCUlEIkMJSUQiQwlJRCJDCUlEIkMJSUQiQwlJRCLj/wHQ
+V+owddkpoQAAAABJRU5ErkJggg==
+"
+>
 </div>
+
 </div>
 
 </div>
@@ -12719,19 +12828,202 @@ div#notebook {
 <div class="prompt"></div>
 
 
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-11-1d3d24bfc88d&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-intense-fg ansi-bold">     32</span>     strain <span class="ansi-blue-fg">=</span> strainDump
-<span class="ansi-green-intense-fg ansi-bold">     33</span> 
-<span class="ansi-green-fg">---&gt; 34</span><span class="ansi-red-fg"> </span>x<span class="ansi-blue-fg">,</span> y <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>array<span class="ansi-blue-fg">(</span>strain<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> np<span class="ansi-blue-fg">.</span>array<span class="ansi-blue-fg">(</span>Virial<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     35</span> <span class="ansi-red-fg">#--- training points</span>
-<span class="ansi-green-intense-fg ansi-bold">     36</span> transfrm <span class="ansi-blue-fg">=</span> ReturnShapeFunc<span class="ansi-blue-fg">(</span>x<span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">10</span><span class="ansi-blue-fg">)</span>
-
-<span class="ansi-red-fg">NameError</span>: name &#39;strain&#39; is not defined</pre>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>ey= 0.0939117999999999
+sy= 2.523393724750365
+em= 0.1156598
+</pre>
 </div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+YII=
+"
+>
+</div>
+
 </div>
 
 </div>
@@ -12769,18 +13061,9 @@ div#notebook {
 <div class="prompt"></div>
 
 
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-12-d7016d97b8b4&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-intense-fg ansi-bold">      2</span> times <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>array<span class="ansi-blue-fg">(</span>sorted<span class="ansi-blue-fg">(</span>times<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      3</span> <span class="ansi-green-fg">if</span> AssignYieldTime<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">----&gt; 4</span><span class="ansi-red-fg">     </span>itime <span class="ansi-blue-fg">=</span> times<span class="ansi-blue-fg">[</span>strainDump<span class="ansi-blue-fg">&gt;=</span>ey<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span>
-<span class="ansi-green-intense-fg ansi-bold">      5</span>     print<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;itime(peak)=%s&#39;</span><span class="ansi-blue-fg">%</span>itime<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      6</span> <span class="ansi-green-fg">elif</span> AssignMaxDropTime<span class="ansi-blue-fg">:</span>
-
-<span class="ansi-red-fg">NameError</span>: name &#39;ey&#39; is not defined</pre>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>itime(peak)=940000
+</pre>
 </div>
 </div>
 
@@ -12904,33 +13187,6 @@ div#notebook {
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-15-fb7f431d02bc&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>atoms <span class="ansi-blue-fg">=</span> lp<span class="ansi-blue-fg">.</span>Atoms<span class="ansi-blue-fg">(</span> <span class="ansi-blue-fg">**</span>lmpData<span class="ansi-blue-fg">.</span>coord_atoms_broken<span class="ansi-blue-fg">[</span>itime<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">.</span>to_dict<span class="ansi-blue-fg">(</span>orient<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;list&#39;</span><span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      2</span> df <span class="ansi-blue-fg">=</span> pd<span class="ansi-blue-fg">.</span>DataFrame<span class="ansi-blue-fg">(</span>atoms<span class="ansi-blue-fg">.</span>__dict__<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      3</span> size <span class="ansi-blue-fg">=</span> list<span class="ansi-blue-fg">(</span>map<span class="ansi-blue-fg">(</span>LatticeConstant<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">,</span>list<span class="ansi-blue-fg">(</span>map<span class="ansi-blue-fg">(</span>int<span class="ansi-blue-fg">,</span>df<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;type&#39;</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">.</span>tolist<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      4</span> <span class="ansi-green-fg">assert</span> len<span class="ansi-blue-fg">(</span>size<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">==</span> len<span class="ansi-blue-fg">(</span>df<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      5</span> df <span class="ansi-blue-fg">=</span> pd<span class="ansi-blue-fg">.</span>DataFrame<span class="ansi-blue-fg">(</span>np<span class="ansi-blue-fg">.</span>c_<span class="ansi-blue-fg">[</span>df<span class="ansi-blue-fg">,</span>size<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span>columns<span class="ansi-blue-fg">=</span>list<span class="ansi-blue-fg">(</span>df<span class="ansi-blue-fg">.</span>keys<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">+</span><span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;size&#39;</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
-
-<span class="ansi-red-fg">NameError</span>: name &#39;itime&#39; is not defined</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -13096,19 +13352,126 @@ div#notebook {
 <div class="prompt"></div>
 
 
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-17-9d7f2e798cc0&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-intense-fg ansi-bold">      1</span> 
-<span class="ansi-green-intense-fg ansi-bold">      2</span> <span class="ansi-red-fg">#--- extract atom and box properties</span>
-<span class="ansi-green-fg">----&gt; 3</span><span class="ansi-red-fg"> </span>atoms <span class="ansi-blue-fg">=</span> lp<span class="ansi-blue-fg">.</span>Atoms<span class="ansi-blue-fg">(</span> <span class="ansi-blue-fg">**</span>lmpData<span class="ansi-blue-fg">.</span>coord_atoms_broken<span class="ansi-blue-fg">[</span>itime<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">.</span>to_dict<span class="ansi-blue-fg">(</span>orient<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;list&#39;</span><span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      4</span> <span class="ansi-red-fg">#</span>
-<span class="ansi-green-intense-fg ansi-bold">      5</span> box <span class="ansi-blue-fg">=</span> lp<span class="ansi-blue-fg">.</span>Box<span class="ansi-blue-fg">(</span> BoxBounds <span class="ansi-blue-fg">=</span> lmpData<span class="ansi-blue-fg">.</span>BoxBounds<span class="ansi-blue-fg">[</span>itime<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">)</span>
-
-<span class="ansi-red-fg">NameError</span>: name &#39;itime&#39; is not defined</pre>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>warning: attributes x, y, z are now unwrapped!
+</pre>
 </div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[17]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>dx</th>
+      <th>dy</th>
+      <th>dz</th>
+      <th>id</th>
+      <th>type</th>
+      <th>x</th>
+      <th>xm</th>
+      <th>y</th>
+      <th>ym</th>
+      <th>z</th>
+      <th>zm</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-3.105933</td>
+      <td>-0.09510</td>
+      <td>-0.63863</td>
+      <td>1.0</td>
+      <td>2.0</td>
+      <td>3.97959</td>
+      <td>3.97959</td>
+      <td>-10.67430</td>
+      <td>-10.67430</td>
+      <td>-1.48503</td>
+      <td>-1.48503</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1.710710</td>
+      <td>-0.00120</td>
+      <td>-0.03068</td>
+      <td>2.0</td>
+      <td>1.0</td>
+      <td>-3.00854</td>
+      <td>-3.00854</td>
+      <td>44.66750</td>
+      <td>44.66750</td>
+      <td>3.04828</td>
+      <td>3.04828</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>-2.474700</td>
+      <td>-0.33971</td>
+      <td>0.15950</td>
+      <td>3.0</td>
+      <td>2.0</td>
+      <td>36.93340</td>
+      <td>36.93340</td>
+      <td>-8.76493</td>
+      <td>-8.76493</td>
+      <td>39.51100</td>
+      <td>39.51100</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2.300400</td>
+      <td>-0.15120</td>
+      <td>0.12960</td>
+      <td>4.0</td>
+      <td>2.0</td>
+      <td>52.55500</td>
+      <td>52.55500</td>
+      <td>47.43560</td>
+      <td>47.43560</td>
+      <td>37.79310</td>
+      <td>37.79310</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.378420</td>
+      <td>-0.22980</td>
+      <td>0.16970</td>
+      <td>5.0</td>
+      <td>1.0</td>
+      <td>9.80088</td>
+      <td>9.80088</td>
+      <td>27.66730</td>
+      <td>27.66730</td>
+      <td>21.09160</td>
+      <td>21.09160</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
 </div>
 
 </div>
@@ -13816,33 +14179,6 @@ div#notebook {
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-35-9e8508ae68fd&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-red-fg">#--- mean dist between atoms</span>
-<span class="ansi-green-fg">----&gt; 2</span><span class="ansi-red-fg"> </span>natoms <span class="ansi-blue-fg">=</span> len<span class="ansi-blue-fg">(</span> atoms0<span class="ansi-blue-fg">.</span>x <span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      3</span> CellVectorOrtho<span class="ansi-blue-fg">,</span> VectorNorm <span class="ansi-blue-fg">=</span> lp<span class="ansi-blue-fg">.</span>GetOrthogonalBasis<span class="ansi-blue-fg">(</span> box0<span class="ansi-blue-fg">.</span>CellVector <span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      4</span> volume <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>linalg<span class="ansi-blue-fg">.</span>det<span class="ansi-blue-fg">(</span> CellVectorOrtho <span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      5</span> dmean <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">(</span> volume <span class="ansi-blue-fg">/</span> natoms <span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">**</span> <span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">1.0</span><span class="ansi-blue-fg">/</span><span class="ansi-cyan-fg">3.0</span><span class="ansi-blue-fg">)</span>
-
-<span class="ansi-red-fg">NameError</span>: name &#39;atoms0&#39; is not defined</pre>
-</div>
-</div>
-
 </div>
 </div>
 
