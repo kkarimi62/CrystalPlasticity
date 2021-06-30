@@ -14,8 +14,8 @@ if __name__ == '__main__':
 	import os
 
 	nruns	 = range(3)
-	jobname  = 'yieldDStrsCoNiCrFe' 
-	readPath = os.getcwd() + '/../testRuns/glassCoNiCrFe' # --- source
+	jobname  = 'yieldDStrsCoCrFeMn' 
+	readPath = os.getcwd() + '/../testRuns/glassCoCrFeMn' # --- source
 	EXEC_DIR = '.'     #--- path for executable file
 	durtn = '00:59:59'
 	resources = {'mem':'4gb', 'partition':'o12h','nodes':1,'ppn':1}
