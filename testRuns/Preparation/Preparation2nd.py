@@ -26,7 +26,7 @@ def makeOAR( EXEC_DIR, node, core, time, PYFIL ):
 #	print >> someFile, "mpirun -np %s $EXEC_DIR/%s < in.txt -var OUT_PATH %s -var MEAM_library_DIR %s -echo screen" %( nThreads, EXEC, OUT_PATH, MEAM_library_DIR )
 	if EXEC == 'lmp_serial': 
 		print >> someFile, "$EXEC_DIR/%s < in.txt -var OUT_PATH %s -var MEAM_library_DIR %s -echo screen" %( EXEC, OUT_PATH, MEAM_library_DIR )
-	elif EXEC = 'lmp_mpi':
+	elif EXEC == 'lmp_mpi':
 		print >> someFile, "mpirun -np %s $EXEC_DIR/%s < in.txt -var OUT_PATH %s -var MEAM_library_DIR %s"%( nThreads, EXEC, OUT_PATH, MEAM_library_DIR)
 	someFile.close()										  
 
