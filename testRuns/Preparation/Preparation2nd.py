@@ -6,11 +6,11 @@ def makeOAR( EXEC_DIR, node, core, time, PYFIL ):
 	print >> someFile, 'module load mpich/3.2.1-gnu'
 
 	#--- run python script 
-#	pyScript = open( '%s/pyScript.py'%writPath, 'w' )
-#	print >> pyScript, 'import imp\ngn=imp.load_source(\'generate.name\',\'%s/generate.py\')'%(PYFIL)
-#	print >> pyScript, 'gn.GenerateDataFromDump( \'%s/Run%s/%s\',title = \'data.txt\')'%(sourcePath, irun, 'dumpFileCords.xyz') #--- generate data file from a dump file
-#	pyScript.close()
-#	print >> someFile, 'python pyScript.py\n'
+	pyScript = open( '%s/pyScript.py'%writPath, 'w' )
+	print >> pyScript, 'import imp\ngn=imp.load_source(\'generate.name\',\'%s/generate.py\')'%(PYFIL)
+	print >> pyScript, 'gn.GenerateDataFromDump( \'%s/Run%s/%s\',title = \'data.txt\')'%(sourcePath, irun, 'AsQuenched.dump') #--- generate data file from a dump file
+	pyScript.close()
+	print >> someFile, 'python pyScript.py\n'
 
 	#--- parse sample height
 #	print >> someFile, "IFS=\',\' read -ra a <<< \"$string\"" #--- split into array
@@ -61,7 +61,7 @@ if __name__ == '__main__':
 			os.system( 'cp %s/%s %s' % ( EXEC_DIR, EXEC, path ) ) # --- create folder & mv oar scrip & cp executable
 		#---
 		os.system( 'cp in_shear.txt %s/in.txt ' % writPath ) #--- lammps script: periodic x, pxx, vy, load
-		os.system( 'cp data.txt %s' % writPath ) #--- py script add vels 
+#		os.system( 'cp data.txt %s' % writPath ) #--- py script add vels 
 		#---
 		makeOAR( path, 1, nThreads, durtn, PYFIL ) # --- make oar script
 		os.system( 'chmod +x oarScript.sh; mv oarScript.sh %s' % ( writPath) ) # --- create folder & mv oar scrip & cp executable
