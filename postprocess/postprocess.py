@@ -15,17 +15,17 @@ if __name__ == '__main__':
 	import os
 #
 	nruns	 = [1] #range(3)
-	jobname  = 'test'#'glassFeNi' 
+	jobname  = 'glassFeNi' 
 	readPath = os.getcwd() + '/../testRuns/glassFeNi' # --- source
 #	readPath = os.getcwd() + '/../BmgData' # --- source
 	EXEC_DIR = '.'     #--- path for executable file
 	durtn = '00:59:59'
-	mem = '8gb'
+	mem = '4gb'
 	partition = 'single' #'cpu2019' #'bigmem' #'single' #'parallel' #'single'
 #	argv = " -p path \'%s"%(readPath) #--- don't change! 
 #	argv2nd = " -p itime %s"%(0) 
 	argv = "path=%s"%(readPath) #--- don't change! 
-	argv2nd = "junk=junk"#"itime=10000" 
+	argv2nd = "itime=10000" 
 	PYFILdic = { 
 		0:'ElasticConstants.ipynb',
 		1:'analyzePlasticity.ipynb',
