@@ -72,7 +72,7 @@ variable varVolu equal vol
 fix extra all print ${Nfreq} "${varStep} ${varTemp} ${varPress} ${varVolu}" file temperature.txt
 
 #--- thermo
-thermo	${Nfreq}
+thermo			${Nfreq}
 thermo_style	custom step ke pe press temp vol 
 
 #-----------------------------

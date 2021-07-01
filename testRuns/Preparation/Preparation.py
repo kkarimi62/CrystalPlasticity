@@ -30,18 +30,18 @@ if __name__ == '__main__':
 
 	nruns	 = 1
 	nThreads = 1
-	jobname  = 'test9thMelt'
+	jobname  = 'test11thMelt2nd'
 #	sourcePath = os.getcwd() + '/dataFiles'
 	EXEC_DIR = '/home/kamran.karimi1/Project/git/CrystalPlasticity/lammps-29Oct20/src' #--- path for executable file
 	MEAM_library_DIR='/home/kamran.karimi1/Project/git/CrystalPlasticity/testRuns/dataFiles' #--- meam potential parameters
 	PYFIL = '/home/kamran.karimi1/Project/git/CrystalPlasticity/py'
 	EXEC = 'lmp_serial'
-	durtn = '23:59:59'
-	SCRATCH = None
+	durtn = '47:59:59'
+	SCRATCH = True
 	mem = '8gb'
 	partition = 'single' #'parallel'
 	#--- sim. parameters
-	natom = 4000 
+	natom = 50000 
 	ntypes = 5
         cutoff = 3.58
     #   cutoffs = np.linspace((1.0-0.5)*cutoff,(1+0.5)*cutoff,nruns)

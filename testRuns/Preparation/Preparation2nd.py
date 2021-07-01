@@ -58,7 +58,7 @@ if __name__ == '__main__':
 			os.system( 'cp %s/%s %s' % ( EXEC_DIR, EXEC, path ) ) # --- create folder & mv oar scrip & cp executable
 		#---
 		os.system( 'cp in_shear.txt %s/in.txt ' % writPath ) #--- lammps script: periodic x, pxx, vy, load
-		os.system( 'cp data.txt %s' % writPath ) 
+		os.system( 'cp data.txt %s' % writPath ) #--- py script add vels 
 		#---
 		makeOAR( path, 1, nThreads, durtn, PYFIL ) # --- make oar script
 		os.system( 'chmod +x oarScript.sh; mv oarScript.sh %s' % ( writPath) ) # --- create folder & mv oar scrip & cp executable
