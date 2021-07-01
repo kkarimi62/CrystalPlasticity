@@ -35,7 +35,7 @@ if __name__ == '__main__':
 	nThreads = 4
 	jobname  = 'test11thMelt2ndNatom50kParallel'
 #	sourcePath = os.getcwd() + '/dataFiles'
-	EXEC_DIR = '/home/kamran.karimi1/Project/git/lammps2nd/lammps/src/Obj_mpi' #--- path for executable file
+	EXEC_DIR = '/home/kamran.karimi1/Project/git/lammps2nd/lammps/src' #--- path for executable file
 	MEAM_library_DIR='/home/kamran.karimi1/Project/git/CrystalPlasticity/testRuns/dataFiles' #--- meam potential parameters
 	PYFIL = '/home/kamran.karimi1/Project/git/CrystalPlasticity/py'
 	EXEC = 'lmp_mpi' #'lmp_serial'
