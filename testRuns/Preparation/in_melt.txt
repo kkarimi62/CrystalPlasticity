@@ -5,14 +5,14 @@
 variable natoms	equal ${natom}  #--- system size 
 variable Ntype	equal 5		#--- number of atom types
 variable a      equal ${cutoff}   #--- lattice constant
-variable Dt		equal 0.001 #--- discretization time
+variable Dt		equal 0.01 #--- discretization time
 variable Tinit 	equal 300.0  #--- initial temperature
 variable Tfinal equal 3000.0 #--- final temperature
-variable tDampTemp 	equal 10*${Dt}   #--- thermostat equilibration time scale
+variable tDampTemp 	equal 100*${Dt}   #--- thermostat equilibration time scale
 variable Trate 	equal 50.0   #--- melting rate
 variable Pinit	equal 1.0132  #--- number of time steps
 variable Nfreq	equal 100  #--- number of time steps
-variable tEquilibrate	equal 1000*${tDampTemp}  #--- equilibration time
+variable tEquilibrate	equal 100*${tDampTemp}  #--- equilibration time
 variable tDampPress 	equal ${tDampTemp}   #--- barostat equilibration time scale
 
 #-----------------------------
@@ -73,7 +73,7 @@ fix extra all print ${Nfreq} "${varStep} ${varTemp} ${varPress} ${varVolu}" file
 
 #--- thermo
 thermo	${Nfreq}
-thermo_style	custom step ke pe press temp 
+thermo_style	custom step ke pe press temp vol 
 
 #-----------------------------
 #--- set dynamics
@@ -87,33 +87,40 @@ dump      	1 all custom ${Nfreq} xyz.dump id type x y z
 
 #--- minimization
 min_style 	cg
-minimize	0.0 1.0e-8 1000 100000
+minimize	1.0e-08 0.0 1000 100000
 
+#-----------------------------
+#--- thermalize to room temperature
+#-----------------------------
+velocity	all	create	${Tinit} 39849 mom yes rot yes dist gaussian
+fix 		fix_nvt	all	nvt	temp	${Tinit}	${Tinit}	${tDampTemp}	drag	1.0
+run			${nRunEquilibrate}
+unfix		fix_nvt
 
 #-----------------------------
 #--- melt & quench
 #-----------------------------
 #--- initial equilibration
-fix		fix_initEq	all npt temp ${Tinit} ${Tinit} ${tDampTemp} iso ${Pinit} ${Pinit} ${tDampPress}  
+fix		fix_initEq	all npt temp ${Tinit} ${Tinit} ${tDampTemp} iso ${Pinit} ${Pinit} ${tDampPress} drag 1.0  
 run 	${nRunEquilibrate}
+unfix	fix_initEq
 
 #--- melting
-unfix	fix_initEq
 fix		fix_melt	all npt temp ${Tinit} ${Tfinal} ${tDampTemp} iso ${Pinit} ${Pinit} ${tDampPress}  
 run		${nRunMelting}
+unfix	fix_melt
 
 #--- final equilibration
-unfix	fix_melt
 fix		fix_finalEq	all npt temp ${Tfinal} ${Tfinal} ${tDampTemp} iso ${Pinit} ${Pinit} ${tDampPress}  
 run 	${nRunEquilibrate}
+unfix	fix_finalEq
 
 #--- quench
-unfix	fix_finalEq
 fix		fix_quench	all npt temp ${Tfinal} ${Tinit} ${tDampTemp} iso ${Pinit} ${Pinit} ${tDampPress}  
 run		${nRunMelting}
+unfix	fix_quench
 
 #--- final equilibration
-unfix	fix_quench
 fix		fix_finalEq	all npt temp ${Tinit} ${Tinit} ${tDampTemp} iso ${Pinit} ${Pinit} ${tDampPress}  
 run 	${nRunEquilibrate}
 
