@@ -45,7 +45,7 @@ if __name__ == '__main__':
 		os.system( 'mkdir -p %s' % ( writPath ) ) # --- create folder
 		os.system( 'cp LammpsPostProcess.py %s' % ( writPath ) ) #--- cp python module
 		makeOAR( writPath, 1, 1, durtn, PYFIL, argv+"/Run%s\'"%counter, argv2nd) # --- make oar script
-		os.system( 'chmod +x oarScript.sh; mv oarScript.sh %s; cp %s/%s %s' % ( writPath, EXEC_DIR, PYFIL, writPath ) ) # --- create folder & mv oar scrip & cp executable
+		os.system( 'chmod +x oarScript.sh; mv oarScript.sh .env %s; cp %s/%s %s' % ( writPath, EXEC_DIR, PYFIL, writPath ) ) # --- create folder & mv oar scrip & cp executable
 		os.system( 'sbatch --partition=%s --mem=%s --time=%s --job-name %s.%s --output %s.%s.out --error %s.%s.err \
 						    --chdir %s -c %s -n %s %s/oarScript.sh'\
 						   % ( partition, mem, durtn, jobname, counter, jobname, counter, jobname, counter \
