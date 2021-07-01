@@ -176,8 +176,9 @@ class Atoms:
             self.sxy = kwargs['sxy']
         if 'StructureType' in kwargs:
             self.StructureType = kwargs['StructureType']
-            
-            
+        if 'd2min' in kwargs:
+            self.d2min = kwargs['d2min']           
+        
 ############################################################
 #######  class with simulation cell attributes 
 ############################################################    
