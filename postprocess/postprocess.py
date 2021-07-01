@@ -20,8 +20,8 @@ if __name__ == '__main__':
 #	readPath = os.getcwd() + '/../BmgData' # --- source
 	EXEC_DIR = '.'     #--- path for executable file
 	durtn = '00:59:59'
-	mem = '4gb'
-	partition = 'single' #'cpu2019' #'bigmem' #'single' #'parallel' #'single'
+	mem = '16gb'
+	partition = 'bigmem' #'cpu2019' #'bigmem' #'single' #'parallel' #'single'
 	argv = "path=%s"%(readPath) #--- don't change! 
 	argv2nd = "itime=10000" 
 	PYFILdic = { 
