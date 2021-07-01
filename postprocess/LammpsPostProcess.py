@@ -166,12 +166,19 @@ class Atoms:
             self.dz = kwargs['dz']
         if 'exy' in kwargs:
             self.exy = kwargs['exy']
+        if 'sxx' in kwargs:
+            self.sxx = kwargs['sxx']
+        if 'syy' in kwargs:
+            self.syy = kwargs['syy']
+        if 'szz' in kwargs:
+            self.szz = kwargs['szz']
         if 'sxy' in kwargs:
             self.sxy = kwargs['sxy']
         if 'StructureType' in kwargs:
             self.StructureType = kwargs['StructureType']
-            
-            
+        if 'd2min' in kwargs:
+            self.d2min = kwargs['d2min']           
+        
 ############################################################
 #######  class with simulation cell attributes 
 ############################################################    
@@ -308,7 +315,7 @@ class Copy( Atoms, Wrap ):
         xyz_original = XYZ_shifted.copy()
         assert XYZ_shifted.shape[1] % 3 == 0, 'shifted coordinates must be integer multiple of 3!'
         #
-        ID_TYPE_shifted, attr1 = ConcatAttr( self, ['id','type','dx','dy','dz','exy','sxy','d2min','StructureType']) #--- add remaining 'Atoms' attrs
+        ID_TYPE_shifted, attr1 = ConcatAttr( self, ['id','type','dx','dy','dz','exy','sxy','sxx','syy','szz','d2min','StructureType']) #--- add remaining 'Atoms' attrs
         id_type_original = ID_TYPE_shifted.copy()
 		
         #--- cell copies
