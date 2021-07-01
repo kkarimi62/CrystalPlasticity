@@ -22,8 +22,6 @@ if __name__ == '__main__':
 	durtn = '00:59:59'
 	mem = '4gb'
 	partition = 'single' #'cpu2019' #'bigmem' #'single' #'parallel' #'single'
-#	argv = " -p path \'%s"%(readPath) #--- don't change! 
-#	argv2nd = " -p itime %s"%(0) 
 	argv = "path=%s"%(readPath) #--- don't change! 
 	argv2nd = "itime=10000" 
 	PYFILdic = { 
