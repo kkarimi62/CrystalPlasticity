@@ -40,7 +40,7 @@ if __name__ == '__main__':
 	# --- loop for submitting multiple jobs
 	counter = 0
 	for counter in nruns:
-		print ' i = %s' % counter
+		print(' i = %s' % counter)
 		writPath = os.getcwd() + '/%s/Run%s' % ( jobname, counter ) # --- curr. dir
 		os.system( 'mkdir -p %s' % ( writPath ) ) # --- create folder
 		os.system( 'cp LammpsPostProcess.py %s' % ( writPath ) ) #--- cp python module
