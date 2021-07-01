@@ -18,15 +18,15 @@ if __name__ == '__main__':
 	readPath = os.getcwd() + '/../testRuns/glassFeNi' # --- source
 	EXEC_DIR = '.'     #--- path for executable file
 	durtn = '00:59:59'
-	resources = {'mem':'4gb', 'partition':'o12h','nodes':1,'ppn':1}
+	resources = {'mem':'64gb', 'partition':'o12h','nodes':1,'ppn':1}
 	argv = "path=%s"%(readPath) #--- don't change! 
-	argv2nd = "itime=10000" #"junk=junk"#"itime=10000" 
+	argv2nd = "junk=junk"#"itime=10000" 
 	PYFILdic = { 
 		0:'ElasticConstants.ipynb',
 		1:'analyzePlasticity.ipynb',
-		2:'test.ipynb',
+		2:'analyzePlasticityTimeSeries.ipynb',
 		}
-	keyno = 1
+	keyno = 2
 #---
 #---
 	PYFIL = PYFILdic[ keyno ] 
