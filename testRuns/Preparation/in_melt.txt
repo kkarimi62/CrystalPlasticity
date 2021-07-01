@@ -83,7 +83,7 @@ timestep ${Dt}
 #-----------------------------
 #--- compute & dump variables
 #-----------------------------
-dump      	1 all custom ${Nfreq} xyz.dump id type x y z 
+dump      	1 all custom ${Nfreq} ${OUT_PATH}/xyz.dump id type x y z 
 
 #--- minimization
 min_style 	cg
@@ -123,4 +123,11 @@ unfix	fix_quench
 #--- final equilibration
 fix		fix_finalEq	all npt temp ${Tinit} ${Tinit} ${tDampTemp} iso ${Pinit} ${Pinit} ${tDampPress}  
 run 	${nRunEquilibrate}
+
+#-----------------------------
+#--- compute & dump variables
+#-----------------------------
+dump		2 all custom 1 AsQuenched.dump id type x y z vx vy vz
+dump_modify 2 flush yes format line "%d %d %15.14e %15.14e %15.14e %4.3e %4.3e %4.3e"
+run			0
 
