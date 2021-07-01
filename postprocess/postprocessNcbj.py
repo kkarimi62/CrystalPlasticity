@@ -17,7 +17,7 @@ if __name__ == '__main__':
 	jobname  = 'widthFeNi' 
 	readPath = os.getcwd() + '/../testRuns/glassFeNi' # --- source
 	EXEC_DIR = '.'     #--- path for executable file
-	durtn = '00:59:59'
+	durtn = '23:59:59'
 	resources = {'mem':'64gb', 'partition':'o12h','nodes':1,'ppn':1}
 	argv = "path=%s"%(readPath) #--- don't change! 
 	argv2nd = "junk=junk"#"itime=10000" 
