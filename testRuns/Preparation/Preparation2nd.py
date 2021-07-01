@@ -6,11 +6,11 @@ def makeOAR( EXEC_DIR, node, core, time, PYFIL ):
 	print >> someFile, 'module load mpich/3.2.1-gnu'
 
 	#--- run python script 
-	pyScript = open( '%s/pyScript.py'%writPath, 'w' )
-	print >> pyScript, 'import imp\ngn=imp.load_source(\'generate.name\',\'%s/generate.py\')'%(PYFIL)
-	print >> pyScript, 'gn.GenerateDataFromDump( \'%s/Run%s/%s\',title = \'data.txt\')'%(sourcePath, irun, 'dumpFileCords.xyz') #--- generate data file from a dump file
-	pyScript.close()
-	print >> someFile, 'python pyScript.py\n'
+#	pyScript = open( '%s/pyScript.py'%writPath, 'w' )
+#	print >> pyScript, 'import imp\ngn=imp.load_source(\'generate.name\',\'%s/generate.py\')'%(PYFIL)
+#	print >> pyScript, 'gn.GenerateDataFromDump( \'%s/Run%s/%s\',title = \'data.txt\')'%(sourcePath, irun, 'dumpFileCords.xyz') #--- generate data file from a dump file
+#	pyScript.close()
+#	print >> someFile, 'python pyScript.py\n'
 
 	#--- parse sample height
 #	print >> someFile, "IFS=\',\' read -ra a <<< \"$string\"" #--- split into array
@@ -33,9 +33,9 @@ if __name__ == '__main__':
 
 	nruns	 = 1
 	nThreads = 1
-	jobname  = 'testEq'
-	sourcePath = os.getcwd() + '/test' #--- must be different than sourcePath
-	EXEC_DIR = '/home/kamran.karimi1/Project/git/CrystalPlasticity/lammps-29Oct20/src' #--- path for executable file
+	jobname  = 'test11thMelt2ndShear'
+	sourcePath = os.getcwd() + '/test11thMelt2nd' #--- must be different than sourcePath
+	EXEC_DIR = '/home/kamran.karimi1/Project/git/lammps2nd/lammps/src' #--- path for executable file
 	MEAM_library_DIR='/home/kamran.karimi1/Project/git/CrystalPlasticity/testRuns/dataFiles' #--- meam potential parameters
 	PYFIL = '/home/kamran.karimi1/Project/git/CrystalPlasticity/py'
 	EXEC = 'lmp_serial' 
@@ -57,7 +57,8 @@ if __name__ == '__main__':
 			path=os.getcwd() + '/%s' % ( jobname)
 			os.system( 'cp %s/%s %s' % ( EXEC_DIR, EXEC, path ) ) # --- create folder & mv oar scrip & cp executable
 		#---
-		os.system( 'cp in_equilibrate.txt %s/in.txt ' % writPath ) #--- lammps script: periodic x, pxx, vy, load
+		os.system( 'cp in_shear.txt %s/in.txt ' % writPath ) #--- lammps script: periodic x, pxx, vy, load
+		os.system( 'cp data.txt %s' % writPath ) 
 		#---
 		makeOAR( path, 1, nThreads, durtn, PYFIL ) # --- make oar script
 		os.system( 'chmod +x oarScript.sh; mv oarScript.sh %s' % ( writPath) ) # --- create folder & mv oar scrip & cp executable

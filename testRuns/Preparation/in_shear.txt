@@ -25,6 +25,12 @@ atom_style	atomic
 boundary	p p p
 
 
+#-----------------------------
+#--- define box & lattice
+#-----------------------------
+read_data	data.txt
+change_box	all	triclinic
+
 #neigh_modify delay 0
 #neighbor    0.3 bin 
 #neigh_modify    delay 5
@@ -63,7 +69,7 @@ dump_modify 1 flush yes format line "%d %d %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e %
 #-----------------------------
 #--- thermalize to room temperature
 #-----------------------------
-fix         fix_nvt all nvt/sllod temp ${initTemp} ${initTemp} ${tDampTemp}    drag    1.0
+fix         fix_nvt all nvt/sllod temp ${Tinit} ${Tinit} ${tDampTemp}    drag    1.0
 
 #-----------------------------
 #--- set simple shear
