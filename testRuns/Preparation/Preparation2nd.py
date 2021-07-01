@@ -8,7 +8,7 @@ def makeOAR( EXEC_DIR, node, core, time, PYFIL ):
 	#--- run python script 
 	pyScript = open( '%s/pyScript.py'%writPath, 'w' )
 	print >> pyScript, 'import imp\ngn=imp.load_source(\'generate.name\',\'%s/generate.py\')'%(PYFIL)
-	print >> pyScript, 'gn.GenerateDataFromDump( \'%s/Run%s/%s\',title = \'data.txt\')'%(sourcePath, irun, 'AsQuenched.dump') #--- generate data file from a dump file
+	print >> pyScript, 'gn.GenerateDataFromDump( \'%s/Run%s/%s\',ntype=5,title = \'data.txt\')'%(sourcePath, irun, 'AsQuenched.dump') #--- generate data file from a dump file
 	pyScript.close()
 	print >> someFile, 'python pyScript.py\n'
 

@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import sys
-
+import pdb
 # 
 def Generate( natom, ntypes, 
 #			  (xlo,xhi), (ylo, yhi), (zlo, zhi),
@@ -60,6 +60,9 @@ def GenerateDataFromDump( pathDump, pathData = '',
 			  title = 'data.txt',
 			  **kwargs ): 
 	coord, cell_vector = GetCords( pathDump )
+        coord[0]=coord[coord.keys()[0]]
+        cell_vector[0]=cell_vector[coord.keys()[0]]
+#        pdb.set_trace()
 	CellOrigin, CellVector = GetCellVector( cell_vector )
 	
 	(xlo, ylo, zlo) = CellOrigin[ 0 ]
@@ -68,8 +71,13 @@ def GenerateDataFromDump( pathDump, pathData = '',
 	zhi = (CellOrigin[ 0 ] + CellVector[0][:,2])[ 2 ]
 
 	x, y, z  = np.c_[coord[0][['x','y','z']]].T
+        if 'vx' in coord[0].keys():
+    	    vx, vy, vz  = np.c_[coord[0][['vx','vy','vz']]].T
+        else:
+            vx = vy = vz = np.zeros(len( coord[0] ))
+
 	types = coord[0]['type'].to_list()
-	ntypes = len(set(types))
+	ntypes = kwargs['ntype'] if 'ntype' in kwargs else len(set(types))
 	
 	natom = len( coord[0] )
 	#--- write output
@@ -86,10 +94,16 @@ def GenerateDataFromDump( pathDump, pathData = '',
 #	for i in xrange( ntypes ):
 #		print >> sfile, '%s %s'%(i+1,1.0)
 	print >> sfile
-	print >> sfile, 'Atoms  # atomic: id tyoe x y z'
+	print >> sfile, 'Atoms  # atomic: id type x y z'
 	print >> sfile
 	for iatom in xrange( natom ): 
 		print >> sfile, '%s %s %s %s %s'%( iatom+1, types[ iatom ], x[ iatom ], y[ iatom ], z[ iatom ])
+
+	print >> sfile
+	print >> sfile, 'Velocities  # atomic: id  vx vy vz'
+	print >> sfile
+	for iatom in xrange( natom ): 
+		print >> sfile, '%s %s %s %s'%( iatom+1, vx[ iatom ], vy[ iatom ], vz[ iatom ])
 	sfile.close()
 	
 def GetCords( file_name,
@@ -153,6 +167,7 @@ def GetCordsTimeStep(slist):
     return np.array([slist.readline().split() for i in xrange( nrows )]), CellVector, itime, cols
 
 def GetCellVector( CellVector ):
+#    pdb.set_trace()
     CellVector[0] = np.c_[CellVector[0],['0.0','0.0','0.0']] #--- ref. state
 
     CellOrigin = {}
@@ -160,9 +175,9 @@ def GetCellVector( CellVector ):
     
     for itime in CellVector:
         row0 = map( float, CellVector[ itime ][ 0 ] )
-        l0 = row0[ 1 ] - row0[ 0 ] - row0[ 2 ]
+        l0 = row0[ 1 ] - row0[ 0 ]# - row0[ 2 ]
         CellVector0 = np.array( [ l0, 0.0, 0.0 ] )
-        dx = row0[ 2 ]
+        dx = 0.0 #row0[ 2 ]
         
         row1 =  map( float, CellVector[ itime ][ 1 ] )
         l1 = row1[ 1 ] - row1[ 0 ]
@@ -186,7 +201,7 @@ if __name__ == '__main__':
 #			 title = 'data.txt',
 #			 ratio1 = 0.05, ratio2 = 0.26, ratio3 = 0.02, ratio4 = 0.4, ratio5 = 0.27 )	
 
-	pathh = '/Users/Home/Desktop/Tmp/txt/git/CrystalPlasticity/testRuns/Preparation/test/Run0/dumpFileCords.xyz'
-	GenerateDataFromDump( pathh, pathh, 
+        pathh = '/home/kamran.karimi1/Project/git/CrystalPlasticity/testRuns/Preparation/test11thMelt2ndNatom50kParallel/Run0/AsQuenched.dump'
+	GenerateDataFromDump( pathh, pathh, ntype = 5, 
 			  title = 'junk.txt') 
 	
