@@ -5,7 +5,7 @@
 variable Ntype	equal 5		#--- number of atom types
 variable Dt		equal 0.01 #--- discretization time
 variable Tinit 	equal 300.0  #--- initial temperature
-variable GammaDot	equal	0.5e-4 #--- shearing rate
+variable GammaDot	equal	0.25e-4 #--- shearing rate
 variable StrnMax 	equal 	0.2  #--- total strain
 variable tDampTemp 	equal 100*${Dt}   #--- thermostat equilibration time scale
 variable Pinit	equal 1.0132  #--- number of time steps
