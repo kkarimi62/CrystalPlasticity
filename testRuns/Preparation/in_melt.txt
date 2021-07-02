@@ -9,7 +9,8 @@ variable Dt		equal 0.01 #--- discretization time
 variable Tinit 	equal 300.0  #--- init temperature
 variable Tfinal equal 3000.0 #--- final temperature
 variable tDampTemp 	equal 100*${Dt}   #--- thermostat equilibration time scale
-variable Trate 	equal 5.0   #--- melting rate
+variable TdotMelt 	equal 50.0   #--- melting rate
+variable TdotQuench equal 0.1*${TdotMelt}   #--- quench rate
 variable Pinit	equal 1.0132  #--- number of time steps
 variable Nfreq	equal 100  #--- number of time steps
 variable tEquilibrate	equal 100*${tDampTemp}  #--- equilibration time
@@ -19,8 +20,10 @@ variable tDampPress 	equal ${tDampTemp}   #--- barostat equilibration time scale
 #--- Compute Variables
 #-----------------------------
 variable	nRunEquilibrate	equal	${tEquilibrate}/${Dt}
-variable	tMelting		equal	(${Tfinal}-${Tinit})/${Trate}
+variable	tMelting		equal	(${Tfinal}-${Tinit})/${TdotMelt}
+variable	tQuench			equal	(${Tfinal}-${Tinit})/${TdotQuench}
 variable	nRunMelting		equal	${tMelting}/${Dt}
+variable	nRunQuench		equal	${tQuench}/${Dt}
 variable	volume			equal	${natoms}*${a}^3.0/4.0 #--- natom * vol. of the voronoi cell
 variable 	lx				equal	${volume}^(1.0/3.0) 
 
@@ -117,7 +120,7 @@ unfix	fix_finalEq
 
 #--- quench
 fix		fix_quench	all npt temp ${Tfinal} ${Tinit} ${tDampTemp} iso ${Pinit} ${Pinit} ${tDampPress}  
-run		${nRunMelting}
+run		${nRunQuench}
 unfix	fix_quench
 
 #--- final equilibration
