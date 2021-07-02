@@ -13,12 +13,12 @@ def makeOAR( EXEC_DIR, node, core, partitionime, PYFIL, argv,argv2nd):
 if __name__ == '__main__':
 	import os
 
-	nruns	 = [1] #range(3)
-	jobname  = 'widthFeNi' 
+	nruns	 = range(3)
+	jobname  = 'yieldVsWidthFeNi2nd' 
 	readPath = os.getcwd() + '/../testRuns/glassFeNi' # --- source
 	EXEC_DIR = '.'     #--- path for executable file
-	durtn = '23:59:59'
-	resources = {'mem':'64gb', 'partition':'o12h','nodes':1,'ppn':1}
+	durtn = '00:59:59'
+	resources = {'mem':'16gb', 'partition':'o12h','nodes':1,'ppn':1}
 	argv = "path=%s"%(readPath) #--- don't change! 
 	argv2nd = "junk=junk"#"itime=10000" 
 	PYFILdic = { 
@@ -26,7 +26,7 @@ if __name__ == '__main__':
 		1:'analyzePlasticity.ipynb',
 		2:'analyzePlasticityTimeSeries.ipynb',
 		}
-	keyno = 2
+	keyno = 1
 #---
 #---
 	PYFIL = PYFILdic[ keyno ] 
