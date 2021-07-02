@@ -36,8 +36,8 @@ if __name__ == '__main__':
 
 	nruns	 = 1
 	nThreads = 4
-	jobname  = 'test11thMelt2ndNatom50kParallelShear'
-	sourcePath = os.getcwd() + '/test11thMelt2ndNatom50kParallel' #--- must be different than sourcePath
+	jobname  = 'testAsQuenchedShear'
+	sourcePath = os.getcwd() + '/testAsQuenched' #--- must be different than sourcePath
 	EXEC_DIR = '/home/kamran.karimi1/Project/git/lammps2nd/lammps/src' #--- path for executable file
 	MEAM_library_DIR='/home/kamran.karimi1/Project/git/CrystalPlasticity/testRuns/dataFiles' #--- meam potential parameters
 	PYFIL = '/home/kamran.karimi1/Project/git/CrystalPlasticity/py'
