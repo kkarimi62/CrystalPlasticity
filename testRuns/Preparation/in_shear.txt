@@ -9,12 +9,12 @@ variable GammaDot	equal	1.0e-4 #--- shearing rate
 variable StrnMax 	equal 	0.2  #--- total strain
 variable tDampTemp 	equal 100*${Dt}   #--- thermostat equilibration time scale
 variable Pinit	equal 1.0132  #--- number of time steps
-variable Nfreq	equal 100  #--- number of time steps
 
 #-----------------------------
 #--- Compute Variables
 #-----------------------------
 variable 	NTIME  equal  floor(${StrnMax}/${GammaDot}/${Dt}) #--- timesteps
+variable 	Nfreq  equal  floor(${NTIME}/200)  #--- number of time steps
 
 
 #-----------------------------

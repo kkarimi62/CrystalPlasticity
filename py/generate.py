@@ -60,8 +60,8 @@ def GenerateDataFromDump( pathDump, pathData = '',
 			  title = 'data.txt',
 			  **kwargs ): 
 	coord, cell_vector = GetCords( pathDump )
-        coord[0]=coord[coord.keys()[0]]
         cell_vector[0]=cell_vector[coord.keys()[0]]
+        coord[0]=coord[coord.keys()[0]]
 #        pdb.set_trace()
 	CellOrigin, CellVector = GetCellVector( cell_vector )
 	
