@@ -12350,7 +12350,7 @@ div#notebook {
 <span class="c1">#path=&#39;/Users/Home/Desktop/Tmp/txt&#39;</span>
 
 <span class="c1">#--- bulk stress files</span>
-<span class="n">indx</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">indx</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">fileNamee</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;FeNi.txt&#39;</span><span class="p">,</span> 
 <span class="c1">#              &#39;CoNiCr.txt&#39;, </span>
              <span class="s1">&#39;CoNiFe.txt&#39;</span><span class="p">,</span> 
@@ -12375,6 +12375,31 @@ div#notebook {
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">IndexError</span>                                Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-5-527d0d4e10bf&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">     54</span> fileName2nd = &#39;%s/%s&#39;%(path,[
+<span class="ansi-green-intense-fg ansi-bold">     55</span>             <span class="ansi-blue-fg">&#39;FeNi_Cna.xyz&#39;</span><span class="ansi-blue-fg">,</span>
+<span class="ansi-green-fg">---&gt; 56</span><span class="ansi-red-fg">                             ][indx]) 
+</span>
+<span class="ansi-red-fg">IndexError</span>: list index out of range</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -12438,7 +12463,7 @@ div#notebook {
 <span class="ansi-green-intense-fg ansi-bold">    625</span> 
 <span class="ansi-green-intense-fg ansi-bold">    626</span> 
 
-<span class="ansi-red-fg">OSError</span>: /mnt/home/kkarimi/Project/git/CrystalPlasticity/postprocess/../testRuns/glassCoNiFe/Run1/FeNi.txt not found.</pre>
+<span class="ansi-red-fg">OSError</span>: /mnt/home/kkarimi/Project/git/CrystalPlasticity/postprocess/../testRuns/glassCoNiFe/Run1/CoNiFe.txt not found.</pre>
 </div>
 </div>
 
@@ -12500,7 +12525,7 @@ div#notebook {
 <span class="ansi-green-intense-fg ansi-bold">     88</span>         count <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">0</span>
 <span class="ansi-green-intense-fg ansi-bold">     89</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
 
-<span class="ansi-red-fg">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;/mnt/home/kkarimi/Project/git/CrystalPlasticity/postprocess/../testRuns/glassCoNiFe/Run1/FeNi_glass.dump&#39;</pre>
+<span class="ansi-red-fg">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;/mnt/home/kkarimi/Project/git/CrystalPlasticity/postprocess/../testRuns/glassCoNiFe/Run1/CoNiFe_glass.dump&#39;</pre>
 </div>
 </div>
 
@@ -13229,29 +13254,37 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sarr0_StrsDrop</span>  <span class="o">=</span> <span class="n">MultipleFrames2nd</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;StrsDropFeNi&#39;</span><span class="p">,</span><span class="n">nrun</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;StrsDrop.txt&#39;</span><span class="p">)</span>
-<span class="n">sarr0_BandWidth</span> <span class="o">=</span> <span class="n">MultipleFrames2nd</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;StrsDropFeNi&#39;</span><span class="p">,</span><span class="n">nrun</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;rc_d2min.txt&#39;</span><span class="p">)</span>
-<span class="k">assert</span> <span class="n">sarr0_StrsDrop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">sarr0_BandWidth</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
-<span class="n">ydata</span> <span class="o">=</span> <span class="n">sarr0_StrsDrop</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>
-<span class="n">xdata</span> <span class="o">=</span> <span class="n">sarr0_BandWidth</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
-<span class="n">xdata</span> <span class="o">=</span> <span class="n">xdata</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">xdata</span><span class="p">)]</span>
-<span class="c1">#~np.isnan(xdata)</span>
-<span class="c1">#</span>
-<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$w(A^o)$&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$\Delta\sigma$(Gpa)&#39;</span><span class="p">)</span>
 <span class="c1">#ax.set_ylim(1,4)</span>
 <span class="c1">#ax.set_yscale(&#39;log&#39;)</span>
 <span class="c1">#</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xdata</span><span class="p">,</span><span class="n">ydata</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;FeNi&#39;</span><span class="p">)</span>
-<span class="c1"># ax.plot(sarr1[:,0],sarr1[:,1],&#39;s&#39;,label=&#39;CoNiFe&#39;)</span>
-<span class="c1"># ax.plot(sarr2[:,0],sarr2[:,1],&#39;^&#39;,label=&#39;CoNiCrFe&#39;)</span>
-<span class="c1"># ax.plot(sarr3[:,0],sarr3[:,1],&#39;*&#39;,label=&#39;CoCrFeMn&#39;)</span>
-<span class="c1"># ax.plot(sarr4[:,0],sarr4[:,1],&#39;x&#39;,label=&#39;CoNiCrFeMn&#39;)</span>
-<span class="c1"># ax.plot(sarr5[:,0],sarr5[:,1],&#39;o&#39;,label=&#39;Co5Cr2Fe40Mn27Ni26&#39;)</span>
-<span class="c1">#</span>
+<span class="k">for</span> <span class="n">GlassType</span> <span class="ow">in</span> <span class="p">[</span>  <span class="s1">&#39;FeNi&#39;</span><span class="p">,</span>
+<span class="c1">#                     &#39;CoNiFe&#39;,</span>
+<span class="c1">#                     &#39;CoNiCrFe&#39;,</span>
+<span class="c1">#                     &#39;CoCrFeMn&#39;,</span>
+<span class="c1">#                     &#39;CoNiCrFeMn&#39;,</span>
+<span class="c1">#                     &#39;Co5Cr5Fe40Mn27Ni26&#39;</span>
+                 <span class="p">]:</span>
+
+    <span class="n">sarr_StrsDrop</span>  <span class="o">=</span> <span class="n">MultipleFrames2nd</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;StrsDrop</span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="k">GlassType</span>,nrun=3,title=&#39;StrsDrop.txt&#39;)
+    <span class="n">sarr_BandWidth</span> <span class="o">=</span> <span class="n">MultipleFrames2nd</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;StrsDrop</span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="k">GlassType</span>,nrun=3,title=&#39;rc_d2min.txt&#39;)
+    <span class="k">assert</span> <span class="n">sarr_StrsDrop</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">sarr_BandWidth</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">ydata</span> <span class="o">=</span> <span class="n">sarr_StrsDrop</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="c1">#--- first 2nd col is stress drop</span>
+    <span class="n">xdata</span> <span class="o">=</span> <span class="n">sarr_BandWidth</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="c1">#--- 2nd and 3rd cols are widths</span>
+    <span class="n">xdata</span> <span class="o">=</span> <span class="n">xdata</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">xdata</span><span class="p">)]</span>
+    <span class="k">assert</span> <span class="n">xdata</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">ydata</span><span class="o">.</span><span class="n">shape</span>
+    <span class="c1">#</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xdata</span><span class="p">,</span><span class="n">ydata</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="n">GlassType</span><span class="p">)</span>
+    <span class="c1"># ax.plot(sarr1[:,0],sarr1[:,1],&#39;s&#39;,label=&#39;CoNiFe&#39;)</span>
+    <span class="c1"># ax.plot(sarr2[:,0],sarr2[:,1],&#39;^&#39;,label=&#39;CoNiCrFe&#39;)</span>
+    <span class="c1"># ax.plot(sarr3[:,0],sarr3[:,1],&#39;*&#39;,label=&#39;CoCrFeMn&#39;)</span>
+    <span class="c1"># ax.plot(sarr4[:,0],sarr4[:,1],&#39;x&#39;,label=&#39;CoNiCrFeMn&#39;)</span>
+    <span class="c1"># ax.plot(sarr5[:,0],sarr5[:,1],&#39;o&#39;,label=&#39;Co5Cr2Fe40Mn27Ni26&#39;)</span>
+    <span class="c1">#</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;YieldDelta.png&#39;</span><span class="p">,</span><span class="n">dpi</span><span class="o">=</span><span class="mi">75</span><span class="p">,</span><span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -13274,12 +13307,12 @@ div#notebook {
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
 <span class="ansi-red-fg">UnboundLocalError</span>                         Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-21-1eb23e9bb63d&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>sarr0_StrsDrop  <span class="ansi-blue-fg">=</span> MultipleFrames2nd<span class="ansi-blue-fg">(</span>path<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;StrsDropFeNi&#39;</span><span class="ansi-blue-fg">,</span>nrun<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">3</span><span class="ansi-blue-fg">,</span>title<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;StrsDrop.txt&#39;</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      2</span> sarr0_BandWidth <span class="ansi-blue-fg">=</span> MultipleFrames2nd<span class="ansi-blue-fg">(</span>path<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;StrsDropFeNi&#39;</span><span class="ansi-blue-fg">,</span>nrun<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">3</span><span class="ansi-blue-fg">,</span>title<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;rc_d2min.txt&#39;</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      3</span> <span class="ansi-green-fg">assert</span> sarr0_StrsDrop<span class="ansi-blue-fg">.</span>shape<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">==</span> sarr0_BandWidth<span class="ansi-blue-fg">.</span>shape<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span>
-<span class="ansi-green-intense-fg ansi-bold">      4</span> 
-<span class="ansi-green-intense-fg ansi-bold">      5</span> ydata <span class="ansi-blue-fg">=</span> sarr0_StrsDrop<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span>
+<span class="ansi-green-fg">&lt;ipython-input-21-8c23cd3f5b9a&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">     14</span>                  ]:
+<span class="ansi-green-intense-fg ansi-bold">     15</span> 
+<span class="ansi-green-fg">---&gt; 16</span><span class="ansi-red-fg">     </span>sarr_StrsDrop  <span class="ansi-blue-fg">=</span> MultipleFrames2nd<span class="ansi-blue-fg">(</span>path<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;StrsDrop%s&#39;</span><span class="ansi-blue-fg">%</span>GlassType<span class="ansi-blue-fg">,</span>nrun<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">3</span><span class="ansi-blue-fg">,</span>title<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;StrsDrop.txt&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     17</span>     sarr_BandWidth <span class="ansi-blue-fg">=</span> MultipleFrames2nd<span class="ansi-blue-fg">(</span>path<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;StrsDrop%s&#39;</span><span class="ansi-blue-fg">%</span>GlassType<span class="ansi-blue-fg">,</span>nrun<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">3</span><span class="ansi-blue-fg">,</span>title<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;rc_d2min.txt&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     18</span>     <span class="ansi-green-fg">assert</span> sarr_StrsDrop<span class="ansi-blue-fg">.</span>shape<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">==</span> sarr_BandWidth<span class="ansi-blue-fg">.</span>shape<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span>
 
 <span class="ansi-green-fg">&lt;ipython-input-3-4bcf5c37e579&gt;</span> in <span class="ansi-cyan-fg">MultipleFrames2nd</span><span class="ansi-blue-fg">(path, title, nrun)</span>
 <span class="ansi-green-intense-fg ansi-bold">    346</span>             <span class="ansi-green-fg">continue</span>
