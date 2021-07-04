@@ -10,7 +10,7 @@ variable Tinit 	equal 300.0  #--- init temperature
 variable Tfinal equal 3000.0 #--- final temperature
 variable tDampTemp 	equal 100*${Dt}   #--- thermostat equilibration time scale
 variable TdotMelt 	equal 50.0   #--- melting rate
-variable TdotQuench equal 0.1*${TdotMelt}   #--- quench rate
+variable TdotQuench equal 0.01*${TdotMelt}   #--- quench rate
 variable Pinit	equal 1.0132  #--- number of time steps
 variable Nfreq	equal 100  #--- number of time steps
 variable tEquilibrate	equal 100*${tDampTemp}  #--- equilibration time
