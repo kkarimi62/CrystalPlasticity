@@ -14814,7 +14814,7 @@ a.anchor-link {
 <span class="n">cutoff</span> <span class="o">=</span> <span class="mf">10.0</span><span class="o">*</span><span class="mi">4</span>    <span class="c1">#--- cut-off radius for g(r)</span>
 <span class="n">NMAX</span> <span class="o">=</span> <span class="mi">10000</span><span class="o">*</span><span class="mi">4</span>    <span class="c1">#--- max. number of atoms included for the g(r) analysis</span>
 <span class="c1">#</span>
-<span class="n">ReadStrsFromDump</span> <span class="o">=</span> <span class="kc">False</span> <span class="c1">#--- if true: read stress from dump file</span>
+<span class="n">ReadStrsFromDump</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1">#--- if true: read stress from dump file</span>
 <span class="c1">#</span>
 <span class="c1">#--- if np.any(AssignYieldTime,AssignMaxDropTime,AssignFlowTime) -&gt; comment itime </span>
 <span class="n">AssignYieldTime</span> <span class="o">=</span> <span class="kc">False</span> <span class="c1">#--- stress peak</span>
@@ -14871,7 +14871,7 @@ a.anchor-link {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h1 id="input-stress-file">input stress file<a class="anchor-link" href="#input-stress-file">&#182;</a></h1>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
@@ -14884,54 +14884,6 @@ a.anchor-link {
      </div>
 </div>
 </div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">OSError</span>                                   Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-1-06cccbcc7aa4&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> ReadStrsFromDump<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">----&gt; 2</span><span class="ansi-red-fg">     </span>stress <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>loadtxt<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;%s/%s&#39;</span><span class="ansi-blue-fg">%</span><span class="ansi-blue-fg">(</span>path<span class="ansi-blue-fg">,</span>fileNamee<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/numpy/lib/npyio.py</span> in <span class="ansi-cyan-fg">loadtxt</span><span class="ansi-blue-fg">(fname, dtype, comments, delimiter, converters, skiprows, usecols, unpack, ndmin, encoding, max_rows)</span>
-<span class="ansi-green-intense-fg ansi-bold">    953</span>             fname <span class="ansi-blue-fg">=</span> os_fspath<span class="ansi-blue-fg">(</span>fname<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    954</span>         <span class="ansi-green-fg">if</span> _is_string_like<span class="ansi-blue-fg">(</span>fname<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 955</span><span class="ansi-red-fg">             </span>fh <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>lib<span class="ansi-blue-fg">.</span>_datasource<span class="ansi-blue-fg">.</span>open<span class="ansi-blue-fg">(</span>fname<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;rt&#39;</span><span class="ansi-blue-fg">,</span> encoding<span class="ansi-blue-fg">=</span>encoding<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    956</span>             fencoding <span class="ansi-blue-fg">=</span> getattr<span class="ansi-blue-fg">(</span>fh<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;encoding&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;latin1&#39;</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    957</span>             fh <span class="ansi-blue-fg">=</span> iter<span class="ansi-blue-fg">(</span>fh<span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/numpy/lib/_datasource.py</span> in <span class="ansi-cyan-fg">open</span><span class="ansi-blue-fg">(path, mode, destpath, encoding, newline)</span>
-<span class="ansi-green-intense-fg ansi-bold">    264</span> 
-<span class="ansi-green-intense-fg ansi-bold">    265</span>     ds <span class="ansi-blue-fg">=</span> DataSource<span class="ansi-blue-fg">(</span>destpath<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">--&gt; 266</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">return</span> ds<span class="ansi-blue-fg">.</span>open<span class="ansi-blue-fg">(</span>path<span class="ansi-blue-fg">,</span> mode<span class="ansi-blue-fg">,</span> encoding<span class="ansi-blue-fg">=</span>encoding<span class="ansi-blue-fg">,</span> newline<span class="ansi-blue-fg">=</span>newline<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    267</span> 
-<span class="ansi-green-intense-fg ansi-bold">    268</span> 
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/numpy/lib/_datasource.py</span> in <span class="ansi-cyan-fg">open</span><span class="ansi-blue-fg">(self, path, mode, encoding, newline)</span>
-<span class="ansi-green-intense-fg ansi-bold">    622</span>                                       encoding=encoding, newline=newline)
-<span class="ansi-green-intense-fg ansi-bold">    623</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 624</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">raise</span> IOError<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;%s not found.&#34;</span> <span class="ansi-blue-fg">%</span> path<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    625</span> 
-<span class="ansi-green-intense-fg ansi-bold">    626</span> 
-
-<span class="ansi-red-fg">OSError</span>: /home/kamran.karimi1/Project/git/CrystalPlasticity/postprocess/../testRuns/Preparation/test11thMelt2ndNatom50kQrate5Srate5/Run0/FeNi.txt not found.</pre>
-</div>
-</div>
-
-</div>
-
 </div>
 
 </div>
@@ -14965,7 +14917,7 @@ a.anchor-link {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h1 id="stress-strain-curve">stress-strain curve<a class="anchor-link" href="#stress-strain-curve">&#182;</a></h1>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
@@ -15027,7 +14979,53 @@ a.anchor-link {
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">AttributeError</span>                            Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-1-f6d0c72c0531&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">     28</span>     <span class="ansi-red-fg">#--- virial stress</span>
+<span class="ansi-green-intense-fg ansi-bold">     29</span>     <span class="ansi-green-fg">if</span> ReadStrsFromDump<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">---&gt; 30</span><span class="ansi-red-fg">         </span>virial <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>sum<span class="ansi-blue-fg">(</span>atoms<span class="ansi-blue-fg">.</span>sxy<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">/</span> volume
+<span class="ansi-green-intense-fg ansi-bold">     31</span> <span class="ansi-red-fg">#        virial = -(np.sum(atoms.sxx)+np.sum(atoms.syy)+np.sum(atoms.szz)) / 3.0 / volume</span>
+<span class="ansi-green-intense-fg ansi-bold">     32</span> 
+
+<span class="ansi-red-fg">AttributeError</span>: &#39;Atoms&#39; object has no attribute &#39;sxy&#39;</pre>
+</div>
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+
+
+<div class="jp-RenderedImage jp-OutputArea-output ">
+<img src="data:image/png;base64,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
+"
+>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
@@ -15055,52 +15053,6 @@ a.anchor-link {
      </div>
 </div>
 </div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-1-dafdfa33a84e&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-intense-fg ansi-bold">      8</span>     ax<span class="ansi-blue-fg">.</span>set_title<span class="ansi-blue-fg">(</span>fileNamee<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">-</span><span class="ansi-cyan-fg">4</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      9</span>     <span class="ansi-red-fg">#</span>
-<span class="ansi-green-fg">---&gt; 10</span><span class="ansi-red-fg">     </span>strain <span class="ansi-blue-fg">=</span> stress<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span>
-<span class="ansi-green-intense-fg ansi-bold">     11</span>     Virial <span class="ansi-blue-fg">=</span> stress<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span>
-<span class="ansi-green-intense-fg ansi-bold">     12</span>     ax<span class="ansi-blue-fg">.</span>plot<span class="ansi-blue-fg">(</span>strain<span class="ansi-blue-fg">,</span>Virial<span class="ansi-blue-fg">,</span><span class="ansi-blue-fg">&#39;-&#39;</span><span class="ansi-blue-fg">)</span>
-
-<span class="ansi-red-fg">NameError</span>: name &#39;stress&#39; is not defined</pre>
-</div>
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-
-
-<div class="jp-RenderedImage jp-OutputArea-output ">
-<img src="data:image/png;base64,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
-"
->
-</div>
-
-</div>
-
-</div>
-
 </div>
 
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
@@ -15335,15 +15287,92 @@ a.anchor-link {
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-red-fg">IndexError</span>                                Traceback (most recent call last)
 <span class="ansi-green-fg">&lt;ipython-input-1-fd24990e149b&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-intense-fg ansi-bold">     91</span>     strain <span class="ansi-blue-fg">=</span> strainDump
-<span class="ansi-green-intense-fg ansi-bold">     92</span> 
-<span class="ansi-green-fg">---&gt; 93</span><span class="ansi-red-fg"> </span>x<span class="ansi-blue-fg">,</span> y <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>array<span class="ansi-blue-fg">(</span>strain<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> np<span class="ansi-blue-fg">.</span>array<span class="ansi-blue-fg">(</span>Virial<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     93</span> x<span class="ansi-blue-fg">,</span> y <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>array<span class="ansi-blue-fg">(</span>strain<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> np<span class="ansi-blue-fg">.</span>array<span class="ansi-blue-fg">(</span>Virial<span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">     94</span> <span class="ansi-red-fg">#--- training points</span>
-<span class="ansi-green-intense-fg ansi-bold">     95</span> transfrm <span class="ansi-blue-fg">=</span> ReturnShapeFunc<span class="ansi-blue-fg">(</span>x<span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">10</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">---&gt; 95</span><span class="ansi-red-fg"> </span>transfrm <span class="ansi-blue-fg">=</span> ReturnShapeFunc<span class="ansi-blue-fg">(</span>x<span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">10</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     96</span> 
+<span class="ansi-green-intense-fg ansi-bold">     97</span> <span class="ansi-red-fg">#--- train</span>
 
-<span class="ansi-red-fg">NameError</span>: name &#39;strain&#39; is not defined</pre>
+<span class="ansi-green-fg">&lt;ipython-input-1-fd24990e149b&gt;</span> in <span class="ansi-cyan-fg">ReturnShapeFunc</span><span class="ansi-blue-fg">(x, df)</span>
+<span class="ansi-green-intense-fg ansi-bold">      6</span> <span class="ansi-red-fg">#    x4 = (x-eps1)**3</span>
+<span class="ansi-green-intense-fg ansi-bold">      7</span> <span class="ansi-red-fg">#    x5 = (x-eps2)**3</span>
+<span class="ansi-green-fg">----&gt; 8</span><span class="ansi-red-fg">     </span>transformed_x <span class="ansi-blue-fg">=</span> patsy<span class="ansi-blue-fg">.</span>bs<span class="ansi-blue-fg">(</span>x<span class="ansi-blue-fg">,</span> df<span class="ansi-blue-fg">=</span>df<span class="ansi-blue-fg">,</span>degree <span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">3</span><span class="ansi-blue-fg">,</span> include_intercept<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">False</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      9</span>     <span class="ansi-green-fg">return</span> transformed_x
+<span class="ansi-green-intense-fg ansi-bold">     10</span> 
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/patsy/state.py</span> in <span class="ansi-cyan-fg">stateful_transform_wrapper</span><span class="ansi-blue-fg">(*args, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">     45</span>         transform <span class="ansi-blue-fg">=</span> class_<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     46</span>         transform<span class="ansi-blue-fg">.</span>memorize_chunk<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">---&gt; 47</span><span class="ansi-red-fg">         </span>transform<span class="ansi-blue-fg">.</span>memorize_finish<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     48</span>         <span class="ansi-green-fg">return</span> transform<span class="ansi-blue-fg">.</span>transform<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     49</span>     stateful_transform_wrapper<span class="ansi-blue-fg">.</span>__patsy_stateful_transform__ <span class="ansi-blue-fg">=</span> class_
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/patsy/splines.py</span> in <span class="ansi-cyan-fg">memorize_finish</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-intense-fg ansi-bold">    200</span>                 <span class="ansi-red-fg"># Need to compute inner knots</span>
+<span class="ansi-green-intense-fg ansi-bold">    201</span>                 knot_quantiles <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>linspace<span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span> n_inner_knots <span class="ansi-blue-fg">+</span> <span class="ansi-cyan-fg">2</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">-</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span>
+<span class="ansi-green-fg">--&gt; 202</span><span class="ansi-red-fg">                 </span>inner_knots <span class="ansi-blue-fg">=</span> _R_compat_quantile<span class="ansi-blue-fg">(</span>x<span class="ansi-blue-fg">,</span> knot_quantiles<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    203</span>         <span class="ansi-green-fg">if</span> args<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;knots&#34;</span><span class="ansi-blue-fg">]</span> <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    204</span>             inner_knots <span class="ansi-blue-fg">=</span> args<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;knots&#34;</span><span class="ansi-blue-fg">]</span>
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/patsy/splines.py</span> in <span class="ansi-cyan-fg">_R_compat_quantile</span><span class="ansi-blue-fg">(x, probs)</span>
+<span class="ansi-green-intense-fg ansi-bold">     64</span>     probs <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>asarray<span class="ansi-blue-fg">(</span>probs<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     65</span>     quantiles = np.asarray([np.percentile(x, 100 * prob)
+<span class="ansi-green-fg">---&gt; 66</span><span class="ansi-red-fg">                             for prob in probs.ravel(order=&#34;C&#34;)])
+</span><span class="ansi-green-intense-fg ansi-bold">     67</span>     <span class="ansi-green-fg">return</span> quantiles<span class="ansi-blue-fg">.</span>reshape<span class="ansi-blue-fg">(</span>probs<span class="ansi-blue-fg">.</span>shape<span class="ansi-blue-fg">,</span> order<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#34;C&#34;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     68</span> 
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/patsy/splines.py</span> in <span class="ansi-cyan-fg">&lt;listcomp&gt;</span><span class="ansi-blue-fg">(.0)</span>
+<span class="ansi-green-intense-fg ansi-bold">     64</span>     probs <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>asarray<span class="ansi-blue-fg">(</span>probs<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     65</span>     quantiles = np.asarray([np.percentile(x, 100 * prob)
+<span class="ansi-green-fg">---&gt; 66</span><span class="ansi-red-fg">                             for prob in probs.ravel(order=&#34;C&#34;)])
+</span><span class="ansi-green-intense-fg ansi-bold">     67</span>     <span class="ansi-green-fg">return</span> quantiles<span class="ansi-blue-fg">.</span>reshape<span class="ansi-blue-fg">(</span>probs<span class="ansi-blue-fg">.</span>shape<span class="ansi-blue-fg">,</span> order<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#34;C&#34;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     68</span> 
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/numpy/lib/function_base.py</span> in <span class="ansi-cyan-fg">percentile</span><span class="ansi-blue-fg">(a, q, axis, out, overwrite_input, interpolation, keepdims)</span>
+<span class="ansi-green-intense-fg ansi-bold">   3705</span>         <span class="ansi-green-fg">raise</span> ValueError<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;Percentiles must be in the range [0, 100]&#34;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   3706</span>     return _quantile_unchecked(
+<span class="ansi-green-fg">-&gt; 3707</span><span class="ansi-red-fg">         a, q, axis, out, overwrite_input, interpolation, keepdims)
+</span><span class="ansi-green-intense-fg ansi-bold">   3708</span> 
+<span class="ansi-green-intense-fg ansi-bold">   3709</span> 
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/numpy/lib/function_base.py</span> in <span class="ansi-cyan-fg">_quantile_unchecked</span><span class="ansi-blue-fg">(a, q, axis, out, overwrite_input, interpolation, keepdims)</span>
+<span class="ansi-green-intense-fg ansi-bold">   3824</span>     r, k = _ureduce(a, func=_quantile_ureduce_func, q=q, axis=axis, out=out,
+<span class="ansi-green-intense-fg ansi-bold">   3825</span>                     overwrite_input<span class="ansi-blue-fg">=</span>overwrite_input<span class="ansi-blue-fg">,</span>
+<span class="ansi-green-fg">-&gt; 3826</span><span class="ansi-red-fg">                     interpolation=interpolation)
+</span><span class="ansi-green-intense-fg ansi-bold">   3827</span>     <span class="ansi-green-fg">if</span> keepdims<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   3828</span>         <span class="ansi-green-fg">return</span> r<span class="ansi-blue-fg">.</span>reshape<span class="ansi-blue-fg">(</span>q<span class="ansi-blue-fg">.</span>shape <span class="ansi-blue-fg">+</span> k<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/numpy/lib/function_base.py</span> in <span class="ansi-cyan-fg">_ureduce</span><span class="ansi-blue-fg">(a, func, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">   3403</span>         keepdim <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span><span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">*</span> a<span class="ansi-blue-fg">.</span>ndim
+<span class="ansi-green-intense-fg ansi-bold">   3404</span> 
+<span class="ansi-green-fg">-&gt; 3405</span><span class="ansi-red-fg">     </span>r <span class="ansi-blue-fg">=</span> func<span class="ansi-blue-fg">(</span>a<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   3406</span>     <span class="ansi-green-fg">return</span> r<span class="ansi-blue-fg">,</span> keepdim
+<span class="ansi-green-intense-fg ansi-bold">   3407</span> 
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/numpy/lib/function_base.py</span> in <span class="ansi-cyan-fg">_quantile_ureduce_func</span><span class="ansi-blue-fg">(a, q, axis, out, overwrite_input, interpolation, keepdims)</span>
+<span class="ansi-green-intense-fg ansi-bold">   3939</span>             n <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>isnan<span class="ansi-blue-fg">(</span>ap<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">-</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">...</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   3940</span> 
+<span class="ansi-green-fg">-&gt; 3941</span><span class="ansi-red-fg">         </span>x1 <span class="ansi-blue-fg">=</span> take<span class="ansi-blue-fg">(</span>ap<span class="ansi-blue-fg">,</span> indices_below<span class="ansi-blue-fg">,</span> axis<span class="ansi-blue-fg">=</span>axis<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">*</span> weights_below
+<span class="ansi-green-intense-fg ansi-bold">   3942</span>         x2 <span class="ansi-blue-fg">=</span> take<span class="ansi-blue-fg">(</span>ap<span class="ansi-blue-fg">,</span> indices_above<span class="ansi-blue-fg">,</span> axis<span class="ansi-blue-fg">=</span>axis<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">*</span> weights_above
+<span class="ansi-green-intense-fg ansi-bold">   3943</span> 
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/numpy/core/fromnumeric.py</span> in <span class="ansi-cyan-fg">take</span><span class="ansi-blue-fg">(a, indices, axis, out, mode)</span>
+<span class="ansi-green-intense-fg ansi-bold">    187</span>            [5, 7]])
+<span class="ansi-green-intense-fg ansi-bold">    188</span>     &#34;&#34;&#34;
+<span class="ansi-green-fg">--&gt; 189</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">return</span> _wrapfunc<span class="ansi-blue-fg">(</span>a<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;take&#39;</span><span class="ansi-blue-fg">,</span> indices<span class="ansi-blue-fg">,</span> axis<span class="ansi-blue-fg">=</span>axis<span class="ansi-blue-fg">,</span> out<span class="ansi-blue-fg">=</span>out<span class="ansi-blue-fg">,</span> mode<span class="ansi-blue-fg">=</span>mode<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    190</span> 
+<span class="ansi-green-intense-fg ansi-bold">    191</span> 
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/numpy/core/fromnumeric.py</span> in <span class="ansi-cyan-fg">_wrapfunc</span><span class="ansi-blue-fg">(obj, method, *args, **kwds)</span>
+<span class="ansi-green-intense-fg ansi-bold">     54</span> <span class="ansi-green-fg">def</span> _wrapfunc<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">,</span> method<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwds<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">     55</span>     <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">---&gt; 56</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">return</span> getattr<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">,</span> method<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwds<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     57</span> 
+<span class="ansi-green-intense-fg ansi-bold">     58</span>     <span class="ansi-red-fg"># An AttributeError occurs if the object does not have</span>
+
+<span class="ansi-red-fg">IndexError</span>: cannot do a non-empty take from an empty axes.</pre>
 </div>
 </div>
 
@@ -15693,7 +15722,7 @@ a.anchor-link {
 <span class="ansi-green-intense-fg ansi-bold">      4</span> esmax<span class="ansi-blue-fg">,</span>dsmax<span class="ansi-blue-fg">=</span>df<span class="ansi-blue-fg">.</span>sort_values<span class="ansi-blue-fg">(</span>by<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;ds&#39;</span><span class="ansi-blue-fg">,</span>ascending<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">False</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>iloc<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;t_end&#39;</span><span class="ansi-blue-fg">,</span><span class="ansi-blue-fg">&#39;ds&#39;</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">]</span>
 <span class="ansi-green-intense-fg ansi-bold">      5</span> np<span class="ansi-blue-fg">.</span>savetxt<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;StrsDrop.txt&#39;</span><span class="ansi-blue-fg">,</span>np<span class="ansi-blue-fg">.</span>c_<span class="ansi-blue-fg">[</span>esmax<span class="ansi-blue-fg">,</span>dsmax<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span>header<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;StressDrop&#39;</span><span class="ansi-blue-fg">)</span>
 
-<span class="ansi-red-fg">NameError</span>: name &#39;strain&#39; is not defined</pre>
+<span class="ansi-red-fg">NameError</span>: name &#39;y_pred_arr&#39; is not defined</pre>
 </div>
 </div>
 
