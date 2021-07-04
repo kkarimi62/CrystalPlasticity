@@ -33,7 +33,7 @@ if __name__ == '__main__':
 
 	nruns	 = 1
 	nThreads = 8
-	jobname  = 'test11thMelt2ndNatom50kQrate1'
+	jobname  = 'test11thMelt2ndNatom50kQrate1tenth'
 #	sourcePath = os.getcwd() + '/dataFiles'
 	EXEC_DIR = '/home/kamran.karimi1/Project/git/lammps2nd/lammps/src' #--- path for executable file
 	MEAM_library_DIR='/home/kamran.karimi1/Project/git/CrystalPlasticity/testRuns/dataFiles' #--- meam potential parameters
