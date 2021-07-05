@@ -968,9 +968,9 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         for (m = 0; m < 3; m++) ddUdrijmds[m] = 0.0;
         ddUdrijds = 0.0;
         if (!iszero(dscrfcn[fnoffset + jn])) {
-          dUdsij = sij;//phi;// + frhop[i] * drhods1 + frhop[j] * drhods2; //--- Eq. 4.41(b)
+          dUdsij = 1.0;//sij;//phi;// + frhop[i] * drhods1 + frhop[j] * drhods2; //--- Eq. 4.41(b)
 //          dUdsij = 1.0;//drho0ds1 + drho0ds2; //--- Eq. 4.41(b)
-           ddUddsij = 1.0;//0.0;//frhopp[i] * drhods1 * drhods1 + frhop[i] * ddrhodsds1 +
+           ddUddsij = 0.0;//1.0;//0.0;//frhopp[i] * drhods1 * drhods1 + frhop[i] * ddrhodsds1 +
                       //frhopp[j] * drhods2 * drhods2 + frhop[j] * ddrhodsds2;
 //          ddUddsij = 0.0;//ddrho0dsds1 + ddrho0dsds2;
           for (m = 0; m < 3; m++) ddUdrijmds[m] = 0.0;//frhopp[i] * drhods1 * drhodrm1[m] + frhop[i] * ddrhodrmds1[m] +
