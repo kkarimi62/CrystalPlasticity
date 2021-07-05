@@ -950,12 +950,12 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         }
 
         //     Compute derivatives of energy wrt rij, sij, and rij[3]
-//          sij = rij*rij;
+          sij = rij*rij;
           double r3 = rij*rij*rij;
-          double ds = dscrfcn[fnoffset + jn] * rij;
-//        double ds = 2*rij;dscrfcn[fnoffset + jn]=ds/rij;
-          double dds = ddscrfcn[fnoffset + jn];
-//        double dds = 2.0;
+//          double ds = dscrfcn[fnoffset + jn] * rij;
+        double ds = 2*rij;dscrfcn[fnoffset + jn]=ds/rij;
+//          double dds = ddscrfcn[fnoffset + jn];
+        double dds = 2.0;
         
         dUdrij = 0.0;//phip * sij;// + frhop[i] * drhodr1 + frhop[j] * drhodr2; //--- Eq. 4.41(a)
 //        dUdrij = 0.0;//drho0dr1 + drho0dr2; //--- Eq. 4.41(a)
@@ -1085,7 +1085,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 //           fprintf (pFile, "%e %e %e %e\n",rij, sij, ds, dds);
                       
 //          stiff *= rij2; //--- *r^2 to get energy
-          sij = scrfcn[jn+fnoffset] * fcpair[jn+fnoffset];
+//          sij = scrfcn[jn+fnoffset] * fcpair[jn+fnoffset];
           vm[ 0 ]  = -0.5*GetModulus( 
                          i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
                          0,0,0,0,r3, ds,  dds,  recip,
