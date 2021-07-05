@@ -957,9 +957,9 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           double dds = ddscrfcn[fnoffset + jn];
 //        double dds = 2.0;
         
-        dUdrij = phip * sij;// + frhop[i] * drhodr1 + frhop[j] * drhodr2; //--- Eq. 4.41(a)
+        dUdrij = 0.0;//phip * sij;// + frhop[i] * drhodr1 + frhop[j] * drhodr2; //--- Eq. 4.41(a)
 //        dUdrij = 0.0;//drho0dr1 + drho0dr2; //--- Eq. 4.41(a)
-         ddUddrij = phipp * sij;// + ( frhopp[i] * drhodr1 * drhodr1 + frhop[i] * ddrhodrdr1 ) + //--- 1st deriv. of Eq. 4.41(a) wrt r
+         ddUddrij = 0.0;//phipp * sij;// + ( frhopp[i] * drhodr1 * drhodr1 + frhop[i] * ddrhodrdr1 ) + //--- 1st deriv. of Eq. 4.41(a) wrt r
                                   //( frhopp[j] * drhodr2 * drhodr2 + frhop[j] * ddrhodrdr2 );
 //        ddUddrij = 0.0;//ddrho0drdr1 + ddrho0drdr2;
         
@@ -968,15 +968,15 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         for (m = 0; m < 3; m++) ddUdrijmds[m] = 0.0;
         ddUdrijds = 0.0;
         if (!iszero(dscrfcn[fnoffset + jn])) {
-          dUdsij = phi;// + frhop[i] * drhods1 + frhop[j] * drhods2; //--- Eq. 4.41(b)
+          dUdsij = sij;//phi;// + frhop[i] * drhods1 + frhop[j] * drhods2; //--- Eq. 4.41(b)
 //          dUdsij = 1.0;//drho0ds1 + drho0ds2; //--- Eq. 4.41(b)
-           ddUddsij = 0.0;//frhopp[i] * drhods1 * drhods1 + frhop[i] * ddrhodsds1 +
+           ddUddsij = 1.0;//0.0;//frhopp[i] * drhods1 * drhods1 + frhop[i] * ddrhodsds1 +
                       //frhopp[j] * drhods2 * drhods2 + frhop[j] * ddrhodsds2;
 //          ddUddsij = 0.0;//ddrho0dsds1 + ddrho0dsds2;
           for (m = 0; m < 3; m++) ddUdrijmds[m] = 0.0;//frhopp[i] * drhods1 * drhodrm1[m] + frhop[i] * ddrhodrmds1[m] +
                                                   //frhopp[j] * drhods2 * drhodrm2[m] + frhop[j] * ddrhodrmds2[m];
  //         for (m = 0; m < 3; m++) ddUdrijmds[m] = 0.0;//ddrho0drmds1[m] + ddrho0drmds2[m];
-           ddUdrijds = phip ;//+ frhopp[i] * drhods1 * drhodr1 + frhop[i] * ddrhodrds1 +
+           ddUdrijds = 0.0;//phip ;//+ frhopp[i] * drhods1 * drhodr1 + frhop[i] * ddrhodrds1 +
                               //frhopp[j] * drhods2 * drhodr2 + frhop[j] * ddrhodrds2;
 //          ddUdrijds = 0.0;//ddrho0drds1+ddrho0drds2;        
         }
