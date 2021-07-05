@@ -12,7 +12,7 @@ variable tDampTemp 	equal 100*${Dt}   #--- thermostat equilibration time scale
 variable TdotMelt 	equal 50.0   #--- melting rate
 variable TdotQuench equal 0.001*${TdotMelt}   #--- quench rate
 variable Pinit	equal 1.0132  #--- number of time steps
-variable Nfreq	equal 100  #--- number of time steps
+variable Nfreq	equal 1000  #--- number of time steps
 variable tEquilibrate	equal 100*${tDampTemp}  #--- equilibration time
 variable tDampPress 	equal ${tDampTemp}   #--- barostat equilibration time scale
 
