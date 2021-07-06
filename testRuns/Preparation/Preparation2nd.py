@@ -36,13 +36,13 @@ if __name__ == '__main__':
 
 	nruns	 = 1
 	nThreads = 8
-	jobname  = 'test11thMelt2ndNatom50kQrate5Srate4'
-	sourcePath = os.getcwd() + '/test11thMelt2ndNatom50kQrate5' #--- must be different than sourcePath
+	jobname  = 'test11thMelt2ndNatom50kQrate1Srate4'
+	sourcePath = os.getcwd() + '/test11thMelt2ndNatom50kQrate1' #--- must be different than sourcePath
 	EXEC_DIR = '/home/kamran.karimi1/Project/git/lammps2nd/lammps/src' #--- path for executable file
 	MEAM_library_DIR='/home/kamran.karimi1/Project/git/CrystalPlasticity/testRuns/dataFiles' #--- meam potential parameters
 	PYFIL = '/home/kamran.karimi1/Project/git/CrystalPlasticity/py'
 	EXEC = 'lmp_mpi' #'lmp_serial' 
-	durtn = '47:59:59'
+	durtn = '71:59:59'
 	SCRATCH = None
 	partition = 'parallel' #'single' #'bigmem' #'parallel'
 	mem = '8gb'
