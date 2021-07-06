@@ -14,10 +14,10 @@ if __name__ == '__main__':
 	import os
 
 	nruns	 = range(3)
-	jobname  = 'StrsStrnCo5Cr5Fe40Mn27Ni26' 
-	readPath = os.getcwd() + '/../testRuns/glassCo5Cr5Fe40Mn27Ni26' # --- source
+	jobname  = 'ShearBandFeNi' 
+	readPath = os.getcwd() + '/../testRuns/glassFeNi' # --- source
 	EXEC_DIR = '.'     #--- path for executable file
-	durtn = '00:14:59'
+	durtn = '00:29:59'
 	resources = {'mem':'16gb', 'partition':'o12h','nodes':1,'ppn':1}
 	argv = "path=%s"%(readPath) #--- don't change! 
 	argv2nd = "junk=junk"#"itime=10000" 
