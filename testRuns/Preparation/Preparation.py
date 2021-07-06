@@ -41,7 +41,7 @@ if __name__ == '__main__':
 	EXEC = 'lmp_mpi' #'lmp_serial'
 	durtn = '95:59:59'
 	SCRATCH = True
-	mem = '8gb'
+	mem = '4gb'
 	partition = 'parallel' #'single' #'parallel'
 	#--- sim. parameters
 	natom = 50000 
