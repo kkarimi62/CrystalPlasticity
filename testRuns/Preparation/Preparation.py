@@ -32,7 +32,7 @@ if __name__ == '__main__':
         import numpy as np
 
 	nruns	 = 1
-	nThreads = 8*2
+	nThreads = 8
 	jobname  = 'test11thMelt2ndNatom50kQrate0.1'
 #	sourcePath = os.getcwd() + '/dataFiles'
 	EXEC_DIR = '/home/kamran.karimi1/Project/git/lammps2nd/lammps/src' #--- path for executable file
