@@ -35,5 +35,5 @@ if __name__ == '__main__':
 #		string[ inums ] = "\targv2nd=\'itime=%s\'\n"%(PHI[iphi])
 
 		sfile=open('junk%s.py'%iphi,'w');sfile.writelines(string);sfile.close()
-		os.system( 'python3 junk%s.py'%iphi )
+		os.system( 'python junk%s.py'%iphi )
 #		os.system( 'rm junk%s.py'%iphi )
