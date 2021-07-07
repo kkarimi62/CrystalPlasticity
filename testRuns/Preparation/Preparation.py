@@ -39,7 +39,7 @@ if __name__ == '__main__':
 	MEAM_library_DIR='/home/kamran.karimi1/Project/git/CrystalPlasticity/testRuns/dataFiles' #--- meam potential parameters
 	PYFIL = '/home/kamran.karimi1/Project/git/CrystalPlasticity/py'
 	EXEC = 'lmp_mpi' #'lmp_serial'
-	durtn = '143:59:59'
+	durtn = '00:29:00' #'143:59:59'
 	SCRATCH = True
 	mem = '4gb'
 	partition = 'parallel' #'single' #'parallel'
@@ -63,8 +63,8 @@ if __name__ == '__main__':
 			path=os.getcwd() + '/%s' % ( jobname)
 			os.system( 'cp %s/%s %s' % ( EXEC_DIR, EXEC, path ) ) # --- create folder & mv oar scrip & cp executable
 		#---
-#		os.system( 'cp in_soft.txt %s/in.txt ' % writPath ) #--- lammps script: periodic x, pxx, vy, load
-		os.system( 'cp in_melt.txt %s/in.txt ' % writPath ) #--- lammps script: periodic x, pxx, vy, load
+#		os.system( 'cp in_melt.txt %s/in.txt ' % writPath ) #--- lammps script: periodic x, pxx, vy, load
+		os.system( 'cp in_test.txt %s/in.txt ' % writPath ) #--- lammps script: periodic x, pxx, vy, load
 		#---
 		#---
 		makeOAR( path, 1, nThreads, durtn, PYFIL ) # --- make oar script
