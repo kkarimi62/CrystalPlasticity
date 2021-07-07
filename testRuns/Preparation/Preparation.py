@@ -42,7 +42,7 @@ if __name__ == '__main__':
 	durtn = '00:59:00' #'143:59:59'
 	SCRATCH = True
 	mem = '4gb'
-	partition = 'cpu2017' #'cpu2019' #'parallel' #'single' #'parallel'
+	partition = 'theia' #'cpu2019' #'parallel' #'single' #'parallel'
 	#--- sim. parameters
 	natom = 50000 
 	ntypes = 5
