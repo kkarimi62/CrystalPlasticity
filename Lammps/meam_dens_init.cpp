@@ -232,7 +232,7 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
         cikj = (cikj - Cmin) / delc; //--- func. arg. in Eq.(4.11c)
         sikj = fcut(cikj); //--- Eq.(4.11c)
       }
-      sij *= rij*(rik * rjk);//kam sikj; //--- \bar{s_{ij}} in Eq.(4.11a)
+      sij *= (rik * rjk);//kam sikj; //--- \bar{s_{ij}} in Eq.(4.11a)
     }
 
     fc = dfcut(rnorm, dfc, ddfc);
@@ -292,7 +292,8 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
           coef1 = dfikj / (delc * sikj);
           dCikj = dCfunc(rij2, rik2, rjk2); //--- (4.17)/rij
           ddCikj = ddCfunc(rij, rij2, rik2, rjk2);
-          dscrfcn[jn] = dscrfcn[jn] + rik*rjk;//kam coef1 * dCikj; //--- (4.21)/rij: sum over k
+//          dscrfcn[jn] = dscrfcn[jn] + coef1 * dCikj; //--- (4.21)/rij: sum over k
+          dscrfcn[jn] *= (rik*rjk);//kam coef1 * dCikj; //--- (4.21)/rij: sum over k
           dCikj *= rij;
           arg1_d += (1.0/delc)*( -(dfikj*dfikj*dCikj*dCikj)/delc/sikj/sikj+  
                                 (ddfikj*dCikj*dCikj/sikj/delc) + 
@@ -308,7 +309,7 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
       ddscrfcn[jn] = 0.0;//kam - drinv * dfc * dsij + fcij * ddsij - drinv * ( dsij * dfc - sij * ddfc * drinv ); //--- units of s/r^2
     }
 
-    scrfcn[jn] = sij/fcij; //kam
+    scrfcn[jn] = sij*rij/fcij; //kam
     fcpair[jn] = fcij;
   }
 }
