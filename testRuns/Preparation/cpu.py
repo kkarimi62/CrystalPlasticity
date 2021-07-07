@@ -1,7 +1,7 @@
 import pdb
 import os
 
-PHI=[1,2,4,6,8,10,12,14,16,18,20,22,24,26,28] #range(0,2000000+10000,4*10000) 
+PHI=range(2,42,2)
 n=len(PHI)
 for i in xrange(n):
 	path = 'testCpuRunTime%s/Run0/log.lammps'%(i)
