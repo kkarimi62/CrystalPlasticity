@@ -32,16 +32,16 @@ if __name__ == '__main__':
         import numpy as np
 
 	nruns	 = 1
-	nThreads = 8
-	jobname  = 'test11thMelt2ndNatom50kQrate0.1'
+	nThreads = 32
+	jobname  = 'test11thMelt2ndNatom50kQrate0.1-2nd'
 #	sourcePath = os.getcwd() + '/dataFiles'
 	EXEC_DIR = '/home/kamran.karimi1/Project/git/lammps2nd/lammps/src' #--- path for executable file
 	MEAM_library_DIR='/home/kamran.karimi1/Project/git/CrystalPlasticity/testRuns/dataFiles' #--- meam potential parameters
 	PYFIL = '/home/kamran.karimi1/Project/git/CrystalPlasticity/py'
 	EXEC = 'lmp_mpi' #'lmp_serial'
-	durtn = '00:59:00' #'143:59:59'
+	durtn = '167:59:59'
 	SCRATCH = True
-	mem = '4gb'
+	mem = '8gb'
 	partition = 'cpu2013' #'cpu2019' #'parallel' #'single' #'parallel'
 	#--- sim. parameters
 	natom = 50000 
@@ -63,8 +63,8 @@ if __name__ == '__main__':
 			path=os.getcwd() + '/%s' % ( jobname)
 			os.system( 'cp %s/%s %s' % ( EXEC_DIR, EXEC, path ) ) # --- create folder & mv oar scrip & cp executable
 		#---
-#		os.system( 'cp in_melt.txt %s/in.txt ' % writPath ) #--- lammps script: periodic x, pxx, vy, load
-		os.system( 'cp in_test.txt %s/in.txt ' % writPath ) #--- lammps script: periodic x, pxx, vy, load
+		os.system( 'cp in_melt.txt %s/in.txt ' % writPath ) #--- lammps script: periodic x, pxx, vy, load
+#		os.system( 'cp in_test.txt %s/in.txt ' % writPath ) #--- lammps script: periodic x, pxx, vy, load
 		#---
 		#---
 		makeOAR( path, 1, nThreads, durtn, PYFIL ) # --- make oar script
