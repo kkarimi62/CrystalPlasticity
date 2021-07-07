@@ -39,10 +39,10 @@ if __name__ == '__main__':
 	MEAM_library_DIR='/home/kamran.karimi1/Project/git/CrystalPlasticity/testRuns/dataFiles' #--- meam potential parameters
 	PYFIL = '/home/kamran.karimi1/Project/git/CrystalPlasticity/py'
 	EXEC = 'lmp_mpi' #'lmp_serial'
-	durtn = '00:59:59' #'167:59:59'
+	durtn = '04:59:59'
 	SCRATCH = True
-	mem = '4gb'
-	partition = 'cpu2013' #'cpu2019' #'parallel' #'single' #'parallel'
+	mem = '8gb'
+	partition = 'cpu2019' #'cpu2019' #'parallel' #'single' #'parallel'
 	#--- sim. parameters
 	natom = 50000 
 	ntypes = 5
