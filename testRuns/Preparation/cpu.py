@@ -1,7 +1,7 @@
 import pdb
 import os
 
-PHI=range(2,42,2)
+PHI=range(2,56+2,2)
 n=len(PHI)
 for i in xrange(n):
 	path = 'testCpuRunTime%s/Run0/log.lammps'%(i)
