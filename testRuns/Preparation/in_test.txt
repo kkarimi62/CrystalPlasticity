@@ -90,7 +90,7 @@ dump      	1 all custom ${Nfreq} ${OUT_PATH}/xyz.dump id type x y z
 
 #--- minimization
 min_style 	cg
-minimize	1.0e-06 0.0 1000 100000
+minimize	1.0e-08 0.0 1000 100000
 
 #-----------------------------
 #--- thermalize to room temperature
