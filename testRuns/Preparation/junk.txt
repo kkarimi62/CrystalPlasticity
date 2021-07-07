@@ -1,0 +1,7 @@
+Loop time of 1286.09 on 1 procs for 519 steps with 51912 atoms
+Loop time of 614.276 on 2 procs for 507 steps with 51912 atoms
+Loop time of 206.298 on 4 procs for 356 steps with 51912 atoms
+Loop time of 169.728 on 6 procs for 406 steps with 51912 atoms
+Loop time of 183.683 on 8 procs for 545 steps with 51912 atoms
+Loop time of 129.609 on 10 procs for 479 steps with 51912 atoms
+Loop time of 96.9333 on 12 procs for 443 steps with 51912 atoms
