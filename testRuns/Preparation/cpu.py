@@ -11,6 +11,6 @@ for i in xrange(n):
 string = open('junk.txt').readlines()
 try:
     for i in xrange(n):
-        print PHI[i],string[i][13:string[i].find("on")-1]
+        print string[i][string[i].find("on")+3:string[i].find("procs")-1] ,string[i][13:string[i].find("on")-1]
 except:
     pass
