@@ -12,7 +12,7 @@ if __name__ == '__main__':
 #	PHI = np.logspace(-5.0,-2.0,nphi,endpoint=True)
 #	PHI = np.linspace(2.3,2.9,nphi,endpoint=True)
 #	PHI = np.linspace(0.05,0.45,nphi,endpoint=True)
-	PHI=range(2,56+2,2) #[1,2,4,6,8,10,12,14,16,18,20,22,24,26,28] #range(0,2000000+10000,4*10000) 
+	PHI=range(2,32+2,2) #[1,2,4,6,8,10,12,14,16,18,20,22,24,26,28] #range(0,2000000+10000,4*10000) 
 #	PHI = [0, 500000,1000000,1500000,2000000]
 	nphi = len(PHI)
 	#---
