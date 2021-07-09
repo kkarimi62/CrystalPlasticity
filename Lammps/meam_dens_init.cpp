@@ -200,14 +200,12 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
       delyjk = yktmp - yjtmp;
       delzjk = zktmp - zjtmp;
       rjk2 = delxjk * delxjk + delyjk * delyjk + delzjk * delzjk;
-      rjk=sqrt(rjk2);//kam
       if (rjk2 > rbound) continue;
 
       delxik = xktmp - xitmp;
       delyik = yktmp - yitmp;
       delzik = zktmp - zitmp;
       rik2 = delxik * delxik + delyik * delyik + delzik * delzik;
-      rik=sqrt(rik2);//kam
       if (rik2 > rbound) continue;
 
       xik = rik2 / rij2;
@@ -232,7 +230,7 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
         cikj = (cikj - Cmin) / delc; //--- func. arg. in Eq.(4.11c)
         sikj = fcut(cikj); //--- Eq.(4.11c)
       }
-      sij *= (rik * rjk);//kam sikj; //--- \bar{s_{ij}} in Eq.(4.11a)
+      sij *= sikj; //--- \bar{s_{ij}} in Eq.(4.11a)
     }
 
     fc = dfcut(rnorm, dfc, ddfc);
@@ -243,7 +241,6 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
     //     Now compute derivatives
     dscrfcn[jn] = 0.0;
     ddscrfcn[jn] = 0.0;
-    arg1_d = 0.0;
     sfcij = sij * fcij; //--- 4.11a
     if (!iszero(sfcij) && !isone(sfcij)) {
       for (kn = 0; kn < numneigh_full; kn++) {
@@ -256,24 +253,26 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
         delyjk = x[k][1] - yjtmp;
         delzjk = x[k][2] - zjtmp;
         rjk2 = delxjk * delxjk + delyjk * delyjk + delzjk * delzjk;
-        rjk=sqrt(rjk2);//kam
         if (rjk2 > rbound) continue;
 
         delxik = x[k][0] - xitmp;
         delyik = x[k][1] - yitmp;
         delzik = x[k][2] - zitmp;
         rik2 = delxik * delxik + delyik * delyik + delzik * delzik;
-        rik=sqrt(rik2);//kam
         if (rik2 > rbound) continue;
 
         xik = rik2 / rij2;
+        dxik=-2*rik2 /rij3
         xjk = rjk2 / rij2;
+        dxjk = -2*rjk2 / rij3
         a = 1 - (xik - xjk) * (xik - xjk);
+        da = -2*(xik - xjk) * (dxik - dxjk)
         //     if a < 0, then ellipse equation doesn't describe this case and
         //     atom k can't possibly screen i-j
         if (a <= 0.0) continue;
 
         cikj = (2.0 * (xik + xjk) + a - 2.0) / a;
+        dcikj = (2.0 * (dxik + dxjk) + da ) / a - da*(2.0 * (xik + xjk) + a - 2.0)/a/a
         Cmax = this->Cmax_meam[elti][eltj][eltk];
         Cmin = this->Cmin_meam[elti][eltj][eltk];
         if (cikj >= Cmax) {
@@ -288,28 +287,30 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
         } else {
           delc = Cmax - Cmin;
           cikj = (cikj - Cmin) / delc; //--- func. arg. in 4.20b
+          dcikj /= delc
           sikj = dfcut(cikj, dfikj, ddfikj ); //--- dfikj is (4.20b), sikj is (4.11c)
+          dsikj=dfikj*dcikj
           coef1 = dfikj / (delc * sikj);
+          dcoef1=(ddfikj*dcikj/sikj-dsikj*dfikj/sikj/sikj)/delc
           dCikj = dCfunc(rij2, rik2, rjk2); //--- (4.17)/rij
-          ddCikj = ddCfunc(rij, rij2, rik2, rjk2);
-//          dscrfcn[jn] = dscrfcn[jn] + coef1 * dCikj; //--- (4.21)/rij: sum over k
-          dscrfcn[jn] *= (rik*rjk);//kam coef1 * dCikj; //--- (4.21)/rij: sum over k
-          dCikj *= rij;
-          arg1_d += (1.0/delc)*( -(dfikj*dfikj*dCikj*dCikj)/delc/sikj/sikj+  
-                                (ddfikj*dCikj*dCikj/sikj/delc) + 
-                                (dfikj*ddCikj/sikj)  ) ;
+          ddCikj = ddCfunc(rij, rij2, rik2, rjk2); //modify!!!!!!!!!!!!!
+          dscrfcn[jn] = dscrfcn[jn] + coef1 * dCikj; //--- (4.21)/rij: sum over k
+          ddscrfcn[jn] += dcoef1*dCikj+coef1 * ddCikj          
         }
       }
       coef1 = sfcij;
       coef2 = sij * dfcij / rij; //--- scaled by rij
       arg1 = dscrfcn[jn] * rij;
       dsij = sij * arg1;
-      ddsij = dsij * arg1 + sij * arg1_d;
-      dscrfcn[jn] = dscrfcn[jn]/rij;//kam * coef1 - coef2; //--- (4.22a)/rij: units of s/r^2
-      ddscrfcn[jn] = 0.0;//kam - drinv * dfc * dsij + fcij * ddsij - drinv * ( dsij * dfc - sij * ddfc * drinv ); //--- units of s/r^2
+      arg2 = dscrfcn[jn]
+      dscrfcn[jn] = dscrfcn[jn] * coef1 - coef2; //--- (4.22a)/rij: units of s/r^2
+      ddscrfcn[jn] = dsij*dscrfcn[jn]/sij+
+                sij*(ddscrfcn[jn] * fcij + arg2 * dfcij - ddfcij / rij + dfcij / rij2 );
+      ddscrfcn[jn] = dscrfcn[jn]+rij*ddscrfcn[jn];//--- units of s/r^2
+      
     }
 
-    scrfcn[jn] = sij*rij/fcij; //kam
+    scrfcn[jn] = sij;
     fcpair[jn] = fcij;
   }
 }
