@@ -873,7 +873,6 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
                         int alpha, int beta, int gamma, int lambda,  double r3,double ds, double dds, double recip,
                         double dUdrij, double dUdsij, double ddUddrij, double ddUdrijds, double ddUddsij,
                         double* dUdrijm, double* delij, double* ddUdrdrijm, double* ddUdrijmds, double* ddUdrmdrn){
-//     dds=0.0; //kam      
      int nv2=0,m,n;
      for(m=0;m<alpha+1;m++){
        for(n=m;n<gamma+1;n++){
@@ -894,12 +893,9 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
    
    double dsg_alpha_beta_drm[3];
    double recip2 = recip * recip;
-//   double dsg_alpha_beta_dr = ((-recip2*(dUdrij+dUdsij*ds)+recip*(ddUddrij+ddUdrijds*ds+dUdsij*dds))*delij[alpha]+ddUdrdrijm[alpha])*delij[beta];
-   double dsg_alpha_beta_dr = ((-recip2*(dUdsij*ds)+recip*(dUdsij*dds))*delij[alpha])*delij[beta];
-//   double dsg_alpha_beta_ds = (recip*(ddUdrijds+ddUddsij*ds)*delij[alpha]+ddUdrijmds[alpha])*delij[beta];
-   double dsg_alpha_beta_ds = (recip*(ddUddsij*ds)*delij[alpha])*delij[beta];
-//   dsg_alpha_beta_drm[gamma] = (recip*((ddUdrdrijm[gamma]+ddUdrijmds[gamma]*ds)*delij[alpha]+(dUdrij+dUdsij*ds)*(alpha == gamma ? 1 : 0))+ddUdrmdrn[nv2])*delij[beta];
-   dsg_alpha_beta_drm[gamma] = (recip*((dUdsij*ds)*(alpha == gamma ? 1 : 0)))*delij[beta];
+   double dsg_alpha_beta_dr = ((-recip2*(dUdrij+dUdsij*ds)+recip*(ddUddrij+ddUdrijds*ds+dUdsij*dds))*delij[alpha]+ddUdrdrijm[alpha])*delij[beta];
+   double dsg_alpha_beta_ds = (recip*(ddUdrijds+ddUddsij*ds)*delij[alpha]+ddUdrijmds[alpha])*delij[beta];
+   dsg_alpha_beta_drm[gamma] = (recip*((ddUdrdrijm[gamma]+ddUdrijmds[gamma]*ds)*delij[alpha]+(dUdrij+dUdsij*ds)*(alpha == gamma ? 1 : 0))+ddUdrmdrn[nv2])*delij[beta];
 
    double mod2bdy = (recip*(dsg_alpha_beta_dr+dsg_alpha_beta_ds*ds)*delij[gamma]+dsg_alpha_beta_drm[gamma])*delij[lambda];
    double mod3bdy = 0.0;
@@ -959,17 +955,30 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
                 if (rik2 <= rbound) {
                   xik = rik2 / rij2;
                   xjk = rjk2 / rij2;
+                  dxik=-2*rik2 /rij2/rij;
+                  dxjk = -2*rjk2 / rij2/rij;
                   a = 1 - (xik - xjk) * (xik - xjk);
+                  da = -2*(xik - xjk) * (dxik - dxjk);
                   if (!iszero(a)) {
                     cikj = (2.0 * (xik + xjk) + a - 2.0) / a;
+                    dcikj = (2.0 * (dxik + dxjk) + da) / a +(2.0 * (xik + xjk) + a - 2.0) *(-da)/ a / a;
+
                     if (cikj >= Cmin && cikj <= Cmax) {
                       cikj = (cikj - Cmin) / delc;
+                      dcikj /= delc;
+
                       sikj = dfcut(cikj, dfc, ddfc);
+                      dsikj = dfc * dcikj;
                       dCfunc2(rij2, rik2, rjk2, dCikj1, dCikj2); //--- 4.17b/rik, 4.17c/rjk
+                      dsij=ds;
                       a = sij / delc * dfc / sikj;
+                      da = (dsij*dfc/sikj+sij*ddfc*dcikj/sikj-dsikj*sij*dfc/sikj/sikj)/delc;
+
                       dsij1 = a * dCikj1; //--- 4.22b/rik: units of s/r^2
                       dsij2 = a * dCikj2; //--- 4.22c/rjk
-//                    
+                       
+                      ddsij1drij = da * dCikj1+a * ddCikj1; //--- units of s/r^3
+                      ddsij2drij = da * dCikj2+a * ddCikj2; //--- units of s/r^3//                    
                     }
                   }
                 }
@@ -978,12 +987,13 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
 
               //
               //     Tabulate per-atom virial as symmetrized stress tensor
-            if (!iszero(dsij1) || !iszero(dsij2))
-              mod3bdy += dsg_alpha_beta_ds * (dsij2 * deljk[gamma] * deljk[lambda] + /* dsij1 is 4.22b/rik: units of s/r^2 */
-                                              dsij1 * delki[gamma] * delki[lambda]);
-
-
-
+            if (!iszero(dsij1) || !iszero(dsij2)){ //modify!!!!!!!
+              dsg_alpha_beta_drjk = recip * dUdsij * ddsij2drij * delij[alpha] * delij[beta];
+              dsg_alpha_beta_drik = recip * dUdsij * ddsij1drij * delij[alpha] * delij[beta];
+              mod3bdy += (dsg_alpha_beta_drjk + dsg_alpha_beta_ds * dsij2) * deljk[gamma] * deljk[lambdaa]+
+                         (dsg_alpha_beta_drik + dsg_alpha_beta_ds * dsij1) * delki[gamma] * delki[lambdaa];
+               
+            }
           }
           //     end of k loop
         }
