@@ -987,7 +987,7 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
 
               //
               //     Tabulate per-atom virial as symmetrized stress tensor
-            if (!iszero(dsij1) || !iszero(dsij2)){ //modify!!!!!!!
+            if (!iszero(dsij1) || !iszero(dsij2) || !iszero(dsg_alpha_beta_drjk) || !iszero(dsg_alpha_beta_drik) ){ //modify!!!!!!!
               dsg_alpha_beta_drjk = recip * dUdsij * ddsij2drij * delij[alpha] * delij[beta];
               dsg_alpha_beta_drik = recip * dUdsij * ddsij1drij * delij[alpha] * delij[beta];
               mod3bdy += (dsg_alpha_beta_drjk + dsg_alpha_beta_ds * dsij2) * deljk[gamma] * deljk[lambdaa]+
