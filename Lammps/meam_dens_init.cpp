@@ -142,6 +142,8 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
   double xjtmp, yjtmp, zjtmp, delxik, delyik, delzik, rik2 /*,rik*/;
   double xktmp, yktmp, zktmp, delxjk, delyjk, delzjk, rjk2 /*,rjk*/;
   double xik, xjk, sij, fcij, sfcij, dfcij, ddfcij, sikj, dfikj, ddfikj, cikj;
+  double dxik, dxjk;
+  double da,dcikj,dsikj,dcoef1,arg2;
   double arg1, arg1_d;
   double dsij, ddsij;
   double Cmin, Cmax, delc, /*ebound,*/ a, coef1, coef2;
@@ -262,9 +264,9 @@ MEAM::getscreen(int i, double* scrfcn, double* dscrfcn, double* ddscrfcn, double
         if (rik2 > rbound) continue;
 
         xik = rik2 / rij2;
-        dxik=-2*rik2 /rij3
+        dxik=-2*rik2 /rij2/rij
         xjk = rjk2 / rij2;
-        dxjk = -2*rjk2 / rij3
+        dxjk = -2*rjk2 / rij2/rij
         a = 1 - (xik - xjk) * (xik - xjk);
         da = -2*(xik - xjk) * (dxik - dxjk)
         //     if a < 0, then ellipse equation doesn't describe this case and
