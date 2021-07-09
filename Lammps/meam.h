@@ -210,22 +210,45 @@ protected:
   //     Inputs: rij,rij2,rik2,rjk2
   //
   static double ddCfunc(const double rij, const double rij2, const double rik2, const double rjk2) {
-    double rij4, a, asq, b,denom, ddenom, rij3, dcikj, ddcikj;
+    
+    double rij4, rij3,drij4,drij2,a,da, asq,dasq, b,db,denom, ddenom, rij3, dcikj, ddcikj;
 
+//     rij4 = rij2 * rij2;
+//     rij3 = rij2 * rij;
+//     a = rik2 - rjk2;
+//     b = rik2 + rjk2;
+//     asq = a*a;
+//     denom = rij4 - asq;
+//     denom = denom * denom;
+//     ddenom = 2*(rij4-asq)*(4*rij3);
+    
+//     dcikj = dCfunc(rij2, rik2, rjk2);
+//     ddcikj = -4 * (-2 * 2 * rij * asq + 4*rij3 * b ) - dcikj * ddenom;
+//     ddcikj /= denom;
+
+//     return ddcikj * rij+dcikj;   
+    
     rij4 = rij2 * rij2;
     rij3 = rij2 * rij;
+    drij4=4*rij3
     a = rik2 - rjk2;
+    da = 0.0;
     b = rik2 + rjk2;
+    db=0.0;
     asq = a*a;
+    dasq=2*a*da;
     denom = rij4 - asq;
     denom = denom * denom;
-    ddenom = 2*(rij4-asq)*(4*rij3);
-    
-    dcikj = dCfunc(rij2, rik2, rjk2);
-    ddcikj = -4 * (-2 * 2 * rij * asq + 4*rij3 * b ) - dcikj * ddenom;
-    ddcikj /= denom;
+    ddenom = 2*(rij4-asq)*(drij4-dasq);
 
-    return ddcikj * rij+dcikj;        
+    drij2 = 2*rij;
+    dasq = 2*a*da;
+    drij4 = 4*rij3;
+    return -4 * (-2 * (drij2 * asq+rij2 * dasq) + (drij4 * b+rij4 * db) + (dasq * b+asq * db))/denom+
+            4 * ddenom * (-2 * rij2 * asq + rij4 * b + asq * b) / denom / denom;
+      
+      
+  
   }
   //-----------------------------------------------------------------------------
   // 2nd Derivative of Cikj w.r.t. rik and rjk
@@ -233,37 +256,64 @@ protected:
   //
   static void ddCfunc2(const double rik, const double rjk, const double rij2, const double rik2, const double rjk2,
                double& ddCikj1, double& ddCikj2) {
-    double rij4, rik4, rjk4, a, denom, ddenom_ik, ddenom_jk, rik3, rjk3, dCikj1, dCikj2;
+    double rij,drij,rij4,drij4, rik4,drik4, rjk4,drjk4,da, a, denom, ddenom; //_ik, ddenom_jk, rik3, rjk3, dCikj1, dCikj2;
 
+//     rij4 = rij2 * rij2;
+//     rik4 = rik2 * rik2;
+//     rjk4 = rjk2 * rjk2;
+//     rik3 = rik2 * rik;
+//     rjk3 = rjk2 * rjk;
+//     a = rik2 - rjk2;
+//     denom = rij4 - a * a;
+    
+//     ddenom_ik = - 2*a * 2*rik;
+//     ddenom_ik *= (2 * denom);
+
+//     ddenom_jk = 2*a * 2*rjk;
+//     ddenom_jk *= (2 * denom);
+
+//     denom = denom * denom;
+
+//     dCfunc2(rij2, rik2, rjk2, dCikj1, dCikj2);
+
+//     dCikj1 *= rik; 
+//     ddCikj1 = 4 * rij2 * (rij4 + rik4 + 2 * rik2 * rjk2 - 3 * rjk4 - 2 * rij2 * a) +
+//               4 * rij2 * rik * ( 3 * rik3 + 4 * rik * rjk2 - 4 * rij2 * rik ) -
+//               ddenom_ik * dCikj1; // d(dCikj1)/drik
+//     ddCikj1 /= denom;
+    
+//     dCikj2 *= rjk; 
+//     ddCikj2 = 4 * rij2 * (rij4 - 3 * rik4 + 2 * rik2 * rjk2 + rjk4 + 2 * rij2 * a) +
+//               4 * rij2 * rjk * ( 4 * rik2 * rjk + 4 * rjk3 - 4 * rij2 *rjk ) - 
+//               ddenom_jk * dCikj2; // d(dCikj2)/drjk
+//     ddCikj2 /= denom;
+    
+    rij=sqrt(rij2);
+    drij2 = 2*rij;
     rij4 = rij2 * rij2;
+    drij4 = 4*rij * rij2;
     rik4 = rik2 * rik2;
+    drik4 = 0.0;
     rjk4 = rjk2 * rjk2;
-    rik3 = rik2 * rik;
-    rjk3 = rjk2 * rjk;
+    drjk4 = 0.0;
     a = rik2 - rjk2;
+    da = 0;
     denom = rij4 - a * a;
-    
-    ddenom_ik = - 2*a * 2*rik;
-    ddenom_ik *= (2 * denom);
-
-    ddenom_jk = 2*a * 2*rjk;
-    ddenom_jk *= (2 * denom);
-
     denom = denom * denom;
-
-    dCfunc2(rij2, rik2, rjk2, dCikj1, dCikj2);
-
-    dCikj1 *= rik; 
-    ddCikj1 = 4 * rij2 * (rij4 + rik4 + 2 * rik2 * rjk2 - 3 * rjk4 - 2 * rij2 * a) +
-              4 * rij2 * rik * ( 3 * rik3 + 4 * rik * rjk2 - 4 * rij2 * rik ) -
-              ddenom_ik * dCikj1; // d(dCikj1)/drik
-    ddCikj1 /= denom;
+    ddenom = 2*(rij4 - a * a)*(drij4 - 2*a * da);
+    drik2=0.0;
+    drjk2=0.0;
     
-    dCikj2 *= rjk; 
-    ddCikj2 = 4 * rij2 * (rij4 - 3 * rik4 + 2 * rik2 * rjk2 + rjk4 + 2 * rij2 * a) +
-              4 * rij2 * rjk * ( 4 * rik2 * rjk + 4 * rjk3 - 4 * rij2 *rjk ) - 
-              ddenom_jk * dCikj2; // d(dCikj2)/drjk
-    ddCikj2 /= denom;
+
+    ddCikj1 = 4 * drij2 * (rij4 + rik4 + 2 * rik2 * rjk2 - 3 * rjk4 - 2 * rij2 * a) / denom+
+              4 * rij2 * (drij4 + drik4 + 2 * drik2 * rjk2 + 2 * rik2 * drjk2 - 3 * drjk4 - 2 * drij2 * a- 2 * rij2 * da) / denom+
+              4 * rij2 * (rij4 + rik4 + 2 * rik2 * rjk2 - 3 * rjk4 - 2 * rij2 * a)* (-ddenom) / denom / denom;
+    
+    ddCikj2 = 4 * drij2 * (rij4 - 3 * rik4 + 2 * rik2 * rjk2 + rjk4 + 2 * rij2 * a) / denom +
+    4 * rij2 * (drij4 - 3 * drik4 + 2 * drik2 * rjk2+ 2 * rik2 * drjk2 + drjk4 + 2 * drij2 * a+ 2 * rij2 * da) / denom+
+    4 * rij2 * (rij4 - 3 * rik4 + 2 * rik2 * rjk2 + rjk4 + 2 * rij2 * a) * (-ddenom) / denom / denom;
+    
+    
   }
   
   double G_gam(const double gamma, const int ibar, int &errorflag) const;
