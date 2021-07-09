@@ -211,7 +211,7 @@ protected:
   //
   static double ddCfunc(const double rij, const double rij2, const double rik2, const double rjk2) {
     
-    double rij4, rij3,drij4,drij2,a,da, asq,dasq, b,db,denom, ddenom, rij3, dcikj, ddcikj;
+    double rij4, rij3,drij4,drij2,a,da, asq,dasq, b,db,denom, ddenom, dcikj, ddcikj;
 
 //     rij4 = rij2 * rij2;
 //     rij3 = rij2 * rij;
@@ -230,7 +230,7 @@ protected:
     
     rij4 = rij2 * rij2;
     rij3 = rij2 * rij;
-    drij4=4*rij3
+    drij4=4*rij3;
     a = rik2 - rjk2;
     da = 0.0;
     b = rik2 + rjk2;
@@ -256,7 +256,7 @@ protected:
   //
   static void ddCfunc2(const double rik, const double rjk, const double rij2, const double rik2, const double rjk2,
                double& ddCikj1, double& ddCikj2) {
-    double rij,drij,rij4,drij4, rik4,drik4, rjk4,drjk4,da, a, denom, ddenom; //_ik, ddenom_jk, rik3, rjk3, dCikj1, dCikj2;
+    double rij,drij2,rij4,drij4, rik4,drik4, rjk4,drjk4,da, a, denom, ddenom,drik2,drjk2; //_ik, ddenom_jk, rik3, rjk3, dCikj1, dCikj2;
 
 //     rij4 = rij2 * rij2;
 //     rik4 = rik2 * rik2;
