@@ -919,7 +919,8 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
         if (iszero(sij) || isone(sij) ) return mod2bdy; //: cont jn loop
         double dxik(0), dyik(0), dzik(0), dsij1, deljk[3], delki[3];
         double dxjk(0), dyjk(0), dzjk(0), dsij2;
-        double rij2 = 1.0/recip2;
+        double rij2 = 1.0/recip2, rij=1.0/recip;
+        double da,dcikj,dsikj,dsij,ddsij1drij,ddsij2drij,dsg_alpha_beta_drjk,dsg_alpha_beta_drik;
         int kn,k,eltk,elti,eltj;
         elti = fmap[type[i]];
         eltj = fmap[type[j]];
@@ -938,6 +939,8 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
 
             dsij1 = 0.0;
             dsij2 = 0.0;
+            dsg_alpha_beta_drik=0.0;
+            dsg_alpha_beta_drjk=0.0;
             if (!iszero(sij) && !isone(sij)) {
               const double rbound = rij2 * this->ebound_meam[elti][eltj];
               delc = Cmax - Cmin;
@@ -990,8 +993,8 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
             if (!iszero(dsij1) || !iszero(dsij2) || !iszero(dsg_alpha_beta_drjk) || !iszero(dsg_alpha_beta_drik) ){ //modify!!!!!!!
               dsg_alpha_beta_drjk = recip * dUdsij * ddsij2drij * delij[alpha] * delij[beta];
               dsg_alpha_beta_drik = recip * dUdsij * ddsij1drij * delij[alpha] * delij[beta];
-              mod3bdy += (dsg_alpha_beta_drjk + dsg_alpha_beta_ds * dsij2) * deljk[gamma] * deljk[lambdaa]+
-                         (dsg_alpha_beta_drik + dsg_alpha_beta_ds * dsij1) * delki[gamma] * delki[lambdaa];
+              mod3bdy += (dsg_alpha_beta_drjk + dsg_alpha_beta_ds * dsij2) * deljk[gamma] * deljk[lambda]+
+                         (dsg_alpha_beta_drik + dsg_alpha_beta_ds * dsij1) * delki[gamma] * delki[lambda];
                
             }
           }
