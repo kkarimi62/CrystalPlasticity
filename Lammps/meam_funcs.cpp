@@ -701,7 +701,30 @@ MEAM::Get_ddrhodrdr(  int i, int elti,
                          rho[ i ] * ddrho_bkgd_drdr;        
         ddrhodrdr1 /= rho_bkgd; //rho_bkgd defined?
         return ddrhodrdr1;
+        
+
+
+//       ddgamma1[i] = (dGdr - 2 * ddGdrdr * gamma[i]- 2 * dGdr * dgamma[i]) * denom +
+//                    (G - 2 * dGdr * gamma[i]) * ddenom; //--- Eq. (4.36a): prefactor in the 1st term of the RHS 
+
+        
+        
+//         ddrhodrdr1 = ddgamma1[i] * drho0dr1 + dgamma1[i] * ddrho0dr1 +
+//                      ddgamma2[i] * (dt1dr1 * rho1[i] + t1i * drho1dr1 + dt2dr1 * rho2[i] + t2i * drho2dr1 + dt3dr1 * rho3[i] + t3i * drho3dr1) + 
+//                      dgamma2[i] * (ddt1drdr1 * rho1[i] + dt1dr1 * drho1dr[i]+ 
+//                                    dt1idr * drho1dr1 + t1i * ddrho1drdr1+
+//                                    ddt2drdr1 * rho2[i] + dt2dr1 * drho2dr[i] + 
+//                                    dt2idr * drho2dr1 + t2i * ddrho2drdr1 +
+//                                    ddt3drdr1 * rho3[i] + dt3dr1 * drho3dr[i]+ 
+//                                    dt3idr * drho3dr1 + t3i * ddrho3drdr1) -
+//                      ddgamma3[i] * (shpi[0] * dt1dr1 + shpi[1] * dt2dr1 + shpi[2] * dt3dr1) -
+//                      dgamma3[i] * (shpi[0] * ddt1drdr1 + shpi[1] * ddt2drdr1 + shpi[2] * ddt3drdr1); //shpi(r)? 
 }
+
+
+
+
+
 //-----------------------------------------------------------------------------
 void
 MEAM::Get_ddrhodrmdr( int i, int elti, //--- deriv. of Eq. 4.36(c) wrt. r
