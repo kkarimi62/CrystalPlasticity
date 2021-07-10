@@ -988,7 +988,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
            ddUddsij = frhopp[i] * drhods1 * drhods1 + frhop[i] * ddrhodsds1 +
                       frhopp[j] * drhods2 * drhods2 + frhop[j] * ddrhodsds2;
         if((i==0 and j==1) or (i==1 and j==0) )
-             fprintf (pFile, "%e %e %e %e\n",sij, rij, dUdsij,ddUddsij);
+             fprintf (pFile, "%e %e %e\n",sij, dUdsij,ddUddsij);
           
           
           for (m = 0; m < 3; m++) ddUdrijmds[m] = frhopp[i] * drhods1 * drhodrm1[m] + frhop[i] * ddrhodrmds1[m] +
