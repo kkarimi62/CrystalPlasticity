@@ -977,8 +977,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         ddUddrij = phipp * sij + ( frhopp[i] * drhodr1 * drhodr1 + frhop[i] * ddrhodrdr1 ) + //--- 1st deriv. of Eq. 4.41(a) wrt r
                                  ( frhopp[j] * drhodr2 * drhodr2 + frhop[j] * ddrhodrdr2 );  
         
-           if((i==0 and j==1) or (i==1 and j==0) )
-             fprintf (pFile, "%e %e %e\n",rij, dUdrij,ddUddrij);
+//            if((i==0 and j==1) or (i==1 and j==0) )
+//              fprintf (pFile, "%e %e %e\n",rij, dUdrij,ddUddrij);
         dUdsij = 0.0;
         ddUddsij = 0.0;
         for (m = 0; m < 3; m++) ddUdrijmds[m] = 0.0;
@@ -987,6 +987,10 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           dUdsij = phi + frhop[i] * drhods1 + frhop[j] * drhods2; //--- Eq. 4.41(b)
            ddUddsij = frhopp[i] * drhods1 * drhods1 + frhop[i] * ddrhodsds1 +
                       frhopp[j] * drhods2 * drhods2 + frhop[j] * ddrhodsds2;
+        if((i==0 and j==1) or (i==1 and j==0) )
+             fprintf (pFile, "%e %e %e\n",sij, dUdsij,ddUddsij);
+          
+          
           for (m = 0; m < 3; m++) ddUdrijmds[m] = frhopp[i] * drhods1 * drhodrm1[m] + frhop[i] * ddrhodrmds1[m] +
                                                   frhopp[j] * drhods2 * drhodrm2[m] + frhop[j] * ddrhodrmds2[m];
            ddUdrijds = phip + frhopp[i] * drhods1 * drhodr1 + frhop[i] * ddrhodrds1 +
