@@ -893,8 +893,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                                     drhods1
                                   );
         if(i==0 and j==1)
-//          fprintf (pFile, "%e %e %e\n",sij, drhods1,ddrhodsds1);
-          fprintf (pFile, "%e %e %e %e\n",gamma[i],G_array[i],dG_array[i],ddG_array[i]);
+          fprintf (pFile, "%e %e %e %e\n",sij, rho[i],drhods1,ddrhodsds1);
+#          fprintf (pFile, "%e %e %e %e\n",gamma[i],G_array[i],dG_array[i],ddG_array[i]);
       
           ddrhodsds2 = Get_ddrhodrdr(j, eltj,
                                     shpj, 
