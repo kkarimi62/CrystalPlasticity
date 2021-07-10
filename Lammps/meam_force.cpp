@@ -919,8 +919,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                        ddrho0drds1,  ddrho1drds1,  ddrho2drds1,  ddrho3drds1,
                        drhodr1,  drhods1
                      );     
-          if((i==0 and j==1) or (i==1 and j==0) )
-           fprintf (pFile, "%e %e %e\n",rij, drhods1,ddrhodrds1);
+//           if((i==0 and j==1) or (i==1 and j==0) )
+//            fprintf (pFile, "%e %e %e\n",rij, drhods1,ddrhodrds1);
 
           ddrhodrds2 = Get_ddrhodrds(   j,  eltj,
                        shpj,
@@ -946,6 +946,9 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                         drhodrm1,
                         ddrhodrmds1 //--- modify
                        );         
+          if((i==0 and j==1) or (i==1 and j==0) )
+            fprintf (pFile, "%e %e %e\n",delij[0], drhods1,ddrhodrmds1[0]);
+          
           Get_ddrhodrmds( j, eltj, //--- deriv. of Eq. 4.36(c) wrt. s
                         shpj, 
                         t1j,  t2j,  t3j,
