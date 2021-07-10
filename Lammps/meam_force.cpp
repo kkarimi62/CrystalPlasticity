@@ -892,7 +892,9 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                                     ddrho0dsds1, ddrho1dsds1,  ddrho2dsds1,  ddrho3dsds1,
                                     drhods1
                                   );
-
+        if(i==0 and j==1)
+//          fprintf (pFile, "%e %e %e\n",sij, drhods1,ddrhodsds1);
+          fprintf (pFile, "%e %e %e %e\n",gamma[i],G_array[i],dG_array[i],ddG_array[i]):
       
           ddrhodsds2 = Get_ddrhodrdr(j, eltj,
                                     shpj, 
@@ -953,8 +955,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                         ddrhodrmds2 //--- modify  negative sign?????
                        );         
         }
-        if(i==0 and j==1)
-          fprintf (pFile, "%e %e %e\n",sij, drhods1,ddrhodsds1);
+
         //     Compute derivatives of energy wrt rij, sij, and rij[3]
 //          sij = rij*rij;
           double r3 = rij*rij*rij;
