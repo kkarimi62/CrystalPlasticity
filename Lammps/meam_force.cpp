@@ -648,7 +648,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                         ddrhodrmdr1 //--- modify
                        );
          if((i==1 and j==2) or (i==2 and j==1) )
-           fprintf (pFile, "%e %e %e %e\n",rij,drhodrm1[0],ddrhodrmdr1[0]);
+           fprintf (pFile, "%e %e %e\n",rij,drhodrm1[0],ddrhodrmdr1[0]);
 //          fprintf (pFile, "%e %e %e %e\n",gamma[i],G_array[i],dG_array[i],ddG_array[i]);
         Get_ddrhodrmdr( j, eltj, //--- deriv. of Eq. 4.36(c) wrt. r
                         shpj, 
