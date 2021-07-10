@@ -647,6 +647,9 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                         drhodrm1,
                         ddrhodrmdr1 //--- modify
                        );
+         if((i==1 and j==2) or (i==2 and j==1) )
+           fprintf (pFile, "%e %e %e %e\n",rij,drhodrm1[0],ddrhodrmdr1[0]);
+//          fprintf (pFile, "%e %e %e %e\n",gamma[i],G_array[i],dG_array[i],ddG_array[i]);
         Get_ddrhodrmdr( j, eltj, //--- deriv. of Eq. 4.36(c) wrt. r
                         shpj, 
                         t1j,  t2j,  t3j,
@@ -946,8 +949,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                         drhodrm1,
                         ddrhodrmds1 //--- modify
                        );         
-          if((i==0 and j==1) or (i==1 and j==0) )
-            fprintf (pFile, "%e %e %e\n",delij[0], drhods1,ddrhodrmds1[0]);
+//           if((i==0 and j==1) or (i==1 and j==0) )
+//             fprintf (pFile, "%e %e %e\n",delij[0], drhods1,ddrhodrmds1[0]);
           
           Get_ddrhodrmds( j, eltj, //--- deriv. of Eq. 4.36(c) wrt. s
                         shpj, 
