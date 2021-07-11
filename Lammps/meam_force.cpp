@@ -739,10 +739,12 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           ddrho1drds2 = da1 * rhoa1i * arg1j1 + a1 * drhoa1i * arg1j1 + a1 * rhoa1i * arg1j1_d;
           ddrho1dsds1 = a1 * rhoa1j * darg1i1ds;
           ddrho1dsds2 = a1 * rhoa1i * darg1j1ds;
+          a1 = 2.0 * sij / rij;
+          da1 = 2.0/rij;
           for (m = 0; m < 3; m++) {
 //            drho1drm1[m] = a1 * rhoa1j * arho1[i][m];
-            ddrho1drmds1[m] =  a1 * rhoa1j * darho1dsi[m];
-            ddrho1drmds2[m] = -a1 * rhoa1i * darho1dsj[m];
+            ddrho1drmds1[m] =  da1 * rhoa1j * arho1[i][m] + a1 * rhoa1j * darho1dsi[m];
+            ddrho1drmds2[m] = -(da1 * rhoa1i * arho1[j][m]+ a1 * rhoa1i * darho1dsj[m]);
           }
         // rho2
           a2 = 2.0 / rij2;
