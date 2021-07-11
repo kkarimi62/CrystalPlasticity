@@ -255,7 +255,6 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           nv2++;
          }
         } 
-          [nv2] =  A1j*(m==n?1:0)*sij;
         //
         A2j = rhoa2j / rij2;
         A2i = rhoa2i / rij2;
