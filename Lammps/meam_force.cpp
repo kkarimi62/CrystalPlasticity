@@ -973,6 +973,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           double dds = ddscrfcn[fnoffset + jn];
 //        double dds = 2.0;
         
+        frhop[i] = frhopp[i]=0.0;
         dUdrij = phip * sij + frhop[i] * drhodr1 + frhop[j] * drhodr2; //--- Eq. 4.41(a)
         ddUddrij = phipp * sij + ( frhopp[i] * drhodr1 * drhodr1 + frhop[i] * ddrhodrdr1 ) + //--- 1st deriv. of Eq. 4.41(a) wrt r
                                  ( frhopp[j] * drhodr2 * drhodr2 + frhop[j] * ddrhodrdr2 );  
@@ -984,7 +985,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         for (m = 0; m < 3; m++) ddUdrijmds[m] = 0.0;
         ddUdrijds = 0.0;
         if (!iszero(dscrfcn[fnoffset + jn])) {
-          dUdsij = phi + frhop[i] * drhods1;// + frhop[j] * drhods2; //--- Eq. 4.41(b)
+          dUdsij = phi + frhop[i] * drhods1 + frhop[j] * drhods2; //--- Eq. 4.41(b)
            ddUddsij = frhopp[i] * drhods1 * drhods1 + frhop[i] * ddrhodsds1 +
                       frhopp[j] * drhods2 * drhods2 + frhop[j] * ddrhodsds2;
 //        if((i==0 and j==1) or (i==1 and j==0) )
