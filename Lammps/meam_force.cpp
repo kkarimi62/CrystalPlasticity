@@ -975,11 +975,11 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         
         
         
-        frhop[i] = 1.0;frhopp[i]=0.0;
+       frhop[i] = 1.0;frhopp[i]=0.0;
         frhop[j] = 0.0;frhopp[j]=0.0;
-        dUdrij = phip * sij + frhop[i] * drho0dr1 + frhop[j] * drho0dr2; //--- Eq. 4.41(a)
-        ddUddrij = phipp * sij + ( frhopp[i] * drho0dr1 * drho0dr1 + frhop[i] * ddrho0drdr1 ) + //--- 1st deriv. of Eq. 4.41(a) wrt r
-                                 ( frhopp[j] * drho0dr2 * drho0dr2 + frhop[j] * ddrho0drdr2 );  
+        dUdrij = phip * sij + frhop[i] * drho1dr1 + frhop[j] * drho1dr2; //--- Eq. 4.41(a)
+        ddUddrij = phipp * sij + ( frhopp[i] * drho1dr1 * drho1dr1 + frhop[i] * ddrho1drdr1 ) + //--- 1st deriv. of Eq. 4.41(a) wrt r
+                                 ( frhopp[j] * drho1dr2 * drho1dr2 + frhop[j] * ddrho1drdr2 );  
         
 //            if((i==0 and j==1) or (i==1 and j==0) )
 //              fprintf (pFile, "%e %e %e\n",rij, dUdrij,ddUddrij);
@@ -988,26 +988,26 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         for (m = 0; m < 3; m++) ddUdrijmds[m] = 0.0;
         ddUdrijds = 0.0;
         if (!iszero(dscrfcn[fnoffset + jn])) {
-          dUdsij = phi + frhop[i] * drho0ds1 + frhop[j] * drho0ds2; //--- Eq. 4.41(b)
-           ddUddsij = frhopp[i] * drho0ds1 * drho0ds1 + frhop[i] * ddrho0dsds1 +
-                      frhopp[j] * drho0ds2 * drho0ds2 + frhop[j] * ddrho0dsds2;
+          dUdsij = phi + frhop[i] * drho1ds1 + frhop[j] * drho1ds2; //--- Eq. 4.41(b)
+           ddUddsij = frhopp[i] * drho1ds1 * drho1ds1 + frhop[i] * ddrho1dsds1 +
+                      frhopp[j] * drho1ds2 * drho1ds2 + frhop[j] * ddrho1dsds2;
 //        if((i==0 and j==1) or (i==1 and j==0) )
 //             fprintf(pFile, "%d %d %e %e %e\n",i,j,rho[i],frhop[i],frhopp[i]);
           
           
-          for (m = 0; m < 3; m++) ddUdrijmds[m] = frhopp[i] * drho0ds1 * drho0drm1[m] + frhop[i] * ddrho0drmds1[m] +
-                                                  frhopp[j] * drho0ds2 * drho0drm2[m] + frhop[j] * ddrho0drmds2[m];
-           ddUdrijds = phip + frhopp[i] * drho0ds1 * drho0dr1 + frhop[i] * ddrho0drds1 +
-                              frhopp[j] * drho0ds2 * drho0dr2 + frhop[j] * ddrho0drds2;
+          for (m = 0; m < 3; m++) ddUdrijmds[m] = frhopp[i] * drho1ds1 * drho1drm1[m] + frhop[i] * ddrho1drmds1[m] +
+                                                  frhopp[j] * drho1ds2 * drho1drm2[m] + frhop[j] * ddrho1drmds2[m];
+           ddUdrijds = phip + frhopp[i] * drho1ds1 * drho1dr1 + frhop[i] * ddrho1drds1 +
+                              frhopp[j] * drho1ds2 * drho1dr2 + frhop[j] * ddrho1drds2;
         }
         nv2 = 0;
         for (m = 0; m < 3; m++) {
-          dUdrijm[m] = frhop[i] * drho0drm1[m] + frhop[j] * drho0drm2[m]; //--- Eq. 4.41(c)
-          ddUdrdrijm[m] = frhopp[i] * drho0dr1 * drho0drm1[m] + frhop[i] * ddrho0drmdr1[m] + 
-                           frhopp[j] * drho0dr2 * drho0drm2[m] + frhop[i] * ddrho0drmdr2[m]; //--- deriv of Eq. 4.41(c) wrt r
+          dUdrijm[m] = frhop[i] * drho1drm1[m] + frhop[j] * drho1drm2[m]; //--- Eq. 4.41(c)
+          ddUdrdrijm[m] = frhopp[i] * drho1dr1 * drho1drm1[m] + frhop[i] * ddrho1drmdr1[m] + 
+                           frhopp[j] * drho1dr2 * drho1drm2[m] + frhop[i] * ddrho1drmdr2[m]; //--- deriv of Eq. 4.41(c) wrt r
           for (n = m; n < 3; n++) {
-            ddUdrmdrn[nv2] =  frhopp[i] * drho0drm1[m] * drho0drm1[n] + frhop[i] * ddrho0drmdrn1[nv2]+
-                              frhopp[j] * drho0drm2[m] * drho0drm2[n] + frhop[j] * ddrho0drmdrn2[nv2];
+            ddUdrmdrn[nv2] =  frhopp[i] * drho1drm1[m] * drho1drm1[n] + frhop[i] * ddrho1drmdrn1[nv2]+
+                              frhopp[j] * drho1drm2[m] * drho1drm2[n] + frhop[j] * ddrho1drmdrn2[nv2];
             nv2++;
           }  
          }
