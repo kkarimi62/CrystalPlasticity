@@ -327,6 +327,10 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 	darg1j2ds = 0.0;
         arg3i3_d = 0.0;
         arg3j3_d = 0.0;
+	darg1i3ds = 0.0;
+	darg1j3ds = 0.0;
+	darg3i3ds = 0.0;
+	darg3j3ds = 0.0;
         for (n = 0; n < 3; n++) {
           for (p = n; p < 3; p++) {
             for (q = p; q < 3; q++) {
