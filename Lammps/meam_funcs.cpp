@@ -900,10 +900,13 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
                         double* dUdrijm, double* delij, double* ddUdrdrijm, double* ddUdrijmds, double* ddUdrmdrn){
      int nv2=0,m,n;
      for(m=0;m<alpha+1;m++){
-       for(n=m;n<gamma+1;n++){
+       for(n=m;n<3;n++){
+         if(m==alpha and n==gamma)
+          break;
          nv2++;
        }
      }
+
    //
    double ddUdrijmds_tmp[ 3 ];
    if (iszero(ds)) {
