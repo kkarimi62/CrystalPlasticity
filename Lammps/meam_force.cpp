@@ -44,7 +44,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
   double darho2bdri, darho2bdrj;
   double darg1i2ds, darg1j2ds;
   double darho2bdsi, darho2bdsj;
-  double a3, a3a, da1;
+  double a3, a3a, da1, da2;
+  double xsumi, xsumj;
   double A1i, A1j, A1i_d, A1j_d, A2i, A2j, A2i_d, A2j_d, A3i, A3j, A3i_d, A3j_d;
   double drho0dr1, drho0dr2, drho0ds1, drho0ds2;
   double drho0drm1[3], drho0drm2[3];
