@@ -1025,6 +1025,11 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
 
                       dsg_alpha_beta_drjk = recip * dUdsij * ddsij2drij * delij[alpha] * delij[beta];
                       dsg_alpha_beta_drik = recip * dUdsij * ddsij1drij * delij[alpha] * delij[beta];
+                       assert(!isnan(recip));
+                       assert(!isnan(dUdsij));
+                       assert(!isnan(ddsij2drij));
+                       assert(!isnan(delij[alpha]));
+                       assert(!isnan(delij[beta]));
                     }
                   }
                 }
