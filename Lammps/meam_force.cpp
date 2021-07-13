@@ -531,7 +531,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                          rij,  sij, delij,
                          rhoa3i, 
                          ddrho3drmdrn2);
-        (for nv2=0;nv2<6;nv2++) ddrho3drmdrn2[nv2]*= -1;
+        for (nv2=0;nv2<6;nv2++) ddrho3drmdrn2[nv2]*= -1;
         //     Compute derivatives of weighting functions t wrt rij
         t1i = t_ave[i][0];
         t2i = t_ave[i][1];
