@@ -1022,6 +1022,10 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
                        
                       ddsij1drij = da * dCikj1+a * ddCikj1; //--- units of s/r^3
                       ddsij2drij = da * dCikj2+a * ddCikj2; //--- units of s/r^3//                    
+                       assert(!isnan(da));
+                       assert(!isnan(a));
+                       assert(!isnan(dCikj2));
+                       assert(!isnan(ddCikj2));
 
                       dsg_alpha_beta_drjk = recip * dUdsij * ddsij2drij * delij[alpha] * delij[beta];
                       dsg_alpha_beta_drik = recip * dUdsij * ddsij1drij * delij[alpha] * delij[beta];
