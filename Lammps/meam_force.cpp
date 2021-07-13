@@ -1339,7 +1339,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                       dsij1 = a * dCikj1; //--- 4.22b/rik: units of s/r^2
                       dsij2 = a * dCikj2; //--- 4.22c/rjk
 //
-                      ddCfunc2(rik, rjk, rij2, rik2, rjk2, ddCikj1, ddCikj2);
+                      ddCfunc2(rik2, rjk2, ddCikj1, ddCikj2); //----update!!!!!
                       dCikj1 *= rik;
                       dCikj2 *= rjk;
                       
