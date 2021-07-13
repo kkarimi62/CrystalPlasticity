@@ -19,6 +19,8 @@
 #include "math_special.h"
 #include <cmath>
 #include <cassert>
+#include <math.h>
+#include <stdio.h>
 
 using namespace LAMMPS_NS;
 
@@ -1003,7 +1005,7 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
                     dcikj = (2.0 * (dxik + dxjk) + da) / a +(2.0 * (xik + xjk) + a - 2.0) *(-da)/ a / a;
 
                     if (cikj >= Cmin && cikj <= Cmax) {
-                      assert(iszero(delc));
+                      assert(!iszero(delc));
                       cikj = (cikj - Cmin) / delc;
                       dcikj /= delc;
 
@@ -1032,6 +1034,11 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
               //
               //     Tabulate per-atom virial as symmetrized stress tensor
             if (!iszero(dsij1) || !iszero(dsij2) || !iszero(dsg_alpha_beta_drjk) || !iszero(dsg_alpha_beta_drik) ){ //modify!!!!!!!
+               assert( !isnan(dsg_alpha_beta_drjk));
+               assert( !isnan(dsg_alpha_beta_ds));
+               assert( !isnan(dsij2));
+               assert( !isnan(dsg_alpha_beta_drik));
+               assert( !isnan(dsij1));
               mod3bdy += (dsg_alpha_beta_drjk + dsg_alpha_beta_ds * dsij2) * deljk[gamma] * deljk[lambda]+
                          (dsg_alpha_beta_drik + dsg_alpha_beta_ds * dsij1) * delki[gamma] * delki[lambda];
                
