@@ -1003,7 +1003,7 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
                     dcikj = (2.0 * (dxik + dxjk) + da) / a +(2.0 * (xik + xjk) + a - 2.0) *(-da)/ a / a;
 
                     if (cikj >= Cmin && cikj <= Cmax) {
-//                      assert(!iszero(delc));
+                      assert(iszero(delc));
                       cikj = (cikj - Cmin) / delc;
                       dcikj /= delc;
 
@@ -1011,7 +1011,7 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
                       dsikj = dfc * dcikj;
                       dCfunc2(rij2, rik2, rjk2, dCikj1, dCikj2); //--- 4.17b/rik, 4.17c/rjk
                       dsij=ds;
-//                      assert(!iszero(sikj));
+                      assert(!iszero(sikj));
                       a = sij / delc * dfc / sikj;
                       da = (dsij*dfc/sikj+sij*ddfc*dcikj/sikj-dsikj*sij*dfc/sikj/sikj)/delc;
 
