@@ -1012,6 +1012,7 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
                       sikj = dfcut(cikj, dfc, ddfc);
                       dsikj = dfc * dcikj;
                       dCfunc2(rij2, rik2, rjk2, dCikj1, dCikj2); //--- 4.17b/rik, 4.17c/rjk
+                      ddCfunc2(rij2, rik2, rjk2, ddCikj1, ddCikj2 );
                       dsij=ds;
                       assert(!iszero(sikj));
                       a = sij / delc * dfc / sikj;
