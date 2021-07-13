@@ -664,7 +664,7 @@ MEAM::Get_ddrho3drmdrn( int i,
            //
  //--- negative sign???
           //
-        }
+//        }
 }
 //-------------------------------
 
