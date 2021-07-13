@@ -254,7 +254,7 @@ protected:
   // 2nd Derivative of Cikj w.r.t. rik and rjk
   //     Inputs: rij,rij2,rik2,rjk2
   //
-  static void ddCfunc2(const double rik, const double rjk, const double rij2, const double rik2, const double rjk2,
+  static void ddCfunc2(const double rij2, const double rik2, const double rjk2,
                double& ddCikj1, double& ddCikj2) {
     double rij,drij2,rij4,drij4, rik4,drik4, rjk4,drjk4,da, a, denom, ddenom,drik2,drjk2; //_ik, ddenom_jk, rik3, rjk3, dCikj1, dCikj2;
 
