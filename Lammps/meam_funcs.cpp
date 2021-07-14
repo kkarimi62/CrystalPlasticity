@@ -653,7 +653,7 @@ MEAM::Get_ddrho3drmdrn( int i,
               arg1 +=  ( arho3[i][this->vind3D[m][n][p]] + arho3[i][this->vind3D[m][p][n]] ) * delij[p];
             }
             arg1 +=  rhoa3j * sij * ((m == n?1 : 0) * rij2 + 2.0 * delij[m]*delij[n]) / rij;
-            ddrho3drmdrn1[nv3] = rhoa3j * (a3 * arg1 -  a3a * rhoa3j * sij * ( m == n?1 : 0 ) / rij );
+            ddrho3drmdrn1[nv2] = rhoa3j * (a3 * arg1 -  a3a * rhoa3j * sij * ( m == n?1 : 0 ) / rij );
             nv2++;
           }
 
