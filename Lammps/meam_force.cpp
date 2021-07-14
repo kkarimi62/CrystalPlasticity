@@ -284,7 +284,6 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         //
 	//arho3[i][nv3]=rhoa3j.r[m].r[n].r[p]/r^3.s
 	//arho3b[i][m]=rhoa3j.r[m].s/r
-	     rhoa3j=1.0;drhoa3j=0.0;rhoa3i=1.0;drhoa3i=0.0; //kam
         A3j = rhoa3j / (rij2 * rij);
         A3i = rhoa3i / (rij2 * rij);
         A3j_d = drhoa3j / (rij2 * rij) - 3 * A3j / rij;
