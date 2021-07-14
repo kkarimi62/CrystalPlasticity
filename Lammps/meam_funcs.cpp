@@ -639,7 +639,7 @@ MEAM::Get_ddrho3drmdrn( int i,
         double drho3drm1[3];
         int m, k, n, p, nv2;
         double dargdk,darho3imnpdk,darho3jmnpdk;
-        double arg1;
+        double arg1,arg;
         double rij2 = rij * rij;
         double rij3 = rij * rij2;
         double a3 = 6 * sij / rij3;
