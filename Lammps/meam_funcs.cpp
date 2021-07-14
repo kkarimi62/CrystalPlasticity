@@ -638,13 +638,14 @@ MEAM::Get_ddrho3drmdrn( int i,
                      ){
         double drho3drm1[3];
         int m, n, p, nv2;
+        double dargdk,darho3imnpdk,darho3jmnpdk;
         double arg1;
         double rij2 = rij * rij;
         double rij3 = rij * rij2;
         double a3 = 6 * sij / rij3;
         double a3a = 6 * sij / (5 * rij);
    
-         nv2 = 0;
+//         nv2 = 0;
 //         for (m = 0; m < 3; m++) {
 //           for (n = m; n < 3; n++) {
 //             arg1 = 0.0;
@@ -658,20 +659,51 @@ MEAM::Get_ddrho3drmdrn( int i,
 //           }
 
            
- //--- negative sign???
           
 //       }
    
    
-         for (m = 0; m < 3; m++) {
-          for (n = m; n < 3; n++) {
-             ddrho3drmdrn1[nv2] = rhoa3j * (a3*(rhoa3j*sij*rij*( m == n ? 1 : 0 )+4*(rhoa3j*sij/rij)*(delij[m]*delij[n]))
-                                            -a3a*(rhoa3j*sij*( m == n ? 1 : 0 )/rij));
-//              ddrho3drmdrn1[nv2] = rhoa3j * (a3*rhoa3j*sij*rij*( m == n ? 1 : 0 )-
-//                                             a3a*rhoa3j*sij*( m == n ? 1 : 0 )/rij);
-            nv2++;
-          }
-         }
+//          for (m = 0; m < 3; m++) {
+//           for (n = m; n < 3; n++) {
+//              ddrho3drmdrn1[nv2] = rhoa3j * (a3*(rhoa3j*sij*rij*( m == n ? 1 : 0 )+4*(rhoa3j*sij/rij)*(delij[m]*delij[n]))
+//                                             -a3a*(rhoa3j*sij*( m == n ? 1 : 0 )/rij));
+// //              ddrho3drmdrn1[nv2] = rhoa3j * (a3*rhoa3j*sij*rij*( m == n ? 1 : 0 )-
+// //                                             a3a*rhoa3j*sij*( m == n ? 1 : 0 )/rij);
+//             nv2++;
+//           }
+//          }
+   
+   
+        a3 = 6 * sij / rij3;
+        da3 = -3*a3 / rij;
+        a3a = 6 * sij / (5 * rij);
+        da3a = -a3a/rij;
+        nv2 = 0;
+        for (m = 0; m < 3; m++) {
+            for (k = m; k < 3; k++) {
+              drho3drmdrn1[nv2]=0.0;
+              drho3drmdrn2[nv2]=0.0;
+             for (n = 0; n < 3; n++) {
+               for (p = n; p < 3; p++) {
+                 arg = delij[n] * delij[p] * this->v2D[nv2];
+                 dargdk = (( k == n ? 1 : 0 ) * delij[p]+delij[n] * ( p == k ? 1 : 0 )) * this->v2D[nv2];
+                 darho3imnpdk = (rhoa3j * sij / rij3)*(( k == m ? 1 : 0 )*delij[n]*delij[p] + 
+                                                       delij[m]*( k == n ? 1 : 0 )*delij[p] + 
+                                                       delij[m]*delij[n]*( k == p ? 1 : 0 ));
+                 darho3jmnpdk = (rhoa3i * sij / rij3)*(( k == m ? 1 : 0 )*delij[n]*delij[p] + 
+                                                       delij[m]*( k == n ? 1 : 0 )*delij[p] + 
+                                                       delij[m]*delij[n]*( k == p ? 1 : 0 ));
+                 drho3drmdrn1[nv2] += darho3imnpdk * arg + arho3[i][this->vind3D[m][n][p]] * dargdk; //--- 4.30(i)
+                 drho3drmdrn2[nv2] += darho3jmnpdk * arg + arho3[j][this->vind3D[m][n][p]] * dargdk; //--- 4.30(i)
+               }
+             }
+             drho3drmdrn1[nv2] = a3 * rhoa3j * drho3drmdrn1[nv2] - a3a * rhoa3j * (rhoa3j*sij/rij)*( m == k ? 1 : 0 );
+             drho3drmdrn2[nv2] = - a3 * rhoa3i * drho3drmdrn2[nv2] + a3a * rhoa3i * (rhoa3i*sij/rij)*( m == k ? 1 : 0 );
+             nv2 = nv2 + 1;
+
+           }
+        }   
+   
    
    
 }
