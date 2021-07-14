@@ -673,7 +673,8 @@ MEAM::Get_ddrho3drmdrn( int i,
 //           }
 //          }
    
-   
+         //arho3[i][nv3]=rhoa3j.r[m].r[n].r[p]/r^3.s
+         //arho3b[i][m]=rhoa3j.r[m].s/r   
         a3 = 6 * sij / rij3;
         a3a = 6 * sij / (5 * rij);
         nv2 = 0;
@@ -694,8 +695,8 @@ MEAM::Get_ddrho3drmdrn( int i,
              ddrho3drmdrn1[nv2] = a3 * rhoa3j * ddrho3drmdrn1[nv2] - a3a * rhoa3j * darho3bimdrk;
              nv2 = nv2 + 1;
 
-           }
-        }   
+           } // end of k loop
+        }   // end of m loop
    
    
    
