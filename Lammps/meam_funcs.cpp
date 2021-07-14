@@ -667,7 +667,8 @@ MEAM::Get_ddrho3drmdrn( int i,
           for (n = m; n < 3; n++) {
 //             ddrho3drmdrn1[nv2] = rhoa3j * (a3*(rhoa3j*sij*rij*( m == n ? 1 : 0 )+4*(rhoa3j*sij/rij)*(delij[m]*delij[n]))
 //                                            -a3a*(rhoa3j*sij*( m == n ? 1 : 0 )/rij));
-            ddrho3drmdrn1[nv2] =rhoa3j * sij * rij * ( m == n ? 1 : 0 ); 
+             ddrho3drmdrn1[nv2] = rhoa3j * (a3*rhoa3j*sij*rij*( m == n ? 1 : 0 )-
+                                            a3a*rhoa3j*sij*( m == n ? 1 : 0 )/rij);
             nv2++;
           }
          }
