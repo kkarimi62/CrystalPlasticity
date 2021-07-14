@@ -642,8 +642,8 @@ MEAM::Get_ddrho3drmdrn( int i,
         double arg1,arg;
         double rij2 = rij * rij;
         double rij3 = rij * rij2;
-        double a3 = 6 * sij / rij3;
-        double a3a = 6 * sij / (5 * rij);
+        double a3 = 6.0;//kam * sij / rij3;
+        double a3a = 6.0/5.0;// * sij / (5 * rij);
    
 //         nv2 = 0;
 //         for (m = 0; m < 3; m++) {
@@ -663,20 +663,8 @@ MEAM::Get_ddrho3drmdrn( int i,
 //       }
    
    
-//          for (m = 0; m < 3; m++) {
-//           for (n = m; n < 3; n++) {
-//              ddrho3drmdrn1[nv2] = rhoa3j * (a3*(rhoa3j*sij*rij*( m == n ? 1 : 0 )+4*(rhoa3j*sij/rij)*(delij[m]*delij[n]))
-//                                             -a3a*(rhoa3j*sij*( m == n ? 1 : 0 )/rij));
-// //              ddrho3drmdrn1[nv2] = rhoa3j * (a3*rhoa3j*sij*rij*( m == n ? 1 : 0 )-
-// //                                             a3a*rhoa3j*sij*( m == n ? 1 : 0 )/rij);
-//             nv2++;
-//           }
-//          }
-   
          //arho3[i][nv3]=rhoa3j.r[m].r[n].r[p]/r^3.s
          //arho3b[i][m]=rhoa3j.r[m].s/r   
-        a3 = 6 * sij / rij3;
-        a3a = 6 * sij / (5 * rij);
         nv2 = 0;
         for (m = 0; m < 3; m++) {
            for (k = m; k < 3; k++) {
@@ -966,10 +954,6 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
    double recip2 = recip * recip;
    double dsg_alpha_beta_dr = ((-recip2*(dUdrij+dUdsij*ds)+recip*(ddUddrij+ddUdrijds*ds+dUdsij*dds))*delij[alpha]+ddUdrdrijm[alpha])*delij[beta];
    double dsg_alpha_beta_ds = (recip*(ddUdrijds+ddUddsij*ds)*delij[alpha]+ddUdrijmds[alpha])*delij[beta];
-   assert(!isnan(recip));
-   assert(!isnan(ddUdrijds));
-   assert(!isnan(ddUddsij));
-   assert(!isnan(ds));
    dsg_alpha_beta_drm[gamma] = (recip*((ddUdrdrijm[gamma]+ddUdrijmds[gamma]*ds)*delij[alpha]+(dUdrij+dUdsij*ds)*(alpha == gamma ? 1 : 0))+ddUdrmdrn[nv2])*delij[beta];
 
    double mod2bdy = (recip*(dsg_alpha_beta_dr+dsg_alpha_beta_ds*ds)*delij[gamma]+dsg_alpha_beta_drm[gamma])*delij[lambda];
@@ -979,16 +963,6 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
      ddUdrijmds[m] = ddUdrijmds_tmp[m];
   }
    
-//    double arg1 = recip;
-//      double arg2 = dUdrij + dUdsij * ds; // units of ds
-//      double arg3 = dUdrijm[ alpha ];
-//      double darg2 =(recip * ( ddUddrij + ddUdrijds * ds + ds * ( ddUdrijds + ddUddsij * ds ) + 1.0 * dUdsij * dds ) * delij[gamma]+
-//             ( ddUdrdrijm[gamma]+ddUdrijmds[gamma]*ds))*delij[lambda];
-//      double darg3 = (recip*(ddUdrdrijm[alpha]+ddUdrijmds[alpha]*ds)*delij[gamma]+ddUdrmdrn[nv2])*delij[lambda];  
-//      return
-//        (((-delij[gamma]*delij[lambda]/r3)*arg2+recip*darg2)*delij[alpha] + 
-//         recip*arg2*(alpha == gamma ? 1 : 0)*delij[lambda]+ darg3)*delij[beta];
-
         //     Now compute forces on other atoms k due to change in sij     stiffness ?
         
         if (iszero(sij) || isone(sij) ) return mod2bdy; //: cont jn loop
@@ -1060,18 +1034,9 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
                        
                       ddsij1drij = da * dCikj1+a * ddCikj1; //--- units of s/r^3
                       ddsij2drij = da * dCikj2+a * ddCikj2; //--- units of s/r^3//                    
-//                        assert(!isnan(da));
-//                        assert(!isnan(a));
-//                        assert(!isnan(dCikj2));
-//                        assert(!isnan(ddCikj2));
 
                       dsg_alpha_beta_drjk = recip * dUdsij * ddsij2drij * delij[alpha] * delij[beta];
                       dsg_alpha_beta_drik = recip * dUdsij * ddsij1drij * delij[alpha] * delij[beta];
-//                        assert(!isnan(recip));
-//                        assert(!isnan(dUdsij));
-//                        assert(!isnan(ddsij2drij));
-//                        assert(!isnan(delij[alpha]));
-//                        assert(!isnan(delij[beta]));
                     }
                   }
                 }
@@ -1081,11 +1046,6 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
               //
               //     Tabulate per-atom virial as symmetrized stress tensor
             if (!iszero(dsij1) || !iszero(dsij2) || !iszero(dsg_alpha_beta_drjk) || !iszero(dsg_alpha_beta_drik) ){ //modify!!!!!!!
-//                assert( !isnan(dsg_alpha_beta_drjk));
-//                assert( !isnan(dsg_alpha_beta_ds));
-//                assert( !isnan(dsij2));
-//                assert( !isnan(dsg_alpha_beta_drik));
-//                assert( !isnan(dsij1));
               mod3bdy += (dsg_alpha_beta_drjk + dsg_alpha_beta_ds * dsij2) * deljk[gamma] * deljk[lambda]+
                          (dsg_alpha_beta_drik + dsg_alpha_beta_ds * dsij1) * delki[gamma] * delki[lambda];
                
