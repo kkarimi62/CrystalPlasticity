@@ -642,10 +642,10 @@ MEAM::Get_ddrho3drmdrn( int i,
         double arg1,arg;
         double rij2 = rij * rij;
         double rij3 = rij * rij2;
-        double a3 = 6.0;//kam * sij / rij3;
-        double a3a = 6.0/5.0;// * sij / (5 * rij);
-         double a3b = 1.0;//(rhoa3j * sij / rij3);
-         double a3c = 1.0;//(rhoa3j*sij/rij);
+        double a3 = 6.0 * sij;//kam / rij3;
+        double a3a = 6.0/5.0 * sij;// / (5 * rij);
+         double a3b = rhoa3j * sij;// / rij3;
+         double a3c = rhoa3j*sij;///rij;
    
 //         nv2 = 0;
 //         for (m = 0; m < 3; m++) {
