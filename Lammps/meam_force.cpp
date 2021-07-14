@@ -284,6 +284,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         //
 	//arho3[i][nv3]=rhoa3j.r[m].r[n].r[p]/r^3.s
 	//arho3b[i][m]=rhoa3j.r[m].s/r
+	     rhoa3j=1.0;drhoa3j=0.0;rhoa3i=1.0;drhoa3i=0.0;
         A3j = rhoa3j / (rij2 * rij);
         A3i = rhoa3i / (rij2 * rij);
         A3j_d = drhoa3j / (rij2 * rij) - 3 * A3j / rij;
@@ -360,9 +361,9 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           arg1i1_d +=  darho1dri[n] * delij[n]; 
           darg1i1ds += darho1dsi[n] * delij[n];
           arg3i3_d +=  darho3bdri[n] * delij[n];          
-          arg1j1_d +=  darho1drj[n] * delji[n]; 
-          darg1j1ds += darho1dsj[n] * delji[n];
-          arg3j3_d +=  darho3bdrj[n] * delji[n];
+          arg1j1_d +=  -darho1drj[n] * delij[n]; 
+          darg1j1ds += -darho1dsj[n] * delij[n];
+          arg3j3_d +=  -darho3bdrj[n] * delij[n];
 	  darg3i3ds += darho3bdsi[n] * delij[n];
 	  darg3j3ds += -darho3bdsj[n] * delij[n];
         }
