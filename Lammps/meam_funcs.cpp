@@ -644,6 +644,8 @@ MEAM::Get_ddrho3drmdrn( int i,
         double rij3 = rij * rij2;
         double a3 = 6.0;//kam * sij / rij3;
         double a3a = 6.0/5.0;// * sij / (5 * rij);
+         double a3b = 1.0;//(rhoa3j * sij / rij3);
+         double a3c = 1.0;//(rhoa3j*sij/rij);
    
 //         nv2 = 0;
 //         for (m = 0; m < 3; m++) {
@@ -673,13 +675,13 @@ MEAM::Get_ddrho3drmdrn( int i,
                for (p = n; p < 3; p++) {
                  arg = delij[n] * delij[p] * this->v2D[nv2];
                  dargdk = (( k == n ? 1 : 0 ) * delij[p]+delij[n] * ( p == k ? 1 : 0 )) * this->v2D[nv2];
-                 darho3imnpdk = (rhoa3j * sij / rij3)*(( k == m ? 1 : 0 )*delij[n]*delij[p] + //---darho3[i][this->vind3D[m][n][p]]drk
+                 darho3imnpdk = a3b * (( k == m ? 1 : 0 )*delij[n]*delij[p] + //---darho3[i][this->vind3D[m][n][p]]drk
                                                        delij[m]*( k == n ? 1 : 0 )*delij[p] + 
                                                        delij[m]*delij[n]*( k == p ? 1 : 0 ));
                  ddrho3drmdrn1[nv2] += darho3imnpdk * arg + arho3[i][this->vind3D[m][n][p]] * dargdk; //--- 4.30(i)
                }
              }
-             darho3bimdrk =  (rhoa3j*sij/rij)*( m == k ? 1 : 0 ); //--- darho3b[i][m]/drk
+             darho3bimdrk =  a3c * ( m == k ? 1 : 0 ); //--- darho3b[i][m]/drk
              ddrho3drmdrn1[nv2] = a3 * rhoa3j * ddrho3drmdrn1[nv2] - a3a * rhoa3j * darho3bimdrk;
              nv2 = nv2 + 1;
 
