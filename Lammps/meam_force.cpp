@@ -291,13 +291,13 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         nv3=0;
         for (m = 0; m < 3; m++) {
          darho3bdri[m] = ( drhoa3j - rhoa3j / rij ) * delij[m] * sij / rij; //--- deriv. Eq. 4.27(e) wrt rij
-         darho3bdrj[m] = ( drhoa3i - rhoa3i / rij ) * delji[m] * sij / rij;
+         darho3bdrj[m] = ( drhoa3i - rhoa3i / rij ) * delij[m] * sij / rij;
 	 darho3bdsi[m] = rhoa3j * delij[m]  / rij;
 	 darho3bdsj[m] = rhoa3i * delij[m]  / rij;
          for (n = m; n < 3; n++) {
             for (p = n; p < 3; p++) {
                darho3dri[nv3] = A3j_d * delij[m] * delij[n] * delij[p] * sij; //--- deriv. Eq. 4.27(c) wrt rij 
-               darho3drj[nv3] = A3i_d * delji[m] * delji[n] * delji[p] * sij;
+               darho3drj[nv3] = A3i_d * delij[m] * delij[n] * delij[p] * sij;
 	       darho3dsi[nv3] = A3j * delij[m] * delij[n] * delij[p];
 	       darho3dsj[nv3] = A3i * delij[m] * delij[n] * delij[p];
 
@@ -338,32 +338,35 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
               arg = delij[n] * delij[p] * delij[q] * this->v3D[nv3];
               arg1i3 +=  arho3[i][nv3] * arg; //--- arho3 is Y_{3i\sigma\beta\gamma} Eq.(4.27c)
               arg1j3 +=  - arho3[j][nv3] * arg; 
+	      //
               arg1i3_d +=  darho3dri[nv3] * arg;
               arg1j3_d +=  -darho3drj[nv3] * arg;
 	      darg1i3ds += darho3dsi[nv3] * arg;
 	      darg1j3ds += -darho3dsj[nv3] * arg;
-              nv3 +=  1;
+              nv3++;
             }
             arg = delij[n] * delij[p] * this->v2D[nv2]; //---this->v2D[nv2] ????????
             arg1i2 +=  arho2[i][nv2] * arg; //--- arho2 defined in (4.27b)
-            arg1i2_d +=  darho2dri[nv2] * arg; 
             arg1j2 +=  arho2[j][nv2] * arg;
+	    //	 
+            arg1i2_d +=  darho2dri[nv2] * arg; 
             arg1j2_d += darho2drj[nv2] * arg;
             darg1i2ds +=  darho2dsi[nv2] * arg;
             darg1j2ds +=  darho2dsj[nv2] * arg;
-            nv2 +=  1;
+            nv2++;
           }
           arg1i1 += arho1[i][n] * delij[n]; //--- 4.30(a) in sandia report:  arho1[i][n] is Y_{1i\sigma} (4.27a)
           arg1j1 += - arho1[j][n] * delij[n];
           arg3i3 += arho3b[i][n] * delij[n];
           arg3j3 += - arho3b[j][n] * delij[n];
+	  //
           arg1i1_d +=  darho1dri[n] * delij[n]; 
           darg1i1ds += darho1dsi[n] * delij[n];
           arg3i3_d +=  darho3bdri[n] * delij[n];          
+	  darg3i3ds += darho3bdsi[n] * delij[n];
           arg1j1_d +=  -darho1drj[n] * delij[n]; 
           darg1j1ds += -darho1dsj[n] * delij[n];
           arg3j3_d +=  -darho3bdrj[n] * delij[n];
-	  darg3i3ds += darho3bdsi[n] * delij[n];
 	  darg3j3ds += -darho3bdsj[n] * delij[n];
         }
 
