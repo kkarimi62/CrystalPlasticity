@@ -644,7 +644,7 @@ MEAM::Get_ddrho3drmdrn( int i,
         double a3 = 6 * sij / rij3;
         double a3a = 6 * sij / (5 * rij);
    
-//         nv2 = 0;
+         nv2 = 0;
 //         for (m = 0; m < 3; m++) {
 //           for (n = m; n < 3; n++) {
 //             arg1 = 0.0;
