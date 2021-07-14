@@ -644,7 +644,7 @@ MEAM::Get_ddrho3drmdrn( int i,
         double a3 = 6 * sij / rij3;
         double a3a = 6 * sij / (5 * rij);
    
-        nv3 = 0;
+        nv2 = 0;
         for (m = 0; m < 3; m++) {
           for (n = m; n < 3; n++) {
             arg1 = 0.0;
@@ -654,7 +654,7 @@ MEAM::Get_ddrho3drmdrn( int i,
             }
             arg1 +=  rhoa3j * sij * ((m == n?1 : 0) * rij2 + 2.0 * delij[m]*delij[n]) / rij;
             ddrho3drmdrn1[nv3] = rhoa3j * (a3 * arg1 -  a3a * rhoa3j * sij * ( m == n?1 : 0 ) / rij );
-            nv3++;
+            nv2++;
           }
 
            
