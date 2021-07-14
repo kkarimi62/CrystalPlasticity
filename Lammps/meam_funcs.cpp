@@ -644,29 +644,32 @@ MEAM::Get_ddrho3drmdrn( int i,
         double a3 = 6 * sij / rij3;
         double a3a = 6 * sij / (5 * rij);
    
-//         nv3 = 0;
-//         for (m = 0; m < 3; m++) {
-//           for (n = m; n < 3; n++) {
-//             arg1 = 0.0;
-//             for (p = n; p < 3; p++) {
-// //              arg = delij[n] * delij[p] * this->v2D[nv2]; //--- ?????????
-//               arg1 +=  ( arho3[i][this->vind3D[m][n][p]] + arho3[i][this->vind3D[m][p][n]] ) * delij[p];
-//             }
-//             arg1 +=  rhoa3j * sij * ((m == n?1 : 0) * rij2 + 2.0 * delij[m]*delij[n]) / rij;
-//             ddrho3drmdrn1[nv3] = rhoa3j * (a3 * arg1 -  a3a * rhoa3j * sij * ( m == n?1 : 0 ) / rij );
-//             nv3++;
-//           }
-         for (m = 0; m < 3; m++) {
+        nv3 = 0;
+        for (m = 0; m < 3; m++) {
           for (n = m; n < 3; n++) {
-            ddrho3drmdrn1[nv2] = rhoa3j * (a3*(rhoa3j*sij*rij*( m == n ? 1 : 0 )+4*(rhoa3j*sij/rij)*(delij[m]*delij[n]))
-                                           -a3a*(rhoa3j*sij*( m == n ? 1 : 0 )/rij));
-            nv2++;
+            arg1 = 0.0;
+            for (p = n; p < 3; p++) {
+//              arg = delij[n] * delij[p] * this->v2D[nv2]; //--- ?????????
+              arg1 +=  ( arho3[i][this->vind3D[m][n][p]] + arho3[i][this->vind3D[m][p][n]] ) * delij[p];
+            }
+            arg1 +=  rhoa3j * sij * ((m == n?1 : 0) * rij2 + 2.0 * delij[m]*delij[n]) / rij;
+            ddrho3drmdrn1[nv3] = rhoa3j * (a3 * arg1 -  a3a * rhoa3j * sij * ( m == n?1 : 0 ) / rij );
+            nv3++;
           }
-         }
-           //
+
+           
  //--- negative sign???
-          //
-//        }
+          
+       }
+   
+   
+//             for (m = 0; m < 3; m++) {
+//           for (n = m; n < 3; n++) {
+//             ddrho3drmdrn1[nv2] = rhoa3j * (a3*(rhoa3j*sij*rij*( m == n ? 1 : 0 )+4*(rhoa3j*sij/rij)*(delij[m]*delij[n]))
+//                                            -a3a*(rhoa3j*sij*( m == n ? 1 : 0 )/rij));
+//             nv2++;
+//           }
+//          }
 }
 //-------------------------------
 
