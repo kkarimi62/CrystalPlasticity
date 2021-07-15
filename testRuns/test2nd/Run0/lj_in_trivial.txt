@@ -65,7 +65,7 @@ variable minusSrate equal -${srate1}
 
 group atomk id 1
 #fix 111 atomk move  linear 1.0 0.0 0.0
-fix 111 atomk move  rotate 0.0 0.0 0.0 0.0 0.0 1.0 0.1
+fix 111 atomk move  rotate 0.0 0.0 0.0 0.0 0.0 1.0 0.01
 
 compute 	1 all stress/atom NULL pair
 #dump      1 all custom 1 NiFe_glass-${initTemp}-${srate}.dump id type x y z vx vy vz  meam_force.cpp ln.967: 15+6+1
