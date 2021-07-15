@@ -539,7 +539,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                          ddrho3drmdrn2);
         for (nv2=0;nv2<6;nv2++) ddrho3drmdrn2[nv2]*= -1;
         if(i==0 and j == 1)
-        	fprintf ( pFile, "%e %e %e %e %e\n", delij[0], rij, ddrho3drmdrn1[ 0 ] );
+        	fprintf ( pFile, "%e %e %e\n", delij[0], rij, ddrho3drmdrn1[ 0 ] );
 //           nv2 = 0;
 //           for (n = 0; n < 3; n++) {
 //             for (p = n; p < 3; p++) {	 
