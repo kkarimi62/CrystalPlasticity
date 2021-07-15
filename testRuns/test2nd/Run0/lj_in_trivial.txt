@@ -1,8 +1,8 @@
 # Amin Esfandiarpour - Amin.esfandiarpour@ncbj.gov.pl- Am.esfandiyarpour@gmail.com
 
 variable initTemp equal 0 #300          	# desired temperature
-variable runTime equal 4 #40 #0000 #2000000   	# number of increment 
-variable srate equal 1.0e12
+variable runTime equal 100 #40 #0000 #2000000   	# number of increment 
+variable srate equal 1.0e14
 #log	     	shearCoNiFe_glass${initTemp}-${srate}.log
 
 units		metal #lj #metal
