@@ -642,6 +642,7 @@ MEAM::Get_ddrho3drmdrn( int i,
         double arg1,arg;
         double rij2 = rij * rij;
         double rij3 = rij * rij2;
+        double rij4 = rij2 * rij2;
         double a3 = 6.0;// rhoa3j* sij;//kam / rij3;
         double a3a = 6.0/5.0;// rhoa3j* sij;// / (5 * rij);
          double a3b = 1.0;//rhoa3j * sij;// / rij3;
@@ -656,7 +657,7 @@ MEAM::Get_ddrho3drmdrn( int i,
 
            
           
-//       }
+       }
    
    
          //arho3[i][nv3]=rhoa3j.r[m].r[n].r[p]/r^3.s
