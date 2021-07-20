@@ -798,7 +798,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         // rho3
           a3 = 2.0 / rij3;
           da3 = -3*a3/rij;;
-          a3a = (6.0 / 5.0) * rij);
+          a3a = (6.0 / 5.0) * rij;
 	  da3a = -a3a / rij;
           drho3ds1 = a3 * rhoa3j * arg1i3 - a3a * rhoa3j * arg3i3; //--- (4.30h)
           drho3ds2 = a3 * rhoa3i * arg1j3 - a3a * rhoa3i * arg3j3;
