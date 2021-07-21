@@ -543,7 +543,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
          if(i==0 and j == 1)
           	fprintf ( pFile, "%e %e %e %e\n", delij[0],rij, drho3drm1[0], ddrho3drmdr1[0] );
         //
-	sij=1.0;//!!!!!!!!!!!!
+//	sij=1.0;//!!!!!!!!!!!!
         Get_ddrho3drmdrn( i, //--- deriv. of 4.30(i) wrt rn
                          rij,  sij, delij,
                          rhoa3j, 
