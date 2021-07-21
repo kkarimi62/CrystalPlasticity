@@ -553,7 +553,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                          rhoa3j, 
                          ddrho3drmdrn1);
         Get_ddrho3drmdrn( j,
-                         rij,  sij, delij,
+                         rij,  sij, delji,
                          rhoa3i, 
                          ddrho3drmdrn2);
         for (nv2=0;nv2<6;nv2++) ddrho3drmdrn2[nv2]*= -1;
