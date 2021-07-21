@@ -304,8 +304,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         A3i_d = drhoa3i / (rij2 * rij) - 3 * A3i / rij;
         nv3=0;
         for (m = 0; m < 3; m++) { //--- set derivatives
-         darho3bdri[m] = ( drhoa3j - rhoa3j / rij ) * delij[m] * sij / rij; //--- deriv. Eq. 4.27(e) wrt rij
-         darho3bdrj[m] = ( drhoa3i - rhoa3i / rij ) * delij[m] * sij / rij;
+         darho3bdri[m] = ( drhoa3j - rhoa3j / rij ) * delij[m] / rij;//( drhoa3j - rhoa3j / rij ) * delij[m] * sij / rij; //--- deriv. Eq. 4.27(e) wrt rij
+         darho3bdrj[m] = ( drhoa3i - rhoa3i / rij ) * delij[m] / rij;//( drhoa3i - rhoa3i / rij ) * delij[m] * sij / rij;
 	 darho3bdsi[m] = 0.0;//rhoa3j * delij[m] / rij;
 	 darho3bdsj[m] = 0.0;//rhoa3i * delij[m] / rij;
          for (n = m; n < 3; n++) {
