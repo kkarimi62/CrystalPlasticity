@@ -407,9 +407,7 @@ MEAM::calc_rho1(int i, int /*ntype*/, int* type, int* fmap, double** x, int numn
         }
         arho2b[i] = arho2b[i] + rhoa2j;
         arho2b[j] = arho2b[j] + rhoa2i;
-//        darho2b[i] = darho2b[i] + drhoa2j;
-//        darho2b[j] = darho2b[j] + drhoa2i;
-
+        rhoa3j=rhoa3i=1.0;//kam
         A1j = rhoa1j / rij;
         A2j = rhoa2j / rij2;
         A3j = rhoa3j / (rij2 * rij);
@@ -421,24 +419,16 @@ MEAM::calc_rho1(int i, int /*ntype*/, int* type, int* fmap, double** x, int numn
         for (m = 0; m < 3; m++) {
           arho1[i][m] = arho1[i][m] + A1j * delij[m]; //--- Eq. 4.27(a)
           arho1[j][m] = arho1[j][m] - A1i * delij[m];
-//          darho1dr[i][m] = darho1dr[i][m] + A1j_d * delij[m]; //--- deriv. Eq. 4.27(a) wrt rij 
-//          darho1dr[j][m] = darho1dr[j][m] - A1i_d * delij[m];
 
           arho3b[i][m] = arho3b[i][m] + rhoa3j * delij[m] / rij; //---  Eq. 4.27(e)
           arho3b[j][m] = arho3b[j][m] - rhoa3i * delij[m] / rij;
-//           darho3bdr[i][m] = darho3bdr[i][m] + ( drhoa3j - rhoa3j / rij ) * delij[m] / rij; //--- deriv. Eq. 4.27(e) wrt rij
-//           darho3bdr[j][m] = darho3bdr[j][m] - ( drhoa3i - rhoa3i / rij ) * delij[m] / rij;
          for (n = m; n < 3; n++) {
             arho2[i][nv2] = arho2[i][nv2] + A2j * delij[m] * delij[n]; //--- Eq. 4.27(b)
             arho2[j][nv2] = arho2[j][nv2] + A2i * delij[m] * delij[n];
-//            darho2dr[i][nv2] = darho2dr[i][nv2] + A2j_d * delij[m] * delij[n]; //--- deriv. Eq. 4.27(b) wrt rij
-//            darho2dr[j][nv2] = darho2dr[j][nv2] + A2i_d * delij[m] * delij[n];
             nv2 = nv2 + 1;
             for (p = n; p < 3; p++) {
               arho3[i][nv3] = arho3[i][nv3] + A3j * delij[m] * delij[n] * delij[p];
               arho3[j][nv3] = arho3[j][nv3] - A3i * delij[m] * delij[n] * delij[p];
-//               darho3dr[i][nv3] = darho3dr[i][nv3] + A3j_d * delij[m] * delij[n] * delij[p]; //--- deriv. Eq. 4.27(c) wrt rij 
-//               darho3dr[j][nv3] = darho3dr[j][nv3] - A3i_d * delij[m] * delij[n] * delij[p];
               nv3 = nv3 + 1;
             }
           }
