@@ -287,7 +287,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 	      
 	//arho3[i][nv3]=r[m].r[n].r[p].r
 	//arho3b[i][m]=r[m].r
-//	rhoa3j=rhoa3i=1.0;drhoa3j=drhoa3i=0.0;ddrhoa3j=ddrhoa3i=0.0;//sij=1.0;
+	rhoa3j=rhoa3i=1.0;drhoa3j=drhoa3i=0.0;ddrhoa3j=ddrhoa3i=0.0;//sij=1.0;
 // 	nv3=0;
 //         for (n = 0; n < 3; n++) {
 // 	  arho3b[i][n]=delij[n]/rij; //--- set arho3b
