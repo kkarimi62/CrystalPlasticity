@@ -503,8 +503,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 		      da3a * (drhoa3i - rhoa3i / rij) * arg3j3 -
 		      a3a * (ddrhoa3i - drhoa3i / rij + rhoa3i / rij2) * arg3j3 -
 		      a3a * (drhoa3i - rhoa3i / rij) * arg3j3_d; //--- 4.30(g)
-        if(i==0 and j == 1)
-         	fprintf ( pFile, "%e %e %e\n", rij, drho3dr1, ddrho3drdr1 );
+//         if(i==0 and j == 1)
+//          	fprintf ( pFile, "%e %e %e\n", rij, drho3dr1, ddrho3drdr1 );
          
         a3 = 6.0 * sij / rij3;
         da3 = -3*a3 / rij;
@@ -542,8 +542,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                          rhoa3i, 
                          ddrho3drmdrn2);
         for (nv2=0;nv2<6;nv2++) ddrho3drmdrn2[nv2]*= -1;
-//         if(i==0 and j == 1)
-//         	fprintf ( pFile, "%e %e %e %e\n", delij[0], rij, drho3drm1[ 0 ], ddrho3drmdrn1[ 0 ] );
+        if(i==0 and j == 1)
+        	fprintf ( pFile, "%e %e %e %e\n", delij[0], rij, drho3drm1[ 0 ], ddrho3drmdrn1[ 0 ] );
 //           nv2 = 0;
 //           for (n = 0; n < 3; n++) {
 //             for (p = n; p < 3; p++) {	 
