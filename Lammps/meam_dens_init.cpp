@@ -407,7 +407,7 @@ MEAM::calc_rho1(int i, int /*ntype*/, int* type, int* fmap, double** x, int numn
         }
         arho2b[i] = arho2b[i] + rhoa2j;
         arho2b[j] = arho2b[j] + rhoa2i;
-//        rhoa3j=rhoa3i=1.0;
+        rhoa3j=rhoa3i=1.0; //kam
         A1j = rhoa1j / rij;
         A2j = rhoa2j / rij2;
         A3j = rhoa3j / (rij2 * rij);
