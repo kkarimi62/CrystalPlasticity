@@ -505,6 +505,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 		      a3a * (drhoa3i - rhoa3i / rij) * arg3j3_d; //--- 4.30(g)
 //         if(i==0 and j == 1)
 //          	fprintf ( pFile, "%e %e %e\n", rij, drho3dr1, ddrho3drdr1 );
+	sij=1.0;//!!!!!!!!!!!!
+	rhoa3j=1.0;/!!!!!!!
          
         a3 = 6.0* sij / rij3;
         da3 = -3*a3 / rij;
@@ -513,13 +515,15 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         for (m = 0; m < 3; m++) {
           drho3drm1[m] = 0.0;
           drho3drm2[m] = 0.0;
+          ddrho3drmdr1[m]=0.0;
+          ddrho3drmdr2[m]=0.0;
           //
           nv2 = 0;
           for (n = 0; n < 3; n++) {
             for (p = n; p < 3; p++) {
               arg = delij[n] * delij[p] * this->v2D[nv2];
-              drho3drm1[m] = drho3drm1[m] + arho3[i][this->vind3D[m][n][p]] * arg; //--- 4.30(i)
-              drho3drm2[m] = drho3drm2[m] + arho3[j][this->vind3D[m][n][p]] * arg;
+              drho3drm1[m] += arho3[i][this->vind3D[m][n][p]] * arg; //--- 4.30(i)
+              drho3drm2[m] += arho3[j][this->vind3D[m][n][p]] * arg;
 	      ddrho3drmdr1[m] += darho3dri[this->vind3D[m][n][p]] * arg;
 	      ddrho3drmdr2[m] += darho3drj[this->vind3D[m][n][p]] * arg;
               nv2 = nv2 + 1;
