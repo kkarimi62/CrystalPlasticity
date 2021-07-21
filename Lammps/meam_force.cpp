@@ -832,14 +832,14 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 //           da3 = 6.0 / rij3;
 //           a3a = 6.0 * sij / (5.0 * rij);
 //           da3a = 6.0 / (5.0 * rij);
-         double a3i = 6.0* rhoa3j* sij / rij3;
-         double a3ai = 6.0 * rhoa3j* sij / (5 * rij);
-          double a3bi = rhoa3j * sij / rij3;
-          double a3ci = rhoa3j * sij / rij;
-         double a3j = 6.0* rhoa3i* sij / rij3;
-         double a3aj = 6.0 * rhoa3i* sij / (5 * rij);
-          double a3bj = rhoa3i * sij / rij3;
-          double a3cj = rhoa3i * sij / rij;
+         double a3i = 6.0* rhoa3j* sij / rij3,da3i = 6.0* rhoa3j / rij3;
+         double a3ai = 6.0 * rhoa3j* sij / (5 * rij),da3ai = 6.0 * rhoa3j / (5 * rij);
+          double a3bi = rhoa3j * sij / rij3,da3bi = rhoa3j  / rij3;
+          double a3ci = rhoa3j * sij / rij,da3ci = rhoa3j  / rij;
+         double a3j = 6.0* rhoa3i* sij / rij3,da3j = 6.0* rhoa3i / rij3;
+         double a3aj = 6.0 * rhoa3i* sij / (5 * rij),da3aj = 6.0 * rhoa3i / (5 * rij);
+          double a3bj = rhoa3i * sij / rij3,da3bj = rhoa3i  / rij3;
+          double a3cj = rhoa3i * sij / rij,da3cj = rhoa3i  / rij;
 	for (m = 0; m < 3; m++) {
             ddrho3drmds1[m] = 0.0;
             ddrho3drmds2[m] = 0.0;
