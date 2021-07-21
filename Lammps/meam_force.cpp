@@ -290,12 +290,12 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 	rhoa3j=rhoa3i=1.0;drhoa3j=drhoa3i=0.0;ddrhoa3j=ddrhoa3i=0.0;sij=1.0;
 	nv3=0;
         for (n = 0; n < 3; n++) {
-	  arho3b[i][n]=delij[n];///rij; //--- set arho3b
-	  arho3b[j][n]=delij[n];///rij; //--- set arho3b
+	  arho3b[i][n]=delij[n]/rij; //--- set arho3b
+	  arho3b[j][n]=delij[n]/rij; //--- set arho3b
           for (p = n; p < 3; p++) {
             for (q = p; q < 3; q++) {
-		    arho3[i][nv3]=delij[n]*delij[p]*delij[q];///rij3; //---set arho3
-		    arho3[j][nv3]=delij[n]*delij[p]*delij[q];///rij3; //---set arho3
+		    arho3[i][nv3]=delij[n]*delij[p]*delij[q]/rij3; //---set arho3
+		    arho3[j][nv3]=delij[n]*delij[p]*delij[q]/rij3; //---set arho3
               nv3++;
             }
 	  }
@@ -508,9 +508,9 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 	sij=1.0;//!!!!!!!!!!!!
 	rhoa3j=1.0;//!!!!!!!
          
-        a3 = 6.0* sij;// / rij3;
+        a3 = 6.0* sij / rij3;
         da3 = -3*a3 / rij;
-        a3a = (6.0/5.0) * sij;// / rij;
+        a3a = (6.0/5.0) * sij / rij;
         da3a = -a3a/rij;
         for (m = 0; m < 3; m++) {
           drho3drm1[m] = 0.0;
