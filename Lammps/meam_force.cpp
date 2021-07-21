@@ -508,9 +508,9 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 	sij=1.0;//!!!!!!!!!!!!
 	rhoa3j=1.0;//!!!!!!!
          
-        a3 = 6.0* sij / rij3;
+        a3 = 6.0* sij;// / rij3;
         da3 = -3*a3 / rij;
-        a3a = (6.0/5.0) * sij / rij;
+        a3a = (6.0/5.0) * sij;// / rij;
         da3a = -a3a/rij;
         for (m = 0; m < 3; m++) {
           drho3drm1[m] = 0.0;
