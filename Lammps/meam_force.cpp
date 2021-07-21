@@ -553,10 +553,10 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                          rhoa3j, 
                          ddrho3drmdrn1);
         Get_ddrho3drmdrn( j,
-                         rij,  sij, delji,
+                         rij,  sij, delij,
                          rhoa3i, 
                          ddrho3drmdrn2);
-        for (nv2=0;nv2<6;nv2++) ddrho3drmdrn2[nv2]*= -1;
+//        for (nv2=0;nv2<6;nv2++) ddrho3drmdrn2[nv2]*= -1;
 //         if(i==0 and j == 1)
 //         	fprintf ( pFile, "%e %e %e %e\n", delij[0], rij, drho3drm1[ 0 ], ddrho3drmdrn1[ 0 ] );
 //           nv2 = 0;
