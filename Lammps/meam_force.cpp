@@ -860,8 +860,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 // 	    ddrho3drmds1[m] = (da3 * xsumi+a3 * ddrho3drmds1[m] - da3a * arho3b[i][m]-a3a * darho3bdsi[m]) * rhoa3j;
 //             ddrho3drmds2[m] = (-da3 * xsumj -a3*ddrho3drmds2[m] + da3a * arho3b[j][m]+a3a * darho3bdsj[m]) * rhoa3i;
 		  
-	    ddrho3drmds1[m] = rij4*delij[m]*(da3i*a3bi+a3i*da3bi)-delij[m]*(da3ai*a3ci+a3ai*da3ci);
-	    ddrho3drmds2[m] = -rij4*delij[m]*(da3j*a3bj+a3j*da3bj)+delij[m]*(da3aj*a3cj+a3aj*da3cj);
+	    ddrho3drmds1[m] = rij2*rij2*delij[m]*(da3i*a3bi+a3i*da3bi)-delij[m]*(da3ai*a3ci+a3ai*da3ci);
+	    ddrho3drmds2[m] = -rij2*rij2*delij[m]*(da3j*a3bj+a3j*da3bj)+delij[m]*(da3aj*a3cj+a3aj*da3cj);
           }
           
               
