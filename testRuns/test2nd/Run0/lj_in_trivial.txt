@@ -58,14 +58,14 @@ fix 		1 all nve #/sllod temp ${initTemp} ${initTemp} 1
 variable srate1 equal "v_srate / 1.0e12"
 variable minusSrate equal -${srate1}
 
-#fix             2 all deform 1  xy erate ${srate1}  units box  remap x
+fix             2 all deform 1  xy erate ${srate1}  units box  remap x
 #fix            2 all deform 1  x erate ${srate1}  units box  remap x
 #fix            2 all deform 1  y erate ${srate1}  units box  remap x
 #fix            2 all deform 1  x erate ${srate1}  y erate ${minusSrate} units box  remap x
 
-group atomk id 1
+#group atomk id 1
 #fix 111 atomk move  linear 1.0 0.0 0.0
-fix 111 atomk move  rotate 0.0 0.0 0.0 0.0 0.0 1.0 1.0
+#fix 111 atomk move  rotate 0.0 0.0 0.0 0.0 0.0 1.0 1.0
 
 compute 	1 all stress/atom NULL pair
 #dump      1 all custom 1 NiFe_glass-${initTemp}-${srate}.dump id type x y z vx vy vz  meam_force.cpp ln.967: 15+6+1
