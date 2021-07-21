@@ -307,17 +307,17 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         nv3=0;
         for (m = 0; m < 3; m++) { //--- set derivatives
 //         darho3bdri[m] = ( drhoa3j - rhoa3j / rij ) * delij[m] * sij / rij; //--- deriv. Eq. 4.27(e) wrt rij
-         darho3bdri[m] = ( drhoa3j - rhoa3j / rij ) * delij[m] / rij; //--- deriv. Eq. 4.27(e) wrt rij
+         darho3bdri[m] = 0.0;//( drhoa3j - rhoa3j / rij ) * delij[m] / rij; //--- deriv. Eq. 4.27(e) wrt rij
 //         darho3bdrj[m] = ( drhoa3i - rhoa3i / rij ) * delij[m] * sij / rij;
-         darho3bdrj[m] = ( drhoa3i - rhoa3i / rij ) * delij[m] / rij;
+         darho3bdrj[m] = 0.0;//( drhoa3i - rhoa3i / rij ) * delij[m] / rij;
 	 darho3bdsi[m] = 0.0;//rhoa3j * delij[m] / rij;
 	 darho3bdsj[m] = 0.0;//rhoa3i * delij[m] / rij;
          for (n = m; n < 3; n++) {
             for (p = n; p < 3; p++) {
 //               darho3dri[nv3] = A3j_d * delij[m] * delij[n] * delij[p] * sij; //--- deriv. Eq. 4.27(c) wrt rij 
-               darho3dri[nv3] = A3j_d * delij[m] * delij[n] * delij[p]; //--- deriv. Eq. 4.27(c) wrt rij 
+               darho3dri[nv3] = 0.0;//A3j_d * delij[m] * delij[n] * delij[p]; //--- deriv. Eq. 4.27(c) wrt rij 
 //               darho3drj[nv3] = A3i_d * delij[m] * delij[n] * delij[p] * sij;
-               darho3drj[nv3] = A3i_d * delij[m] * delij[n] * delij[p];
+               darho3drj[nv3] = 0.0;//A3i_d * delij[m] * delij[n] * delij[p];
 	       darho3dsi[nv3] = 0.0;//A3j * delij[m] * delij[n] * delij[p];
 	       darho3dsj[nv3] = 0.0;//A3i * delij[m] * delij[n] * delij[p];
 
@@ -495,31 +495,31 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 //        a3a = (6.0 / 5.0) * sij / rij;
         a3a = (6.0 / 5.0) * 1 / rij;
 	da3a = -a3a / rij;
-        drho3dr1 = a3 * (drhoa3j - 3 * rhoa3j / rij) * arg1i3 - a3a * (drhoa3j - rhoa3j / rij) * arg3i3; //--- 4.30(g)
-        drho3dr2 = a3 * (drhoa3i - 3 * rhoa3i / rij) * arg1j3 - a3a * (drhoa3i - rhoa3i / rij) * arg3j3;
-        ddrho3drdr1 = da3 * (drhoa3j - 3 * rhoa3j / rij) * arg1i3 + 
-		      a3 * (ddrhoa3j - 3 * drhoa3j / rij+ 3 * rhoa3j / rij2) * arg1i3 + 
-		      a3 * (drhoa3j - 3 * rhoa3j / rij) * arg1i3_d - 
-		      da3a * (drhoa3j - rhoa3j / rij) * arg3i3 -
-		      a3a * (ddrhoa3j - drhoa3j / rij + rhoa3j / rij2) * arg3i3 -
-		      a3a * (drhoa3j - rhoa3j / rij) * arg3i3_d; //--- 4.30(g)
-       ddrho3drdr2 = da3 * (drhoa3i - 3 * rhoa3i / rij) * arg1j3 + 
-		      a3 * (ddrhoa3i - 3 * drhoa3i / rij+ 3 * rhoa3i / rij2) * arg1j3 + 
-		      a3 * (drhoa3i - 3 * rhoa3i / rij) * arg1j3_d - 
-		      da3a * (drhoa3i - rhoa3i / rij) * arg3j3 -
-		      a3a * (ddrhoa3i - drhoa3i / rij + rhoa3i / rij2) * arg3j3 -
-		      a3a * (drhoa3i - rhoa3i / rij) * arg3j3_d; //--- 4.30(g)
+        drho3dr1 = 0.0;//a3 * (drhoa3j - 3 * rhoa3j / rij) * arg1i3 - a3a * (drhoa3j - rhoa3j / rij) * arg3i3; //--- 4.30(g)
+        drho3dr2 = 0.0;//a3 * (drhoa3i - 3 * rhoa3i / rij) * arg1j3 - a3a * (drhoa3i - rhoa3i / rij) * arg3j3;
+        ddrho3drdr1 = 0.0;//da3 * (drhoa3j - 3 * rhoa3j / rij) * arg1i3 + 
+// 		      a3 * (ddrhoa3j - 3 * drhoa3j / rij+ 3 * rhoa3j / rij2) * arg1i3 + 
+// 		      a3 * (drhoa3j - 3 * rhoa3j / rij) * arg1i3_d - 
+// 		      da3a * (drhoa3j - rhoa3j / rij) * arg3i3 -
+// 		      a3a * (ddrhoa3j - drhoa3j / rij + rhoa3j / rij2) * arg3i3 -
+// 		      a3a * (drhoa3j - rhoa3j / rij) * arg3i3_d; //--- 4.30(g)
+       ddrho3drdr2 = 0.0;//da3 * (drhoa3i - 3 * rhoa3i / rij) * arg1j3 + 
+// 		      a3 * (ddrhoa3i - 3 * drhoa3i / rij+ 3 * rhoa3i / rij2) * arg1j3 + 
+// 		      a3 * (drhoa3i - 3 * rhoa3i / rij) * arg1j3_d - 
+// 		      da3a * (drhoa3i - rhoa3i / rij) * arg3j3 -
+// 		      a3a * (ddrhoa3i - drhoa3i / rij + rhoa3i / rij2) * arg3j3 -
+// 		      a3a * (drhoa3i - rhoa3i / rij) * arg3j3_d; //--- 4.30(g)
 //          if(i==0 and j == 1)
 //           	fprintf ( pFile, "%e %e %e\n", rij, drho3dr1, ddrho3drdr1 );
 // 	sij=1.0;//!!!!!!!!!!!!
 // 	rhoa3j=1.0;//!!!!!!!
          
 //        a3 = 6.0* sij / rij3;
-        a3 = 6.0* 1 / rij3;
-        da3 = -3*a3 / rij;
+        a3 = 6.0* 1 ;/// rij3;
+        da3 =0.0;// -3*a3 / rij;
 //        a3a = (6.0/5.0) * sij / rij;
-        a3a = (6.0/5.0) * 1 / rij;
-        da3a = -a3a/rij;
+        a3a = (6.0/5.0) * 1;// / rij;
+        da3a = 0.0;//-a3a/rij;
         for (m = 0; m < 3; m++) {
           drho3drm1[m] = 0.0;
           drho3drm2[m] = 0.0;
