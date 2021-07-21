@@ -290,12 +290,12 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 	rhoa3j=rhoa3i=1.0;drhoa3j=drhoa3i=0.0;ddrhoa3j=ddrhoa3i=0.0;sij=1.0;
 	nv3=0;
         for (n = 0; n < 3; n++) {
-	  arho3b[i][n]=delij[n];///rij; //--- set arho3b
-	  arho3b[j][n]=delij[n];///rij; //--- set arho3b
+	  arho3b[i][n]=delij[n]/rij; //--- set arho3b
+	  arho3b[j][n]=delij[n]/rij; //--- set arho3b
           for (p = n; p < 3; p++) {
             for (q = p; q < 3; q++) {
-		    arho3[i][nv3]=delij[n]*delij[p]*delij[q];///rij3; //---set arho3
-		    arho3[j][nv3]=delij[n]*delij[p]*delij[q];///rij3; //---set arho3
+		    arho3[i][nv3]=delij[n]*delij[p]*delij[q]/rij3; //---set arho3
+		    arho3[j][nv3]=delij[n]*delij[p]*delij[q]/rij3; //---set arho3
               nv3++;
             }
 	  }
@@ -306,14 +306,14 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         A3i_d = drhoa3i / (rij2 * rij) - 3 * A3i / rij;
         nv3=0;
         for (m = 0; m < 3; m++) { //--- set derivatives
-         darho3bdri[m] = 0.0;//( drhoa3j - rhoa3j / rij ) * delij[m] * sij / rij; //--- deriv. Eq. 4.27(e) wrt rij
-         darho3bdrj[m] = 0.0;//( drhoa3i - rhoa3i / rij ) * delij[m] * sij / rij;
+         darho3bdri[m] = ( drhoa3j - rhoa3j / rij ) * delij[m] * sij / rij; //--- deriv. Eq. 4.27(e) wrt rij
+         darho3bdrj[m] = ( drhoa3i - rhoa3i / rij ) * delij[m] * sij / rij;
 	 darho3bdsi[m] = 0.0;//rhoa3j * delij[m] / rij;
 	 darho3bdsj[m] = 0.0;//rhoa3i * delij[m] / rij;
          for (n = m; n < 3; n++) {
             for (p = n; p < 3; p++) {
-               darho3dri[nv3] = 0.0;//A3j_d * delij[m] * delij[n] * delij[p] * sij; //--- deriv. Eq. 4.27(c) wrt rij 
-               darho3drj[nv3] = 0.0;//A3i_d * delij[m] * delij[n] * delij[p] * sij;
+               darho3dri[nv3] = A3j_d * delij[m] * delij[n] * delij[p] * sij; //--- deriv. Eq. 4.27(c) wrt rij 
+               darho3drj[nv3] = A3i_d * delij[m] * delij[n] * delij[p] * sij;
 	       darho3dsi[nv3] = 0.0;//A3j * delij[m] * delij[n] * delij[p];
 	       darho3dsj[nv3] = 0.0;//A3i * delij[m] * delij[n] * delij[p];
 
@@ -485,31 +485,31 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         //     rho3 terms
 	//rho3=arho3[i][nv3]*arho3[i][nv3]-(3/5)*arho3b[i][n]*arho3b[i][n]
         rij3 = rij * rij2;
-        a3 = 2;// * sij / rij3;
-        da3 = 0.0;//-3*a3/rij;
-        a3a = (6.0 / 5.0);// * sij / rij;
-	da3a = 0.0;//-a3a / rij;
-        drho3dr1 = 0.0;//a3 * (drhoa3j - 3 * rhoa3j / rij) * arg1i3 - a3a * (drhoa3j - rhoa3j / rij) * arg3i3; //--- 4.30(g)
-        drho3dr2 = 0.0;//a3 * (drhoa3i - 3 * rhoa3i / rij) * arg1j3 - a3a * (drhoa3i - rhoa3i / rij) * arg3j3;
-        ddrho3drdr1 = 0.0;//da3 * (drhoa3j - 3 * rhoa3j / rij) * arg1i3 + 
-// 		      a3 * (ddrhoa3j - 3 * drhoa3j / rij+ 3 * rhoa3j / rij2) * arg1i3 + 
-// 		      a3 * (drhoa3j - 3 * rhoa3j / rij) * arg1i3_d - 
-// 		      da3a * (drhoa3j - rhoa3j / rij) * arg3i3 -
-// 		      a3a * (ddrhoa3j - drhoa3j / rij + rhoa3j / rij2) * arg3i3 -
-// 		      a3a * (drhoa3j - rhoa3j / rij) * arg3i3_d; //--- 4.30(g)
-       ddrho3drdr2 = 0.0;//da3 * (drhoa3i - 3 * rhoa3i / rij) * arg1j3 + 
-// 		      a3 * (ddrhoa3i - 3 * drhoa3i / rij+ 3 * rhoa3i / rij2) * arg1j3 + 
-// 		      a3 * (drhoa3i - 3 * rhoa3i / rij) * arg1j3_d - 
-// 		      da3a * (drhoa3i - rhoa3i / rij) * arg3j3 -
-// 		      a3a * (ddrhoa3i - drhoa3i / rij + rhoa3i / rij2) * arg3j3 -
-// 		      a3a * (drhoa3i - rhoa3i / rij) * arg3j3_d; //--- 4.30(g)
+        a3 = 2 * sij / rij3;
+        da3 = -3*a3/rij;
+        a3a = (6.0 / 5.0) * sij / rij;
+	da3a = -a3a / rij;
+        drho3dr1 = a3 * (drhoa3j - 3 * rhoa3j / rij) * arg1i3 - a3a * (drhoa3j - rhoa3j / rij) * arg3i3; //--- 4.30(g)
+        drho3dr2 = a3 * (drhoa3i - 3 * rhoa3i / rij) * arg1j3 - a3a * (drhoa3i - rhoa3i / rij) * arg3j3;
+        ddrho3drdr1 = da3 * (drhoa3j - 3 * rhoa3j / rij) * arg1i3 + 
+		      a3 * (ddrhoa3j - 3 * drhoa3j / rij+ 3 * rhoa3j / rij2) * arg1i3 + 
+		      a3 * (drhoa3j - 3 * rhoa3j / rij) * arg1i3_d - 
+		      da3a * (drhoa3j - rhoa3j / rij) * arg3i3 -
+		      a3a * (ddrhoa3j - drhoa3j / rij + rhoa3j / rij2) * arg3i3 -
+		      a3a * (drhoa3j - rhoa3j / rij) * arg3i3_d; //--- 4.30(g)
+       ddrho3drdr2 = da3 * (drhoa3i - 3 * rhoa3i / rij) * arg1j3 + 
+		      a3 * (ddrhoa3i - 3 * drhoa3i / rij+ 3 * rhoa3i / rij2) * arg1j3 + 
+		      a3 * (drhoa3i - 3 * rhoa3i / rij) * arg1j3_d - 
+		      da3a * (drhoa3i - rhoa3i / rij) * arg3j3 -
+		      a3a * (ddrhoa3i - drhoa3i / rij + rhoa3i / rij2) * arg3j3 -
+		      a3a * (drhoa3i - rhoa3i / rij) * arg3j3_d; //--- 4.30(g)
 //         if(i==0 and j == 1)
 //          	fprintf ( pFile, "%e %e %e\n", rij, drho3dr1, ddrho3drdr1 );
          
-        a3 = 6.0;// * sij / rij3;
-        da3 = 0.0;//-3*a3 / rij;
-        a3a = (6.0/5.0);// * sij / rij;
-        da3a = 0.0;//-a3a/rij;
+        a3 = 6.0* sij / rij3;
+        da3 = -3*a3 / rij;
+        a3a = (6.0/5.0) * sij / rij;
+        da3a = -a3a/rij;
         for (m = 0; m < 3; m++) {
           drho3drm1[m] = 0.0;
           drho3drm2[m] = 0.0;
@@ -520,19 +520,20 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
               arg = delij[n] * delij[p] * this->v2D[nv2];
               drho3drm1[m] = drho3drm1[m] + arho3[i][this->vind3D[m][n][p]] * arg; //--- 4.30(i)
               drho3drm2[m] = drho3drm2[m] + arho3[j][this->vind3D[m][n][p]] * arg;
-	      ddrho3drmdr1[m] += 0.0;//darho3dri[this->vind3D[m][n][p]] * arg;
-	      ddrho3drmdr2[m] += 0.0;//darho3drj[this->vind3D[m][n][p]] * arg;
+	      ddrho3drmdr1[m] += darho3dri[this->vind3D[m][n][p]] * arg;
+	      ddrho3drmdr2[m] += darho3drj[this->vind3D[m][n][p]] * arg;
               nv2 = nv2 + 1;
             }
           }
-          ddrho3drmdr1[m] = 0.0;//(da3 * drho3drm1[m] + a3 * ddrho3drmdr1[m] - da3a * arho3b[i][m] - a3a * darho3bdri[m]) * rhoa3j + 
-		  	    //(a3 * drho3drm1[m] - a3a * arho3b[i][m]) * drhoa3j;
+          ddrho3drmdr1[m] = (da3 * drho3drm1[m] + a3 * ddrho3drmdr1[m] - da3a * arho3b[i][m] - a3a * darho3bdri[m]) * rhoa3j + 
+		  	    (a3 * drho3drm1[m] - a3a * arho3b[i][m]) * drhoa3j;
           drho3drm1[m] = (a3 * drho3drm1[m] - a3a * arho3b[i][m]) * rhoa3j;
-          ddrho3drmdr2[m] = 0.0;//(-da3 * drho3drm2[m]-a3 * ddrho3drmdr2[m] + da3a * arho3b[j][m] + a3a * darho3bdrj[m]) * rhoa3i +
-		  	    //(-a3 * drho3drm2[m] + a3a * arho3b[j][m]) * drhoa3i; 
+          ddrho3drmdr2[m] = (-da3 * drho3drm2[m]-a3 * ddrho3drmdr2[m] + da3a * arho3b[j][m] + a3a * darho3bdrj[m]) * rhoa3i +
+		  	    (-a3 * drho3drm2[m] + a3a * arho3b[j][m]) * drhoa3i; 
           drho3drm2[m] = (-a3 * drho3drm2[m] + a3a * arho3b[j][m]) * rhoa3i; 
         }
         //
+	sij=1.0;//!!!!!!!!!!!!
         Get_ddrho3drmdrn( i, //--- deriv. of 4.30(i) wrt rn
                          rij,  sij, delij,
                          rhoa3j, 
