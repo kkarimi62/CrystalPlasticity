@@ -506,7 +506,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 //         if(i==0 and j == 1)
 //          	fprintf ( pFile, "%e %e %e\n", rij, drho3dr1, ddrho3drdr1 );
 	sij=1.0;//!!!!!!!!!!!!
-	rhoa3j=1.0;/!!!!!!!
+	rhoa3j=1.0;//!!!!!!!
          
         a3 = 6.0* sij / rij3;
         da3 = -3*a3 / rij;
