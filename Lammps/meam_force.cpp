@@ -828,29 +828,40 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
           ddrho3dsds1 = a3 * rhoa3j * darg1i3ds - a3a * rhoa3j * darg3i3ds;
           ddrho3dsds2 = a3 * rhoa3i * darg1j3ds - a3a * rhoa3i * darg3j3ds;
 
-	  a3 = 6.0 * sij / rij3;
-          da3 = 6.0 / rij3;
-          a3a = 6.0 * sij / (5.0 * rij);
-          da3a = 6.0 / (5.0 * rij);
-          for (m = 0; m < 3; m++) {
+// 	  a3 = 6.0 * sij / rij3;
+//           da3 = 6.0 / rij3;
+//           a3a = 6.0 * sij / (5.0 * rij);
+//           da3a = 6.0 / (5.0 * rij);
+         double a3i = 6.0* rhoa3j* sij / rij3;
+         double a3ai = 6.0 * rhoa3j* sij / (5 * rij);
+          double a3bi = rhoa3j * sij / rij3;
+          double a3ci = rhoa3j * sij / rij;
+         double a3j = 6.0* rhoa3i* sij / rij3;
+         double a3aj = 6.0 * rhoa3i* sij / (5 * rij);
+          double a3bj = rhoa3i * sij / rij3;
+          double a3cj = rhoa3i * sij / rij;
+	for (m = 0; m < 3; m++) {
             ddrho3drmds1[m] = 0.0;
             ddrho3drmds2[m] = 0.0;
 	    xsumi=0.0;
 	    xsumj=0.0;
             //
-            nv2 = 0;
-            for (n = 0; n < 3; n++){
-              for (p = n; p < 3; p++){
-                arg = delij[n] * delij[p] * this->v2D[nv2];
-                ddrho3drmds1[m] += darho3dsi[this->vind3D[m][n][p]] * arg; //--- 4.30(i)
-                ddrho3drmds2[m] += darho3dsj[this->vind3D[m][n][p]] * arg;
-	      	xsumi += arho3[i][this->vind3D[m][n][p]] * arg; //--- 4.30(i)
-		xsumj += arho3[j][this->vind3D[m][n][p]] * arg;
-                nv2 = nv2 + 1;
-              }
-            }
-	    ddrho3drmds1[m] = (da3 * xsumi+a3 * ddrho3drmds1[m] - da3a * arho3b[i][m]-a3a * darho3bdsi[m]) * rhoa3j;
-            ddrho3drmds2[m] = (-da3 * xsumj -a3*ddrho3drmds2[m] + da3a * arho3b[j][m]+a3a * darho3bdsj[m]) * rhoa3i;
+//             nv2 = 0;
+//             for (n = 0; n < 3; n++){
+//               for (p = n; p < 3; p++){
+//                 arg = delij[n] * delij[p] * this->v2D[nv2];
+//                 ddrho3drmds1[m] += darho3dsi[this->vind3D[m][n][p]] * arg; //--- 4.30(i)
+//                 ddrho3drmds2[m] += darho3dsj[this->vind3D[m][n][p]] * arg;
+// 	      	xsumi += arho3[i][this->vind3D[m][n][p]] * arg; //--- 4.30(i)
+// 		xsumj += arho3[j][this->vind3D[m][n][p]] * arg;
+//                 nv2 = nv2 + 1;
+//               }
+//             }
+// 	    ddrho3drmds1[m] = (da3 * xsumi+a3 * ddrho3drmds1[m] - da3a * arho3b[i][m]-a3a * darho3bdsi[m]) * rhoa3j;
+//             ddrho3drmds2[m] = (-da3 * xsumj -a3*ddrho3drmds2[m] + da3a * arho3b[j][m]+a3a * darho3bdsj[m]) * rhoa3i;
+		  
+	    ddrho3drmds1[m] = rij4*delij[m]*(da3i*a3bi+a3i*da3bi)-delij[m]*(da3ai*a3ci+a3ai*da3ci);
+	    ddrho3drmds2[m] = -rij4*delij[m]*(da3j*a3bj+a3j*da3bj)+delij[m]*(da3aj*a3cj+a3aj*da3cj);
           }
           
               
