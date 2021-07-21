@@ -503,8 +503,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 		      da3a * (drhoa3i - rhoa3i / rij) * arg3j3 -
 		      a3a * (ddrhoa3i - drhoa3i / rij + rhoa3i / rij2) * arg3j3 -
 		      a3a * (drhoa3i - rhoa3i / rij) * arg3j3_d; //--- 4.30(g)
-         if(i==0 and j == 1)
-          	fprintf ( pFile, "%e %e %e\n", rij, drho3dr1, ddrho3drdr1 );
+//          if(i==0 and j == 1)
+//           	fprintf ( pFile, "%e %e %e\n", rij, drho3dr1, ddrho3drdr1 );
 	sij=1.0;//!!!!!!!!!!!!
 	rhoa3j=1.0;//!!!!!!!
          
@@ -536,6 +536,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 		  	    (-a3 * drho3drm2[m] + a3a * arho3b[j][m]) * drhoa3i; 
           drho3drm2[m] = (-a3 * drho3drm2[m] + a3a * arho3b[j][m]) * rhoa3i; 
         }
+         if(i==0 and j == 1)
+          	fprintf ( pFile, "%e %e %e\n", rij, drho3drm1[0], ddrho3drmdr2[0] );
         //
 	sij=1.0;//!!!!!!!!!!!!
         Get_ddrho3drmdrn( i, //--- deriv. of 4.30(i) wrt rn
