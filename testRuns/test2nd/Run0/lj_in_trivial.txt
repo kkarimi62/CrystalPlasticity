@@ -94,3 +94,5 @@ run ${runTime}
 ######################################
 # SIMULATION DONE
 print "All done"
+
+restart	20	restart_file
