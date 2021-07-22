@@ -1259,7 +1259,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                          dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
           //vm[ 14 ] =-0.5 * stiff * n2 * n2 * n1 * n2;
           //
-	  if(update->ntimestep==18){
+	  if(ntimestep==18){
 		double xxx;
 		  double yyy;
 	  }
