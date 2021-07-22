@@ -405,8 +405,8 @@ MEAM::calc_rho1(int i, int /*ntype*/, int* type, int* fmap, double** x, int numn
           tsq_ave[j][1] = tsq_ave[j][1] + this->t2_meam[elti] * this->t2_meam[elti] * rhoa0i;
           tsq_ave[j][2] = tsq_ave[j][2] + this->t3_meam[elti] * this->t3_meam[elti] * rhoa0i;
         }
-//        arho2b[i] = arho2b[i] + rhoa2j;
- //       arho2b[j] = arho2b[j] + rhoa2i;
+        arho2b[i] = arho2b[i] + rhoa2j;
+        arho2b[j] = arho2b[j] + rhoa2i;
         A1j = rhoa1j / rij;
         A2j = rhoa2j / rij2;
         A3j = rhoa3j / (rij2 * rij);
@@ -422,10 +422,8 @@ MEAM::calc_rho1(int i, int /*ntype*/, int* type, int* fmap, double** x, int numn
           arho3b[i][m] = arho3b[i][m] + rhoa3j * delij[m] / rij; //---  Eq. 4.27(e)
           arho3b[j][m] = arho3b[j][m] - rhoa3i * delij[m] / rij;
          for (n = m; n < 3; n++) {
-//            arho2[i][nv2] = arho2[i][nv2] + A2j * delij[m] * delij[n]; //--- Eq. 4.27(b)
-            arho2[i][nv2] = arho2[i][nv2] + 1 * delij[m] * delij[n]; //--- Eq. 4.27(b)
-//            arho2[j][nv2] = arho2[j][nv2] + A2i * delij[m] * delij[n];
-            arho2[j][nv2] = arho2[j][nv2] + 1 * delij[m] * delij[n];
+            arho2[i][nv2] = arho2[i][nv2] + A2j * delij[m] * delij[n]; //--- Eq. 4.27(b)
+            arho2[j][nv2] = arho2[j][nv2] + A2i * delij[m] * delij[n];
             nv2 = nv2 + 1;
             for (p = n; p < 3; p++) {
               arho3[i][nv3] = arho3[i][nv3] + A3j * delij[m] * delij[n] * delij[p];
