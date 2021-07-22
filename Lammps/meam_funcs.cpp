@@ -548,8 +548,8 @@ MEAM::Get_ddrho2drmdrn(int i,
         int m, n, k,nv2;
         double darho2ikmdrn;
         double rij2 = rij * rij;
-        double a2 = 4;// * sij / rij2;
-        double a2b = 1;//rhoa2j * sij / rij2;
+        double a2 = 4 * sij / rij2;
+        double a2b = rhoa2j * sij / rij2;
         nv2 = 0;
    
 //         for (m = 0; m < 3; m++) {
