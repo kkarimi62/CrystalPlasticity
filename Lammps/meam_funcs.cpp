@@ -643,10 +643,10 @@ MEAM::Get_ddrho3drmdrn( int i,
         double rij2 = rij * rij;
         double rij3 = rij * rij2;
         double rij4 = rij2 * rij2;
-       double a3 = 6.0* sij / rij3;
-       double a3a = 6.0 * sij / (5 * rij);
-        double a3b = rhoa3j * sij / rij3;
-        double a3c = rhoa3j * sij / rij;
+       double a3 = 6.0;//* sij / rij3;
+       double a3a = 1.2;//6.0 * sij / (5 * rij);
+        double a3b = 1;//rhoa3j * sij / rij3;
+        double a3c = 1;//rhoa3j * sij / rij;
    
 //         nv2 = 0;
 //         for (m = 0; m < 3; m++) {
@@ -987,6 +987,8 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
             dsij2 = 0.0;
             dsg_alpha_beta_drik=0.0;
             dsg_alpha_beta_drjk=0.0;
+            ddsij1drij = 0.0;
+            ddsij2drij = 0.0;
             if (!iszero(sij) && !isone(sij)) {
               const double rbound = rij2 * this->ebound_meam[elti][eltj];
               delc = Cmax - Cmin;
@@ -1030,7 +1032,7 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
                       dsij2 = a * dCikj2; //--- 4.22c/rjk
                        
                       ddsij1drij = da * dCikj1+a * ddCikj1; //--- units of s/r^3
-                      ddsij2drij = da * dCikj2+a * ddCikj2; //--- units of s/r^3//                    
+                      ddsij2drij = da * dCikj2+a * ddCikj2; //--- units of s/r^3                
 
                       dsg_alpha_beta_drjk = recip * dUdsij * ddsij2drij * delij[alpha] * delij[beta];
                       dsg_alpha_beta_drik = recip * dUdsij * ddsij1drij * delij[alpha] * delij[beta];
