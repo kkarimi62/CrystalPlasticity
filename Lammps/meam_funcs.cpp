@@ -548,8 +548,8 @@ MEAM::Get_ddrho2drmdrn(int i,
         int m, n, k,nv2;
         double darho2ikmdrn;
         double rij2 = rij * rij;
-        double a2 = 4 * sij / rij2;
-        double a2b = rhoa2j * sij / rij2;
+        double a2 = 4;// * sij / rij2;
+        double a2b = 1;//rhoa2j * sij / rij2;
         nv2 = 0;
    
 //         for (m = 0; m < 3; m++) {
@@ -563,7 +563,7 @@ MEAM::Get_ddrho2drmdrn(int i,
 //           }
 //         }
    
-
+      //arho2[i][this->vind2D[k][m]]=rhoa2j.r_k.r_m.s/r^2
       for (m = 0; m < 3; m++) {
          for (n = m; n < 3; n++) {
             ddrho2drmdrn1[nv2] = 0.0;
@@ -574,7 +574,7 @@ MEAM::Get_ddrho2drmdrn(int i,
                  ddrho2drmdrn1[nv2] += ( darho2ikmdrn * delij[k] + 
                                          arho2[i][this->vind2D[k][m]] * (n==k?1:0) );
             }
-            ddrho2drmdrn1[nv2] *= a2 * rhoa2j;
+            ddrho2drmdrn1[nv2] *= (a2 * rhoa2j);
             nv2++;
          }
       }
@@ -957,7 +957,7 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
          nv2++;
        }
      }
-
+   
    //
    double ddUdrijmds_tmp[ 3 ];
    if (iszero(ds)) {
