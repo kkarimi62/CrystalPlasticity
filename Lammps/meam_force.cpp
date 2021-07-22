@@ -179,8 +179,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         rhoa2i = ro0i * MathSpecial::fm_exp(-this->beta2_meam[elti] * ai);
         drhoa2i = -this->beta2_meam[elti] * invrei * rhoa2i;
         ddrhoa2i = -this->beta2_meam[elti] * invrei * drhoa2i;
-         if(i==0 and j==1)
-        	fprintf (pFile, "%e %e %e %e\n",rij, rhoa2i, drhoa2i, ddrhoa2i);
+//          if(i==0 and j==1)
+//         	fprintf (pFile, "%e %e %e %e\n",rij, rhoa2i, drhoa2i, ddrhoa2i);
         rhoa3i = ro0i * MathSpecial::fm_exp(-this->beta3_meam[elti] * ai);
         drhoa3i = -this->beta3_meam[elti] * invrei * rhoa3i;
         ddrhoa3i = -this->beta3_meam[elti] * invrei * drhoa3i;
@@ -1266,6 +1266,11 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                         0,1,0,1,r3, ds,  dds,  recip,
                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
                          dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+	  if(isnan(vm[ 15 ])){
+		  double xxx;
+		  double yyy;
+	  }
+		  
           //vm[ 15 ] =-0.5 * (stiff * n0 * n1 * n0 * n1+dUdrij * rij*n1 * n1);
           vm[ 16 ] = -0.5*GetModulus(
                          i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
