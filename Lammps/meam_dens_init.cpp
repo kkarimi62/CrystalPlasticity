@@ -405,8 +405,8 @@ MEAM::calc_rho1(int i, int /*ntype*/, int* type, int* fmap, double** x, int numn
           tsq_ave[j][1] = tsq_ave[j][1] + this->t2_meam[elti] * this->t2_meam[elti] * rhoa0i;
           tsq_ave[j][2] = tsq_ave[j][2] + this->t3_meam[elti] * this->t3_meam[elti] * rhoa0i;
         }
-        arho2b[i] = arho2b[i] + rhoa2j;
-        arho2b[j] = arho2b[j] + rhoa2i;
+//        arho2b[i] = arho2b[i] + rhoa2j;
+ //       arho2b[j] = arho2b[j] + rhoa2i;
         A1j = rhoa1j / rij;
         A2j = rhoa2j / rij2;
         A3j = rhoa3j / (rij2 * rij);
