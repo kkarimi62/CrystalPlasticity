@@ -1258,12 +1258,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
                          dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
           //vm[ 14 ] =-0.5 * stiff * n2 * n2 * n1 * n2;
-          //
-	  if(ntimestep==18){
-		double xxx;
-		  double yyy;
-	  }
-		  
+          //  
           vm[ 15 ] = -0.5*GetModulus(
                          i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
                         0,1,0,1,r3, ds,  dds,  recip,
