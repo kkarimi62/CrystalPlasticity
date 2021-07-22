@@ -1266,7 +1266,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                         0,1,0,1,r3, ds,  dds,  recip,
                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
                          dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
-	  assert(!isnan(vm[ 15 ]);
+	  assert(!isnan(vm[ 15 ]));
 
 		  
           //vm[ 15 ] =-0.5 * (stiff * n0 * n1 * n0 * n1+dUdrij * rij*n1 * n1);
