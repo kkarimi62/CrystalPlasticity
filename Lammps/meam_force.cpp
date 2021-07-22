@@ -7,7 +7,7 @@ using namespace LAMMPS_NS;
 #include <iostream>
 #include <stdio.h>
 #include <cstdlib> 
-
+#inclue <cassert>
 using namespace std;
 
 void
