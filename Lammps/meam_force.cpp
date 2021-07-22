@@ -179,6 +179,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         rhoa2i = ro0i * MathSpecial::fm_exp(-this->beta2_meam[elti] * ai);
         drhoa2i = -this->beta2_meam[elti] * invrei * rhoa2i;
         ddrhoa2i = -this->beta2_meam[elti] * invrei * drhoa2i;
+         if(i==0 and j==1)
+        	fprintf (pFile, "%e %e %e %e\n",rij, rhoa2i, drhoa2i, ddrhoa2i);
         rhoa3i = ro0i * MathSpecial::fm_exp(-this->beta3_meam[elti] * ai);
         drhoa3i = -this->beta3_meam[elti] * invrei * rhoa3i;
         ddrhoa3i = -this->beta3_meam[elti] * invrei * drhoa3i;
