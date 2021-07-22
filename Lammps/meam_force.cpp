@@ -269,7 +269,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         for( m=0;m<3;m++){
           for( n=m;n<3;n++){
             darho2dri[nv2] = A2j_d * delij[m] * delij[n] * sij; //--- deriv. Eq. 4.27(b) wrt rij
-            darho2drj[nv2] = A2i_d * delji[m] * delji[n] * sij;
+            darho2drj[nv2] = A2i_d * delij[m] * delij[n] * sij;
 	    darho2dsi[nv2] = A2j*delij[m]*delij[n];
 	    darho2dsj[nv2] = A2i*delij[m]*delij[n];
             nv2++;
@@ -1259,6 +1259,11 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                          dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
           //vm[ 14 ] =-0.5 * stiff * n2 * n2 * n1 * n2;
           //
+	  if(update->ntimestep==18){
+		double xxx;
+		  double yyy;
+	  }
+		  
           vm[ 15 ] = -0.5*GetModulus(
                          i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
                         0,1,0,1,r3, ds,  dds,  recip,
