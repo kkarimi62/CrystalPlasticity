@@ -648,37 +648,37 @@ MEAM::Get_ddrho3drmdrn( int i,
         double a3b = 1;//rhoa3j * sij / rij3;
         double a3c = 1;//rhoa3j * sij / rij;
    
-        nv2 = 0;
-        for (m = 0; m < 3; m++) {
-          for (n = m; n < 3; n++) {
-            ddrho3drmdrn1[nv2] = a3*(a3b*(rij4*( m == n ? 1 : 0 )+2*rij2*delij[m]*delij[n])+2*a3b*rij2*delij[m]*delij[n])-a3a*a3c*( m == n ? 1 : 0 ); 
-             nv2++;
-          }     
-        }
+//         nv2 = 0;
+//         for (m = 0; m < 3; m++) {
+//           for (n = m; n < 3; n++) {
+//             ddrho3drmdrn1[nv2] = a3*(a3b*(rij4*( m == n ? 1 : 0 )+2*rij2*delij[m]*delij[n])+2*a3b*rij2*delij[m]*delij[n])-a3a*a3c*( m == n ? 1 : 0 ); 
+//              nv2++;
+//           }     
+//         }
    
    
          //arho3[i][nv3]=rhoa3j.r[m].r[n].r[p]/r^3.s
          //arho3b[i][m]=rhoa3j.r[m].s/r   
-//         nv2 = 0;
-//         for (m = 0; m < 3; m++) {
-//            for (k = m; k < 3; k++) {
-//               ddrho3drmdrn1[nv2]=0.0;
-//               for (n = 0; n < 3; n++) {
-//                for (p = n; p < 3; p++) {
-//                  arg = delij[n] * delij[p] * this->v2D[nv2];
-//                  dargdk = (( k == n ? 1 : 0 ) * delij[p]+delij[n] * ( p == k ? 1 : 0 )) * this->v2D[nv2];
-//                  darho3imnpdk = a3b * (( k == m ? 1 : 0 )*delij[n]*delij[p] + //---darho3[i][this->vind3D[m][n][p]]drk
-//                                                        delij[m]*( k == n ? 1 : 0 )*delij[p] + 
-//                                                        delij[m]*delij[n]*( k == p ? 1 : 0 ));
-//                  ddrho3drmdrn1[nv2] += darho3imnpdk * arg + arho3[i][this->vind3D[m][n][p]] * dargdk; //--- 4.30(i)
-//                }
-//              }
-//              darho3bimdrk =  a3c * ( m == k ? 1 : 0 ); //--- darho3b[i][m]/drk
-//              ddrho3drmdrn1[nv2] = a3 * rhoa3j * ddrho3drmdrn1[nv2] - a3a * rhoa3j * darho3bimdrk;
-//              nv2 = nv2 + 1;
+        nv2 = 0;
+        for (m = 0; m < 3; m++) {
+           for (k = m; k < 3; k++) {
+              ddrho3drmdrn1[nv2]=0.0;
+              for (n = 0; n < 3; n++) {
+               for (p = n; p < 3; p++) {
+                 arg = delij[n] * delij[p] * this->v2D[nv2];
+                 dargdk = (( k == n ? 1 : 0 ) * delij[p]+delij[n] * ( p == k ? 1 : 0 )) * this->v2D[nv2];
+                 darho3imnpdk = a3b * (( k == m ? 1 : 0 )*delij[n]*delij[p] + //---darho3[i][this->vind3D[m][n][p]]drk
+                                                       delij[m]*( k == n ? 1 : 0 )*delij[p] + 
+                                                       delij[m]*delij[n]*( k == p ? 1 : 0 ));
+                 ddrho3drmdrn1[nv2] += darho3imnpdk * arg + arho3[i][this->vind3D[m][n][p]] * dargdk; //--- 4.30(i)
+               }
+             }
+             darho3bimdrk =  a3c * ( m == k ? 1 : 0 ); //--- darho3b[i][m]/drk
+             ddrho3drmdrn1[nv2] = a3 * rhoa3j * ddrho3drmdrn1[nv2] - a3a * rhoa3j * darho3bimdrk;
+             nv2 = nv2 + 1;
 
-//            } // end of k loop
-//         }   // end of m loop
+           } // end of k loop
+        }   // end of m loop
    
    
    
