@@ -574,6 +574,7 @@ MEAM::Get_ddrho2drmdrn(int i,
                  ddrho2drmdrn1[nv2] += ( darho2ikmdrn * delij[k] + 
                                          arho2[i][this->vind2D[k][m]] * (n==k?1:0) );
             }
+//            drho2drm1[m] = a2 * rhoa2j * drho2drm1[m];
             ddrho2drmdrn1[nv2] *= (a2 * rhoa2j);
             nv2++;
          }
