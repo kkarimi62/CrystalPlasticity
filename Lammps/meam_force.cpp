@@ -1110,7 +1110,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         for (m = 0; m < 3; m++) {
           dUdrijm[m] = frhop[i] * drho2drm1[m] + frhop[j] * drho2drm2[m]; //--- Eq. 4.41(c)
           ddUdrdrijm[m] = frhopp[i] * drho2dr1 * drho2drm1[m] + frhop[i] * ddrho2drmdr1[m] + 
-                           frhopp[j] * drho2dr2 * drho2drm2[m] + frhop[i] * ddrho2drmdr2[m]; //--- deriv of Eq. 4.41(c) wrt r
+                           frhopp[j] * drho2dr2 * drho2drm2[m] + frhop[j] * ddrho2drmdr2[m]; //--- deriv of Eq. 4.41(c) wrt r
           for (n = m; n < 3; n++) {
             ddUdrmdrn[nv2] =  frhopp[i] * drho2drm1[m] * drho2drm1[n] + frhop[i] * ddrho2drmdrn1[nv2]+
                               frhopp[j] * drho2drm2[m] * drho2drm2[n] + frhop[j] * ddrho2drmdrn2[nv2];
