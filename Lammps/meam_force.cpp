@@ -1082,7 +1082,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
         
        frhop[i] = 1.0;frhopp[i]=0.0;
         frhop[j] = 0.0;frhopp[j]=0.0;
-	phi=0.0;phip=0.0;phipp=0.0;
+//	phi=0.0;phip=0.0;phipp=0.0;
         dUdrij = phip * sij + frhop[i] * drho2dr1 + frhop[j] * drho2dr2; //--- Eq. 4.41(a)
         ddUddrij = phipp * sij + ( frhopp[i] * drho2dr1 * drho2dr1 + frhop[i] * ddrho2drdr1 ) + //--- 1st deriv. of Eq. 4.41(a) wrt r
                                  ( frhopp[j] * drho2dr2 * drho2dr2 + frhop[j] * ddrho2drdr2 );  
@@ -1180,122 +1180,122 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                       
 //          stiff *= rij2; //--- *r^2 to get energy
 //          sij = scrfcn[jn+fnoffset] * fcpair[jn+fnoffset];
-//           vm[ 0 ]  = -0.5*GetModulus( 
-//                          i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
-//                          0,0,0,0,r3, ds,  dds,  recip,
-//                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-//                          dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
-//           vm[ 1 ]  = -0.5*GetModulus(
-//                          i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,            
-//                          0,0,1,1,r3, ds,  dds,  recip,
-//                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-//                          dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); 
-//           vm[ 2 ]  = -0.5*GetModulus(
-//                          i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
-//                         0,0,2,2,r3, ds,  dds,  recip,
-//                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-//                          dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
-//           vm[ 3 ]  = -0.5*GetModulus(
-//                          i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
-//                         0,0,0,1,r3, ds,  dds,  recip,
-//                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-//                          dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
-//           vm[ 4 ]  = -0.5*GetModulus(
-//                          i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
-//                         0,0,0,2,r3, ds,  dds,  recip,
-//                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-//                          dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
-//           vm[ 5 ]  = -0.5*GetModulus(
-//                          i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
-//                         0,0,1,2,r3, ds,  dds,  recip,
-//                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-//                          dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
-//           //
-//           vm[ 6 ]  = -0.5*GetModulus(
-//                          i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
-//                          1,1,1,1,r3, ds,  dds,  recip,
-//                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-//                          dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
-//           vm[ 7 ]  = -0.5*GetModulus(
-//                          i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
-//                           1,1,2,2,r3, ds,  dds,  recip,
-//                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-//                          dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
-//           vm[ 8 ]  = -0.5*GetModulus(
-//                          i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
-//                           1,1,0,1,r3, ds,  dds,  recip,
-//                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-//                          dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
-//           vm[ 9 ]  = -0.5*GetModulus(
-//                          i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
-//                         1,1,0,2,r3, ds,  dds,  recip,
-//                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-//                          dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
-//           vm[ 10 ] = -0.5*GetModulus(
-//                          i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
-//                           1,1,1,2,r3, ds,  dds,  recip,
-//                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-//                          dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
-//           //
-//           vm[ 11 ] = -0.5*GetModulus(
-//                          i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
-//                           2,2,2,2,r3, ds,  dds,  recip,
-//                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-//                          dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
-//           vm[ 12 ] = -0.5*GetModulus(
-//                          i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
-//                           2,2,0,1,r3, ds,  dds,  recip,
-//                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-//                          dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
-//           vm[ 13 ] = -0.5*GetModulus(
-//                          i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
-//                           2,2,0,2,r3, ds,  dds,  recip,
-//                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-//                          dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
-//           vm[ 14 ] = -0.5*GetModulus(
-//                          i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
-//                         2,2,1,2,r3, ds,  dds,  recip,
-//                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-//                          dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          vm[ 0 ]  = -0.5*GetModulus( 
+                         i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
+                         0,0,0,0,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          vm[ 1 ]  = -0.5*GetModulus(
+                         i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,            
+                         0,0,1,1,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); 
+          vm[ 2 ]  = -0.5*GetModulus(
+                         i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
+                        0,0,2,2,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          vm[ 3 ]  = -0.5*GetModulus(
+                         i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
+                        0,0,0,1,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          vm[ 4 ]  = -0.5*GetModulus(
+                         i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
+                        0,0,0,2,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          vm[ 5 ]  = -0.5*GetModulus(
+                         i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
+                        0,0,1,2,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          //
+          vm[ 6 ]  = -0.5*GetModulus(
+                         i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
+                         1,1,1,1,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          vm[ 7 ]  = -0.5*GetModulus(
+                         i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
+                          1,1,2,2,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          vm[ 8 ]  = -0.5*GetModulus(
+                         i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
+                          1,1,0,1,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          vm[ 9 ]  = -0.5*GetModulus(
+                         i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
+                        1,1,0,2,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          vm[ 10 ] = -0.5*GetModulus(
+                         i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
+                          1,1,1,2,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          //
+          vm[ 11 ] = -0.5*GetModulus(
+                         i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
+                          2,2,2,2,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          vm[ 12 ] = -0.5*GetModulus(
+                         i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
+                          2,2,0,1,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          vm[ 13 ] = -0.5*GetModulus(
+                         i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
+                          2,2,0,2,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          vm[ 14 ] = -0.5*GetModulus(
+                         i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
+                        2,2,1,2,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
           //  
           vm[ 15 ] = -0.5*GetModulus(
                          i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
                         0,1,0,1,r3, ds,  dds,  recip,
                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
                          dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn);
-	  assert(!isnan(vm[ 15 ]));
-         fprintf ( pFile, "%e %e %e %e %e %e %e %e %e %e %e %e %e %e %e\n", delij[0], delij[1], rij, sij, rhoa2j,drhoa2j,ddrhoa2j, rho2[i],
-		  dUdrij,dUdrijm[0],ddUddrij,ddrho2drmdr1[0],ddUdrmdrn[0],
-		  -v[3]*2.0, -vm[ 15 ]*2 );
+// 	  assert(!isnan(vm[ 15 ]));
+//          fprintf ( pFile, "%e %e %e %e %e %e %e %e %e %e %e %e %e %e %e\n", delij[0], delij[1], rij, sij, rhoa2j,drhoa2j,ddrhoa2j, rho2[i],
+// 		  dUdrij,dUdrijm[0],ddUddrij,ddrho2drmdr1[0],ddUdrmdrn[0],
+// 		  -v[3]*2.0, -vm[ 15 ]*2 );
 
 		  
-//           vm[ 16 ] = -0.5*GetModulus(
-//                          i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
-//                         0,1,0,2,r3, ds,  dds,  recip,
-//                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-//                          dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
-//           vm[ 17 ] = -0.5*GetModulus(
-//                          i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
-//                         0,1,1,2,r3, ds,  dds,  recip,
-//                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-//                          dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
-//           //
-//           vm[ 18 ] = -0.5*GetModulus(
-//                          i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
-//                         0,2,0,2,r3, ds,  dds,  recip,
-//                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-//                          dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
-//           vm[ 19 ] = -0.5*GetModulus(
-//                          i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
-//                         0,2,1,2,r3, ds,  dds,  recip,
-//                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-//                          dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
-//           //
-//           vm[ 20 ] = -0.5*GetModulus(
-//                          i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
-//                         1,2,1,2,r3, ds,  dds,  recip,
-//                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
-//                          dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn);
+          vm[ 16 ] = -0.5*GetModulus(
+                         i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
+                        0,1,0,2,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          vm[ 17 ] = -0.5*GetModulus(
+                         i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
+                        0,1,1,2,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          //
+          vm[ 18 ] = -0.5*GetModulus(
+                         i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
+                        0,2,0,2,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          vm[ 19 ] = -0.5*GetModulus(
+                         i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
+                        0,2,1,2,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn); //
+          //
+          vm[ 20 ] = -0.5*GetModulus(
+                         i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
+                        1,2,1,2,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn);
           //
           nv3 = 0;
           nv2 = 6;
