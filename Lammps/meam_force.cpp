@@ -490,7 +490,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                          ddrho2drmdrn2 //--- modify 
                         )  ;      
 
-         fprintf ( pFile, "%e %e %e %e %e %e\n", delij[0], rij, sij, rho2[i],drho2drm1[ 0 ], ddrho2drmdrn1[ 0 ] );
+         fprintf ( pFile, "%e %e %e %e %e %e %e\n", delij[0], rij, sij, rhoa2j,rho2[i],drho2drm1[ 0 ], ddrho2drmdrn1[ 0 ] );
 	 
         //     rho3 terms
 	//rho3=arho3[i][nv3]*arho3[i][nv3]-(3/5)*arho3b[i][n]*arho3b[i][n]
