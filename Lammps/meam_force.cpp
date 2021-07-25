@@ -478,7 +478,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 		
         }
         //
-        fprintf ( pFile, "%e %e %e %e %e %e %e %e\n", delij[0], delij[1], rij, sij, rhoa2j,drhoa2j,drho2drm1[ 0 ], ddrho2drmdr1[ 0 ] );
+//        fprintf ( pFile, "%e %e %e %e %e %e %e %e\n", delij[0], delij[1], rij, sij, rhoa2j,drhoa2j,drho2drm1[ 0 ], ddrho2drmdr1[ 0 ] );
 	    
         Get_ddrho2drmdrn( i, //--- deriv of 4.30(f) wrt rn
                          rij,  sij, delij,
