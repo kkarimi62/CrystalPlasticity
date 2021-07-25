@@ -443,6 +443,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 	da2 = -2*a2/rij;
         drho2dr1 = a2 * (drhoa2j - 2 * rhoa2j / rij) * arg1i2 - 2.0 / 3.0 * arho2b[i] * drhoa2j * sij; //--- 4.30(d): arho2b is W_{2i}      
         drho2dr2 = a2 * (drhoa2i - 2 * rhoa2i / rij) * arg1j2 - 2.0 / 3.0 * arho2b[j] * drhoa2i * sij;
+	printf("drho2dr1=%e\n",drho2dr1);
         //--- 2nd derivative wrt rij (atom j)
         //--- deriv. of 4.30(d) wrt r 
 	ddrho2drdr1 = da2 * (drhoa2j - 2 * rhoa2j / rij) * arg1i2 + 
