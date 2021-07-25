@@ -544,7 +544,6 @@ MEAM::Get_ddrho2drmdrn(int i,
                        double** arho2,
                        double* ddrho2drmdrn1 //--- modify 
                     ){
-        double drho2drm1[3];
         int m, n, k,nv2;
         double darho2ikmdrn;
         double rij2 = rij * rij;
@@ -552,33 +551,34 @@ MEAM::Get_ddrho2drmdrn(int i,
         double a2b = rhoa2j * sij / rij2;
         nv2 = 0;
    
-//         for (m = 0; m < 3; m++) {
-// //          drho2drm1[m] = 0.0;
-// //          ddrho2drmdr1[m] = 0.0;
-//           for (n = 0; n < 3; n++) {
-// //             arg = rhoa2j * sij * ( delij[ m ] * delij[ n ] / rij2 + (m == n ? 1 : 0) );
-// //             ddrho2drmdrn1[ nv2 ] = a2 * rhoa2j * ( arg + arho2[i][this->vind2D[n][m]] ); //???
-//              ddrho2drmdrn1[ nv2 ] = (4/rij2)*rhoa2j*rhoa2j*sij*sij*(m == n ? 1 : 0);
-//             nv2++;
-//           }
-//         }
+        for (m = 0; m < 3; m++) {
+//          drho2drm1[m] = 0.0;
+//          ddrho2drmdr1[m] = 0.0;
+             ddrho2drmdrn1[nv2] = 0.0;
+          for (n = m; n < 3; n++) {
+             arg = rhoa2j * sij * ( delij[ m ] * delij[ n ] / rij2 + (m == n ? 1 : 0) );
+//             ddrho2drmdrn1[ nv2 ] = a2 * rhoa2j * ( arg + arho2[i][this->vind2D[n][m]] ); //???
+             ddrho2drmdrn1[ nv2 ] = (4/rij2)*rhoa2j*rhoa2j*sij*sij*(m == n ? 1 : 0);
+            nv2++;
+          }
+        }
    
       //arho2[i][this->vind2D[k][m]]=rhoa2j.r_k.r_m.s/r^2
-      for (m = 0; m < 3; m++) {
-         for (n = m; n < 3; n++) {
-            ddrho2drmdrn1[nv2] = 0.0;
-            for (k = 0; k < 3; k++) {
-//               drho2drm1[m] += arho2[i][this->vind2D[k][m]] * delij[k]; //--- 4.30(f): arho2 is Y_{2i\sigma\alpha}
-                 darho2ikmdrn = a2b * (( k == n ? 1 : 0 )*delij[m] + //---darho3[i][this->vind3D[m][n][p]]drk
-                                       delij[k]*( m == n ? 1 : 0 ));
-                 ddrho2drmdrn1[nv2] += ( darho2ikmdrn * delij[k] + 
-                                         arho2[i][this->vind2D[k][m]] * (n==k?1:0) );
-            }
-//            drho2drm1[m] = a2 * rhoa2j * drho2drm1[m];
-            ddrho2drmdrn1[nv2] *= (a2 * rhoa2j);
-            nv2++;
-         }
-      }
+//       for (m = 0; m < 3; m++) {
+//          for (n = m; n < 3; n++) {
+//             ddrho2drmdrn1[nv2] = 0.0;
+//             for (k = 0; k < 3; k++) {
+// //               drho2drm1[m] += arho2[i][this->vind2D[m][k]] * delij[k]; //--- 4.30(f): arho2 is Y_{2i\sigma\alpha}
+//                  darho2ikmdrn = a2b * (( k == n ? 1 : 0 )*delij[m] + //---darho2[i][this->vind2D[k][m]]drn
+//                                        delij[k]*( m == n ? 1 : 0 ));
+//                  ddrho2drmdrn1[nv2] += ( darho2ikmdrn * delij[k] + 
+//                                          arho2[i][this->vind2D[m][k]] * (n==k?1:0) );
+//             }
+// //            drho2drm1[m] = a2 * rhoa2j * drho2drm1[m];
+//             ddrho2drmdrn1[nv2] *= (a2 * rhoa2j);
+//             nv2++;
+//          }
+//       }
 
 
                     
