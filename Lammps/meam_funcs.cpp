@@ -558,7 +558,7 @@ MEAM::Get_ddrho2drmdrn(int i,
           for (n = m; n < 3; n++) {
 //             arg = rhoa2j * sij * ( delij[ m ] * delij[ n ] / rij2 + (m == n ? 1 : 0) );
 //             ddrho2drmdrn1[ nv2 ] = a2 * rhoa2j * ( arg + arho2[i][this->vind2D[n][m]] ); //???
-             ddrho2drmdrn1[ nv2 ] = (4*rhoa2j*sij/rij2) * ( (rhoa2j*sij/rij2)*(delij[m]*delij[n]+rij2*(m == n ? 1 : 0)) + (arho2[i][this->vind2D[n][m]]) );
+             ddrho2drmdrn1[ nv2 ] = (4*rhoa2j*sij/rij2) * ( (rhoa2j*sij/rij2)*(delij[m]*delij[n]+rij2*(m == n ? 1 : 0)) + ((rhoa2j*sij/rij2)*delij[m]*delij[n]) );
             nv2++;
           }
         }
