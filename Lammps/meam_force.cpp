@@ -1265,7 +1265,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                          dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn);
 	  assert(!isnan(vm[ 15 ]));
          fprintf ( pFile, "%e %e %e %e %e %e %e %e %e %e %e %e %e %e %e\n", delij[0], delij[1], rij, sij, rhoa2j,drhoa2j,ddrhoa2j, rho2[i],
-		  dUdrij,dUdrijm[0],ddUddrij,ddUdrdrijm[0],ddUdrmdrn[0],
+		  dUdrij,dUdrijm[0],ddUddrij,ddrho2drmdr1[0],ddUdrmdrn[0],
 		  -v[3]*2.0, -vm[ 15 ]*2 );
 
 		  
