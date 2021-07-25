@@ -803,6 +803,10 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 		  	- 2.0 / 3.0 * darho2bdrj * rhoa2i- 2.0 / 3.0 * arho2b[j] * drhoa2i;
           ddrho2dsds1 = a2 * rhoa2j * darg1i2ds - 2.0 / 3.0 * darho2bdsi * rhoa2j; 
           ddrho2dsds2 = a2 * rhoa2i * darg1j2ds - 2.0 / 3.0 * darho2bdsj * rhoa2i; 
+	if(i==0 and j==1)
+	        fprintf ( pFile, "%e %e %e %e %e %e %e %e\n", delij[0], delij[1], rij, sij, rhoa2j,drhoa2j,drho2ds1, ddrho2dsds1 );
+
+	
  	a2 = 4 * sij / rij2;
 	da2 = 4.0/rij2;
 	for (m = 0; m < 3; m++) {
