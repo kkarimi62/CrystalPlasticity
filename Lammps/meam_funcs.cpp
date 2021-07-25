@@ -546,9 +546,7 @@ MEAM::Get_ddrho2drmdrn(int i,
                     ){
         int m, n, k,nv2;
         double darho2ikmdrn;
-        double rij2 = rij * rij;
-   
-         rhoa2j=1.0;sij=1.0;
+        double rij2 = rij * rij;   
         double a2 = 4 * sij / rij2;
         double a2b = rhoa2j * sij / rij2;
         nv2 = 0;
