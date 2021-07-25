@@ -803,13 +803,14 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 		  	- 2.0 / 3.0 * darho2bdrj * rhoa2i- 2.0 / 3.0 * arho2b[j] * drhoa2i;
           ddrho2dsds1 = a2 * rhoa2j * darg1i2ds - 2.0 / 3.0 * darho2bdsi * rhoa2j; 
           ddrho2dsds2 = a2 * rhoa2i * darg1j2ds - 2.0 / 3.0 * darho2bdsj * rhoa2i; 
-	if(i==0 and j==1)
-	        fprintf ( pFile, "%e %e %e %e %e %e %e %e %e\n", delij[0], delij[1], rij, sij, rhoa2j,drhoa2j,ddrhoa2j,drho2ds1, ddrho2dsds1 );
+// 	if(i==0 and j==1)
+// 	        fprintf ( pFile, "%e %e %e %e %e %e %e %e %e\n", delij[0], delij[1], rij, sij, rhoa2j,drhoa2j,ddrhoa2j,drho2ds1, ddrho2dsds1 );
 
 	
  	a2 = 4 * sij / rij2;
 	da2 = 4.0/rij2;
 	for (m = 0; m < 3; m++) {
+//            drho2drm1[m] += arho2[i][this->vind2D[m][n]] * delij[n]; //--- 4.30(f): arho2 is Y_{2i\sigma\alpha}
             ddrho2drmds1[m] = 0.0;
             ddrho2drmds2[m] = 0.0;
 	    xsumi=0.0;
@@ -821,6 +822,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 	      xsumj += -arho2[j][this->vind2D[m][n]] * delij[n];	
 
             }
+//            drho2drm1[m] = a2 * rhoa2j * drho2drm1[m];
 	    ddrho2drmds1[m] = da2 * rhoa2j * xsumi + a2 * rhoa2j * ddrho2drmds1[m];
 	    ddrho2drmds2[m] = -(da2 * rhoa2i * xsumj + a2 * rhoa2i * ddrho2drmds2[m]);
           }          
