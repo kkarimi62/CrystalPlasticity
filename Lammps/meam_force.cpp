@@ -443,7 +443,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 	da2 = -2*a2/rij;
         drho2dr1 = a2 * (drhoa2j - 2 * rhoa2j / rij) * arg1i2 - 2.0 / 3.0 * arho2b[i] * drhoa2j * sij; //--- 4.30(d): arho2b is W_{2i}      
         drho2dr2 = a2 * (drhoa2i - 2 * rhoa2i / rij) * arg1j2 - 2.0 / 3.0 * arho2b[j] * drhoa2i * sij;
-	printf("drho2dr1=%e\n",drho2dr1);
+// 	printf("drho2dr1=%e\n",drho2dr1);
         //--- 2nd derivative wrt rij (atom j)
         //--- deriv. of 4.30(d) wrt r 
 	ddrho2drdr1 = da2 * (drhoa2j - 2 * rhoa2j / rij) * arg1i2 + 
@@ -456,7 +456,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 		      a2 * (drhoa2i - 2 * rhoa2i / rij) * arg1j2_d - 
 		      2.0 / 3.0 * darho2bdrj * drhoa2i * sij - 
 		      2.0 / 3.0 * arho2b[j] * ddrhoa2i * sij;
-//         fprintf ( pFile, "%e %e %e %e %e %e %e %e %e\n", delij[0], delij[1], rij, sij, rhoa2j,drhoa2j,ddrhoa2j,drho2dr1, ddrho2drdr1 );
+         fprintf ( pFile, "%e %e %e %e %e %e %e %e %e\n", delij[0], delij[1], rij, sij, rhoa2j,drhoa2j,ddrhoa2j,drho2dr1, ddrho2drdr1 );
         //
         a2 = 4 * sij / rij2;
 	da2 = -2*a2/rij;
@@ -1264,9 +1264,9 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
                          dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn);
 	  assert(!isnan(vm[ 15 ]));
-         fprintf ( pFile, "%e %e %e %e %e %e %e %e %e %e %e %e %e %e %e\n", delij[0], delij[1], rij, sij, rhoa2j,drhoa2j,ddrhoa2j, rho2[i],
-		  dUdrij,dUdrijm[0],ddUddrij,ddUdrdrijm[0],ddUdrmdrn[0],
-		  -v[3]*2.0, -vm[ 15 ]*2 );
+//          fprintf ( pFile, "%e %e %e %e %e %e %e %e %e %e %e %e %e %e %e\n", delij[0], delij[1], rij, sij, rhoa2j,drhoa2j,ddrhoa2j, rho2[i],
+// 		  dUdrij,dUdrijm[0],ddUddrij,ddUdrdrijm[0],ddUdrmdrn[0],
+// 		  -v[3]*2.0, -vm[ 15 ]*2 );
 
 		  
 //           vm[ 16 ] = -0.5*GetModulus(
