@@ -464,8 +464,8 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 	  ddrho2drmdr1[m] = 0.0;
 	  ddrho2drmdr2[m] = 0.0;
           for (n = 0; n < 3; n++) {
-            drho2drm1[m] = drho2drm1[m] + arho2[i][this->vind2D[m][n]] * delij[n]; //--- 4.30(f): arho2 is Y_{2i\sigma\alpha}
-            drho2drm2[m] = drho2drm2[m] - arho2[j][this->vind2D[m][n]] * delij[n];
+            drho2drm1[m] += arho2[i][this->vind2D[m][n]] * delij[n]; //--- 4.30(f): arho2 is Y_{2i\sigma\alpha}
+            drho2drm2[m] += - arho2[j][this->vind2D[m][n]] * delij[n];
   	    ddrho2drmdr1[m]+= darho2dri[this->vind2D[m][n]] * delij[n];
   	    ddrho2drmdr2[m]+= -darho2drj[this->vind2D[m][n]] * delij[n];
           }
