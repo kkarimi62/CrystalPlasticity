@@ -21,9 +21,9 @@ def makeOAR( EXEC_DIR, node, core, time, PYFIL ):
 #	 print >> someFile, "$EXEC_DIR/%s < in.txt -var OUT_PATH %s -var MEAM_library_DIR %s"%( EXEC, OUT_PATH, MEAM_library_DIR )
 #	cutoff = 1.0 / rho ** (1.0/3.0)
 	if EXEC == 'lmp_serial': 
-		print >> someFile, "$EXEC_DIR/%s < in.txt -echo screen -var OUT_PATH %s -var MEAM_library_DIR %s -var cutoff %s -var natom %s"%( EXEC, OUT_PATH, MEAM_library_DIR, cutoff, natom )
+		print >> someFile, "$EXEC_DIR/%s < in.txt -echo screen -var OUT_PATH %s -var MEAM_library_DIR %s -var cutoff %s -var natom %s -var tstop %s"%( EXEC, OUT_PATH, MEAM_library_DIR, cutoff, natom, Tfinal )
 	elif EXEC == 'lmp_mpi':
-		print >> someFile, "mpirun -np %s $EXEC_DIR/%s < in.txt -echo screen -var OUT_PATH %s -var MEAM_library_DIR %s -var cutoff %s -var natom %s"%( nThreads, EXEC, OUT_PATH, MEAM_library_DIR, cutoff, natom )
+		print >> someFile, "mpirun -np %s $EXEC_DIR/%s < in.txt -echo screen -var OUT_PATH %s -var MEAM_library_DIR %s -var cutoff %s -var natom %s -var tstop %s"%( nThreads, EXEC, OUT_PATH, MEAM_library_DIR, cutoff, natom, Tfinal )
 	someFile.close()										  
 
 
@@ -33,8 +33,7 @@ if __name__ == '__main__':
 
 	nruns	 = 1
 	nThreads = 32
-	jobname  = 'test11thMelt2ndNatom500kQrate0.1-2nd'
-#	sourcePath = os.getcwd() + '/dataFiles'
+	jobname  = 'Natom250kQrate0.5'
 	EXEC_DIR = '/home/kamran.karimi1/Project/git/lammps2nd/lammps/src' #--- path for executable file
 	MEAM_library_DIR='/home/kamran.karimi1/Project/git/CrystalPlasticity/testRuns/dataFiles' #--- meam potential parameters
 	PYFIL = '/home/kamran.karimi1/Project/git/CrystalPlasticity/py'
@@ -44,7 +43,8 @@ if __name__ == '__main__':
 	mem = '8gb'
 	partition = 'cpu2019' #'cpu2039' #'parallel' #'single' #'parallel'
 	#--- sim. parameters
-	natom = 50000 * 2 * 2 * 2   
+	natom = 50000 * 5  
+	Tfinal = 3000 #--- melt. temp.	 
 	ntypes = 5
         cutoff = 3.58
     #   cutoffs = np.linspace((1.0-0.5)*cutoff,(1+0.5)*cutoff,nruns)

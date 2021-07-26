@@ -7,10 +7,10 @@ variable Ntype	equal 5		#--- number of atom types
 variable a      equal ${cutoff}   #--- lattice constant
 variable Dt		equal 0.01 #--- discretization time
 variable Tinit 	equal 300.0  #--- init temperature
-variable Tfinal equal 3000.0 #--- final temperature
+variable Tfinal equal ${tstop} #3000.0 #--- final temperature
 variable tDampTemp 	equal 100*${Dt}   #--- thermostat equilibration time scale
 variable TdotMelt 	equal 50.0   #--- melting rate
-variable TdotQuench equal 0.002*${TdotMelt}   #--- quench rate
+variable TdotQuench equal 0.01*${TdotMelt}   #--- quench rate
 variable Pinit	equal 1.0132  #--- number of time steps
 variable Nfreq	equal 10000  #--- number of time steps
 variable tEquilibrate	equal 100*${tDampTemp}  #--- equilibration time
@@ -127,6 +127,7 @@ unfix	fix_quench
 fix		fix_finalEq	all npt temp ${Tinit} ${Tinit} ${tDampTemp} iso ${Pinit} ${Pinit} ${tDampPress}  
 run 	${nRunEquilibrate}
 
+restart		${Nfreq}	quench.restart
 #-----------------------------
 #--- compute & dump variables
 #-----------------------------
