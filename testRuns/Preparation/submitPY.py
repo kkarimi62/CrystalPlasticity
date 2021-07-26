@@ -13,7 +13,7 @@ if __name__ == '__main__':
 #	PHI = np.linspace(2.3,2.9,nphi,endpoint=True)
 #	PHI = np.linspace(0.05,0.45,nphi,endpoint=True)
 #	PHI=range(2,32+2,2) 
-	PHI = np.linspace(300, 3000, 10, endpoint=True, dtype=int)
+	PHI = np.linspace(1800, 3000, 10, endpoint=True, dtype=int)
 	nphi = len(PHI)
 	#---
 #	nn = 4
