@@ -1294,6 +1294,8 @@ double  ak, ro0k, rhoa2k;
           ro0k = this->rho0_meam[eltk];
           rhoa2k = ro0k * MathSpecial::fm_exp(-this->beta2_meam[eltk] * ak);
 
+	if(i==0 and j==2)
+		printf("sik=%e\n",sij);
 	if(i==0 and j==1)	
           fprintf ( pFile, "%e %e %e %e %e %e %e %e %e %e %e %e %e\n", 
 		   delij[0], delij[1], delij[2], rij, sij, rhoa2j, 
