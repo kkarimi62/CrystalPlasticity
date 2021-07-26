@@ -116,7 +116,7 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
 
 	double eltk;
 double delik[3];
-double  rik2,rik,ak, ro0k, rhoa2k
+double  ak, ro0k, rhoa2k;
 	
 	
 	
