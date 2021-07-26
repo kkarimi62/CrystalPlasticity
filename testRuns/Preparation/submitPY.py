@@ -35,7 +35,7 @@ if __name__ == '__main__':
 #		string[ inums ] = "\targv2nd=\'itime=%s\'\n"%(PHI[iphi])
 		#---
 		inums = lnums[ 1 ] - 1
-		string[ inums ] = "\tTfinal=%s'\n"%(PHI[iphi])
+		string[ inums ] = "\tTfinal=%s\n"%(PHI[iphi])
 #		string[ inums ] = "\targv=\'-p\tmccc\t%e\t-p\tbvall\t%e\t-p\tDfff\t%e\'\n"%(mc, bval, df)
 
 		sfile=open('junk%s.py'%iphi,'w');sfile.writelines(string);sfile.close()
