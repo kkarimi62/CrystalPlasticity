@@ -19,7 +19,7 @@ if __name__ == '__main__':
 	readPath = os.getcwd() + '/../testRuns/Preparation/test11thMelt2ndNatom50kQrate1Srate4' # --- source
 	EXEC_DIR = '.'     #--- path for executable file
 	durtn = '00:14:59'
-	mem = '8gb'
+	mem = '16gb'
 	partition = 'single' #'bigmem' #'cpu2019' #'bigmem' #'single' #'parallel' #'single'
 	argv = "path=%s"%(readPath) #--- don't change! 
 	argv2nd = "junk=junk" #"itime=10000" 
