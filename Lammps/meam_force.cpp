@@ -1297,10 +1297,11 @@ double  ak, ro0k, rhoa2k;
 	if(i==0 and j==2)
 		printf("sik=%e\n",sij);
 	if(i==0 and j==1)	
-          fprintf ( pFile, "%e %e %e %e %e %e %e %e %e %e %e %e %e\n", 
+          fprintf ( pFile, "%e %e %e %e %e %e %e %e %e %e %e %e %e %e %e %e %e %e %e\n", 
 		   delij[0], delij[1], delij[2], rij, sij, rhoa2j, 
 		   delik[0], delik[1], delik[2], rik, sik, rhoa2k,
-		   rho2[i] );
+		   rho2[i],
+		  ddUddrij,ddUdrijds,ddUddsij,ddUdrdrijm[0],ddUdrijmds[0],ddUdrmdrn[0]);
 // 		  -v[3]*2.0, -vm[ 15 ]*2 );
 
 		  
