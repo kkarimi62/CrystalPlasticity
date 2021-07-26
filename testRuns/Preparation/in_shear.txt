@@ -78,3 +78,5 @@ fix         fix_def all deform 1  xy erate ${GammaDot}  units box  remap v
 
 run			${NTIME}
 
+restart		${Nfreq}	shear.restart
+
