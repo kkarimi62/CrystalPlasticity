@@ -110,6 +110,16 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
   double rik, rjk;
   double rik2, rjk2;
   double dtsq_ave_i[3], dtsq_ave_j[3];
+	
+		int k=2;
+	double sik; //--- 4.11a
+
+	double eltk;
+double delik[3];
+double  rik2,rik,ak, ro0k, rhoa2k
+	
+	
+	
     FILE * pFile;
     pFile = fopen ("myfile.txt","a");
   
@@ -1269,9 +1279,28 @@ MEAM::meam_force(int i, int eflag_either, int eflag_global, int eflag_atom, int 
                         0,1,0,1,r3, ds,  dds,  recip,
                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
                          dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn);
-// 	  assert(!isnan(vm[ 15 ]));
-//          fprintf ( pFile, "%e %e %e %e %e %e %e %e %e %e %e %e %e %e %e\n", delij[0], delij[1], rij, sij, rhoa2j,drhoa2j,ddrhoa2j, rho2[i],
-// 		  dUdrij,dUdrijm[0],ddUddrij,ddrho2drmdr1[0],ddUdrmdrn[0],
+
+		
+		// 	  assert(!isnan(vm[ 15 ]));
+      k=2;
+	sik = scrfcn[1] * fcpair[1]; //--- 4.11a
+
+	eltk = fmap[type[k]];
+      delik[0] = x[k][0] - x[i][0]; 
+      delik[1] = x[k][1] - x[i][1];
+      delik[2] = x[k][2] - x[i][2];
+      rik2 = delik[0] * delik[0] + delik[1] * delik[1] + delik[2] * delik[2];
+        rik = sqrt(rik2);
+          invrek = 1.0 / this->re_meam[eltk][eltk];
+          ak = rik * invrek - 1.0;
+          ro0k = this->rho0_meam[eltk];
+          rhoa2k = ro0k * MathSpecial::fm_exp(-this->beta2_meam[eltk] * ak);
+
+		
+          fprintf ( pFile, "%e %e %e %e %e %e %e %e %e %e %e %e %e\n", 
+		   delij[0], delij[1], delij[2], rij, sij, rhoa2j, 
+		   delik[0], delik[1], delik[2], rik, sik, rhoa2k,
+		   rho2[i] );
 // 		  -v[3]*2.0, -vm[ 15 ]*2 );
 
 		  
