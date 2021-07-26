@@ -15,12 +15,12 @@ if __name__ == '__main__':
 	import os
 #
 	nruns	 = range(1)
-	jobname  = 'test11thMelt2ndNatom50kQrate1Srate4Strs' 
-	readPath = os.getcwd() + '/../testRuns/Preparation/test11thMelt2ndNatom50kQrate1Srate4' # --- source
+	jobname  = 'test11thMelt2ndNatom50kQrate1Srate5Strs' 
+	readPath = os.getcwd() + '/../testRuns/Preparation/test11thMelt2ndNatom50kQrate1Srate5' # --- source
 	EXEC_DIR = '.'     #--- path for executable file
 	durtn = '00:14:59'
-	mem = '8gb'
-	partition = 'single' #'bigmem' #'cpu2019' #'bigmem' #'single' #'parallel' #'single'
+	mem = '16gb'
+	partition = 'bigmem' #'cpu2019' #'bigmem' #'single' #'parallel' #'single'
 	argv = "path=%s"%(readPath) #--- don't change! 
 	argv2nd = "junk=junk" #"itime=10000" 
 	PYFILdic = { 
