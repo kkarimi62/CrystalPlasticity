@@ -1281,7 +1281,7 @@ double  ak, ro0k, rhoa2k;
 		
 		// 	  assert(!isnan(vm[ 15 ]));
       k=2;
-	sik = scrfcn[1] * fcpair[1]; //--- 4.11a
+	sik = scrfcn[k] * fcpair[k]; //--- 4.11a
 
 	eltk = fmap[type[k]];
       delik[0] = x[k][0] - x[i][0]; 
