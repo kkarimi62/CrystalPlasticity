@@ -14313,7 +14313,7 @@ a.anchor-link {
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>&lt;module &#39;LammpsPostProcess&#39; from &#39;/home/kamran.karimi1/Project/git/CrystalPlasticity/postprocess/test11thMelt2ndNatom50kQrate1Srate4Strs/Run0/LammpsPostProcess.py&#39;&gt;</pre>
+<pre>&lt;module &#39;LammpsPostProcess&#39; from &#39;/home/kamran.karimi1/Project/git/CrystalPlasticity/postprocess/test11thMelt2ndNatom50kQrate1Srate5Strs/Run0/LammpsPostProcess.py&#39;&gt;</pre>
 </div>
 
 </div>
@@ -14991,10 +14991,80 @@ a.anchor-link {
     <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 
 
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">OSError</span>                                   Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-1-f6d0c72c0531&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">     44</span>     ax<span class="ansi-blue-fg">.</span>plot<span class="ansi-blue-fg">(</span>np<span class="ansi-blue-fg">.</span>array<span class="ansi-blue-fg">(</span>strainDump<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> Virial<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;-o&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     45</span>     <span class="ansi-red-fg">#</span>
+<span class="ansi-green-fg">---&gt; 46</span><span class="ansi-red-fg">     </span>plt<span class="ansi-blue-fg">.</span>savefig<span class="ansi-blue-fg">(</span>fileNamee<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">-</span><span class="ansi-cyan-fg">4</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">+</span><span class="ansi-blue-fg">&#39;.png&#39;</span><span class="ansi-blue-fg">,</span>dpi<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">75</span><span class="ansi-blue-fg">,</span>bbox_inches<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;tight&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     47</span>     np<span class="ansi-blue-fg">.</span>savetxt<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;loadCurve.txt&#39;</span><span class="ansi-blue-fg">,</span>np<span class="ansi-blue-fg">.</span>c_<span class="ansi-blue-fg">[</span>np<span class="ansi-blue-fg">.</span>array<span class="ansi-blue-fg">(</span>strainDump<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> Virial<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     48</span>     plt<span class="ansi-blue-fg">.</span>show<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/pyplot.py</span> in <span class="ansi-cyan-fg">savefig</span><span class="ansi-blue-fg">(*args, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">    857</span> <span class="ansi-green-fg">def</span> savefig<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    858</span>     fig <span class="ansi-blue-fg">=</span> gcf<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">--&gt; 859</span><span class="ansi-red-fg">     </span>res <span class="ansi-blue-fg">=</span> fig<span class="ansi-blue-fg">.</span>savefig<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    860</span>     fig<span class="ansi-blue-fg">.</span>canvas<span class="ansi-blue-fg">.</span>draw_idle<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>   <span class="ansi-red-fg"># need this if &#39;transparent=True&#39; to reset colors</span>
+<span class="ansi-green-intense-fg ansi-bold">    861</span>     <span class="ansi-green-fg">return</span> res
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/figure.py</span> in <span class="ansi-cyan-fg">savefig</span><span class="ansi-blue-fg">(self, fname, transparent, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">   2309</span>                 patch<span class="ansi-blue-fg">.</span>set_edgecolor<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;none&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   2310</span> 
+<span class="ansi-green-fg">-&gt; 2311</span><span class="ansi-red-fg">         </span>self<span class="ansi-blue-fg">.</span>canvas<span class="ansi-blue-fg">.</span>print_figure<span class="ansi-blue-fg">(</span>fname<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   2312</span> 
+<span class="ansi-green-intense-fg ansi-bold">   2313</span>         <span class="ansi-green-fg">if</span> transparent<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/backend_bases.py</span> in <span class="ansi-cyan-fg">print_figure</span><span class="ansi-blue-fg">(self, filename, dpi, facecolor, edgecolor, orientation, format, bbox_inches, pad_inches, bbox_extra_artists, backend, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">   2215</span>                     orientation<span class="ansi-blue-fg">=</span>orientation<span class="ansi-blue-fg">,</span>
+<span class="ansi-green-intense-fg ansi-bold">   2216</span>                     bbox_inches_restore<span class="ansi-blue-fg">=</span>_bbox_inches_restore<span class="ansi-blue-fg">,</span>
+<span class="ansi-green-fg">-&gt; 2217</span><span class="ansi-red-fg">                     **kwargs)
+</span><span class="ansi-green-intense-fg ansi-bold">   2218</span>             <span class="ansi-green-fg">finally</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   2219</span>                 <span class="ansi-green-fg">if</span> bbox_inches <span class="ansi-green-fg">and</span> restore_bbox<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/backend_bases.py</span> in <span class="ansi-cyan-fg">wrapper</span><span class="ansi-blue-fg">(*args, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1637</span>             kwargs<span class="ansi-blue-fg">.</span>pop<span class="ansi-blue-fg">(</span>arg<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1638</span> 
+<span class="ansi-green-fg">-&gt; 1639</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">return</span> func<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1640</span> 
+<span class="ansi-green-intense-fg ansi-bold">   1641</span>     <span class="ansi-green-fg">return</span> wrapper
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/backends/backend_agg.py</span> in <span class="ansi-cyan-fg">print_png</span><span class="ansi-blue-fg">(self, filename_or_obj, metadata, pil_kwargs, *args)</span>
+<span class="ansi-green-intense-fg ansi-bold">    510</span>         mpl.image.imsave(
+<span class="ansi-green-intense-fg ansi-bold">    511</span>             filename_or_obj<span class="ansi-blue-fg">,</span> self<span class="ansi-blue-fg">.</span>buffer_rgba<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> format<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#34;png&#34;</span><span class="ansi-blue-fg">,</span> origin<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#34;upper&#34;</span><span class="ansi-blue-fg">,</span>
+<span class="ansi-green-fg">--&gt; 512</span><span class="ansi-red-fg">             dpi=self.figure.dpi, metadata=metadata, pil_kwargs=pil_kwargs)
+</span><span class="ansi-green-intense-fg ansi-bold">    513</span> 
+<span class="ansi-green-intense-fg ansi-bold">    514</span>     <span class="ansi-green-fg">def</span> print_to_buffer<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/image.py</span> in <span class="ansi-cyan-fg">imsave</span><span class="ansi-blue-fg">(fname, arr, vmin, vmax, cmap, format, origin, dpi, metadata, pil_kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1609</span>         pil_kwargs<span class="ansi-blue-fg">.</span>setdefault<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;format&#34;</span><span class="ansi-blue-fg">,</span> format<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1610</span>         pil_kwargs<span class="ansi-blue-fg">.</span>setdefault<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;dpi&#34;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">(</span>dpi<span class="ansi-blue-fg">,</span> dpi<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">-&gt; 1611</span><span class="ansi-red-fg">         </span>image<span class="ansi-blue-fg">.</span>save<span class="ansi-blue-fg">(</span>fname<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>pil_kwargs<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1612</span> 
+<span class="ansi-green-intense-fg ansi-bold">   1613</span> 
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/PIL/Image.py</span> in <span class="ansi-cyan-fg">save</span><span class="ansi-blue-fg">(self, fp, format, **params)</span>
+<span class="ansi-green-intense-fg ansi-bold">   2230</span>                 fp <span class="ansi-blue-fg">=</span> builtins<span class="ansi-blue-fg">.</span>open<span class="ansi-blue-fg">(</span>filename<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#34;r+b&#34;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   2231</span>             <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 2232</span><span class="ansi-red-fg">                 </span>fp <span class="ansi-blue-fg">=</span> builtins<span class="ansi-blue-fg">.</span>open<span class="ansi-blue-fg">(</span>filename<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#34;w+b&#34;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   2233</span> 
+<span class="ansi-green-intense-fg ansi-bold">   2234</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">OSError</span>: [Errno 116] Stale file handle: &#39;FeNi.png&#39;</pre>
+</div>
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
 
 
 <div class="jp-RenderedImage jp-OutputArea-output ">
-<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAScAAAEhCAYAAAA9A2ZcAAAAOXRFWHRTb2Z0d2FyZQBNYXRwbG90bGliIHZlcnNpb24zLjMuNCwgaHR0cHM6Ly9tYXRwbG90bGliLm9yZy8QVMy6AAAACXBIWXMAAAsTAAALEwEAmpwYAAAgXklEQVR4nO3df5RcZZ3n8feXTgMdVBok/qA1JMhuGLKRRNrZ7DCrmNkxOAr2ChIFxJ/g6IqCGA0DQoIZYW11GNd1Z3A46kjOIYJMS4xO0AMy6hCdjg3ERqJoINIEjSZBgQY6zXf/uFVJd3XdW/dW3ap7q+7ndU6d6r51b9VT3Oab58f3eR5zd0RE8uagrAsgIlKNgpOI5JKCk4jkkoKTiOSSgpOI5JKCk4jkkoKTdDQz+xsz+6esyyHJKThJbpjZg2Y2bmaPT3kcHXH+O8zMzeyjFccfNrNTANz9k+7+nuaWXJpBwUny5jR3f86UxyM1zt8NfNTMntuKwknrKDhJrpnZ4WZ2vZntNLMxM1trZl1TTvkZcBfw4ZDrV5vZDS0prKRKwUny7svAPuA4YAnwWqCymfZx4CIzO7K1RZNmUnCSvBkys72lx7eBvwIucvcn3P23wN8Bb5l6gbvfDXwH+FjLSytNMyvrAohUGHD37wKY2Z8Cy4GdZlZ+/SDg11WuuwL4sZl9tiWllKZTcJI8+zXwNHCUu++LOtHd7zezW4DLWlIyaTo16yS33H0ncBvwGTN7npkdZGYvM7NXh1yyBngn0NuqMkrzKDhJ3p0HHAzcB+wBbgZeXO1Ed98OfBU4rGWlk6YxLTYnInmkmpOI5JKCk4jkkoKTiOSSgpOI5FKh85yOOuoonzdvXtbFECmcLVu2/M7d50SdU+jgNG/ePIaHh7MuhkjhmNlDtc5Rs05EcknBSURyScFJRHJJwUlEcknBSURyqdCjddJZhkbGGNy0jUf2jnN0bw8rly9gYElf1sWSOik4SVuoFXiGRsa49JatjE9MAjC2d5xLb9kKoADVpgq9KkF/f78rzyn/KgMPQE93F1e/adH+wLPkqtvY8+TEjGu7zHjWXTWpnDGzLe7eH3WO+pwk9wY3bZsWmADGJyYZ3LQNCIJXtcAEMOmOc6AmNTQy1uziSkrUrJPcmNp0O7ynGzNCgw4EAWfeqo2x378c0AaW9Kl/qg2oWadmXWYqg9ETz+xjYrK5f48G/N2KxTOaiQBHzO7mytMWKki1QJxmnWpOkonKfqS94+E1pDQd3tNdtZkIQS1Nnej5oT4nabmhkTEu+do9VQNEs+0dn2Bs73jo61P7siRbCk7SUuUa02SOuxOigpe0joKTtMTQyBgnX3M7F62/O5MaU1JLrrpNI3sZU5+TNF21PKW8U/9T9lRzkqbKsn+pUeMTk6y+dTTrYhSWgpM0TRr9S1Z67rLgp77eHq5dsXj/8ahr+np7OPllR0aeW8ve8Qk17zKiZp00RbnG1Ehg6jLjM2edWLVZNbhpW9WO62rXlPOp6u3oLiduSmspOEmqgtrSvYxPPNvQ+1TOnau0cvmCmvPtygaW9FUNVuXs8L1PPsMTz4Q3Ox/R6F0mFJwkNZcPbeWGzTsSX9fX28Nrjp/DHffvij2dpPxaPVNQqgWrqA77w3u6E34jSYOCk6RiaGSMdXUGph+uWlbXZ1YGmXqV32P1raNVM9WfeGYfQyNjatq1mDrEJRWDm7aRtHepp7uLlcsXNKU8SQ0s6ePuK1/LEbNn1pImJl1Z4xlQzUlSkbSzuS+nKwHsDVkFQVnjrafgJA27fGhr7HMbaca1wtG9PaGB6PKhrawdWNTiEhWXmnXSkCR9TXlqxoVZuXxBaF7Uus07lPPUQgpO0pA1G0Yj+5r6enuw0nNUakBeDCzpC/0+DlzytXsUoFpEzTqp2+VDWyNXqsx7Ey5MX0TTbtKdi9ffzfBDu9XEazLVnCSxoZExFq+5LTKnySD3TbgwUU07CGpQN2zewbxVGzn5mttVk2oSBSdJ5PKhrVy8/u6aK1ees3Ru7ptwYQaW9HHO0rmxzh3bO87F6+9WoGoCBSeJrZwBXiufqbenu+2bPGsHFlXNeaqm/N9DO7ykS8FJYok7KmfA6tMXNr9ALRCW8xRFy6ykR8FJYombAd7OzblKR/f21HWdlllJh4KTxBI3Q7rdm3NTrVy+gJ7urrqu1XSXxmUanMzsTDP7upk9ZGbjZrbNzK42s+fGuPZQMxs0s52la+8ys1e1otxFEzcDvK/OmkZeDSzp4+o3Larre2m6S+Oyrjl9BJgE/gY4Ffh/wPuA75hZrbJdD5wPXAG8AdgJbDKzxU0rbQHF7Wtqh+zvegws6eOHq5bVtZpmkmk9MlPWSZinufuuKb/faWa7ga8ApwC3V7vIzE4Ezgbe5e5fKh27ExgFrgJOb2ahi6RWBrhBIbbzjppzF6acB9ZJTd1WyjQ4VQSmsv8oPUf9pZ8OTADrp7zXPjO7EVhlZoe4+9PplbSYhkbGOjIDvB7VVt6M44bNO7hh847crsKQZ1k366p5den5ZxHnLAS2u/uTFcdHgYOB45pRsCIprwEepp0zwOsxtf+pPFfw3KVzY/dHlZM11dSLL+tm3TRm1kfQLPuuuw9HnHoksKfK8d1TXg/7jAuACwDmzo2XBVw0cXZN6aSUgbjCVt4cGhnj4vV310y1KE97ATX14shNzcnMngN8A9gHvLNZn+Pu17l7v7v3z5kzp1kf09YGN22LbL50QgZ4mpJMd4EgQKkGVVsugpOZ9QAbgGOB5e7+cI1L9gBHVDlerjHtrvKaxBTV8dtJGeBpWjuwiHMVoFKVeXAys27gZqAf+Ct3j3PHRoH5Zja74vgJwDPAA+mWsjiGRsZqzsgvWnMuriTz8UCL19WSdRLmQcA6YBkw4O6bY166AegG3jzlvWYBK4DbNFJXn3IneK3F4yTclactpPugeFlRjjLJo2TdIf5/CQLM3wJPmNnSKa897O4Pm9kxwC+Bq9z9KgB3HzGz9cC1pZrXdoLkzfnAOS39Bh0iTid4pyZapqnWNlOVxvaOM3/VxkLkiiVl3sB20Q1/uNmDwDEhL69x99VmNo8g+Kxx99VTru0hCGpnA73APcDH3P17cT+/v7/fh4ejBgWL4+Rrbo/sa4raGlyixd1stKe7izNO6pu2uWh5s9GxveN0mTHp3hE5U2a2xd37I8/JMjhlTcHpgPmrNoY252ptDS61xQ1QBrFWf2j3exInOGXeIS750BvRkXvGSensrFtkcVMv4lYVxicmO76/SsGp4MrrgUdNU7nj/mqzjCSptAcTHunwlQ8UnAqs3Aleq+O20/8naJVaGyckdXhP/LSFdqTgVGC1MsHL6l0RUqZLmkleyxPP7OvoPCkFpwKLUyNS+kC6kiZqRpmY9I5erzzrPCfJUK01io6Y3c2Vpy1UZ3jKrjxtYV3Lr1Szd3yC/3zZtzjskFnsfXKio/KlFJwKamhkjCee3hd5zsgVr21RaYqlHDgGN21LZTnfZyadZ0oDGuXtqaZ+TrtSs66A4nSEa5pKc5WX/712xeK6N1EI0ynbUyk4FdCaDaORTQr1M7VOtUXsrl2xmGtXLJ5xLElfVSdsT6VmXcHUWnq3y6ytM4/bUdgidtWOxVnUrmxw07a2vo+qORVMraziZ93b+g+6kyVNRWj3/DQFp4Kp1QGrnKZ8WzuwqNRPVft/3XZP0lRwKpBaKy+qr6k9DCzp42efeF3NPqi94xPMW7WRk6+5vS37nxScCqLW5phHzO5WX1Ob2RvRdzhVu+78og7xghjctC2yI1U5Te0nyUafTrAscP8xR7bNP0CqORVE1B+xcpra08rlCxLlSLXbssCqORVAedOCajWnom2O2UnqyTRvpxE8BacCWLNhNLRJV8TNMTvJ1BypOKttttNorIJTh6uVdKnNMTvH2oFFbLx3Z+j9rhyNHRoZY3DTtv3rledtwrCCU4dbsyF8jpX6mjpP1IoH4xOT+/8ehh/azbrNO/bXqKtNGA4LXq0KatrgoIM3OBgaGeOi9XeHvn7tisW5+pdS0lEOHvWseFDeZacyeJV1HwQTz04/Vs9mC3E2OFDNqYNFjcz09nQrMHWocj9Ure2+qpl0j/wHrTIwQVAju+Rr9+z/7LQolaCDRY3MrD59YQtLIllo5chcOailmZGu4NShhkbGCFtNX7WmYshqZK7cf9VogFJw6kBDI2OsvOkeqnUndneZak0FsXL5AroPSnO/l/jS2FdPwakDDW7axsSz1Qc6Djt4lmpNBTGwpI/BN58YawWDZmi0Wang1IGi/igeq7FHnXSWgSV9HHnYIZl8dqPNSgWnDhT1R9FOGcKSjqymrDQ6LUrBqQO95vg5VY93d5nm0RVQ1D9IXWaR60J1d03vs+rp7uLcpXNrTjhOY9Al8+BkZi8xs/9jZneZ2ZNm5mY2L+a1D5bOr3wMNLfU+TU0MsbNWx6ecfywg7sYPPNE9TcVUFjHeHdXkHB55WkLZwQbA85dOpfBM0+cttHC1W9axNqBRfs3ZSifO1VPd1cqgy55SMI8DjgL2AJ8H0i6sNAmYHXFsfZZFyJlg5u28VSVTLne2QcrMBVU+b6vvnV0/3Zg1TZMDZuSErb5Qq1pLo3KfPqKmR3k7s+Wfn4P8EVgvrs/GOPaB4EfuPu59Xx2J01fGRoZm/bHV8mA7de8vrWFEgnRFtNXyoFJ6lfOawpLHwB1hEv7ybzPKQWnlfqqnjazzUXsb4rKawJtXCDtqd2D0wbgQmA5cA7wFPAvZhbazDOzC8xs2MyGd+3a1aJiNletyZ3auEDaUebNuka4+4VTfzezfwE2A1cDN4Rccx1wHQR9Ts0uY7NFLcELwQiLApO0o0TBycyWAqcCS4GjgR7gdwSjY3cCQ+6+J+1CxuXuk2Z2E/C/zezF7r4zq7K0StSuKsprknYWq1lnZm83s63AvwMXA7OBXwA/AvYA/xX4J2DMzL5sZvObVN4k2r5WFEdU9q/ymqSd1aw5mdm9wBzgn4HzgLu9Sv6BmR0OvIGg7+c+M3uHu69Puby1yjoLWAHscPdHW/nZWemd3V11zWg156TdxWnWXQ/8o7s/FXWSuz8GrAPWmdmJwIviFsLMziz9eFLp+XVmtgvY5e53ls7ZB3zF3d9d+v2twBuBbwG/Bl4I/C/gFcBb4352OxsaGePxp/bNOK7mnHSCmsHJ3f8+6Zu6+z3APQkuuani9y+Unu8ETin93FV6lG0HXgAMAkcCTwDDwKnuvilhkdvSmg2jVVMItCyKdIJcjNa5e80VsSrPcffNwLKmFSrnLh/aGroFkJZFkU5QV3AqNdsWAIdWvubu/9xooSTa0MgY6yI2T1Q2uHSCpKkEvcBGglQCODAheWrbQsGpyaJ28AVtLy6dIWmG+CeB5wOvIghM/5OgabUO+BXwp6mWTmaotYOvNi+QTpE0OC0nCFCbS78/7O7fc/fzgO8CH0qzcDJT1KLxhrZ8ks6RNDi9GPiVu08SzGN77pTXbgG0JkeTRSVdnrN0rmpN0jGSBqdHgd7Szw8B/23Ka8elUSCJ1huypGpvTzdrBxa1uDQizZN0tO4HBJ3h3wS+ClxZWlJ3H/B24NZUSyfTRCVdqjknnSZpcFpDMOEXguTH5xNMF5lNEJguDLlOUhC2bpOSLqUTJQpO7v5L4JelnyeAS0oPaYGw/iYlXUonqjcJ83nAfwH6gIeBn7r7H9MsmMwUNslXSZfSiRIHJzO7gqC29BwOJGH+0cwG3X1tmoWTAzTJV4omaYb4GuDjBGs33Qj8hmA1gLcCa8xslruvTruQokm+UjxJa07nA59x95VTjo0Ct5vZY8AFzNxDThoUlRWu/ibpVEnznA4n2MSymn8tvS4pi8oKV3+TdKqkwelHwCtDXntl6XVJWdTuKupvkk6VtFn3QYKtl/YRLBBX7nM6C3gX8EYz2x/wtGFm46J2V9EkX+lkSYPTvaXna0qPqQzYOuV3r+P9pULY7iqa5CudLmnwuIqC7GqSF2GJlw6qNUlHS5ohvrpJ5ZAQUburiHSyuptdU/uWSrzallFSv7B1wpV4KUVQc7TOzF5kZhvN7Lwpx7qAiYrHXjN7YdNKWjCXD23lhpB1wpV4KUUQp+b0foK94M6sOG7AF4FHSj+vAP6aYOUCaUCtDQyUeClFECc4nQp80d0re2adYLPNnwCUNsE8DwWnhoWN0JUp8VKKIE4S5gLg36scr9xr7uelc6VBUUvxGkq8lGKIE5wOBR6feqC0hviLmb6r71NU2cdOkgtbihe0TrgUR5zg9Fvg2MqD7v6bUpAqmw/sSqtgRRW2NArAuUvnap1wKYw4wekHwNtinHce8MPGiiNhS/FqAwMpmjjB6XPAMjP7tJnN6EA3s1lm9lngFODvUy5f4YRN8tUInRRNzdE6d7/LzD4KfAo418y+A5THuecCfwkcBVzq7nclLYCZvQT4GNAPnAj0APPd/cEY1x5Uuva9wIuAbcBV7v71pOXIg6hJvhqhk6KJlSHu7p8xs58QBIIzONDx/RTwb8Cn3P32OstwHMGqBluA7wOvTXDtJ4CPAJeVrn8LcJOZvcHdv1VneTITNclXI3RSNLGnr7j7HcAdpezw55cO/76iU7we/+buLwQws/cQMziZ2QsIAtM17v7p0uE7zOw4ghUT2i44aZKvyAFJF5vD3Sfd/belR6OBqZE1n5YDBwM3VBy/AVhkZvMbKlgGwlIINMlXiijO3LpbzWxJ3Dc0s0PN7MNm9teNFa2mhcDTwAMVx0dLzyc0+fNTpd1VRKaLU3N6ENhsZj8ysw+a2SsqR+3M7GgzGzCz64GdwLuBn6Rf3GmOBPZWWQlh95TXZzCzC8xs2MyGd+3KT1qWdlcRma5mcHL3DxLUQn5MsLPKfwBPmdluM9tpZuPAr4FbCGozFwEvd/cfN6vQjXD369y9393758yZk3VxAO2uIlJN3NG6XwIXmtklwNLS42iCUbvfA/cTdGw/1KyCVrEH6DUzq6g9lWtMu6tck0trNoyGvqYUAimqpIvNfQDY6O6fakZhEhoFDgFexvR+p3Jf030tL1EdompNoBQCKa6ko3WfBs5uRkHq8K8Ei9ydU3H8XOCn7r699UVKLmpPOu2uIkVWzzK9Z5dG4o4AHgWGgOvc/af1FsLMygvZnVR6fl1pfahd7n5n6Zx9wFfc/d0A7v7b0rSZS83sjwQd8CuAZcDp9Zal1aL2pNPuKlJk9QSnecCtBP1MLwbeDJxvZhe7+z/UWY6bKn7/Qun5ToI5ewBdpcdUlxEs5/IhDkxfOcvdv1lnOVpKe9KJhKsnOK1x97XlX0rz21YBnzezHfVMG3H3yoXrYp1TSgJdW3q0He1JJxIuaXCaAKZN7i1leH/SzPoI5t613bSRrIQ16TRdRSR5h/gODvQLVfpGxGtSodykq0bTVUSSB6dbgMvNbFmV114G1DtPrnDWbBjVCgQiEZI269YAi4HbSus6fZtgusrxwEqg3mVTCiUqt0lNOpFA0u3InwSWm9n7gXcA1055eYQgSVNqiMptUpNOJFDXduTu/gXgC6U1lY4hmID7i1RL1sGitn5Sk04kUFdwKnP33xLsziIJ9M7urtqsU26TyAGJF5uTxkSt26TcJpEDFJxaLGzrJ63bJDKdglOLhfU3ad0mkekUnFosbJ1wrdskMp2CUwtpnXCR+BScWkjrhIvEp+DUIlonXCQZBacWicoKV3+TyEwKTi2irHCRZBScWiRslE5Z4SLVKTi1gLLCRZJTcGoBjdKJJKfg1GQapROpj4JTk2mUTqQ+Ck5NplE6kfooODWZRulE6qPg1EQapROpn4JTE2mUTqR+Ck5NolE6kcYoODWJRulEGqPg1CQapRNpjIJTk4TVjjRKJxJP5sHJzF5qZjeb2WNm9gczu8XM5sa81kMei5tc7JpWLl/AIbOm/+ft6e7SKJ1ITA3tW9coM5tNsIX508DbCXbjXgvcYWYvd/cnYrzNl4F/rDj28zTLmdTQyBirbx3l6X3P7j92xOxurjxtoWpNIjFlGpyA84FjgQXu/gCAmd0L/AJ4L/DZGO8x5u6bm1fEZIZGxlh50z0zUggef3pmvpOIhMu6WXc6sLkcmADcfTvwQ+CNmZWqAWH70k1MeuQInohMl3VwWgj8tMrxUeCEmO/xPjN72syeNLPbzey/p1e85MYiRumiRvBEZLqsg9ORwJ4qx3cDR8S4/gbg/cD/AC4Ang/cbmanhF1gZheY2bCZDe/atStxgaMMjYxhEa8rv0kkvqz7nBri7m+b8uv3zewbBDWxtcCfh1xzHXAdQH9//8z2VwPWbBgl7A21N51IMlnXnPZQvYYUVqOK5O5/BDYCr2ywXIlFTVcBGDzzRI3UiSSQdXAaJeh3qnQCcF8D75tqjSiOqM7uvt4eBSaRhLIOTrcCS83s2PIBM5sHnFx6LREzex7wBuDHaRUwLk1XEUlX1sHpi8CDwDfM7I1mdjrwDeDXTEmsNLNjzGyfmV0x5dhHzOyLZna2mZ1iZm8nSEF4EXBZS78Fmq4ikrZMg1MpA3wZQUb3V4F1wHZgmbs/PuVUA7qYXt5tBM2/zwHfIUjY3A78ubt/v/mln+41x8+ZcUzTVUTql/lonbvvAM6occ6DMH2U3t03ABuaV7L4hkbG+PqWsWnHDDjjpD7VmkTqlHWzriMMbtrG+MTktGMO3HF/unlUIkWi4NSgoZGx0KxwZYSL1E/BqQHlSb5hlBEuUj8FpwaETfKFoM9JKQQi9VNwakBUs81BneEiDVBwakBUs61PTTqRhig4NWDl8gV0VVmGQJN8RRqn4NSAgSV9vOdVx047dsTsbk3yFUlB5kmY7WxoZIwbf7wDgBcdfiirTj1eQUkkJQpOdRoaGePSW7buT7589LGnuPSWrYA6wkXSoGZdndZsGJ2RFT4+Mal1wkVSouBUh6iF5ZQVLpIOBac6RNWOlBUukg4FpzpE7bCiFAKRdCg4JRS1w4oWlhNJj4JTQoObtlVdoNxAC8uJpEjBKaGwDm/NpRNJl4JTQr2zu6se11w6kXQpOCUwNDLG40/tm3Fcc+lE0qfglEDY+k2HHTxLTTqRlCk4JRCWQvDYePhOvyJSHwWnmKJSCJR4KZI+BaeY1mwYDU0hUH+TSPoUnGKImkunFAKR5lBwiiFqLp1SCESaQ8EpBs2lE2k9BacaNJdOJBsKTjVoLp1INjIPTmb2UjO72cweM7M/mNktZjY35rWHmtmgme00s3Ezu8vMXpVm+cKadOoIF2muTIOTmc0GbgeOB94OvA34T8AdZnZYjLe4HjgfuAJ4A7AT2GRmi9MoX1STTh3hIs2V9QYH5wPHAgvc/QEAM7sX+AXwXuCzYRea2YnA2cC73P1LpWN3AqPAVcDpjRYuqkmnjnCR5sq6WXc6sLkcmADcfTvwQ+CNMa6dANZPuXYfcCOw3MwOabRwatKJZCfr4LQQ+GmV46PACTGu3e7uT1a59mDguEYKpiadSLayDk5HAnuqHN8NHNHAteXXZzCzC8xs2MyGd+3aFfrmatKJZCvr4NRy7n6du/e7e/+cOXNCz9OKlyLZyjo47aF6DSmsVhT3WjhQg6pL2EoDatKJtEbWwWmUoO+o0gnAfTGunV9KR6i89hnggZmXxLdy+QJ6urumHevp7lKTTqRFsg5OtwJLzezY8gEzmwecXHotygagG3jzlGtnASuA29z96UYKNrCkj6vftIi+3h6MoMZ09ZsWqUkn0iLmXq3bt0UfHiRa3gOMA5cTdOl8Angu8HJ3f7x03jHAL4Gr3P2qKdffCCwHVgLbgfcRJGP+mbv/pNbn9/f3+/DwcKrfSURqM7Mt7t4fdU6mNSd3fwJYBvwc+CqwjiDILCsHphIDuphZ3ncCXwLWAhuBlwKnxglMIpJvWWeI4+47gDNqnPMgzEw7cvdx4MOlh4h0kKz7nEREqlJwEpFcUnASkVzKdLQua2a2C3goxqlHAb9rcnEkGd2TfIp7X45x9/ApGhQ8OMVlZsO1hj2ltXRP8inN+6JmnYjkkoKTiOSSglM812VdAJlB9ySfUrsv6nMSkVxSzUlEcknBSURyqbDBKe/75RVVg/flk2Z2m5n93szczN7R5OIWQr33xMz6zew6M7vfzJ40sx1mts7M5sf53EIGp7zvl1dUKdyXC4Ee4JtNK2TBNHhP3kKwmOTngNcBq4BXAMNm9tKaH+7uhXsAHwImgeOmHJsP7AM+XOPaEwnWnXrnlGOzgG3ArVl/t3Z+NHJfSuceVHo+rnSP3pH1d2r3R4P/r8ypcuwY4FmCtdkiP7uQNSdyvl9egTVyX3D3Z5tYtqKq+564+4ztjdz9IWAXUHNJ2aIGp9zul1dwjdwXaY5U74mZ/QnwAuBntc4tanBq+X55Eksj90WaI7V7Ulrj/x8Iak7X1zo/85UwRaQwPg/8GfB6d6+19Vtha0653S+v4Bq5L9IcqdwTM7sGuAB4l7vfFueaogan3O6XV3CN3BdpjobviZldBnwM+KC7fzXuBxc1OOV2v7yCa+S+SHM0dE/M7IMEuyNd5u6fT/TJWedRZJS7cRhBDWcrwXDo6QT75/0KeE5FTsY+4IqK628kqNK+B/gL4GbgKeAVWX+3dn6kcF9eDZwJfIAgz+nzpd/PzPq7teujkXtCkIT5LPBtYGnF44San531l8/wP/pc4OvAH4A/AkPAvIpz5pX+yFdXHO8BPgs8WgpKPwJOyfo7dcKjwfvyvdLxGY+sv1c7P+q9J8CXw+4H8L1an6slU0Qkl4ra5yQiOafgJCK5pOAkIrmk4CQiuaTgJCK5pOAkIrmk4CQiuaTgJCK5pOAkbaG0wP5vzOz1VV5bX1pE/+AsyibNoeAk7eJTBPMZL5l60Mz+AjgL+IC7P5NFwaQ5NH1F2oaZfRy40N1fUPq9G7gX2OruZ2VaOEmdVsKUdnIfMMfMnu/uvwc+DLwE+MtsiyXNoGadtJP7S89/YmYvAT5OsMXQwxmWSZpEzTppG6UO7yeB9wGvJViNcbG7T2RaMGkKBSdpK2a2jWBdoX5gmbvfkXGRpEnUrJN28zOCwHSjAlNnU3CSdvMAweqjl9Q6UdqbgpO0m5cCI+7+SNYFkeZScJJ2cxKwJetCSPMpOEnbMLPDgWOBn2RdFmk+jdaJSC6p5iQiuaTgJCK5pOAkIrmk4CQiuaTgJCK5pOAkIrmk4CQiufT/AQSzVnXWDvtEAAAAAElFTkSuQmCC
+<img src="data:image/png;base64,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
 "
 >
 </div>
@@ -15459,350 +15529,37 @@ a.anchor-link {
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">TimeoutError</span>                              Traceback (most recent call last)
+<span class="ansi-red-fg">ValueError</span>                                Traceback (most recent call last)
 <span class="ansi-green-fg">&lt;ipython-input-1-fd24990e149b&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-intense-fg ansi-bold">    127</span> <span class="ansi-green-fg">elif</span> AssignFlowTime<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    128</span>     ax<span class="ansi-blue-fg">.</span>plot<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">[</span>ef<span class="ansi-blue-fg">,</span>ef<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">[</span>ax<span class="ansi-blue-fg">.</span>axis<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">2</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span>sf<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span><span class="ansi-blue-fg">&#39;-.r&#39;</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">--&gt; 129</span><span class="ansi-red-fg"> </span>plt<span class="ansi-blue-fg">.</span>savefig<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;fit.png&#39;</span><span class="ansi-blue-fg">,</span>dpi<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">75</span><span class="ansi-blue-fg">,</span>bbox_inches<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;tight&#39;</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    130</span> plt<span class="ansi-blue-fg">.</span>show<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    106</span> 
+<span class="ansi-green-intense-fg ansi-bold">    107</span> <span class="ansi-red-fg">#--- yield stress</span>
+<span class="ansi-green-fg">--&gt; 108</span><span class="ansi-red-fg"> </span><span class="ansi-blue-fg">(</span>ey<span class="ansi-blue-fg">,</span>sy<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">(</span>em<span class="ansi-blue-fg">,</span>sm<span class="ansi-blue-fg">,</span>dsm<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">(</span>ef<span class="ansi-blue-fg">,</span>sf<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">=</span> YieldStress<span class="ansi-blue-fg">(</span>x<span class="ansi-blue-fg">,</span>y_pred<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    109</span> <span class="ansi-red-fg">#(ey,sy), (em,sm), (ef,sf) = YieldStress2nd(x,y_pred):</span>
+<span class="ansi-green-intense-fg ansi-bold">    110</span> 
 
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/pyplot.py</span> in <span class="ansi-cyan-fg">savefig</span><span class="ansi-blue-fg">(*args, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">    857</span> <span class="ansi-green-fg">def</span> savefig<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    858</span>     fig <span class="ansi-blue-fg">=</span> gcf<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">--&gt; 859</span><span class="ansi-red-fg">     </span>res <span class="ansi-blue-fg">=</span> fig<span class="ansi-blue-fg">.</span>savefig<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    860</span>     fig<span class="ansi-blue-fg">.</span>canvas<span class="ansi-blue-fg">.</span>draw_idle<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>   <span class="ansi-red-fg"># need this if &#39;transparent=True&#39; to reset colors</span>
-<span class="ansi-green-intense-fg ansi-bold">    861</span>     <span class="ansi-green-fg">return</span> res
+<span class="ansi-green-fg">&lt;ipython-input-1-fd24990e149b&gt;</span> in <span class="ansi-cyan-fg">YieldStress</span><span class="ansi-blue-fg">(x, y_pred)</span>
+<span class="ansi-green-intense-fg ansi-bold">     50</span>     <span class="ansi-red-fg">#--- flow stress</span>
+<span class="ansi-green-intense-fg ansi-bold">     51</span> <span class="ansi-red-fg">#    ydiff = np.gradient(y_pred_arr, x)</span>
+<span class="ansi-green-fg">---&gt; 52</span><span class="ansi-red-fg">     </span>indx <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>arange<span class="ansi-blue-fg">(</span>len<span class="ansi-blue-fg">(</span>x<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">[</span>np<span class="ansi-blue-fg">.</span>abs<span class="ansi-blue-fg">(</span>ydiff<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">==</span>np<span class="ansi-blue-fg">.</span>min<span class="ansi-blue-fg">(</span>np<span class="ansi-blue-fg">.</span>abs<span class="ansi-blue-fg">(</span>ydiff<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">[</span>x<span class="ansi-blue-fg">&gt;</span>em<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span>
+<span class="ansi-green-intense-fg ansi-bold">     53</span>     ef <span class="ansi-blue-fg">=</span> x<span class="ansi-blue-fg">[</span>indx<span class="ansi-blue-fg">]</span>
+<span class="ansi-green-intense-fg ansi-bold">     54</span>     sf <span class="ansi-blue-fg">=</span>  y_pred_arr<span class="ansi-blue-fg">[</span>indx<span class="ansi-blue-fg">]</span>
 
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/figure.py</span> in <span class="ansi-cyan-fg">savefig</span><span class="ansi-blue-fg">(self, fname, transparent, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">   2309</span>                 patch<span class="ansi-blue-fg">.</span>set_edgecolor<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;none&#39;</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   2310</span> 
-<span class="ansi-green-fg">-&gt; 2311</span><span class="ansi-red-fg">         </span>self<span class="ansi-blue-fg">.</span>canvas<span class="ansi-blue-fg">.</span>print_figure<span class="ansi-blue-fg">(</span>fname<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   2312</span> 
-<span class="ansi-green-intense-fg ansi-bold">   2313</span>         <span class="ansi-green-fg">if</span> transparent<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/numpy/core/fromnumeric.py</span> in <span class="ansi-cyan-fg">amin</span><span class="ansi-blue-fg">(a, axis, out, keepdims, initial)</span>
+<span class="ansi-green-intense-fg ansi-bold">   2616</span>     &#34;&#34;&#34;
+<span class="ansi-green-intense-fg ansi-bold">   2617</span>     return _wrapreduction(a, np.minimum, &#39;min&#39;, axis, None, out, keepdims=keepdims,
+<span class="ansi-green-fg">-&gt; 2618</span><span class="ansi-red-fg">                           initial=initial)
+</span><span class="ansi-green-intense-fg ansi-bold">   2619</span> 
+<span class="ansi-green-intense-fg ansi-bold">   2620</span> 
 
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/backend_bases.py</span> in <span class="ansi-cyan-fg">print_figure</span><span class="ansi-blue-fg">(self, filename, dpi, facecolor, edgecolor, orientation, format, bbox_inches, pad_inches, bbox_extra_artists, backend, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">   2191</span>                            else suppress())
-<span class="ansi-green-intense-fg ansi-bold">   2192</span>                     <span class="ansi-green-fg">with</span> ctx<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">-&gt; 2193</span><span class="ansi-red-fg">                         </span>self<span class="ansi-blue-fg">.</span>figure<span class="ansi-blue-fg">.</span>draw<span class="ansi-blue-fg">(</span>renderer<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   2194</span> 
-<span class="ansi-green-intense-fg ansi-bold">   2195</span>                     bbox_inches = self.figure.get_tightbbox(
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/numpy/core/fromnumeric.py</span> in <span class="ansi-cyan-fg">_wrapreduction</span><span class="ansi-blue-fg">(obj, ufunc, method, axis, dtype, out, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">     84</span>                 <span class="ansi-green-fg">return</span> reduction<span class="ansi-blue-fg">(</span>axis<span class="ansi-blue-fg">=</span>axis<span class="ansi-blue-fg">,</span> out<span class="ansi-blue-fg">=</span>out<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>passkwargs<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     85</span> 
+<span class="ansi-green-fg">---&gt; 86</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">return</span> ufunc<span class="ansi-blue-fg">.</span>reduce<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">,</span> axis<span class="ansi-blue-fg">,</span> dtype<span class="ansi-blue-fg">,</span> out<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>passkwargs<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     87</span> 
+<span class="ansi-green-intense-fg ansi-bold">     88</span> 
 
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/artist.py</span> in <span class="ansi-cyan-fg">draw_wrapper</span><span class="ansi-blue-fg">(artist, renderer, *args, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">     39</span>                 renderer<span class="ansi-blue-fg">.</span>start_filter<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     40</span> 
-<span class="ansi-green-fg">---&gt; 41</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">return</span> draw<span class="ansi-blue-fg">(</span>artist<span class="ansi-blue-fg">,</span> renderer<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     42</span>         <span class="ansi-green-fg">finally</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">     43</span>             <span class="ansi-green-fg">if</span> artist<span class="ansi-blue-fg">.</span>get_agg_filter<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/figure.py</span> in <span class="ansi-cyan-fg">draw</span><span class="ansi-blue-fg">(self, renderer)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1862</span>             self<span class="ansi-blue-fg">.</span>patch<span class="ansi-blue-fg">.</span>draw<span class="ansi-blue-fg">(</span>renderer<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1863</span>             mimage._draw_list_compositing_images(
-<span class="ansi-green-fg">-&gt; 1864</span><span class="ansi-red-fg">                 renderer, self, artists, self.suppressComposite)
-</span><span class="ansi-green-intense-fg ansi-bold">   1865</span> 
-<span class="ansi-green-intense-fg ansi-bold">   1866</span>             renderer<span class="ansi-blue-fg">.</span>close_group<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;figure&#39;</span><span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/image.py</span> in <span class="ansi-cyan-fg">_draw_list_compositing_images</span><span class="ansi-blue-fg">(renderer, parent, artists, suppress_composite)</span>
-<span class="ansi-green-intense-fg ansi-bold">    129</span>     <span class="ansi-green-fg">if</span> not_composite <span class="ansi-green-fg">or</span> <span class="ansi-green-fg">not</span> has_images<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    130</span>         <span class="ansi-green-fg">for</span> a <span class="ansi-green-fg">in</span> artists<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 131</span><span class="ansi-red-fg">             </span>a<span class="ansi-blue-fg">.</span>draw<span class="ansi-blue-fg">(</span>renderer<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    132</span>     <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    133</span>         <span class="ansi-red-fg"># Composite any adjacent images together</span>
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/artist.py</span> in <span class="ansi-cyan-fg">draw_wrapper</span><span class="ansi-blue-fg">(artist, renderer, *args, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">     39</span>                 renderer<span class="ansi-blue-fg">.</span>start_filter<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     40</span> 
-<span class="ansi-green-fg">---&gt; 41</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">return</span> draw<span class="ansi-blue-fg">(</span>artist<span class="ansi-blue-fg">,</span> renderer<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     42</span>         <span class="ansi-green-fg">finally</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">     43</span>             <span class="ansi-green-fg">if</span> artist<span class="ansi-blue-fg">.</span>get_agg_filter<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/cbook/deprecation.py</span> in <span class="ansi-cyan-fg">wrapper</span><span class="ansi-blue-fg">(*inner_args, **inner_kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">    409</span>                          <span class="ansi-green-fg">else</span> deprecation_addendum<span class="ansi-blue-fg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">    410</span>                 **kwargs)
-<span class="ansi-green-fg">--&gt; 411</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">return</span> func<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>inner_args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>inner_kwargs<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    412</span> 
-<span class="ansi-green-intense-fg ansi-bold">    413</span>     <span class="ansi-green-fg">return</span> wrapper
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/axes/_base.py</span> in <span class="ansi-cyan-fg">draw</span><span class="ansi-blue-fg">(self, renderer, inframe)</span>
-<span class="ansi-green-intense-fg ansi-bold">   2745</span>             renderer<span class="ansi-blue-fg">.</span>stop_rasterizing<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   2746</span> 
-<span class="ansi-green-fg">-&gt; 2747</span><span class="ansi-red-fg">         </span>mimage<span class="ansi-blue-fg">.</span>_draw_list_compositing_images<span class="ansi-blue-fg">(</span>renderer<span class="ansi-blue-fg">,</span> self<span class="ansi-blue-fg">,</span> artists<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   2748</span> 
-<span class="ansi-green-intense-fg ansi-bold">   2749</span>         renderer<span class="ansi-blue-fg">.</span>close_group<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;axes&#39;</span><span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/image.py</span> in <span class="ansi-cyan-fg">_draw_list_compositing_images</span><span class="ansi-blue-fg">(renderer, parent, artists, suppress_composite)</span>
-<span class="ansi-green-intense-fg ansi-bold">    129</span>     <span class="ansi-green-fg">if</span> not_composite <span class="ansi-green-fg">or</span> <span class="ansi-green-fg">not</span> has_images<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    130</span>         <span class="ansi-green-fg">for</span> a <span class="ansi-green-fg">in</span> artists<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 131</span><span class="ansi-red-fg">             </span>a<span class="ansi-blue-fg">.</span>draw<span class="ansi-blue-fg">(</span>renderer<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    132</span>     <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    133</span>         <span class="ansi-red-fg"># Composite any adjacent images together</span>
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/artist.py</span> in <span class="ansi-cyan-fg">draw_wrapper</span><span class="ansi-blue-fg">(artist, renderer, *args, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">     39</span>                 renderer<span class="ansi-blue-fg">.</span>start_filter<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     40</span> 
-<span class="ansi-green-fg">---&gt; 41</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">return</span> draw<span class="ansi-blue-fg">(</span>artist<span class="ansi-blue-fg">,</span> renderer<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     42</span>         <span class="ansi-green-fg">finally</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">     43</span>             <span class="ansi-green-fg">if</span> artist<span class="ansi-blue-fg">.</span>get_agg_filter<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/axis.py</span> in <span class="ansi-cyan-fg">draw</span><span class="ansi-blue-fg">(self, renderer, *args, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1164</span>         ticks_to_draw <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_update_ticks<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1165</span>         ticklabelBoxes, ticklabelBoxes2 = self._get_tick_bboxes(ticks_to_draw,
-<span class="ansi-green-fg">-&gt; 1166</span><span class="ansi-red-fg">                                                                 renderer)
-</span><span class="ansi-green-intense-fg ansi-bold">   1167</span> 
-<span class="ansi-green-intense-fg ansi-bold">   1168</span>         <span class="ansi-green-fg">for</span> tick <span class="ansi-green-fg">in</span> ticks_to_draw<span class="ansi-blue-fg">:</span>
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/axis.py</span> in <span class="ansi-cyan-fg">_get_tick_bboxes</span><span class="ansi-blue-fg">(self, ticks, renderer)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1090</span>         <span class="ansi-blue-fg">&#34;&#34;&#34;Return lists of bboxes for ticks&#39; label1&#39;s and label2&#39;s.&#34;&#34;&#34;</span>
-<span class="ansi-green-intense-fg ansi-bold">   1091</span>         return ([tick.label1.get_window_extent(renderer)
-<span class="ansi-green-fg">-&gt; 1092</span><span class="ansi-red-fg">                  for tick in ticks if tick.label1.get_visible()],
-</span><span class="ansi-green-intense-fg ansi-bold">   1093</span>                 [tick.label2.get_window_extent(renderer)
-<span class="ansi-green-intense-fg ansi-bold">   1094</span>                  for tick in ticks if tick.label2.get_visible()])
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/axis.py</span> in <span class="ansi-cyan-fg">&lt;listcomp&gt;</span><span class="ansi-blue-fg">(.0)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1090</span>         <span class="ansi-blue-fg">&#34;&#34;&#34;Return lists of bboxes for ticks&#39; label1&#39;s and label2&#39;s.&#34;&#34;&#34;</span>
-<span class="ansi-green-intense-fg ansi-bold">   1091</span>         return ([tick.label1.get_window_extent(renderer)
-<span class="ansi-green-fg">-&gt; 1092</span><span class="ansi-red-fg">                  for tick in ticks if tick.label1.get_visible()],
-</span><span class="ansi-green-intense-fg ansi-bold">   1093</span>                 [tick.label2.get_window_extent(renderer)
-<span class="ansi-green-intense-fg ansi-bold">   1094</span>                  for tick in ticks if tick.label2.get_visible()])
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/text.py</span> in <span class="ansi-cyan-fg">get_window_extent</span><span class="ansi-blue-fg">(self, renderer, dpi)</span>
-<span class="ansi-green-intense-fg ansi-bold">    900</span> 
-<span class="ansi-green-intense-fg ansi-bold">    901</span>         <span class="ansi-green-fg">with</span> cbook<span class="ansi-blue-fg">.</span>_setattr_cm<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>figure<span class="ansi-blue-fg">,</span> dpi<span class="ansi-blue-fg">=</span>dpi<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 902</span><span class="ansi-red-fg">             </span>bbox<span class="ansi-blue-fg">,</span> info<span class="ansi-blue-fg">,</span> descent <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_get_layout<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>_renderer<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    903</span>             x<span class="ansi-blue-fg">,</span> y <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>get_unitless_position<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    904</span>             x<span class="ansi-blue-fg">,</span> y <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>get_transform<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>transform<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">(</span>x<span class="ansi-blue-fg">,</span> y<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/text.py</span> in <span class="ansi-cyan-fg">_get_layout</span><span class="ansi-blue-fg">(self, renderer)</span>
-<span class="ansi-green-intense-fg ansi-bold">    294</span>             <span class="ansi-green-fg">if</span> clean_line<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    295</span>                 w, h, d = renderer.get_text_width_height_descent(
-<span class="ansi-green-fg">--&gt; 296</span><span class="ansi-red-fg">                     clean_line, self._fontproperties, ismath=ismath)
-</span><span class="ansi-green-intense-fg ansi-bold">    297</span>             <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    298</span>                 w <span class="ansi-blue-fg">=</span> h <span class="ansi-blue-fg">=</span> d <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">0</span>
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/backends/backend_agg.py</span> in <span class="ansi-cyan-fg">get_text_width_height_descent</span><span class="ansi-blue-fg">(self, s, prop, ismath)</span>
-<span class="ansi-green-intense-fg ansi-bold">    226</span>             fontsize <span class="ansi-blue-fg">=</span> prop<span class="ansi-blue-fg">.</span>get_size_in_points<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    227</span>             w, h, d = texmanager.get_text_width_height_descent(
-<span class="ansi-green-fg">--&gt; 228</span><span class="ansi-red-fg">                 s, fontsize, renderer=self)
-</span><span class="ansi-green-intense-fg ansi-bold">    229</span>             <span class="ansi-green-fg">return</span> w<span class="ansi-blue-fg">,</span> h<span class="ansi-blue-fg">,</span> d
-<span class="ansi-green-intense-fg ansi-bold">    230</span> 
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/texmanager.py</span> in <span class="ansi-cyan-fg">get_text_width_height_descent</span><span class="ansi-blue-fg">(self, tex, fontsize, renderer)</span>
-<span class="ansi-green-intense-fg ansi-bold">    421</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    422</span>             <span class="ansi-red-fg"># use dviread.</span>
-<span class="ansi-green-fg">--&gt; 423</span><span class="ansi-red-fg">             </span>dvifile <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>make_dvi<span class="ansi-blue-fg">(</span>tex<span class="ansi-blue-fg">,</span> fontsize<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    424</span>             <span class="ansi-green-fg">with</span> dviread<span class="ansi-blue-fg">.</span>Dvi<span class="ansi-blue-fg">(</span>dvifile<span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">72</span> <span class="ansi-blue-fg">*</span> dpi_fraction<span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">as</span> dvi<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    425</span>                 page<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">=</span> dvi
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/texmanager.py</span> in <span class="ansi-cyan-fg">make_dvi</span><span class="ansi-blue-fg">(self, tex, fontsize)</span>
-<span class="ansi-green-intense-fg ansi-bold">    306</span>         <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> os<span class="ansi-blue-fg">.</span>path<span class="ansi-blue-fg">.</span>exists<span class="ansi-blue-fg">(</span>dvifile<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    307</span>             texfile <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>make_tex<span class="ansi-blue-fg">(</span>tex<span class="ansi-blue-fg">,</span> fontsize<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">--&gt; 308</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">with</span> cbook<span class="ansi-blue-fg">.</span>_lock_path<span class="ansi-blue-fg">(</span>texfile<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    309</span>                 self._run_checked_subprocess(
-<span class="ansi-green-intense-fg ansi-bold">    310</span>                     [&#34;latex&#34;, &#34;-interaction=nonstopmode&#34;, &#34;--halt-on-error&#34;,
-
-<span class="ansi-green-fg">/usr/lib64/python3.6/contextlib.py</span> in <span class="ansi-cyan-fg">__enter__</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">     79</span>     <span class="ansi-green-fg">def</span> __enter__<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">     80</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">---&gt; 81</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">return</span> next<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>gen<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     82</span>         <span class="ansi-green-fg">except</span> StopIteration<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">     83</span>             <span class="ansi-green-fg">raise</span> RuntimeError<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;generator didn&#39;t yield&#34;</span><span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">from</span> <span class="ansi-green-fg">None</span>
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/cbook/__init__.py</span> in <span class="ansi-cyan-fg">_lock_path</span><span class="ansi-blue-fg">(path)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1808</span> This maybe due to another process holding this lock file<span class="ansi-blue-fg">.</span>  If you are sure no
-<span class="ansi-green-intense-fg ansi-bold">   1809</span> other Matplotlib process is running, remove this file and try again.&#34;&#34;&#34;.format(
-<span class="ansi-green-fg">-&gt; 1810</span><span class="ansi-red-fg">             lock_path))
-</span><span class="ansi-green-intense-fg ansi-bold">   1811</span>     <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">   1812</span>         <span class="ansi-green-fg">yield</span>
-
-<span class="ansi-red-fg">TimeoutError</span>: Lock error: Matplotlib failed to acquire the following lock file:
-    /home/kamran.karimi1/.cache/matplotlib/tex.cache/2a3330e65786759c4aeda67b5941c84d.tex.matplotlib-lock
-This maybe due to another process holding this lock file.  If you are sure no
-other Matplotlib process is running, remove this file and try again.</pre>
+<span class="ansi-red-fg">ValueError</span>: zero-size array to reduction operation minimum which has no identity</pre>
 </div>
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">TimeoutError</span>                              Traceback (most recent call last)
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/IPython/core/formatters.py</span> in <span class="ansi-cyan-fg">__call__</span><span class="ansi-blue-fg">(self, obj)</span>
-<span class="ansi-green-intense-fg ansi-bold">    339</span>                 <span class="ansi-green-fg">pass</span>
-<span class="ansi-green-intense-fg ansi-bold">    340</span>             <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 341</span><span class="ansi-red-fg">                 </span><span class="ansi-green-fg">return</span> printer<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    342</span>             <span class="ansi-red-fg"># Finally look for special method names</span>
-<span class="ansi-green-intense-fg ansi-bold">    343</span>             method <span class="ansi-blue-fg">=</span> get_real_method<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">,</span> self<span class="ansi-blue-fg">.</span>print_method<span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/IPython/core/pylabtools.py</span> in <span class="ansi-cyan-fg">&lt;lambda&gt;</span><span class="ansi-blue-fg">(fig)</span>
-<span class="ansi-green-intense-fg ansi-bold">    246</span> 
-<span class="ansi-green-intense-fg ansi-bold">    247</span>     <span class="ansi-green-fg">if</span> <span class="ansi-blue-fg">&#39;png&#39;</span> <span class="ansi-green-fg">in</span> formats<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 248</span><span class="ansi-red-fg">         </span>png_formatter<span class="ansi-blue-fg">.</span>for_type<span class="ansi-blue-fg">(</span>Figure<span class="ansi-blue-fg">,</span> <span class="ansi-green-fg">lambda</span> fig<span class="ansi-blue-fg">:</span> print_figure<span class="ansi-blue-fg">(</span>fig<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;png&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    249</span>     <span class="ansi-green-fg">if</span> <span class="ansi-blue-fg">&#39;retina&#39;</span> <span class="ansi-green-fg">in</span> formats <span class="ansi-green-fg">or</span> <span class="ansi-blue-fg">&#39;png2x&#39;</span> <span class="ansi-green-fg">in</span> formats<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    250</span>         png_formatter<span class="ansi-blue-fg">.</span>for_type<span class="ansi-blue-fg">(</span>Figure<span class="ansi-blue-fg">,</span> <span class="ansi-green-fg">lambda</span> fig<span class="ansi-blue-fg">:</span> retina_figure<span class="ansi-blue-fg">(</span>fig<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/IPython/core/pylabtools.py</span> in <span class="ansi-cyan-fg">print_figure</span><span class="ansi-blue-fg">(fig, fmt, bbox_inches, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">    130</span>         FigureCanvasBase<span class="ansi-blue-fg">(</span>fig<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    131</span> 
-<span class="ansi-green-fg">--&gt; 132</span><span class="ansi-red-fg">     </span>fig<span class="ansi-blue-fg">.</span>canvas<span class="ansi-blue-fg">.</span>print_figure<span class="ansi-blue-fg">(</span>bytes_io<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kw<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    133</span>     data <span class="ansi-blue-fg">=</span> bytes_io<span class="ansi-blue-fg">.</span>getvalue<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    134</span>     <span class="ansi-green-fg">if</span> fmt <span class="ansi-blue-fg">==</span> <span class="ansi-blue-fg">&#39;svg&#39;</span><span class="ansi-blue-fg">:</span>
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/backend_bases.py</span> in <span class="ansi-cyan-fg">print_figure</span><span class="ansi-blue-fg">(self, filename, dpi, facecolor, edgecolor, orientation, format, bbox_inches, pad_inches, bbox_extra_artists, backend, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">   2191</span>                            else suppress())
-<span class="ansi-green-intense-fg ansi-bold">   2192</span>                     <span class="ansi-green-fg">with</span> ctx<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">-&gt; 2193</span><span class="ansi-red-fg">                         </span>self<span class="ansi-blue-fg">.</span>figure<span class="ansi-blue-fg">.</span>draw<span class="ansi-blue-fg">(</span>renderer<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   2194</span> 
-<span class="ansi-green-intense-fg ansi-bold">   2195</span>                     bbox_inches = self.figure.get_tightbbox(
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/artist.py</span> in <span class="ansi-cyan-fg">draw_wrapper</span><span class="ansi-blue-fg">(artist, renderer, *args, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">     39</span>                 renderer<span class="ansi-blue-fg">.</span>start_filter<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     40</span> 
-<span class="ansi-green-fg">---&gt; 41</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">return</span> draw<span class="ansi-blue-fg">(</span>artist<span class="ansi-blue-fg">,</span> renderer<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     42</span>         <span class="ansi-green-fg">finally</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">     43</span>             <span class="ansi-green-fg">if</span> artist<span class="ansi-blue-fg">.</span>get_agg_filter<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/figure.py</span> in <span class="ansi-cyan-fg">draw</span><span class="ansi-blue-fg">(self, renderer)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1862</span>             self<span class="ansi-blue-fg">.</span>patch<span class="ansi-blue-fg">.</span>draw<span class="ansi-blue-fg">(</span>renderer<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1863</span>             mimage._draw_list_compositing_images(
-<span class="ansi-green-fg">-&gt; 1864</span><span class="ansi-red-fg">                 renderer, self, artists, self.suppressComposite)
-</span><span class="ansi-green-intense-fg ansi-bold">   1865</span> 
-<span class="ansi-green-intense-fg ansi-bold">   1866</span>             renderer<span class="ansi-blue-fg">.</span>close_group<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;figure&#39;</span><span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/image.py</span> in <span class="ansi-cyan-fg">_draw_list_compositing_images</span><span class="ansi-blue-fg">(renderer, parent, artists, suppress_composite)</span>
-<span class="ansi-green-intense-fg ansi-bold">    129</span>     <span class="ansi-green-fg">if</span> not_composite <span class="ansi-green-fg">or</span> <span class="ansi-green-fg">not</span> has_images<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    130</span>         <span class="ansi-green-fg">for</span> a <span class="ansi-green-fg">in</span> artists<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 131</span><span class="ansi-red-fg">             </span>a<span class="ansi-blue-fg">.</span>draw<span class="ansi-blue-fg">(</span>renderer<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    132</span>     <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    133</span>         <span class="ansi-red-fg"># Composite any adjacent images together</span>
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/artist.py</span> in <span class="ansi-cyan-fg">draw_wrapper</span><span class="ansi-blue-fg">(artist, renderer, *args, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">     39</span>                 renderer<span class="ansi-blue-fg">.</span>start_filter<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     40</span> 
-<span class="ansi-green-fg">---&gt; 41</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">return</span> draw<span class="ansi-blue-fg">(</span>artist<span class="ansi-blue-fg">,</span> renderer<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     42</span>         <span class="ansi-green-fg">finally</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">     43</span>             <span class="ansi-green-fg">if</span> artist<span class="ansi-blue-fg">.</span>get_agg_filter<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/cbook/deprecation.py</span> in <span class="ansi-cyan-fg">wrapper</span><span class="ansi-blue-fg">(*inner_args, **inner_kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">    409</span>                          <span class="ansi-green-fg">else</span> deprecation_addendum<span class="ansi-blue-fg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">    410</span>                 **kwargs)
-<span class="ansi-green-fg">--&gt; 411</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">return</span> func<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>inner_args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>inner_kwargs<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    412</span> 
-<span class="ansi-green-intense-fg ansi-bold">    413</span>     <span class="ansi-green-fg">return</span> wrapper
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/axes/_base.py</span> in <span class="ansi-cyan-fg">draw</span><span class="ansi-blue-fg">(self, renderer, inframe)</span>
-<span class="ansi-green-intense-fg ansi-bold">   2745</span>             renderer<span class="ansi-blue-fg">.</span>stop_rasterizing<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   2746</span> 
-<span class="ansi-green-fg">-&gt; 2747</span><span class="ansi-red-fg">         </span>mimage<span class="ansi-blue-fg">.</span>_draw_list_compositing_images<span class="ansi-blue-fg">(</span>renderer<span class="ansi-blue-fg">,</span> self<span class="ansi-blue-fg">,</span> artists<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   2748</span> 
-<span class="ansi-green-intense-fg ansi-bold">   2749</span>         renderer<span class="ansi-blue-fg">.</span>close_group<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;axes&#39;</span><span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/image.py</span> in <span class="ansi-cyan-fg">_draw_list_compositing_images</span><span class="ansi-blue-fg">(renderer, parent, artists, suppress_composite)</span>
-<span class="ansi-green-intense-fg ansi-bold">    129</span>     <span class="ansi-green-fg">if</span> not_composite <span class="ansi-green-fg">or</span> <span class="ansi-green-fg">not</span> has_images<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    130</span>         <span class="ansi-green-fg">for</span> a <span class="ansi-green-fg">in</span> artists<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 131</span><span class="ansi-red-fg">             </span>a<span class="ansi-blue-fg">.</span>draw<span class="ansi-blue-fg">(</span>renderer<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    132</span>     <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    133</span>         <span class="ansi-red-fg"># Composite any adjacent images together</span>
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/artist.py</span> in <span class="ansi-cyan-fg">draw_wrapper</span><span class="ansi-blue-fg">(artist, renderer, *args, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">     39</span>                 renderer<span class="ansi-blue-fg">.</span>start_filter<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     40</span> 
-<span class="ansi-green-fg">---&gt; 41</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">return</span> draw<span class="ansi-blue-fg">(</span>artist<span class="ansi-blue-fg">,</span> renderer<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     42</span>         <span class="ansi-green-fg">finally</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">     43</span>             <span class="ansi-green-fg">if</span> artist<span class="ansi-blue-fg">.</span>get_agg_filter<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/axis.py</span> in <span class="ansi-cyan-fg">draw</span><span class="ansi-blue-fg">(self, renderer, *args, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1164</span>         ticks_to_draw <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_update_ticks<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1165</span>         ticklabelBoxes, ticklabelBoxes2 = self._get_tick_bboxes(ticks_to_draw,
-<span class="ansi-green-fg">-&gt; 1166</span><span class="ansi-red-fg">                                                                 renderer)
-</span><span class="ansi-green-intense-fg ansi-bold">   1167</span> 
-<span class="ansi-green-intense-fg ansi-bold">   1168</span>         <span class="ansi-green-fg">for</span> tick <span class="ansi-green-fg">in</span> ticks_to_draw<span class="ansi-blue-fg">:</span>
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/axis.py</span> in <span class="ansi-cyan-fg">_get_tick_bboxes</span><span class="ansi-blue-fg">(self, ticks, renderer)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1090</span>         <span class="ansi-blue-fg">&#34;&#34;&#34;Return lists of bboxes for ticks&#39; label1&#39;s and label2&#39;s.&#34;&#34;&#34;</span>
-<span class="ansi-green-intense-fg ansi-bold">   1091</span>         return ([tick.label1.get_window_extent(renderer)
-<span class="ansi-green-fg">-&gt; 1092</span><span class="ansi-red-fg">                  for tick in ticks if tick.label1.get_visible()],
-</span><span class="ansi-green-intense-fg ansi-bold">   1093</span>                 [tick.label2.get_window_extent(renderer)
-<span class="ansi-green-intense-fg ansi-bold">   1094</span>                  for tick in ticks if tick.label2.get_visible()])
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/axis.py</span> in <span class="ansi-cyan-fg">&lt;listcomp&gt;</span><span class="ansi-blue-fg">(.0)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1090</span>         <span class="ansi-blue-fg">&#34;&#34;&#34;Return lists of bboxes for ticks&#39; label1&#39;s and label2&#39;s.&#34;&#34;&#34;</span>
-<span class="ansi-green-intense-fg ansi-bold">   1091</span>         return ([tick.label1.get_window_extent(renderer)
-<span class="ansi-green-fg">-&gt; 1092</span><span class="ansi-red-fg">                  for tick in ticks if tick.label1.get_visible()],
-</span><span class="ansi-green-intense-fg ansi-bold">   1093</span>                 [tick.label2.get_window_extent(renderer)
-<span class="ansi-green-intense-fg ansi-bold">   1094</span>                  for tick in ticks if tick.label2.get_visible()])
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/text.py</span> in <span class="ansi-cyan-fg">get_window_extent</span><span class="ansi-blue-fg">(self, renderer, dpi)</span>
-<span class="ansi-green-intense-fg ansi-bold">    900</span> 
-<span class="ansi-green-intense-fg ansi-bold">    901</span>         <span class="ansi-green-fg">with</span> cbook<span class="ansi-blue-fg">.</span>_setattr_cm<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>figure<span class="ansi-blue-fg">,</span> dpi<span class="ansi-blue-fg">=</span>dpi<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 902</span><span class="ansi-red-fg">             </span>bbox<span class="ansi-blue-fg">,</span> info<span class="ansi-blue-fg">,</span> descent <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_get_layout<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>_renderer<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    903</span>             x<span class="ansi-blue-fg">,</span> y <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>get_unitless_position<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    904</span>             x<span class="ansi-blue-fg">,</span> y <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>get_transform<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>transform<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">(</span>x<span class="ansi-blue-fg">,</span> y<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/text.py</span> in <span class="ansi-cyan-fg">_get_layout</span><span class="ansi-blue-fg">(self, renderer)</span>
-<span class="ansi-green-intense-fg ansi-bold">    294</span>             <span class="ansi-green-fg">if</span> clean_line<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    295</span>                 w, h, d = renderer.get_text_width_height_descent(
-<span class="ansi-green-fg">--&gt; 296</span><span class="ansi-red-fg">                     clean_line, self._fontproperties, ismath=ismath)
-</span><span class="ansi-green-intense-fg ansi-bold">    297</span>             <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    298</span>                 w <span class="ansi-blue-fg">=</span> h <span class="ansi-blue-fg">=</span> d <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">0</span>
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/backends/backend_agg.py</span> in <span class="ansi-cyan-fg">get_text_width_height_descent</span><span class="ansi-blue-fg">(self, s, prop, ismath)</span>
-<span class="ansi-green-intense-fg ansi-bold">    226</span>             fontsize <span class="ansi-blue-fg">=</span> prop<span class="ansi-blue-fg">.</span>get_size_in_points<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    227</span>             w, h, d = texmanager.get_text_width_height_descent(
-<span class="ansi-green-fg">--&gt; 228</span><span class="ansi-red-fg">                 s, fontsize, renderer=self)
-</span><span class="ansi-green-intense-fg ansi-bold">    229</span>             <span class="ansi-green-fg">return</span> w<span class="ansi-blue-fg">,</span> h<span class="ansi-blue-fg">,</span> d
-<span class="ansi-green-intense-fg ansi-bold">    230</span> 
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/texmanager.py</span> in <span class="ansi-cyan-fg">get_text_width_height_descent</span><span class="ansi-blue-fg">(self, tex, fontsize, renderer)</span>
-<span class="ansi-green-intense-fg ansi-bold">    421</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    422</span>             <span class="ansi-red-fg"># use dviread.</span>
-<span class="ansi-green-fg">--&gt; 423</span><span class="ansi-red-fg">             </span>dvifile <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>make_dvi<span class="ansi-blue-fg">(</span>tex<span class="ansi-blue-fg">,</span> fontsize<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    424</span>             <span class="ansi-green-fg">with</span> dviread<span class="ansi-blue-fg">.</span>Dvi<span class="ansi-blue-fg">(</span>dvifile<span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">72</span> <span class="ansi-blue-fg">*</span> dpi_fraction<span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">as</span> dvi<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    425</span>                 page<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">=</span> dvi
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/texmanager.py</span> in <span class="ansi-cyan-fg">make_dvi</span><span class="ansi-blue-fg">(self, tex, fontsize)</span>
-<span class="ansi-green-intense-fg ansi-bold">    306</span>         <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> os<span class="ansi-blue-fg">.</span>path<span class="ansi-blue-fg">.</span>exists<span class="ansi-blue-fg">(</span>dvifile<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    307</span>             texfile <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>make_tex<span class="ansi-blue-fg">(</span>tex<span class="ansi-blue-fg">,</span> fontsize<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">--&gt; 308</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">with</span> cbook<span class="ansi-blue-fg">.</span>_lock_path<span class="ansi-blue-fg">(</span>texfile<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    309</span>                 self._run_checked_subprocess(
-<span class="ansi-green-intense-fg ansi-bold">    310</span>                     [&#34;latex&#34;, &#34;-interaction=nonstopmode&#34;, &#34;--halt-on-error&#34;,
-
-<span class="ansi-green-fg">/usr/lib64/python3.6/contextlib.py</span> in <span class="ansi-cyan-fg">__enter__</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">     79</span>     <span class="ansi-green-fg">def</span> __enter__<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">     80</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">---&gt; 81</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">return</span> next<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>gen<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     82</span>         <span class="ansi-green-fg">except</span> StopIteration<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">     83</span>             <span class="ansi-green-fg">raise</span> RuntimeError<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;generator didn&#39;t yield&#34;</span><span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">from</span> <span class="ansi-green-fg">None</span>
-
-<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/cbook/__init__.py</span> in <span class="ansi-cyan-fg">_lock_path</span><span class="ansi-blue-fg">(path)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1808</span> This maybe due to another process holding this lock file<span class="ansi-blue-fg">.</span>  If you are sure no
-<span class="ansi-green-intense-fg ansi-bold">   1809</span> other Matplotlib process is running, remove this file and try again.&#34;&#34;&#34;.format(
-<span class="ansi-green-fg">-&gt; 1810</span><span class="ansi-red-fg">             lock_path))
-</span><span class="ansi-green-intense-fg ansi-bold">   1811</span>     <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">   1812</span>         <span class="ansi-green-fg">yield</span>
-
-<span class="ansi-red-fg">TimeoutError</span>: Lock error: Matplotlib failed to acquire the following lock file:
-    /home/kamran.karimi1/.cache/matplotlib/tex.cache/2a3330e65786759c4aeda67b5941c84d.tex.matplotlib-lock
-This maybe due to another process holding this lock file.  If you are sure no
-other Matplotlib process is running, remove this file and try again.</pre>
-</div>
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-
-
-<div class="jp-RenderedText jp-OutputArea-output " data-mime-type="text/plain">
-<pre>&lt;Figure size 288x288 with 1 Axes&gt;</pre>
-</div>
-
 </div>
 
 </div>
@@ -16036,6 +15793,75 @@ other Matplotlib process is running, remove this file and try again.</pre>
     <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 
 
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">OSError</span>                                   Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-1-7363c5880c8f&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">     21</span> <span class="ansi-red-fg">#</span>
+<span class="ansi-green-intense-fg ansi-bold">     22</span> ax<span class="ansi-blue-fg">.</span>legend<span class="ansi-blue-fg">(</span>frameon<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">False</span><span class="ansi-blue-fg">,</span>bbox_to_anchor<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">---&gt; 23</span><span class="ansi-red-fg"> </span>plt<span class="ansi-blue-fg">.</span>savefig<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;YieldDelta.png&#39;</span><span class="ansi-blue-fg">,</span>dpi<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">75</span><span class="ansi-blue-fg">,</span>bbox_inches<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;tight&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     24</span> plt<span class="ansi-blue-fg">.</span>show<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/pyplot.py</span> in <span class="ansi-cyan-fg">savefig</span><span class="ansi-blue-fg">(*args, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">    857</span> <span class="ansi-green-fg">def</span> savefig<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    858</span>     fig <span class="ansi-blue-fg">=</span> gcf<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">--&gt; 859</span><span class="ansi-red-fg">     </span>res <span class="ansi-blue-fg">=</span> fig<span class="ansi-blue-fg">.</span>savefig<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    860</span>     fig<span class="ansi-blue-fg">.</span>canvas<span class="ansi-blue-fg">.</span>draw_idle<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>   <span class="ansi-red-fg"># need this if &#39;transparent=True&#39; to reset colors</span>
+<span class="ansi-green-intense-fg ansi-bold">    861</span>     <span class="ansi-green-fg">return</span> res
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/figure.py</span> in <span class="ansi-cyan-fg">savefig</span><span class="ansi-blue-fg">(self, fname, transparent, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">   2309</span>                 patch<span class="ansi-blue-fg">.</span>set_edgecolor<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;none&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   2310</span> 
+<span class="ansi-green-fg">-&gt; 2311</span><span class="ansi-red-fg">         </span>self<span class="ansi-blue-fg">.</span>canvas<span class="ansi-blue-fg">.</span>print_figure<span class="ansi-blue-fg">(</span>fname<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   2312</span> 
+<span class="ansi-green-intense-fg ansi-bold">   2313</span>         <span class="ansi-green-fg">if</span> transparent<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/backend_bases.py</span> in <span class="ansi-cyan-fg">print_figure</span><span class="ansi-blue-fg">(self, filename, dpi, facecolor, edgecolor, orientation, format, bbox_inches, pad_inches, bbox_extra_artists, backend, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">   2215</span>                     orientation<span class="ansi-blue-fg">=</span>orientation<span class="ansi-blue-fg">,</span>
+<span class="ansi-green-intense-fg ansi-bold">   2216</span>                     bbox_inches_restore<span class="ansi-blue-fg">=</span>_bbox_inches_restore<span class="ansi-blue-fg">,</span>
+<span class="ansi-green-fg">-&gt; 2217</span><span class="ansi-red-fg">                     **kwargs)
+</span><span class="ansi-green-intense-fg ansi-bold">   2218</span>             <span class="ansi-green-fg">finally</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   2219</span>                 <span class="ansi-green-fg">if</span> bbox_inches <span class="ansi-green-fg">and</span> restore_bbox<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/backend_bases.py</span> in <span class="ansi-cyan-fg">wrapper</span><span class="ansi-blue-fg">(*args, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1637</span>             kwargs<span class="ansi-blue-fg">.</span>pop<span class="ansi-blue-fg">(</span>arg<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1638</span> 
+<span class="ansi-green-fg">-&gt; 1639</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">return</span> func<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1640</span> 
+<span class="ansi-green-intense-fg ansi-bold">   1641</span>     <span class="ansi-green-fg">return</span> wrapper
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/backends/backend_agg.py</span> in <span class="ansi-cyan-fg">print_png</span><span class="ansi-blue-fg">(self, filename_or_obj, metadata, pil_kwargs, *args)</span>
+<span class="ansi-green-intense-fg ansi-bold">    510</span>         mpl.image.imsave(
+<span class="ansi-green-intense-fg ansi-bold">    511</span>             filename_or_obj<span class="ansi-blue-fg">,</span> self<span class="ansi-blue-fg">.</span>buffer_rgba<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> format<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#34;png&#34;</span><span class="ansi-blue-fg">,</span> origin<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#34;upper&#34;</span><span class="ansi-blue-fg">,</span>
+<span class="ansi-green-fg">--&gt; 512</span><span class="ansi-red-fg">             dpi=self.figure.dpi, metadata=metadata, pil_kwargs=pil_kwargs)
+</span><span class="ansi-green-intense-fg ansi-bold">    513</span> 
+<span class="ansi-green-intense-fg ansi-bold">    514</span>     <span class="ansi-green-fg">def</span> print_to_buffer<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/image.py</span> in <span class="ansi-cyan-fg">imsave</span><span class="ansi-blue-fg">(fname, arr, vmin, vmax, cmap, format, origin, dpi, metadata, pil_kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1609</span>         pil_kwargs<span class="ansi-blue-fg">.</span>setdefault<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;format&#34;</span><span class="ansi-blue-fg">,</span> format<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1610</span>         pil_kwargs<span class="ansi-blue-fg">.</span>setdefault<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;dpi&#34;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">(</span>dpi<span class="ansi-blue-fg">,</span> dpi<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">-&gt; 1611</span><span class="ansi-red-fg">         </span>image<span class="ansi-blue-fg">.</span>save<span class="ansi-blue-fg">(</span>fname<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>pil_kwargs<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1612</span> 
+<span class="ansi-green-intense-fg ansi-bold">   1613</span> 
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/PIL/Image.py</span> in <span class="ansi-cyan-fg">save</span><span class="ansi-blue-fg">(self, fp, format, **params)</span>
+<span class="ansi-green-intense-fg ansi-bold">   2230</span>                 fp <span class="ansi-blue-fg">=</span> builtins<span class="ansi-blue-fg">.</span>open<span class="ansi-blue-fg">(</span>filename<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#34;r+b&#34;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   2231</span>             <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 2232</span><span class="ansi-red-fg">                 </span>fp <span class="ansi-blue-fg">=</span> builtins<span class="ansi-blue-fg">.</span>open<span class="ansi-blue-fg">(</span>filename<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#34;w+b&#34;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   2233</span> 
+<span class="ansi-green-intense-fg ansi-bold">   2234</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">OSError</span>: [Errno 116] Stale file handle: &#39;YieldDelta.png&#39;</pre>
+</div>
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
 
 
 <div class="jp-RenderedImage jp-OutputArea-output ">
@@ -16224,6 +16050,75 @@ other Matplotlib process is running, remove this file and try again.</pre>
     <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 
 
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">OSError</span>                                   Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-1-8461c77d1fa5&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">     33</span>     <span class="ansi-red-fg">#</span>
+<span class="ansi-green-intense-fg ansi-bold">     34</span> ax<span class="ansi-blue-fg">.</span>legend<span class="ansi-blue-fg">(</span>frameon<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">False</span><span class="ansi-blue-fg">,</span>bbox_to_anchor<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">1.0</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> fontsize<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">16</span> <span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">---&gt; 35</span><span class="ansi-red-fg"> </span>plt<span class="ansi-blue-fg">.</span>savefig<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;StrsDropAndWidth.png&#39;</span><span class="ansi-blue-fg">,</span>dpi<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">75</span><span class="ansi-blue-fg">,</span>bbox_inches<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;tight&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     36</span> plt<span class="ansi-blue-fg">.</span>show<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/pyplot.py</span> in <span class="ansi-cyan-fg">savefig</span><span class="ansi-blue-fg">(*args, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">    857</span> <span class="ansi-green-fg">def</span> savefig<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    858</span>     fig <span class="ansi-blue-fg">=</span> gcf<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">--&gt; 859</span><span class="ansi-red-fg">     </span>res <span class="ansi-blue-fg">=</span> fig<span class="ansi-blue-fg">.</span>savefig<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    860</span>     fig<span class="ansi-blue-fg">.</span>canvas<span class="ansi-blue-fg">.</span>draw_idle<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>   <span class="ansi-red-fg"># need this if &#39;transparent=True&#39; to reset colors</span>
+<span class="ansi-green-intense-fg ansi-bold">    861</span>     <span class="ansi-green-fg">return</span> res
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/figure.py</span> in <span class="ansi-cyan-fg">savefig</span><span class="ansi-blue-fg">(self, fname, transparent, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">   2309</span>                 patch<span class="ansi-blue-fg">.</span>set_edgecolor<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;none&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   2310</span> 
+<span class="ansi-green-fg">-&gt; 2311</span><span class="ansi-red-fg">         </span>self<span class="ansi-blue-fg">.</span>canvas<span class="ansi-blue-fg">.</span>print_figure<span class="ansi-blue-fg">(</span>fname<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   2312</span> 
+<span class="ansi-green-intense-fg ansi-bold">   2313</span>         <span class="ansi-green-fg">if</span> transparent<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/backend_bases.py</span> in <span class="ansi-cyan-fg">print_figure</span><span class="ansi-blue-fg">(self, filename, dpi, facecolor, edgecolor, orientation, format, bbox_inches, pad_inches, bbox_extra_artists, backend, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">   2215</span>                     orientation<span class="ansi-blue-fg">=</span>orientation<span class="ansi-blue-fg">,</span>
+<span class="ansi-green-intense-fg ansi-bold">   2216</span>                     bbox_inches_restore<span class="ansi-blue-fg">=</span>_bbox_inches_restore<span class="ansi-blue-fg">,</span>
+<span class="ansi-green-fg">-&gt; 2217</span><span class="ansi-red-fg">                     **kwargs)
+</span><span class="ansi-green-intense-fg ansi-bold">   2218</span>             <span class="ansi-green-fg">finally</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   2219</span>                 <span class="ansi-green-fg">if</span> bbox_inches <span class="ansi-green-fg">and</span> restore_bbox<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/backend_bases.py</span> in <span class="ansi-cyan-fg">wrapper</span><span class="ansi-blue-fg">(*args, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1637</span>             kwargs<span class="ansi-blue-fg">.</span>pop<span class="ansi-blue-fg">(</span>arg<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1638</span> 
+<span class="ansi-green-fg">-&gt; 1639</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">return</span> func<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1640</span> 
+<span class="ansi-green-intense-fg ansi-bold">   1641</span>     <span class="ansi-green-fg">return</span> wrapper
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/backends/backend_agg.py</span> in <span class="ansi-cyan-fg">print_png</span><span class="ansi-blue-fg">(self, filename_or_obj, metadata, pil_kwargs, *args)</span>
+<span class="ansi-green-intense-fg ansi-bold">    510</span>         mpl.image.imsave(
+<span class="ansi-green-intense-fg ansi-bold">    511</span>             filename_or_obj<span class="ansi-blue-fg">,</span> self<span class="ansi-blue-fg">.</span>buffer_rgba<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> format<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#34;png&#34;</span><span class="ansi-blue-fg">,</span> origin<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#34;upper&#34;</span><span class="ansi-blue-fg">,</span>
+<span class="ansi-green-fg">--&gt; 512</span><span class="ansi-red-fg">             dpi=self.figure.dpi, metadata=metadata, pil_kwargs=pil_kwargs)
+</span><span class="ansi-green-intense-fg ansi-bold">    513</span> 
+<span class="ansi-green-intense-fg ansi-bold">    514</span>     <span class="ansi-green-fg">def</span> print_to_buffer<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/image.py</span> in <span class="ansi-cyan-fg">imsave</span><span class="ansi-blue-fg">(fname, arr, vmin, vmax, cmap, format, origin, dpi, metadata, pil_kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1609</span>         pil_kwargs<span class="ansi-blue-fg">.</span>setdefault<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;format&#34;</span><span class="ansi-blue-fg">,</span> format<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1610</span>         pil_kwargs<span class="ansi-blue-fg">.</span>setdefault<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;dpi&#34;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">(</span>dpi<span class="ansi-blue-fg">,</span> dpi<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">-&gt; 1611</span><span class="ansi-red-fg">         </span>image<span class="ansi-blue-fg">.</span>save<span class="ansi-blue-fg">(</span>fname<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>pil_kwargs<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1612</span> 
+<span class="ansi-green-intense-fg ansi-bold">   1613</span> 
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/PIL/Image.py</span> in <span class="ansi-cyan-fg">save</span><span class="ansi-blue-fg">(self, fp, format, **params)</span>
+<span class="ansi-green-intense-fg ansi-bold">   2230</span>                 fp <span class="ansi-blue-fg">=</span> builtins<span class="ansi-blue-fg">.</span>open<span class="ansi-blue-fg">(</span>filename<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#34;r+b&#34;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   2231</span>             <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 2232</span><span class="ansi-red-fg">                 </span>fp <span class="ansi-blue-fg">=</span> builtins<span class="ansi-blue-fg">.</span>open<span class="ansi-blue-fg">(</span>filename<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#34;w+b&#34;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   2233</span> 
+<span class="ansi-green-intense-fg ansi-bold">   2234</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">OSError</span>: [Errno 116] Stale file handle: &#39;StrsDropAndWidth.png&#39;</pre>
+</div>
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
 
 
 <div class="jp-RenderedImage jp-OutputArea-output ">
@@ -16296,6 +16191,75 @@ other Matplotlib process is running, remove this file and try again.</pre>
 
 
 <div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">OSError</span>                                   Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-1-8461c77d1fa5&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">     33</span>     <span class="ansi-red-fg">#</span>
+<span class="ansi-green-intense-fg ansi-bold">     34</span> ax<span class="ansi-blue-fg">.</span>legend<span class="ansi-blue-fg">(</span>frameon<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">False</span><span class="ansi-blue-fg">,</span>bbox_to_anchor<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">1.0</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> fontsize<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">16</span> <span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">---&gt; 35</span><span class="ansi-red-fg"> </span>plt<span class="ansi-blue-fg">.</span>savefig<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;StrsDropAndWidth.png&#39;</span><span class="ansi-blue-fg">,</span>dpi<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">75</span><span class="ansi-blue-fg">,</span>bbox_inches<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;tight&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     36</span> plt<span class="ansi-blue-fg">.</span>show<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/pyplot.py</span> in <span class="ansi-cyan-fg">savefig</span><span class="ansi-blue-fg">(*args, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">    857</span> <span class="ansi-green-fg">def</span> savefig<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    858</span>     fig <span class="ansi-blue-fg">=</span> gcf<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">--&gt; 859</span><span class="ansi-red-fg">     </span>res <span class="ansi-blue-fg">=</span> fig<span class="ansi-blue-fg">.</span>savefig<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    860</span>     fig<span class="ansi-blue-fg">.</span>canvas<span class="ansi-blue-fg">.</span>draw_idle<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>   <span class="ansi-red-fg"># need this if &#39;transparent=True&#39; to reset colors</span>
+<span class="ansi-green-intense-fg ansi-bold">    861</span>     <span class="ansi-green-fg">return</span> res
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/figure.py</span> in <span class="ansi-cyan-fg">savefig</span><span class="ansi-blue-fg">(self, fname, transparent, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">   2309</span>                 patch<span class="ansi-blue-fg">.</span>set_edgecolor<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;none&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   2310</span> 
+<span class="ansi-green-fg">-&gt; 2311</span><span class="ansi-red-fg">         </span>self<span class="ansi-blue-fg">.</span>canvas<span class="ansi-blue-fg">.</span>print_figure<span class="ansi-blue-fg">(</span>fname<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   2312</span> 
+<span class="ansi-green-intense-fg ansi-bold">   2313</span>         <span class="ansi-green-fg">if</span> transparent<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/backend_bases.py</span> in <span class="ansi-cyan-fg">print_figure</span><span class="ansi-blue-fg">(self, filename, dpi, facecolor, edgecolor, orientation, format, bbox_inches, pad_inches, bbox_extra_artists, backend, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">   2215</span>                     orientation<span class="ansi-blue-fg">=</span>orientation<span class="ansi-blue-fg">,</span>
+<span class="ansi-green-intense-fg ansi-bold">   2216</span>                     bbox_inches_restore<span class="ansi-blue-fg">=</span>_bbox_inches_restore<span class="ansi-blue-fg">,</span>
+<span class="ansi-green-fg">-&gt; 2217</span><span class="ansi-red-fg">                     **kwargs)
+</span><span class="ansi-green-intense-fg ansi-bold">   2218</span>             <span class="ansi-green-fg">finally</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   2219</span>                 <span class="ansi-green-fg">if</span> bbox_inches <span class="ansi-green-fg">and</span> restore_bbox<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/backend_bases.py</span> in <span class="ansi-cyan-fg">wrapper</span><span class="ansi-blue-fg">(*args, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1637</span>             kwargs<span class="ansi-blue-fg">.</span>pop<span class="ansi-blue-fg">(</span>arg<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1638</span> 
+<span class="ansi-green-fg">-&gt; 1639</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">return</span> func<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1640</span> 
+<span class="ansi-green-intense-fg ansi-bold">   1641</span>     <span class="ansi-green-fg">return</span> wrapper
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/backends/backend_agg.py</span> in <span class="ansi-cyan-fg">print_png</span><span class="ansi-blue-fg">(self, filename_or_obj, metadata, pil_kwargs, *args)</span>
+<span class="ansi-green-intense-fg ansi-bold">    510</span>         mpl.image.imsave(
+<span class="ansi-green-intense-fg ansi-bold">    511</span>             filename_or_obj<span class="ansi-blue-fg">,</span> self<span class="ansi-blue-fg">.</span>buffer_rgba<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> format<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#34;png&#34;</span><span class="ansi-blue-fg">,</span> origin<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#34;upper&#34;</span><span class="ansi-blue-fg">,</span>
+<span class="ansi-green-fg">--&gt; 512</span><span class="ansi-red-fg">             dpi=self.figure.dpi, metadata=metadata, pil_kwargs=pil_kwargs)
+</span><span class="ansi-green-intense-fg ansi-bold">    513</span> 
+<span class="ansi-green-intense-fg ansi-bold">    514</span>     <span class="ansi-green-fg">def</span> print_to_buffer<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/matplotlib/image.py</span> in <span class="ansi-cyan-fg">imsave</span><span class="ansi-blue-fg">(fname, arr, vmin, vmax, cmap, format, origin, dpi, metadata, pil_kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1609</span>         pil_kwargs<span class="ansi-blue-fg">.</span>setdefault<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;format&#34;</span><span class="ansi-blue-fg">,</span> format<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1610</span>         pil_kwargs<span class="ansi-blue-fg">.</span>setdefault<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;dpi&#34;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">(</span>dpi<span class="ansi-blue-fg">,</span> dpi<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">-&gt; 1611</span><span class="ansi-red-fg">         </span>image<span class="ansi-blue-fg">.</span>save<span class="ansi-blue-fg">(</span>fname<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>pil_kwargs<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1612</span> 
+<span class="ansi-green-intense-fg ansi-bold">   1613</span> 
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/PIL/Image.py</span> in <span class="ansi-cyan-fg">save</span><span class="ansi-blue-fg">(self, fp, format, **params)</span>
+<span class="ansi-green-intense-fg ansi-bold">   2230</span>                 fp <span class="ansi-blue-fg">=</span> builtins<span class="ansi-blue-fg">.</span>open<span class="ansi-blue-fg">(</span>filename<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#34;r+b&#34;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   2231</span>             <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 2232</span><span class="ansi-red-fg">                 </span>fp <span class="ansi-blue-fg">=</span> builtins<span class="ansi-blue-fg">.</span>open<span class="ansi-blue-fg">(</span>filename<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#34;w+b&#34;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   2233</span> 
+<span class="ansi-green-intense-fg ansi-bold">   2234</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">OSError</span>: [Errno 116] Stale file handle: &#39;StrsDropAndWidth.png&#39;</pre>
+</div>
+</div>
 
 <div class="jp-OutputArea-child">
 
