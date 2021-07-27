@@ -23,7 +23,7 @@ def makeOAR( EXEC_DIR, node, core, time, PYFIL ):
 	if EXEC == 'lmp_serial': 
 		print >> someFile, "$EXEC_DIR/%s < in.txt -echo screen -var OUT_PATH %s -var MEAM_library_DIR %s -var cutoff %s -var natom %s -var tstop %s"%( EXEC, OUT_PATH, MEAM_library_DIR, cutoff, natom, Tfinal )
 	elif EXEC == 'lmp_mpi':
-		print >> someFile, "mpirun -np %s $EXEC_DIR/%s < in.txt -echo screen -var OUT_PATH %s -var MEAM_library_DIR %s -var cutoff %s -var natom %s -var tstop %s"%( nThreads, EXEC, OUT_PATH, MEAM_library_DIR, cutoff, natom, Tfinal )
+		print >> someFile, "mpirun -np %s $EXEC_DIR/%s < in.txt -echo screen -var OUT_PATH %s -var MEAM_library_DIR %s -var cutoff %s -var natom %s -var tstop %s"%( nThreads*nNode, EXEC, OUT_PATH, MEAM_library_DIR, cutoff, natom, Tfinal )
 	someFile.close()										  
 
 
@@ -32,7 +32,8 @@ if __name__ == '__main__':
         import numpy as np
 
 	nruns	 = 1
-	nThreads = 32
+	nThreads = 12
+	nNode	 = 	3
 	jobname  = 'Natom25kQrate0.5'
 	EXEC_DIR = '/home/kamran.karimi1/Project/git/lammps2nd/lammps/src' #--- path for executable file
 	MEAM_library_DIR='/home/kamran.karimi1/Project/git/CrystalPlasticity/testRuns/dataFiles' #--- meam potential parameters
@@ -72,7 +73,7 @@ if __name__ == '__main__':
 		os.system( 'sbatch --partition=%s --mem=%s --time=%s --job-name %s.%s --output %s.%s.out --error %s.%s.err \
 						    --chdir %s -c %s -n %s %s/oarScript.sh >> jobID.txt'\
 						   % ( partition, mem, durtn, jobname, counter, jobname, counter, jobname, counter \
-						       , writPath, nThreads, 1, writPath ) ) # --- runs oarScript.sh! 
+						       , writPath, nThreads, nNode, writPath ) ) # --- runs oarScript.sh! 
 		counter += 1
 											 
 	os.system( 'mv jobID.txt %s' % ( os.getcwd() + '/%s' % ( jobname ) ) )
