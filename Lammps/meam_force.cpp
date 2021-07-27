@@ -1096,7 +1096,7 @@ double  ak, ro0k, rhoa2k;
         
        frhop[i] = 1.0;frhopp[i]=0.0;
         frhop[j] = 0.0;frhopp[j]=0.0;
-//	phi=0.0;phip=0.0;phipp=0.0;
+	phi=0.0;phip=0.0;phipp=0.0;
         dUdrij = phip * sij + frhop[i] * drho2dr1 + frhop[j] * drho2dr2; //--- Eq. 4.41(a)
         ddUddrij = phipp * sij + ( frhopp[i] * drho2dr1 * drho2dr1 + frhop[i] * ddrho2drdr1 ) + //--- 1st deriv. of Eq. 4.41(a) wrt r
                                  ( frhopp[j] * drho2dr2 * drho2dr2 + frhop[j] * ddrho2drdr2 );  
