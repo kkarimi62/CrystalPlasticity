@@ -33,7 +33,7 @@ if __name__ == '__main__':
 
 	nruns	 = 1
 	nThreads = 32
-	jobname  = 'Natom250kQrate0.5'
+	jobname  = 'Natom25kQrate0.5'
 	EXEC_DIR = '/home/kamran.karimi1/Project/git/lammps2nd/lammps/src' #--- path for executable file
 	MEAM_library_DIR='/home/kamran.karimi1/Project/git/CrystalPlasticity/testRuns/dataFiles' #--- meam potential parameters
 	PYFIL = '/home/kamran.karimi1/Project/git/CrystalPlasticity/py'
@@ -41,9 +41,9 @@ if __name__ == '__main__':
 	durtn = '167:59:59'
 	SCRATCH = True
 	mem = '8gb'
-	partition = 'cpu2019' #'cpu2039' #'parallel' #'single' #'parallel'
+	partition = 'parallel' #'cpu2019' #'cpu2039' #'parallel' #'single' #'parallel'
 	#--- sim. parameters
-	natom = 50000 * 5  
+	natom = 50000 * 0.5  
 	Tfinal = 3000 #--- melt. temp.	 
 	ntypes = 5
         cutoff = 3.58
