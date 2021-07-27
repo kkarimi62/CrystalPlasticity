@@ -36,8 +36,8 @@ if __name__ == '__main__':
 
 	nruns	 = 1
 	nThreads = 32
-	jobname  = 'Natom250kQrate0.5Tstop1933Srate-5'
-	sourcePath = os.getcwd() + '/Natom250kQrate0.5Tstop1933' #--- must be different than sourcePath
+	jobname  = 'Natom250kQrate0.5Tstop1800Srate-5'
+	sourcePath = os.getcwd() + '/Natom250kQrate0.5Tstop1800' #--- must be different than sourcePath
 	EXEC_DIR = '/home/kamran.karimi1/Project/git/lammps2nd/lammps/src' #--- path for executable file
 	MEAM_library_DIR='/home/kamran.karimi1/Project/git/CrystalPlasticity/testRuns/dataFiles' #--- meam potential parameters
 	PYFIL = '/home/kamran.karimi1/Project/git/CrystalPlasticity/py'
