@@ -14969,7 +14969,7 @@ a.anchor-link {
     <span class="c1">#</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">strainDump</span><span class="p">),</span> <span class="n">Virial</span><span class="p">,</span> <span class="s1">&#39;-o&#39;</span><span class="p">)</span>
     <span class="c1">#</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">fileNamee</span><span class="p">[:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.png&#39;</span><span class="p">,</span><span class="n">dpi</span><span class="o">=</span><span class="mi">75</span><span class="p">,</span><span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+<span class="c1">#    plt.savefig(fileNamee[:-4]+&#39;.png&#39;,dpi=75,bbox_inches=&#39;tight&#39;)</span>
     <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="s1">&#39;loadCurve.txt&#39;</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">strainDump</span><span class="p">),</span> <span class="n">Virial</span><span class="p">])</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 <span class="c1">#</span>
@@ -15147,8 +15147,8 @@ a.anchor-link {
     <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;FeNi, Qrate=0.5 K/ps, Natom=50K&#39;</span><span class="p">)</span>
     <span class="c1">#</span>
     <span class="k">for</span> <span class="n">GlassType</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">marker</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">fillstyle</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span> <span class="p">[</span> 
-     <span class="s1">&#39;6&#39;</span><span class="c1">#,&#39;5&#39;,&#39;6&#39;,</span>
-     <span class="p">],[</span><span class="s1">&#39;$\dot\gamma=10^{-4}$ 1/ps&#39;</span><span class="p">,</span><span class="sa">r</span><span class="s1">&#39;$0.5\times 10^{-4}$&#39;</span><span class="p">,</span><span class="sa">r</span><span class="s1">&#39;$0.25\times 10^{-4}$&#39;</span><span class="p">],</span><span class="n">markers</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="n">fillstyles</span> <span class="p">)):</span>
+     <span class="s1">&#39;4&#39;</span><span class="p">,</span><span class="s1">&#39;5&#39;</span><span class="c1">#,&#39;6&#39;,</span>
+     <span class="p">],[</span><span class="s1">&#39;$\dot\gamma=10^{-4}$ 1/ps&#39;</span><span class="p">,</span><span class="sa">r</span><span class="s1">&#39;$10^{-5}$&#39;</span><span class="p">,</span><span class="sa">r</span><span class="s1">&#39;$10^{-6}$&#39;</span><span class="p">],</span><span class="n">markers</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="n">fillstyles</span> <span class="p">)):</span>
 
         <span class="n">sarr</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/test11thMelt2ndNatom50kQrate1Srate</span><span class="si">%s</span><span class="s1">Strs/Run0/loadCurve.txt&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="n">GlassType</span><span class="p">))</span>
         <span class="c1">#--- fliter</span>
@@ -15206,8 +15206,8 @@ a.anchor-link {
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
 <span class="ansi-red-fg">OSError</span>                                   Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-1-a99b661c8bfb&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-intense-fg ansi-bold">     23</span>      ],[&#39;$\dot\gamma=10^{-4}$ 1/ps&#39;,r&#39;$0.5\times 10^{-4}$&#39;,r&#39;$0.25\times 10^{-4}$&#39;],markers, colors, fillstyles )):
+<span class="ansi-green-fg">&lt;ipython-input-1-b7e4b33cc580&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">     23</span>      ],[&#39;$\dot\gamma=10^{-4}$ 1/ps&#39;,r&#39;$10^{-5}$&#39;,r&#39;$10^{-6}$&#39;],markers, colors, fillstyles )):
 <span class="ansi-green-intense-fg ansi-bold">     24</span> 
 <span class="ansi-green-fg">---&gt; 25</span><span class="ansi-red-fg">         </span>sarr  <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>loadtxt<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;%s/test11thMelt2ndNatom50kQrate1Srate%sStrs/Run0/loadCurve.txt&#39;</span><span class="ansi-blue-fg">%</span><span class="ansi-blue-fg">(</span>path<span class="ansi-blue-fg">,</span>GlassType<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">     26</span>         <span class="ansi-red-fg">#--- fliter</span>
@@ -15234,7 +15234,7 @@ a.anchor-link {
 <span class="ansi-green-intense-fg ansi-bold">    625</span> 
 <span class="ansi-green-intense-fg ansi-bold">    626</span> 
 
-<span class="ansi-red-fg">OSError</span>: /Users/Home/Desktop/Tmp/txt/git/CrystalPlasticity/postprocess/test11thMelt2ndNatom50kQrate1Srate6Strs/Run0/loadCurve.txt not found.</pre>
+<span class="ansi-red-fg">OSError</span>: /Users/Home/Desktop/Tmp/txt/git/CrystalPlasticity/postprocess/test11thMelt2ndNatom50kQrate1Srate4Strs/Run0/loadCurve.txt not found.</pre>
 </div>
 </div>
 
