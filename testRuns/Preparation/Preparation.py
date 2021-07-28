@@ -26,7 +26,6 @@ def makeOAR( EXEC_DIR, node, core, time, PYFIL ):
 		print >> someFile, "mpirun -np %s $EXEC_DIR/%s < in.txt -echo screen -var OUT_PATH %s -var MEAM_library_DIR %s -var cutoff %s -var natom %s -var tstop %s"%( nThreads*nNode, EXEC, OUT_PATH, MEAM_library_DIR, cutoff, natom, Tfinal )
 	elif EXEC == 'lmp_kokkos_cuda':
 		print >> someFile, "mpirun -np %s $EXEC_DIR/%s -k on g 1 t 1 -sf kk -pk kokkos binsize 2.8 comm device < in.txt -echo screen -var OUT_PATH %s -var MEAM_library_DIR %s -var cutoff %s -var natom %s -var tstop %s"%( nThreads*nNode, EXEC, OUT_PATH, MEAM_library_DIR, cutoff, natom, Tfinal )
-	someFile.close()										  
 	elif EXEC == 'lmp_gpu':
 		print >> someFile, "mpirun -np %s $EXEC_DIR/%s -sf gpu -pk gpu 2 < in.txt -echo screen -var OUT_PATH %s -var MEAM_library_DIR %s -var cutoff %s -var natom %s -var tstop %s"%( nThreads*nNode, EXEC, OUT_PATH, MEAM_library_DIR, cutoff, natom, Tfinal )
 	someFile.close()										  
