@@ -27,6 +27,9 @@ def makeOAR( EXEC_DIR, node, core, time, PYFIL ):
 	elif EXEC == 'lmp_kokkos_cuda':
 		print >> someFile, "mpirun -np %s $EXEC_DIR/%s -k on g 1 t 1 -sf kk -pk kokkos binsize 2.8 comm device < in.txt -echo screen -var OUT_PATH %s -var MEAM_library_DIR %s -var cutoff %s -var natom %s -var tstop %s"%( nThreads*nNode, EXEC, OUT_PATH, MEAM_library_DIR, cutoff, natom, Tfinal )
 	someFile.close()										  
+	elif EXEC == 'lmp_gpu':
+		print >> someFile, "mpirun -np %s $EXEC_DIR/%s -sf gpu -pk gpu 2 < in.txt -echo screen -var OUT_PATH %s -var MEAM_library_DIR %s -var cutoff %s -var natom %s -var tstop %s"%( nThreads*nNode, EXEC, OUT_PATH, MEAM_library_DIR, cutoff, natom, Tfinal )
+	someFile.close()										  
 
 
 if __name__ == '__main__':
@@ -35,18 +38,18 @@ if __name__ == '__main__':
 
 	nruns	 = 1
 	nThreads = 12
-	nNode	 = 	3
-	jobname  = 'Natom25kQrate0.5'
+	nNode	 = 	1
+	jobname  = 'gpuBenchmark' #'Natom25kQrate0.5'
 	EXEC_DIR = '/home/kamran.karimi1/Project/git/lammps2nd/lammps/src' #--- path for executable file
 	MEAM_library_DIR='/home/kamran.karimi1/Project/git/CrystalPlasticity/testRuns/dataFiles' #--- meam potential parameters
 	PYFIL = '/home/kamran.karimi1/Project/git/CrystalPlasticity/py'
-	EXEC = 'lmp_mpi' #'lmp_serial'
-	durtn = '167:59:59'
-	SCRATCH = True
+	EXEC = 'lmp_gpu' #'lmp_mpi' #'lmp_serial'
+	durtn = '00:15:00' #'167:59:59'
+	SCRATCH = None
 	mem = '8gb'
-	partition = 'parallel' #'cpu2019' #'cpu2039' #'parallel' #'single' #'parallel'
+	partition = ['gpu-v100','parallel','cpu2019','single'][0]
 	#--- sim. parameters
-	natom = 50000 * 0.5  
+	natom = 50000  
 	Tfinal = 3000 #--- melt. temp.	 
 	ntypes = 5
         cutoff = 3.58

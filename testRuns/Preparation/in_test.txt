@@ -13,7 +13,7 @@ variable TdotMelt 	equal 50.0   #--- melting rate
 variable TdotQuench equal 0.002*${TdotMelt}   #--- quench rate
 variable Pinit	equal 1.0132  #--- number of time steps
 variable Nfreq	equal 10000000000  #--- number of time steps
-variable tEquilibrate	equal 100*${tDampTemp}  #--- equilibration time
+variable tEquilibrate	equal 100*${Dt}  #--- equilibration time
 variable tDampPress 	equal ${tDampTemp}   #--- barostat equilibration time scale
 
 #-----------------------------
@@ -89,16 +89,16 @@ timestep ${Dt}
 dump      	1 all custom ${Nfreq} ${OUT_PATH}/xyz.dump id type x y z 
 
 #--- minimization
-min_style 	cg
-minimize	1.0e-08 0.0 1000 100000
+#min_style 	cg
+#minimize	1.0e-08 0.0 1000 100000
 
 #-----------------------------
 #--- thermalize to room temperature
 #-----------------------------
-#velocity	all	create	${Tinit} 39849 mom yes rot yes dist gaussian
-#fix 		fix_nvt	all	nvt	temp	${Tinit}	${Tinit}	${tDampTemp}	drag	1.0
-#run			${nRunEquilibrate}
-#unfix		fix_nvt
+velocity	all	create	${Tinit} 39849 mom yes rot yes dist gaussian
+fix 		fix_nvt	all	nvt	temp	${Tinit}	${Tinit}	${tDampTemp}	drag	1.0
+run			${nRunEquilibrate}
+unfix		fix_nvt
 
 #-----------------------------
 #--- melt & quench
