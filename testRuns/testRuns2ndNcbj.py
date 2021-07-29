@@ -39,7 +39,7 @@ if __name__ == '__main__':
 #		os.system( 'cp %s/library_CoNiCrFeMn.meam %s ' % (sourcePath, writPath) ) #--- lammps script: periodic x, pxx, vy, load
 		#---
 		#---
-		makeOAR( path, 1, nThreads, durtn) # --- make oar script
+		makeOAR( EXEC_DIR, 1, nThreads, durtn) # --- make oar script
 		os.system( 'chmod +x oarScript.sh; mv oarScript.sh %s' % ( writPath) ) # --- create folder & mv oar scrip & cp executable
 		os.system( 'qsub -q %s -l nodes=%s:ppn=%s -N %s.%s -o %s -e %s -d %s  %s/oarScript.sh'\
 			%( resources['partition'], resources['nodes'], resources['ppn'], jobname, counter, writPath, writPath, writPath , writPath ) ) # --- runs oarScript.sh!
