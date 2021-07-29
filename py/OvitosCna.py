@@ -8,6 +8,7 @@ from ovito.vis import Viewport, TachyonRenderer, RenderSettings
 
 import math
 import pdb
+import sys
 
 path='.' #'/Users/Home/Desktop/Tmp/txt/scratch/10561052'
 InputFile = sys.argv[1] 

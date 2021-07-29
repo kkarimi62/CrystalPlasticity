@@ -2,12 +2,8 @@ def makeOAR( EXEC_DIR, node, core, time):
 	someFile = open( 'oarScript.sh', 'w' )
 	print >> someFile, '#!/bin/bash\n'
 	print >> someFile, 'EXEC_DIR=%s\n' %( EXEC_DIR )
-#	print >> someFile, 'module load mpich/3.2.1-gnu'
+	print >> someFile, 'module load gcc/9.3.0'
 
-	#--- run python script 
-#	OUT_PATH = '.'
-#	if SCRATCH:
-#		OUT_PATH = '/scratch/${SLURM_JOB_ID}'
 	print >> someFile, "ovitos $EXEC_DIR/OvitosCna.py %s" %( args ) #--- cna analysis in ovito!
 	someFile.close()										  
 
@@ -26,7 +22,6 @@ if __name__ == '__main__':
 	resources = {'mem':'16gb', 'partition':'o12h','nodes':1,'ppn':1}
 	#--- update data.txt and lammps script
 	#---
-#	os.system( 'rm -rf %s' % jobname ) #--- rm existing
 	os.system( 'rm jobID.txt' )
 	# --- loop for submitting multiple jobs
 	counter = 0
