@@ -1,4 +1,4 @@
-def makeOAR( EXEC_DIR, node, core, time, PYFIL ):
+def makeOAR( EXEC_DIR, node, core, time):
 	someFile = open( 'oarScript.sh', 'w' )
 	print >> someFile, '#!/bin/bash\n'
 	print >> someFile, 'EXEC_DIR=%s\n' %( EXEC_DIR )
@@ -36,7 +36,7 @@ if __name__ == '__main__':
 #		os.system( 'mkdir -p %s' % ( writPath ) ) # --- create folder
 		if irun == 0: #--- cp to directory
 			path=os.getcwd() + '/%s' % ( jobname)
-#			os.system( 'cp %s/%s %s' % ( EXEC_DIR, PYFIL, path ) ) # --- create folder & mv oar scrip & cp executable
+#			os.system( 'cp %s/%s %s' % ( EXEC_DIR, , path ) ) # --- create folder & mv oar scrip & cp executable
 		#---
 #		os.system( 'cp shearMG300-11.in %s/in.txt ' % writPath ) #--- lammps script: periodic x, pxx, vy, load
 #		os.system( 'cp %s/CoNiFe_glass_300.data %s ' % (sourcePath, writPath) ) #--- lammps script: periodic x, pxx, vy, load
@@ -44,7 +44,7 @@ if __name__ == '__main__':
 #		os.system( 'cp %s/library_CoNiCrFeMn.meam %s ' % (sourcePath, writPath) ) #--- lammps script: periodic x, pxx, vy, load
 		#---
 		#---
-		makeOAR( path, 1, nThreads, durtn, PYFIL ) # --- make oar script
+		makeOAR( path, 1, nThreads, durtn) # --- make oar script
 		os.system( 'chmod +x oarScript.sh; mv oarScript.sh %s' % ( writPath) ) # --- create folder & mv oar scrip & cp executable
 		os.system( 'sbatch --partition=%s --time=%s --job-name %s.%s --output %s.%s.out --error %s.%s.err \
 						    --chdir %s -c %s -n %s %s/oarScript.sh >> jobID.txt'\
