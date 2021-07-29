@@ -14,11 +14,11 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argv2nd):
 if __name__ == '__main__':
 	import os
 #
-	nruns	 = range(1)
-	jobname  = 'test11thMelt2ndNatom50kQrate1Srate6Strs' 
-	readPath = os.getcwd() + '/../testRuns/Preparation/test11thMelt2ndNatom50kQrate1Srate6' # --- source
+	nruns	 = range(3)
+	jobname  = 'CnaFeNi' 
+	readPath = os.getcwd() + '/../testRuns/glassFeNi' #--- source
 	EXEC_DIR = '.'     #--- path for executable file
-	durtn = '00:14:59'
+	durtn = '00:29:59'
 	mem = '16gb'
 	partition = 'bigmem' #'cpu2019' #'bigmem' #'single' #'parallel' #'single'
 	argv = "path=%s"%(readPath) #--- don't change! 
@@ -28,7 +28,7 @@ if __name__ == '__main__':
 		1:'analyzePlasticity.ipynb',
 		2:'test2nd.ipynb',
 		}
-	keyno = 2
+	keyno = 1
 #---
 #---
 	PYFIL = PYFILdic[ keyno ] 
