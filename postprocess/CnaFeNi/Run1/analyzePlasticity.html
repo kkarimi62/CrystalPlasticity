@@ -16648,7 +16648,7 @@ a.anchor-link {
         <span class="k">for</span> <span class="n">typee</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">):</span>
             <span class="n">typee</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">typee</span><span class="p">)</span>
             <span class="n">count</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
-            <span class="n">Count</span><span class="p">[</span><span class="n">iitime</span><span class="p">,</span><span class="n">typee</span><span class="p">]</span> <span class="o">=</span> <span class="n">count</span>
+            <span class="n">Count</span><span class="p">[</span><span class="n">indxx</span><span class="p">,</span><span class="n">typee</span><span class="p">]</span> <span class="o">=</span> <span class="n">count</span>
         <span class="c1">#</span>
         <span class="c1">#--- strain</span>
         <span class="n">dx</span><span class="o">=</span><span class="n">Box</span><span class="p">[</span><span class="n">iitime</span><span class="p">]</span><span class="o">.</span><span class="n">CellVector</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">box0</span><span class="o">.</span><span class="n">CellVector</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
@@ -16679,15 +16679,15 @@ a.anchor-link {
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">IndexError</span>                                Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-1-52fd66b7e5c7&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-intense-fg ansi-bold">     12</span>             typee <span class="ansi-blue-fg">=</span> int<span class="ansi-blue-fg">(</span>typee<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     13</span>             count <span class="ansi-blue-fg">=</span> int<span class="ansi-blue-fg">(</span>count<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">---&gt; 14</span><span class="ansi-red-fg">             </span>Count<span class="ansi-blue-fg">[</span>iitime<span class="ansi-blue-fg">,</span>typee<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> count
+<span class="ansi-red-fg">KeyError</span>                                  Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-1-a87b44752106&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
 <span class="ansi-green-intense-fg ansi-bold">     15</span>         <span class="ansi-red-fg">#</span>
 <span class="ansi-green-intense-fg ansi-bold">     16</span>         <span class="ansi-red-fg">#--- strain</span>
+<span class="ansi-green-fg">---&gt; 17</span><span class="ansi-red-fg">         </span>dx<span class="ansi-blue-fg">=</span>Box<span class="ansi-blue-fg">[</span>iitime<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">.</span>CellVector<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">-</span>box0<span class="ansi-blue-fg">.</span>CellVector<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span>
+<span class="ansi-green-intense-fg ansi-bold">     18</span>         l1<span class="ansi-blue-fg">=</span>Box<span class="ansi-blue-fg">[</span>iitime<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">.</span>CellVector<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span>
+<span class="ansi-green-intense-fg ansi-bold">     19</span>         ebulk<span class="ansi-blue-fg">[</span>indxx<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> dx<span class="ansi-blue-fg">/</span>l1
 
-<span class="ansi-red-fg">IndexError</span>: index 10000 is out of bounds for axis 0 with size 201</pre>
+<span class="ansi-red-fg">KeyError</span>: 10000</pre>
 </div>
 </div>
 
