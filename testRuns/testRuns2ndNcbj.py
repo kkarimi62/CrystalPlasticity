@@ -20,7 +20,7 @@ if __name__ == '__main__':
 	jobname  = 'glassCoNiFe' #--- existing directory
 	args = 'CoNiFe_glass.dump CoNiFe_Cna.xyz' #--- input, output
 	sourcePath = os.getcwd() + '/dataFiles'
-	EXEC_DIR = '/home/kamran.karimi1/Project/git/CrystalPlasticity/py' #--- path for executable file
+	EXEC_DIR = '/mnt/home/kkarimi/Project/git/CrystalPlasticity/py' #--- path for executable file
 	durtn = '29:59:59'
 	SCRATCH = None
 	resources = {'mem':'16gb', 'partition':'o12h','nodes':1,'ppn':1}
