@@ -8,7 +8,7 @@ def makeOAR( EXEC_DIR, node, core, time, PYFIL ):
 #	OUT_PATH = '.'
 #	if SCRATCH:
 #		OUT_PATH = '/scratch/${SLURM_JOB_ID}'
-	print >> someFile, "ovitos $EXEC_DIR/OvitosCna.py %s" %( args )
+	print >> someFile, "ovitos $EXEC_DIR/OvitosCna.py %s" %( args ) #--- cna analysis in ovito!
 	someFile.close()										  
 
 
