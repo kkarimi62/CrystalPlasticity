@@ -17,8 +17,8 @@ if __name__ == '__main__':
 
 	nruns	 = 1
 	nThreads = 1
-	jobname  = 'glassFeNi' #--- existing directory
-	args = 'FeNi_glass.dump FeNi_Cna.xyz' #--- input, output
+	jobname  = 'glassCoNiFe' #--- existing directory
+	args = 'CoNiFe_glass.dump CoNiFe_Cna.xyz' #--- input, output
 	sourcePath = os.getcwd() + '/dataFiles'
 	EXEC_DIR = '/home/kamran.karimi1/Project/git/CrystalPlasticity/py' #--- path for executable file
 	durtn = '29:59:59'
@@ -39,7 +39,7 @@ if __name__ == '__main__':
 #			os.system( 'cp %s/%s %s' % ( EXEC_DIR, PYFIL, path ) ) # --- create folder & mv oar scrip & cp executable
 		#---
 #		os.system( 'cp shearMG300-11.in %s/in.txt ' % writPath ) #--- lammps script: periodic x, pxx, vy, load
-#		os.system( 'cp %s/FeNi_glass_300.data %s ' % (sourcePath, writPath) ) #--- lammps script: periodic x, pxx, vy, load
+#		os.system( 'cp %s/CoNiFe_glass_300.data %s ' % (sourcePath, writPath) ) #--- lammps script: periodic x, pxx, vy, load
 #		os.system( 'cp %s/parameters.meam %s ' % (sourcePath, writPath) ) #--- lammps script: periodic x, pxx, vy, load
 #		os.system( 'cp %s/library_CoNiCrFeMn.meam %s ' % (sourcePath, writPath) ) #--- lammps script: periodic x, pxx, vy, load
 		#---
