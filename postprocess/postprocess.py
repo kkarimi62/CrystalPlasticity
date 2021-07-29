@@ -16,6 +16,7 @@ if __name__ == '__main__':
 #
 	nruns	 = [1,2] #range(3)
 	jobname  = 'CnaFeNi' 
+	DeleteExistingFolder = False
 	readPath = os.getcwd() + '/../testRuns/glassFeNi' #--- source
 	EXEC_DIR = '.'     #--- path for executable file
 	durtn = '00:29:59'
@@ -34,7 +35,8 @@ if __name__ == '__main__':
 	PYFIL = PYFILdic[ keyno ] 
 	#--- update argV
 	#---
-	os.system( 'rm -rf %s' % jobname ) # --- rm existing
+	if DeleteExistingFolder:
+		os.system( 'rm -rf %s' % jobname ) # --- rm existing
 	# --- loop for submitting multiple jobs
 	counter = 0
 	for counter in nruns:
