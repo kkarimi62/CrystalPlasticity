@@ -14,7 +14,7 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argv2nd):
 if __name__ == '__main__':
 	import os
 #
-	nruns	 = range(3)
+	nruns	 = [1,2] #range(3)
 	jobname  = 'CnaFeNi' 
 	readPath = os.getcwd() + '/../testRuns/glassFeNi' #--- source
 	EXEC_DIR = '.'     #--- path for executable file
