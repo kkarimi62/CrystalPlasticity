@@ -16566,7 +16566,7 @@ a.anchor-link {
     <span class="n">ntime</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
     <span class="n">ebulk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="n">ntime</span> <span class="p">)</span>
     <span class="n">Count</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">ntime</span><span class="o">*</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">ntime</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
-    <span class="k">for</span> <span class="n">iitime</span><span class="p">,</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">times</span><span class="p">,</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">))):</span>
+    <span class="k">for</span> <span class="n">iitime</span><span class="p">,</span> <span class="n">indxx</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">times</span><span class="p">,</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">))):</span>
     <span class="c1">#</span>
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cna</span><span class="p">[</span><span class="n">iitime</span><span class="p">]</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)[</span><span class="s1">&#39;StructureType&#39;</span><span class="p">],</span> <span class="n">return_counts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1">#bug !!! len(y)!=5</span>
         <span class="c1">#</span>
@@ -16604,15 +16604,15 @@ a.anchor-link {
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-1-3c5f0b88bdfc&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-intense-fg ansi-bold">     17</span>         dx<span class="ansi-blue-fg">=</span>Box<span class="ansi-blue-fg">[</span>iitime<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">.</span>CellVector<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">-</span>box0<span class="ansi-blue-fg">.</span>CellVector<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span>
-<span class="ansi-green-intense-fg ansi-bold">     18</span>         l1<span class="ansi-blue-fg">=</span>Box<span class="ansi-blue-fg">[</span>iitime<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">.</span>CellVector<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span>
-<span class="ansi-green-fg">---&gt; 19</span><span class="ansi-red-fg">         </span>ebulk<span class="ansi-blue-fg">[</span>indxx<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> dx<span class="ansi-blue-fg">/</span>l1
-<span class="ansi-green-intense-fg ansi-bold">     20</span> 
-<span class="ansi-green-intense-fg ansi-bold">     21</span>     <span class="ansi-red-fg">#--- save</span>
+<span class="ansi-red-fg">IndexError</span>                                Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-1-52fd66b7e5c7&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">     12</span>             typee <span class="ansi-blue-fg">=</span> int<span class="ansi-blue-fg">(</span>typee<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     13</span>             count <span class="ansi-blue-fg">=</span> int<span class="ansi-blue-fg">(</span>count<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">---&gt; 14</span><span class="ansi-red-fg">             </span>Count<span class="ansi-blue-fg">[</span>iitime<span class="ansi-blue-fg">,</span>typee<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> count
+<span class="ansi-green-intense-fg ansi-bold">     15</span>         <span class="ansi-red-fg">#</span>
+<span class="ansi-green-intense-fg ansi-bold">     16</span>         <span class="ansi-red-fg">#--- strain</span>
 
-<span class="ansi-red-fg">NameError</span>: name &#39;indxx&#39; is not defined</pre>
+<span class="ansi-red-fg">IndexError</span>: index 10000 is out of bounds for axis 0 with size 201</pre>
 </div>
 </div>
 
