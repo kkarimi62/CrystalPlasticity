@@ -8,7 +8,7 @@ def makeOAR( EXEC_DIR, node, core, time, PYFIL ):
 #	OUT_PATH = '.'
 #	if SCRATCH:
 #		OUT_PATH = '/scratch/${SLURM_JOB_ID}'
-	print >> someFile, "python $EXEC_DIR/pyscript.py %s" %( args )
+	print >> someFile, "ovitos $EXEC_DIR/OvitosCna.py %s" %( args )
 	someFile.close()										  
 
 
