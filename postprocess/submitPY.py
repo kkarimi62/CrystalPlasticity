@@ -6,7 +6,7 @@ if __name__ == '__main__':
 	lnums = [ 18, 20 ]
 	string=open('postprocess.py').readlines() #--- python script
 	#---
-     PHI = [  'FeNi',
+    PHI = [  'FeNi',
               'CoNiFe',
               'CoNiCrFe',
               'CoCrFeMn',
