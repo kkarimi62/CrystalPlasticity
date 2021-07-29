@@ -2,7 +2,7 @@ def makeOAR( EXEC_DIR, node, core, time):
 	someFile = open( 'oarScript.sh', 'w' )
 	print >> someFile, '#!/bin/bash\n'
 	print >> someFile, 'EXEC_DIR=%s\n' %( EXEC_DIR )
-	print >> someFile, 'module load mpich/3.2.1-gnu'
+#	print >> someFile, 'module load mpich/3.2.1-gnu'
 
 	#--- run python script 
 #	OUT_PATH = '.'
@@ -23,7 +23,7 @@ if __name__ == '__main__':
 	EXEC_DIR = '/home/kamran.karimi1/Project/git/CrystalPlasticity/py' #--- path for executable file
 	durtn = '29:59:59'
 	SCRATCH = None
-	partition = 'single' #'parallel'
+	resources = {'mem':'16gb', 'partition':'o12h','nodes':1,'ppn':1}
 	#--- update data.txt and lammps script
 	#---
 #	os.system( 'rm -rf %s' % jobname ) #--- rm existing
@@ -46,10 +46,8 @@ if __name__ == '__main__':
 		#---
 		makeOAR( path, 1, nThreads, durtn) # --- make oar script
 		os.system( 'chmod +x oarScript.sh; mv oarScript.sh %s' % ( writPath) ) # --- create folder & mv oar scrip & cp executable
-		os.system( 'sbatch --partition=%s --time=%s --job-name %s.%s --output %s.%s.out --error %s.%s.err \
-						    --chdir %s -c %s -n %s %s/oarScript.sh >> jobID.txt'\
-						   % ( partition, durtn, jobname, counter, jobname, counter, jobname, counter \
-						       , writPath, nThreads, 1, writPath ) ) # --- runs oarScript.sh! 
+		os.system( 'qsub -q %s -l nodes=%s:ppn=%s -N %s.%s -o %s -e %s -d %s  %s/oarScript.sh'\
+			%( resources['partition'], resources['nodes'], resources['ppn'], jobname, counter, writPath, writPath, writPath , writPath ) ) # --- runs oarScript.sh!
 		counter += 1
 											 
 	os.system( 'mv jobID.txt %s' % ( os.getcwd() + '/%s' % ( jobname ) ) )
