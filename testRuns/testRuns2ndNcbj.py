@@ -2,7 +2,7 @@ def makeOAR( EXEC_DIR, node, core, time):
 	someFile = open( 'oarScript.sh', 'w' )
 	print >> someFile, '#!/bin/bash\n'
 	print >> someFile, 'EXEC_DIR=%s\n' %( EXEC_DIR )
-	print >> someFile, 'module load gcc/9.3.0'
+	print >> someFile, 'module unload gcc/4.6.3;module load gcc/9.3.0'
 
 	print >> someFile, "ovitos $EXEC_DIR/OvitosCna.py %s" %( args ) #--- cna analysis in ovito!
 	someFile.close()										  
