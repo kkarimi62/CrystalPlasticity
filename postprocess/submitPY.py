@@ -6,12 +6,12 @@ if __name__ == '__main__':
 	lnums = [ 18, 20 ]
 	string=open('postprocess.py').readlines() #--- python script
 	#---
-    PHI = [  'FeNi',
-              'CoNiFe',
-              'CoNiCrFe',
-              'CoCrFeMn',
-              'CoNiCrFeMn',
-              'Co5Cr5Fe40Mn27Ni26']
+	PHI = [	 'FeNi', 
+             'CoNiFe', 
+             'CoNiCrFe',
+             'CoCrFeMn',
+             'CoNiCrFeMn',
+             'Co5Cr5Fe40Mn27Ni26']
 
 #	PHI=range(0,2000000+10000,4*10000) 
 	nphi = len(PHI)
