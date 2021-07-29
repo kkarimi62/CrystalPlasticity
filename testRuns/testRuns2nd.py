@@ -15,7 +15,7 @@ def makeOAR( EXEC_DIR, node, core, time, PYFIL ):
 if __name__ == '__main__':
 	import os
 
-	nruns	 = 1
+	nruns	 = 3
 	nThreads = 1
 	jobname  = 'glassCoNiFe' #--- existing directory
 	args = 'CoNiFe_glass.dump CoNiFe_Cna.xyz' #--- input, output
