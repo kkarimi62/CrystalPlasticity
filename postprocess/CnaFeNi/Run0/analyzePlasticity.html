@@ -16561,7 +16561,7 @@ a.anchor-link {
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">CommonNeighAnl</span> <span class="ow">and</span> <span class="n">TimeSeries</span><span class="p">:</span>
-    <span class="n">times</span> <span class="o">=</span> <span class="n">cna</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+    <span class="n">times</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cna</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
     <span class="n">times</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
     <span class="n">ntime</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
     <span class="n">ebulk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="n">ntime</span> <span class="p">)</span>
@@ -16603,15 +16603,15 @@ a.anchor-link {
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">AttributeError</span>                            Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-1-9bb5dc98d66a&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-green-fg">if</span> CommonNeighAnl <span class="ansi-green-fg">and</span> TimeSeries<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">      2</span>     times <span class="ansi-blue-fg">=</span> cna<span class="ansi-blue-fg">.</span>keys<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">----&gt; 3</span><span class="ansi-red-fg">     </span>times<span class="ansi-blue-fg">.</span>sort<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      4</span>     ntime <span class="ansi-blue-fg">=</span> len<span class="ansi-blue-fg">(</span>times<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      5</span>     ebulk <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>zeros<span class="ansi-blue-fg">(</span> ntime <span class="ansi-blue-fg">)</span>
+<span class="ansi-red-fg">IndexError</span>                                Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-1-4ce4e8273e51&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">     11</span>         <span class="ansi-green-fg">for</span> typee <span class="ansi-green-fg">in</span> x<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">     12</span>             typee <span class="ansi-blue-fg">=</span> int<span class="ansi-blue-fg">(</span>typee<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">---&gt; 13</span><span class="ansi-red-fg">             </span>Count<span class="ansi-blue-fg">[</span>iitime<span class="ansi-blue-fg">,</span>typee<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> y<span class="ansi-blue-fg">[</span>typee<span class="ansi-blue-fg">]</span>
+<span class="ansi-green-intense-fg ansi-bold">     14</span>         <span class="ansi-red-fg">#</span>
+<span class="ansi-green-intense-fg ansi-bold">     15</span>         <span class="ansi-red-fg">#--- strain</span>
 
-<span class="ansi-red-fg">AttributeError</span>: &#39;dict_keys&#39; object has no attribute &#39;sort&#39;</pre>
+<span class="ansi-red-fg">IndexError</span>: index 4 is out of bounds for axis 0 with size 4</pre>
 </div>
 </div>
 
