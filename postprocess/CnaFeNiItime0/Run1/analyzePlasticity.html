@@ -14790,7 +14790,7 @@ a.anchor-link {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h1 id="Parameters">Parameters<a class="anchor-link" href="#Parameters">&#182;</a></h1>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
@@ -14802,9 +14802,11 @@ a.anchor-link {
     <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">var</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">)</span>
     <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
-<span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">)</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">)</span> <span class="c1">#--- don&#39;t comment!</span>
+
+<span class="c1">#--- uncomment if modified in &#39;submitPY.py&#39;   </span>
 <span class="n">itime</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;itime&#39;</span><span class="p">))</span>
-<span class="n">indx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;indx&#39;</span><span class="p">))</span>
+<span class="c1">#indx = int(os.environ.get(&#39;indx&#39;))</span>
 </pre></div>
 
      </div>
@@ -14812,37 +14814,7 @@ a.anchor-link {
 </div>
 </div>
 
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">ValueError</span>                                Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-1-21625ae1890c&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-intense-fg ansi-bold">      2</span> env_vars <span class="ansi-blue-fg">=</span> get_ipython<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>getoutput<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;cat .env&#39;</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      3</span> <span class="ansi-green-fg">for</span> var <span class="ansi-green-fg">in</span> env_vars<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">----&gt; 4</span><span class="ansi-red-fg">     </span>key<span class="ansi-blue-fg">,</span> value <span class="ansi-blue-fg">=</span> var<span class="ansi-blue-fg">.</span>split<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;=&#39;</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      5</span>     os<span class="ansi-blue-fg">.</span>environ<span class="ansi-blue-fg">[</span>key<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> value
-<span class="ansi-green-intense-fg ansi-bold">      6</span> 
-
-<span class="ansi-red-fg">ValueError</span>: too many values to unpack (expected 2)</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
@@ -14889,7 +14861,7 @@ a.anchor-link {
 <span class="c1">#path=&#39;/Users/Home/Desktop/Tmp/txt&#39;</span>
 
 <span class="c1">#--- bulk stress files</span>
-<span class="c1">#indx = 0</span>
+<span class="n">indx</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">fileNamee</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;FeNi.txt&#39;</span><span class="p">,</span> 
              <span class="s1">&#39;CoNiFe.txt&#39;</span><span class="p">,</span> 
              <span class="s1">&#39;CoNiCrFe.txt&#39;</span><span class="p">,</span>
@@ -14918,36 +14890,6 @@ a.anchor-link {
      </div>
 </div>
 </div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-1-90e6b18e4b5f&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-intense-fg ansi-bold">     46</span>              <span class="ansi-blue-fg">&#39;CoCrFeMn.txt&#39;</span><span class="ansi-blue-fg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">     47</span>              <span class="ansi-blue-fg">&#39;CoNiCrFeMn.txt&#39;</span><span class="ansi-blue-fg">,</span>
-<span class="ansi-green-fg">---&gt; 48</span><span class="ansi-red-fg">              &#39;Co5Cr5Fe40Mn27Ni26.txt&#39;)[indx]
-</span><span class="ansi-green-intense-fg ansi-bold">     49</span> 
-<span class="ansi-green-intense-fg ansi-bold">     50</span> <span class="ansi-red-fg">#--- xyz and atom-wise stress files</span>
-
-<span class="ansi-red-fg">NameError</span>: name &#39;indx&#39; is not defined</pre>
-</div>
-</div>
-
-</div>
-
 </div>
 
 </div>
@@ -14984,12 +14926,33 @@ a.anchor-link {
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-red-fg">OSError</span>                                   Traceback (most recent call last)
 <span class="ansi-green-fg">&lt;ipython-input-1-06cccbcc7aa4&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
 <span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> ReadStrsFromDump<span class="ansi-blue-fg">:</span>
 <span class="ansi-green-fg">----&gt; 2</span><span class="ansi-red-fg">     </span>stress <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>loadtxt<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;%s/%s&#39;</span><span class="ansi-blue-fg">%</span><span class="ansi-blue-fg">(</span>path<span class="ansi-blue-fg">,</span>fileNamee<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">)</span>
 
-<span class="ansi-red-fg">NameError</span>: name &#39;path&#39; is not defined</pre>
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/numpy/lib/npyio.py</span> in <span class="ansi-cyan-fg">loadtxt</span><span class="ansi-blue-fg">(fname, dtype, comments, delimiter, converters, skiprows, usecols, unpack, ndmin, encoding, max_rows)</span>
+<span class="ansi-green-intense-fg ansi-bold">    953</span>             fname <span class="ansi-blue-fg">=</span> os_fspath<span class="ansi-blue-fg">(</span>fname<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    954</span>         <span class="ansi-green-fg">if</span> _is_string_like<span class="ansi-blue-fg">(</span>fname<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 955</span><span class="ansi-red-fg">             </span>fh <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>lib<span class="ansi-blue-fg">.</span>_datasource<span class="ansi-blue-fg">.</span>open<span class="ansi-blue-fg">(</span>fname<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;rt&#39;</span><span class="ansi-blue-fg">,</span> encoding<span class="ansi-blue-fg">=</span>encoding<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    956</span>             fencoding <span class="ansi-blue-fg">=</span> getattr<span class="ansi-blue-fg">(</span>fh<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;encoding&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;latin1&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    957</span>             fh <span class="ansi-blue-fg">=</span> iter<span class="ansi-blue-fg">(</span>fh<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/numpy/lib/_datasource.py</span> in <span class="ansi-cyan-fg">open</span><span class="ansi-blue-fg">(path, mode, destpath, encoding, newline)</span>
+<span class="ansi-green-intense-fg ansi-bold">    264</span> 
+<span class="ansi-green-intense-fg ansi-bold">    265</span>     ds <span class="ansi-blue-fg">=</span> DataSource<span class="ansi-blue-fg">(</span>destpath<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">--&gt; 266</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">return</span> ds<span class="ansi-blue-fg">.</span>open<span class="ansi-blue-fg">(</span>path<span class="ansi-blue-fg">,</span> mode<span class="ansi-blue-fg">,</span> encoding<span class="ansi-blue-fg">=</span>encoding<span class="ansi-blue-fg">,</span> newline<span class="ansi-blue-fg">=</span>newline<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    267</span> 
+<span class="ansi-green-intense-fg ansi-bold">    268</span> 
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/numpy/lib/_datasource.py</span> in <span class="ansi-cyan-fg">open</span><span class="ansi-blue-fg">(self, path, mode, encoding, newline)</span>
+<span class="ansi-green-intense-fg ansi-bold">    622</span>                                       encoding=encoding, newline=newline)
+<span class="ansi-green-intense-fg ansi-bold">    623</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 624</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">raise</span> IOError<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;%s not found.&#34;</span> <span class="ansi-blue-fg">%</span> path<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    625</span> 
+<span class="ansi-green-intense-fg ansi-bold">    626</span> 
+
+<span class="ansi-red-fg">OSError</span>: /home/kamran.karimi1/Project/git/CrystalPlasticity/postprocess/../testRuns/glassFeNi/Run1/FeNi.txt not found.</pre>
 </div>
 </div>
 
@@ -15039,15 +15002,22 @@ a.anchor-link {
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-red-fg">FileNotFoundError</span>                         Traceback (most recent call last)
 <span class="ansi-green-fg">&lt;ipython-input-1-ebbc14812333&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-intense-fg ansi-bold">      5</span> 
 <span class="ansi-green-intense-fg ansi-bold">      6</span> <span class="ansi-red-fg">#--- dump files</span>
-<span class="ansi-green-fg">----&gt; 7</span><span class="ansi-red-fg"> </span>lmpData <span class="ansi-blue-fg">=</span> lp<span class="ansi-blue-fg">.</span>ReadDumpFile<span class="ansi-blue-fg">(</span> fileName <span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      8</span> lmpData<span class="ansi-blue-fg">.</span>GetCords<span class="ansi-blue-fg">(</span> ncount <span class="ansi-blue-fg">=</span> sys<span class="ansi-blue-fg">.</span>maxsize<span class="ansi-blue-fg">,</span> columns <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">&#39;c_mystress[4]&#39;</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">&#39;sxy&#39;</span><span class="ansi-blue-fg">}</span> <span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      7</span> lmpData <span class="ansi-blue-fg">=</span> lp<span class="ansi-blue-fg">.</span>ReadDumpFile<span class="ansi-blue-fg">(</span> fileName <span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">----&gt; 8</span><span class="ansi-red-fg"> </span>lmpData<span class="ansi-blue-fg">.</span>GetCords<span class="ansi-blue-fg">(</span> ncount <span class="ansi-blue-fg">=</span> sys<span class="ansi-blue-fg">.</span>maxsize<span class="ansi-blue-fg">,</span> columns <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">&#39;c_mystress[4]&#39;</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">&#39;sxy&#39;</span><span class="ansi-blue-fg">}</span> <span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">      9</span> <span class="ansi-red-fg">#lmpData.GetCords( ncount = sys.maxsize, columns = {&#39;c_mystress1&#39;:&#39;sxx&#39;,&#39;c_mystress2&#39;:&#39;syy&#39;,&#39;c_mystress3&#39;:&#39;szz&#39;,&#39;c_mystress4&#39;:&#39;sxy&#39;} ) #!!!!!!</span>
+<span class="ansi-green-intense-fg ansi-bold">     10</span> <span class="ansi-red-fg">#lmpData.GetCords( ncount = sys.maxsize, columns = {&#39;c_1[4]&#39;:&#39;sxy&#39;} )</span>
 
-<span class="ansi-red-fg">NameError</span>: name &#39;fileName&#39; is not defined</pre>
+<span class="ansi-green-fg">~/Project/git/CrystalPlasticity/postprocess/CnaFeNiItime0/Run1/LammpsPostProcess.py</span> in <span class="ansi-cyan-fg">GetCords</span><span class="ansi-blue-fg">(self, ncount, columns)</span>
+<span class="ansi-green-intense-fg ansi-bold">     85</span> 
+<span class="ansi-green-intense-fg ansi-bold">     86</span>     <span class="ansi-green-fg">def</span> GetCords<span class="ansi-blue-fg">(</span> self<span class="ansi-blue-fg">,</span> ncount <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span> columns <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span> <span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">---&gt; 87</span><span class="ansi-red-fg">         </span>slist <span class="ansi-blue-fg">=</span> open<span class="ansi-blue-fg">(</span> self<span class="ansi-blue-fg">.</span>path <span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     88</span>         count <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">0</span>
+<span class="ansi-green-intense-fg ansi-bold">     89</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;/home/kamran.karimi1/Project/git/CrystalPlasticity/postprocess/../testRuns/glassFeNi/Run1/FeNi_glass.dump&#39;</pre>
 </div>
 </div>
 
@@ -15060,7 +15030,7 @@ a.anchor-link {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h1 id="stress-strain-curve">stress-strain curve<a class="anchor-link" href="#stress-strain-curve">&#182;</a></h1>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
@@ -15123,36 +15093,6 @@ a.anchor-link {
 </div>
 </div>
 
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-1-f3c290a284f3&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-intense-fg ansi-bold">     11</span> strainDump <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">]</span>
-<span class="ansi-green-intense-fg ansi-bold">     12</span> Virial <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">]</span>
-<span class="ansi-green-fg">---&gt; 13</span><span class="ansi-red-fg"> </span>times <span class="ansi-blue-fg">=</span> lmpData<span class="ansi-blue-fg">.</span>coord_atoms_broken<span class="ansi-blue-fg">.</span>keys<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     14</span> <span class="ansi-green-fg">for</span> itimee <span class="ansi-green-fg">in</span> sorted<span class="ansi-blue-fg">(</span>times<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">     15</span> 
-
-<span class="ansi-red-fg">NameError</span>: name &#39;lmpData&#39; is not defined</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
@@ -15199,13 +15139,13 @@ a.anchor-link {
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
 <span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
 <span class="ansi-green-fg">&lt;ipython-input-1-dafdfa33a84e&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-intense-fg ansi-bold">      6</span>     ax<span class="ansi-blue-fg">.</span>set_ylabel<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">r&#39;$\sigma$&#39;</span><span class="ansi-blue-fg">,</span>fontsize<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">16</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      7</span>     ax<span class="ansi-blue-fg">.</span>tick_params<span class="ansi-blue-fg">(</span>labelsize<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">16</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">----&gt; 8</span><span class="ansi-red-fg">     </span>ax<span class="ansi-blue-fg">.</span>set_title<span class="ansi-blue-fg">(</span>fileNamee<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">-</span><span class="ansi-cyan-fg">4</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      8</span>     ax<span class="ansi-blue-fg">.</span>set_title<span class="ansi-blue-fg">(</span>fileNamee<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">-</span><span class="ansi-cyan-fg">4</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">      9</span>     <span class="ansi-red-fg">#</span>
-<span class="ansi-green-intense-fg ansi-bold">     10</span>     strain <span class="ansi-blue-fg">=</span> stress<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span>
+<span class="ansi-green-fg">---&gt; 10</span><span class="ansi-red-fg">     </span>strain <span class="ansi-blue-fg">=</span> stress<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span>
+<span class="ansi-green-intense-fg ansi-bold">     11</span>     Virial <span class="ansi-blue-fg">=</span> stress<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span>
+<span class="ansi-green-intense-fg ansi-bold">     12</span>     ax<span class="ansi-blue-fg">.</span>plot<span class="ansi-blue-fg">(</span>strain<span class="ansi-blue-fg">,</span>Virial<span class="ansi-blue-fg">,</span><span class="ansi-blue-fg">&#39;-&#39;</span><span class="ansi-blue-fg">)</span>
 
-<span class="ansi-red-fg">NameError</span>: name &#39;fileNamee&#39; is not defined</pre>
+<span class="ansi-red-fg">NameError</span>: name &#39;stress&#39; is not defined</pre>
 </div>
 </div>
 
@@ -15218,7 +15158,7 @@ a.anchor-link {
 
 
 <div class="jp-RenderedImage jp-OutputArea-output ">
-<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAATIAAAEWCAYAAADl+xvlAAAAOXRFWHRTb2Z0d2FyZQBNYXRwbG90bGliIHZlcnNpb24zLjMuNCwgaHR0cHM6Ly9tYXRwbG90bGliLm9yZy8QVMy6AAAACXBIWXMAAAsTAAALEwEAmpwYAAAVP0lEQVR4nO3dfZRcdX3H8feHBNTEekjscmwhD0Q4ear4tNoUfAhRT9BqYsUHisT4QMJDRayFCkKjhFSxcKJHqcJSCpjEo4XGJljUCAmoHGO7aAnZICSaJdSDspBNAgQCMd/+ce/aYTK7O7szc2d+2c/rnD2z+5v7m/v9zW/3s/feuXdGEYGZWcoOa3YBZma1cpCZWfIcZGaWPAeZmSXPQWZmyXOQmVnyCg8yScdI+qqkn0raKykkTa6y72GSLpbULekZSfdKOrXBJZtZi2vGFtlxwPuBXuDHQ+x7OfA54Grg7cBG4GZJ76hngWaWFhV9QqykwyLiQP79mcB1wLER0T1Iv6OAh4ErIuKzJe13AG0RcULjqjazVlb4FllfiA3DXOAIYGVZ+0rgFZKOrakwM0tWSgf7ZwL7gG1l7V357YxiyzGzVjG62QUMwXhgVxy8L7yz5P6DSFoMLAYYO3bsa6dNm9a4Cs2sonvuueexiGhr1OOnFGTDEhEdQAdAe3t7dHZ2Nrkis5FH0kONfPyUdi17gSMlqay9b0tsJ2Y2IqUUZF3AC4CXl7X3HRvbUmw5ZtYqUgqy7wPPAR8saz8D2BwR24svycxaQVOOkUl6b/7ta/Pbt0vqAXoi4q58mf3ATRHxMYCIeFTScuBiSU8APwc+AMwB5hU6ADNrKc062H9z2c9fy2/vAmbn34/Kv0pdAjwJnA+8DHgAeH9EfLcxZZpZCpoSZBFRfsC+qmUi4vfAsvzLzAxI6xiZmVlFDjIzS56DzMyS5yAzs+Q5yMwseQ4yM0ueg8zMkucgM7PkOcjMLHkOMjNLnoPMzJLnIDOz5DnIzCx5DjIzS56DzMyS5yAzs+Q5yMwseQ4yM0ueg8zMkucgM7PkOcjMLHkOMjNLnoPMzJLnIDOz5DnIzCx5DjIzS56DzMyS5yAzs+Q5yMwseQ4yM0ueg8zMkld4kEmaIOkWSbsl7ZG0WtLEKvtOlHSTpB2Snpb0oKRlksY2um4za12ji1yZpDHAemAfsBAIYBmwQdIJEfHUAH3HArcDhwP/AOwAXgdcBhwPfKCx1ZtZqyo0yIBFwBRgakRsA5C0CdgKnAUsH6DvSWSBNTci1uVtGySNBy6QNCYi9jaudDNrVUXvWs4DNvaFGEBEbAfuBuYP0veI/HZPWfsusnGoTjWaWWKKDrKZwOYK7V3AjEH63k625fZFSTMkvVjSHOB84JqBdkvN7NBWdJCNB3ortO8Exg3UMSKeAd5AVnMX8ARwB/Bd4OP99ZO0WFKnpM6enp7h1m1mLSyZ0y8kvRD4NnAUsAB4M3Ah2UH+f+6vX0R0RER7RLS3tbUVUquZFavog/29VN7y6m9LrdTHgNnAcRHxq7ztR5J2Ax2SromIe+tWqZklo+gtsi6y42TlZgBbBun7CqC3JMT6/Fd+O73G2swsUUUH2VpglqQpfQ2SJpOdWrF2kL6/BcZJOq6s/c/z29/Uq0gzS0vRQXYd0A2skTRf0jxgDfAwcG3fQpImSdovaUlJ3xvJDvDfJmmhpJMlXQhcBdxDdgqHmY1AhQZZforEHOBBYAWwCtgOzImIJ0sWFTCqtL6I6AZmAf9DdjXAbWQn2HYAb4uIA40fgZm1oqIP9hMRO4BTB1mmmwonuEbEFuD9janMzFKVzOkXZmb9cZCZWfIcZGaWPAeZmSXPQWZmyXOQmVnyHGRmljwHmZklz0FmZslzkJlZ8hxkZpY8B5mZJc9BZmbJc5CZWfIcZGaWPAeZmSXPQWZmyXOQmVnyHGRmljwHmZklz0FmZslzkJlZ8hxkZpY8B5mZJc9BZmbJc5CZWfIcZGaWPAeZmSXPQWZmyXOQmVnyCg8ySRMk3SJpt6Q9klZLmjiE/tMl3SzpMUlPS3pA0vmNrNnMWtvoIlcmaQywHtgHLAQCWAZskHRCRDw1SP/2vP+dwJnAbuB44MUNLNvMWlyhQQYsAqYAUyNiG4CkTcBW4CxgeX8dJR0GfAO4IyL+quSuDY0r18xSUPSu5TxgY1+IAUTEduBuYP4gfWcD0xkg7MxsZCo6yGYCmyu0dwEzBun7hvz2hZI2SnpO0qOSviLpRXWt0sySUnSQjQd6K7TvBMYN0vdP89tvA+uAtwH/RHas7Jv9dZK0WFKnpM6enp6hV2xmLa/oY2S16AvdlRGxJP/+TkmjgCskTY+I+8s7RUQH0AHQ3t4exZRqZkUqeousl8pbXv1tqZV6PL/9YVn7uvz21TXUZWYJKzrIusiOk5WbAWypou9ADgyrIjNLXtFBthaYJWlKX4OkycBJ+X0D+R7Z+Wdzy9pPyW8761SjmSWm6CC7DugG1kiaL2kesAZ4GLi2byFJkyTtl9R3LIyIeBz4AnC2pM9Lequki4AlwE2lp3SY2chS6MH+iHhK0hzgS8AKQMAdwCcj4smSRQWM4uCgXQo8AZwLXAA8AlwJXN7g0s2shRX+qmVE7ABOHWSZbrIwK28PshNifVKsmf2B3/3CzJLnIDOz5DnIzCx5DjIzS56DzMyS5yAzs+Q5yMwseQ4yM0ueg8zMkucgM7PkVRVkkj4laWqjizEzG45qt8iuAk5vZCFmZsM1lF3L0yX9TtKzknbkH/rxZw2rzMysSkMJssnAT8jeNud24H3Af0s6uwF1mZlVbShv43NZRCzr+yH/wNyLgKsl7YiI2+penZlZFaoNsueAn5Y2RMQB4POSjgY+DTjIzKwpqt213AG8tp/71gxwn5lZw1UbZKuBS/O3qS73cvwJRmbWRNXuWl4GvApYJ+mHZJ9o9AgwDbgQWN+Q6szMqlBVkEXEXmCupHOBDwNfLrn7F8DH616ZmVmVhvThIxHxNeBrko4CJgG7ImJrQyozM6vSsD5FKSIeBR6tcy1mZsPii8bNLHkOMjNLnoPMzJLnIDOz5DnIzCx5DjIzS56DzMyS5yAzs+Q5yMwseYUHmaQJkm6RtFvSHkmrJU0cxuNcJCkk/aQRdZpZOgoNMkljyN4pYxqwEFgAHA9skDR2CI8zBbgUXyZlZgzzWssaLAKmAFMjYhuApE3AVuAsYHmVj/N1YBUwleLHYGYtpuhdy3nAxr4QA4iI7cDdwPxqHkDS6cBrgIsbUqGZJafoIJsJbK7Q3gXMGKyzpHHAl4C/j4idda7NzBJVdJCNB3ortO8ExlXR/0rgQeDGalcoabGkTkmdPT091XYzs4Qkc/qFpDcCHwLOiYiotl9EdEREe0S0t7W1Na5AM2uaog+U91J5y6u/LbVS1wLXA/8r6ci8bTQwKv/56YjYV6c6zSwhRQdZF9lxsnIzgC2D9J2ef1X6ZPNe4G95/mcJmNkIUXSQrQWukjQlIn4NIGkycBLZp5YP5OQKbV8GRgHnAdsq3G9mI0DRQXYd2ScurZF0KRDA5cDDZLuOAEiaBPwKWBoRSwEi4s7yB5O0Cxhd6T4zGzkKPdgfEU8Bc8heeVxBdlLrdmBORDxZsqjItrSSeTHCzJqn8LPiI2IHcOogy3SThdlgjzW7PlWZWcq8xWNmyXOQmVnyHGRmljwHmZklz0FmZslzkJlZ8hxkZpY8B5mZJc9BZmbJc5CZWfIcZGaWPAeZmSXPQWZmyXOQmVnyHGRmljwHmZklz0FmZslzkJlZ8hxkZpY8B5mZJc9BZmbJc5CZWfIcZGaWPAeZmSXPQWZmyXOQmVnyHGRmljwHmZklz0FmZslzkJlZ8goPMkkTJN0iabekPZJWS5pYRb92SR2Sfilpr6QdklZJOraIus2sdRUaZJLGAOuBacBCYAFwPLBB0thBup8GzAS+ArwduAh4DdApaULDijazlje64PUtAqYAUyNiG4CkTcBW4Cxg+QB9vxgRPaUNku4GtuePu6QhFZtZyyt613IesLEvxAAiYjtwNzB/oI7lIZa3PQT0AEfXuU4zS0jRQTYT2FyhvQuYMdQHkzQdOAq4v8a6zCxhRQfZeKC3QvtOYNxQHkjSaOAasi2y6wdYbrGkTkmdPT0HbdSZ2SEg5dMvrgZOBM6IiErhCEBEdEREe0S0t7W1FVedmRWm6IP9vVTe8upvS60iSVcAi4GFEbGuTrWZWaKKDrIusuNk5WYAW6p5AEmXAJ8GzouIFXWszcwSVfSu5VpglqQpfQ2SJgMn5fcNSNIngGXAJRFxdaOKNLO0FB1k1wHdwBpJ8yXNA9YADwPX9i0kaZKk/ZKWlLSdBnwZ+D6wXtKskq8hv+JpZoeOQnctI+IpSXOALwErAAF3AJ+MiCdLFhUwiucH7Sl5+yn5V6m7gNkNKtvMWlzRx8iIiB3AqYMs000WWqVtHwY+3Ki6zCxdKZ9+YWYGOMjM7BDgIDOz5DnIzCx5DjIzS56DzMyS5yAzs+Q5yMwseQ4yM0ueg8zMkucgM7PkOcjMLHkOMjNLnoPMzJLnIDOz5DnIzCx5DjIzS56DzMyS5yAzs+Q5yMwseQ4yM0ueg8zMkucgM7PkOcjMLHkOMjNLnoPMzJLnIDOz5DnIzCx5DjIzS56DzMyS5yAzs+QVHmSSJki6RdJuSXskrZY0scq+L5R0paRHJD0t6aeS3tToms2stRUaZJLGAOuBacBCYAFwPLBB0tgqHuJ6YBGwBHgn8AjwA0mvakjBZpaE0QWvbxEwBZgaEdsAJG0CtgJnAcv76yjplcDpwEcj4oa87S6gC1gKzGts6WbWqoretZwHbOwLMYCI2A7cDcyvou9zwLdL+u4HvgXMlfSC+pdrZikoOshmApsrtHcBM6rouz0i9lboewRwXO3lmVmKit61HA/0VmjfCYyroW/f/QeRtBhYnP+4T1KlID1U/DHwWLOLaJBDeWxw6I9vaiMfvOggK1xEdAAdAJI6I6K9ySU1zKE8vkN5bDAyxtfIxy9617KXylte/W1tVdsX/n/LzMxGmKKDrIvsWFe5GcCWKvoem5/CUd73WWDbwV3MbCQoOsjWArMkTelrkDQZOCm/byC3AocD7yvpOxr4ALAuIvZVsf6OoRacmEN5fIfy2MDjq4kiopGP//yVZSe93gs8DVwKBHA58EfACRHxZL7cJOBXwNKIWFrS/1vAXOBCYDtwDtmJsSdGxM8LG4iZtZRCt8gi4ilgDvAgsAJYRRZIc/pCLCdgVIX6PgLcACwD/hOYAJziEDMb2QrdIjMza4Sk3v2iiAvOJR0m6WJJ3ZKekXSvpFPrP5qKNQ5rfJLaJXVI+qWkvZJ2SFol6dgKy3ZLigpf727IoJ6/7lrmr1LNUX6dbbPmr4a5+9wAY3umbNlmzt0xkr6a/93szdc7ucq+Vc+JpEX57/E+SQ9IOruqAiMiiS9gDNk1mZuBd5Nd0nQf2bG0sVX0XwXsIrve8y3AarJjda8qW+4fgX3ABcDJwLXAAeAdrTo+4Cqyy7zOBd5Mdk3q/cDjwISyZbuB7wOzyr7Gter48v5BdlihvO4xzZ6/GufumApjegvZ5Xj/1gpzl697NvA74DbgB/l8TK6yb1Vzkv9tHsiXP5nsENIB4JxB19HoJ6COT+T5wO+B40rajgX2A58apO8r8yf+IyVto4EHgLUlbUflT/hlZf3vADa18PjaKrRNyn8Jlpa1dwMrU5q/fNkAlg2yTFPmr9axVXi8Bfl4/7IV5i5f92El359ZbZBVOyf53+OjwE1ly/0r2RUPhw+0npR2LYu44Hwu2XWbK8v6rwReUWlXrY6GPb6I6KnQ9hDQAxxd5zqHq5b5q1az5q/eY1tItvXzg/qUV7uIODDMrtXOyV8AbRWWWwG8FHjDQCtJKciKuOB8Jtl/j/KTa7vy28HWU4taxncQSdPJ/hveX+Hud+XHOfZJ2ljEMRbqM75z8pr3Slov6Y0V1tGM+avb3EmaQLZbtSr/Z1uuGXNXi2rnpO9E+fLnsaq5SynIirjgfDywK/Jt2gGWa4Raxvc8+YnC15BtkV1fdvetwHlk/yk/CDwDfEfSGUMteIhqHd9KsmOAbyV7E4CXAuslzS5bRzPmr25zB5xB9nd5U4X7mjV3tah2Tvpuy5/HqubukL9ofIS6GjiR7BjL834xIuK80p8lfQfYCHyBgzfrW0ZELCj58ceS1pD9917GILsdifkQ8IuI2FR+R6pzV4SUtsiKuOC8FzhSkgZZrhFqGd8fSLqCbIvloxGxbrDlI+L3wM3AMZL+pNr1DENdxtcnIp4gOyn6dWXraMb81WvuXk/2NvCVtsYOUuDc1aLaOel7nsqfx6rmLqUgK+KC8y7gBcDLKyxHFeupRS3jA0DSJcCngU9ExIph1NDIs6NrHl8/Smtu1vzVa2wLyV6U+uYwamjVM9urnZO+Y2Hlz2N1c9eMl3KH+fLvJ8lezp5S0jaZbOL/bpC+ryab6IVlL/feD9xa9lLxs8Bny/rfDtzXquPLl/1EPsbPDHG9o4F7gIdaeXwVHu8lwA7gR82ev3qMjexFp8eBNa02dxXWO9TTLwadE7I3hOgBbihb7l/y5+WIAddT5BNQ45M3lmzL6T6yl7TnkV2A/mvgxSXLTcp/qZaU9f8W2ebrmWQnHN5CdrD0NWXLXZG3f4rsJMCvk52P9c5WHR9wWl7j9zj4ZMkZJcv9df48fIjslbHTgB/nv5SntfD4LgCuIzvRdzbZlst9+R/IG5s9f7X+bub3vSefh/f0s46mzV1JDe/Nv76er/ec/Oc3lyyzH7h+OHMCnJ23L8uXW5r//DeD1lbEE1DHJ3Ii8O/AHuAJ4D8o+69A9p8wgM+Vtb+I7FOafps/qT8DZldYxyiyd+Z4iOxl403Ae1t5fMCNeVulrztLlptF9nF8vyPbWthF9p9xbouP711k52Q9ltf9ONnbPr2+Veavlt/N/L41DLDl0ey5y2uo5ncsgBuHOydkn6b2YL7cVuDcamrzReNmlryUDvabmVXkIDOz5DnIzCx5DjIzS56DzMyS5yAzs+Q5yMwseQ4yM0ueg8zMkucgs5YmaYqkGyX9RtKzkh6VtEHS4c2uzVqH31jRWpakI8musfwZ2QXKvWTvT3V0RDzXxNKsxTjIrJWdCLyM7ENjbgeejcrvY28jnC8at5YlqY1si+z4vKk3Ihr5uQmWKG+RWSsbS/Yea8vJ3vplV1OrsZblLTJrSZJeQvZGhR+PiFubXY+1Nr9qaa3qTWRvVvhAswux1uddS2tVfZ+e/g1JV5K9e+oxwJyI+GjzyrJW5C0ya0kR8TNgAdmHUtwA3AZ8hux98M2ex8fIzCx53iIzs+Q5yMwseQ4yM0ueg8zMkucgM7PkOcjMLHkOMjNLnoPMzJL3f7liMvqS8wyTAAAAAElFTkSuQmCC
+<img src="data:image/png;base64,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
 "
 >
 </div>
@@ -15493,7 +15433,7 @@ a.anchor-link {
 
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
@@ -15515,36 +15455,6 @@ a.anchor-link {
      </div>
 </div>
 </div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-1-d7016d97b8b4&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>times <span class="ansi-blue-fg">=</span> lmpData<span class="ansi-blue-fg">.</span>coord_atoms_broken<span class="ansi-blue-fg">.</span>keys<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      2</span> times <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>array<span class="ansi-blue-fg">(</span>sorted<span class="ansi-blue-fg">(</span>times<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      3</span> <span class="ansi-green-fg">if</span> AssignYieldTime<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">      4</span>     itime <span class="ansi-blue-fg">=</span> times<span class="ansi-blue-fg">[</span>strainDump<span class="ansi-blue-fg">&gt;=</span>ey<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span>
-<span class="ansi-green-intense-fg ansi-bold">      5</span>     print<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;itime(peak)=%s&#39;</span><span class="ansi-blue-fg">%</span>itime<span class="ansi-blue-fg">)</span>
-
-<span class="ansi-red-fg">NameError</span>: name &#39;lmpData&#39; is not defined</pre>
-</div>
-</div>
-
-</div>
-
 </div>
 
 </div>
@@ -15616,7 +15526,7 @@ a.anchor-link {
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-red-fg">KeyError</span>                                  Traceback (most recent call last)
 <span class="ansi-green-fg">&lt;ipython-input-1-bcf35ad504a7&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
 <span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>atoms <span class="ansi-blue-fg">=</span> lp<span class="ansi-blue-fg">.</span>Atoms<span class="ansi-blue-fg">(</span> <span class="ansi-blue-fg">**</span>lmpData<span class="ansi-blue-fg">.</span>coord_atoms_broken<span class="ansi-blue-fg">[</span>itime<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">.</span>to_dict<span class="ansi-blue-fg">(</span>orient<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;list&#39;</span><span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">      2</span> df <span class="ansi-blue-fg">=</span> pd<span class="ansi-blue-fg">.</span>DataFrame<span class="ansi-blue-fg">(</span>atoms<span class="ansi-blue-fg">.</span>__dict__<span class="ansi-blue-fg">)</span>
@@ -15624,7 +15534,7 @@ a.anchor-link {
 <span class="ansi-green-intense-fg ansi-bold">      4</span> size <span class="ansi-blue-fg">=</span> list<span class="ansi-blue-fg">(</span>map<span class="ansi-blue-fg">(</span>AtomicRadius<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">,</span>list<span class="ansi-blue-fg">(</span>map<span class="ansi-blue-fg">(</span>int<span class="ansi-blue-fg">,</span>df<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;type&#39;</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">.</span>tolist<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">      5</span> <span class="ansi-green-fg">assert</span> len<span class="ansi-blue-fg">(</span>size<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">==</span> len<span class="ansi-blue-fg">(</span>df<span class="ansi-blue-fg">)</span>
 
-<span class="ansi-red-fg">NameError</span>: name &#39;lmpData&#39; is not defined</pre>
+<span class="ansi-red-fg">KeyError</span>: 0</pre>
 </div>
 </div>
 
@@ -16047,7 +15957,7 @@ a.anchor-link {
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-red-fg">KeyError</span>                                  Traceback (most recent call last)
 <span class="ansi-green-fg">&lt;ipython-input-1-f39c20653e11&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
 <span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-red-fg">#--- extract atom and box properties</span>
 <span class="ansi-green-fg">----&gt; 2</span><span class="ansi-red-fg"> </span>atoms <span class="ansi-blue-fg">=</span> lp<span class="ansi-blue-fg">.</span>Atoms<span class="ansi-blue-fg">(</span> <span class="ansi-blue-fg">**</span>lmpData<span class="ansi-blue-fg">.</span>coord_atoms_broken<span class="ansi-blue-fg">[</span>itime<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">.</span>to_dict<span class="ansi-blue-fg">(</span>orient<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;list&#39;</span><span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">)</span>
@@ -16055,7 +15965,7 @@ a.anchor-link {
 <span class="ansi-green-intense-fg ansi-bold">      4</span> box <span class="ansi-blue-fg">=</span> lp<span class="ansi-blue-fg">.</span>Box<span class="ansi-blue-fg">(</span> BoxBounds <span class="ansi-blue-fg">=</span> lmpData<span class="ansi-blue-fg">.</span>BoxBounds<span class="ansi-blue-fg">[</span>itime<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">      5</span> box<span class="ansi-blue-fg">.</span>BasisVectors<span class="ansi-blue-fg">(</span> AddMissing <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>array<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0.0</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">0.0</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">0.0</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
 
-<span class="ansi-red-fg">NameError</span>: name &#39;lmpData&#39; is not defined</pre>
+<span class="ansi-red-fg">KeyError</span>: 0</pre>
 </div>
 </div>
 
