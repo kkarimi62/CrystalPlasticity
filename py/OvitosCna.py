@@ -24,8 +24,8 @@ if AnalysisType == 0:
 	pipeline.modifiers.append(cna)
 
 #apply modifier
-if AnalysisType == 1
-	number_of_bins = 200:
+if AnalysisType == 1:
+	number_of_bins = 200
 	cnm = md.CoordinationNumberModifier(cutoff = 10.0, number_of_bins = number_of_bins)
 	pipeline.modifiers.append(cnm)
 	try:
