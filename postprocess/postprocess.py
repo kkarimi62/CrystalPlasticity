@@ -30,7 +30,7 @@ if __name__ == '__main__':
 		2:'test2nd.ipynb',
 		3:'junk.ipynb',
 		}
-	keyno = 3
+	keyno = 1
 #---
 #---
 	PYFIL = PYFILdic[ keyno ] 

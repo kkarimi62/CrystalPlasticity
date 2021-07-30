@@ -14,7 +14,7 @@ if __name__ == '__main__':
              'CoNiCrFeMn',
              'Co5Cr5Fe40Mn27Ni26']
 	'''
-	PHI=range(4*100000,2000000+10000,4*100000) 
+	PHI=range(0,2000000+10000,8*100000) 
 	nphi = len(PHI)
 	#---
 #	nn = 4
