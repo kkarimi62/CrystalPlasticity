@@ -1,39 +1,53 @@
-
+import sys
 import ovito
 import ovito.modifiers as md
-
+import numpy as np
 import ovito.io as io #import import_file
 
 from ovito.vis import Viewport, TachyonRenderer, RenderSettings
 
 import math
 import pdb
-import sys
 
 path='.' #'/Users/Home/Desktop/Tmp/txt/scratch/10561052'
 InputFile = sys.argv[1] 
 OutputFile = sys.argv[2]
+AnalysisType = int(sys.argv[3]) #--- 0:CommonNeighborAnalysis 1:CoordinationNumber
 
 # Load input data and create a data pipeline.
 pipeline = io.import_file('%s/%s'%(path,InputFile), multiple_frames = True)
 print('num_frames=',pipeline.source.num_frames)
 
 # Calculate per-particle displacements with respect to initial simulation frame
-cna = md.CommonNeighborAnalysisModifier()
-pipeline.modifiers.append(cna)
+if AnalysisType == 0:
+	cna = md.CommonNeighborAnalysisModifier()
+	pipeline.modifiers.append(cna)
 
-
+#apply modifier
+if AnalysisType == 1:
+	cnm = md.CoordinationNumberModifier(cutoff = 10.0, number_of_bins = 200)
+	pipeline.modifiers.append(cnm)
+	sfile = open(OutputFile,'a')
+	
 for frame in range(pipeline.source.num_frames):
 #	pdb.set_trace()
     # This loads the input data for the current frame and
     # evaluates the applied modifiers:
 	pipeline.compute(frame)
-	
-#--- export data
-io.export_file( pipeline, OutputFile, "lammps_dump",\
-				columns = ["Particle Identifier", "Particle Type", "Structure Type"],
-				multiple_frames=True )
+	itime = pipeline.source.attributes['Timestep']
+	if AnalysisType == 1:
+		sfile.write('#ITIME\n%s\n'%itime)
+		np.savetxt(sfile, cnm.rdf, header='r\tg(r)')
 
+if AnalysisType == 1:
+	sfile.close()	
+#--- export data
+if AnalysisType == 0:
+	io.export_file( pipeline, OutputFile, "lammps_dump",\
+					columns = ["Particle Identifier", "Particle Type", "Structure Type"],
+					multiple_frames=True )
+
+# Export the computed RDF data to a text file.
 
 '''
 pipeline.dataset.anim.frames_per_second = 60
