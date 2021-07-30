@@ -3,16 +3,17 @@ if __name__ == '__main__':
 	import os
 	import numpy as np
 	#---
-	lnums = [ 18, 20, 26 ]
+	lnums = [ 18, 26 ]
 	string=open('postprocess.py').readlines() #--- python script
 	#---
+	'''
 	PHI = [	 'FeNi', 
              'CoNiFe', 
              'CoNiCrFe',
              'CoCrFeMn',
              'CoNiCrFeMn',
              'Co5Cr5Fe40Mn27Ni26']
-
+	'''
 	PHI=range(0,2000000+10000,4*100000) 
 	nphi = len(PHI)
 	#---
@@ -29,11 +30,10 @@ if __name__ == '__main__':
 		string[ inums ] = "\tjobname  = '%s'\n" % ('%s%s'%(jobname,PHI[iphi])) #--- change job name
 		#---	densities
 		inums = lnums[ 1 ] - 1
-#		string[ inums ] = "\targv=\'-p\tmccc\t%e\t-p\tbvall\t%e\t-p\tDfff\t%e\'\n"%(mc, bval, df)
-		string[ inums ] = "\treadPath = os.getcwd() + \'/../testRuns/glass%s\'\n"%(PHI[iphi])
+#		string[ inums ] = "\treadPath = os.getcwd() + \'/../testRuns/glass%s\'\n"%(PHI[iphi])
 #
-		inums = lnums[ 2 ] - 1
-		string[ inums ] = "\targv2nd=\'indx=%s\\\nitime=%s\'\n"%(iphi,PHI[iphi])
+#		inums = lnums[ 2 ] - 1
+		string[ inums ] = "\targv2nd = \'itime=%s\'\n"%(PHI[iphi])
 
 		sfile=open('junk%s.py'%iphi,'w');sfile.writelines(string);sfile.close()
 		os.system( 'python3 junk%s.py'%iphi )

@@ -1,7 +1,7 @@
 def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argv2nd):
 	#--- set environment variables
 	sfile = open('.env','w')
-	print('%s\n%s'%(argv,argv2nd),file=sfile)
+	print('%s\n%s\n%s'%(argv,argv2nd,argv3rd),file=sfile)
 	sfile.close()
 
 	someFile = open( 'oarScript.sh', 'w' )
@@ -23,7 +23,7 @@ if __name__ == '__main__':
 	mem = '16gb'
 	partition = 'bigmem' #'cpu2019' #'bigmem' #'single' #'parallel' #'single'
 	argv = "path=%s"%(readPath) #--- don't change! 
-	argv2nd = "indx=0\nitime=10000" 
+	argv2nd = "itime=0" 
 	PYFILdic = { 
 		0:'ElasticConstants.ipynb',
 		1:'analyzePlasticity.ipynb',
