@@ -40,8 +40,10 @@ for frame in range(pipeline.source.num_frames):
 	pipeline.compute(frame)
 	itime = pipeline.source.attributes['Timestep']
 	if AnalysisType == 1:
-		sfile.write('#ITIME\n%s\n'%itime)
-		np.savetxt(sfile, cnm.rdf, header="r g(r)")
+		sfile.write('#ITIME\n%s\n#r\tg(r)\n'%itime)
+		for item in cnm.rdf:
+			sfile.write('%s\t%s'%(item[0],item[1]))
+#		np.savetxt(sfile, cnm.rdf, header="r g(r)")
 
 if AnalysisType == 1:
 	sfile.close()	
