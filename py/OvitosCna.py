@@ -42,7 +42,7 @@ for frame in range(pipeline.source.num_frames):
 	if AnalysisType == 1:
 		sfile.write('#ITIME\n%s\n#r\tg(r)\n'%itime)
 		for item in cnm.rdf:
-			sfile.write('%s\t%s'%(item[0],item[1]))
+			sfile.write('%s\t%s\n'%(item[0],item[1]))
 #		np.savetxt(sfile, cnm.rdf, header="r g(r)")
 
 if AnalysisType == 1:
