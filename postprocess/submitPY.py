@@ -13,13 +13,13 @@ if __name__ == '__main__':
              'CoNiCrFeMn',
              'Co5Cr5Fe40Mn27Ni26']
 
-#	PHI=range(0,2000000+10000,4*10000) 
+	PHI=range(0,2000000+10000,4*100000) 
 	nphi = len(PHI)
 	#---
 #	nn = 4
 #	NTHRESH = np.linspace(0.05,0.11,nn,endpoint=True)
 	#---
-	jobname = 'Cna'
+	jobname = 'CnaFeNiItime'
 
 #	PHI = [[PHI[iphi],NTHRESH[inn]] for iphi in xrange( nphi ) for inn in xrange(nn)]
 #	nphi = len(PHI)
@@ -33,7 +33,7 @@ if __name__ == '__main__':
 		string[ inums ] = "\treadPath = os.getcwd() + \'/../testRuns/glass%s\'\n"%(PHI[iphi])
 #
 		inums = lnums[ 2 ] - 1
-		string[ inums ] = "\targv2nd=\'indx=%s\'\n"%(iphi)
+		string[ inums ] = "\targv2nd=\'indx=%s\\\nitime=%s\'\n"%(iphi,PHI[iphi])
 
 		sfile=open('junk%s.py'%iphi,'w');sfile.writelines(string);sfile.close()
 		os.system( 'python3 junk%s.py'%iphi )

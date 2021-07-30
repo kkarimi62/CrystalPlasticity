@@ -16,14 +16,14 @@ if __name__ == '__main__':
 #
 	nruns	 = range(3)
 	jobname  = 'CnaFeNi' 
-	DeleteExistingFolder = True
+	DeleteExistingFolder = None
 	readPath = os.getcwd() + '/../testRuns/glassFeNi' #--- source
 	EXEC_DIR = '.'     #--- path for executable file
 	durtn = '00:29:59'
 	mem = '16gb'
 	partition = 'bigmem' #'cpu2019' #'bigmem' #'single' #'parallel' #'single'
 	argv = "path=%s"%(readPath) #--- don't change! 
-	argv2nd = "indx=0" #"itime=10000" 
+	argv2nd = "indx=0\nitime=10000" 
 	PYFILdic = { 
 		0:'ElasticConstants.ipynb',
 		1:'analyzePlasticity.ipynb',
