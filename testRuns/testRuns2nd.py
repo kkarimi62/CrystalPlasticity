@@ -16,7 +16,7 @@ if __name__ == '__main__':
 	jobname  = 'glassFeNi' #--- existing directory
 	args = 'FeNi_glass.dump FeNi_gr.xyz 1' #--- input, output
 	sourcePath = os.getcwd() + '/dataFiles'
-	EXEC_DIR = '/mnt/home/kkarimi/Project/git/CrystalPlasticity/py' #--- path for executable file
+	EXEC_DIR = '/home/kamran.karimi1/Project/git/CrystalPlasticity/py' #--- path for executable file
 	durtn = '00:59:59'
 	SCRATCH = None
 	partition = 'single' #'parallel'
