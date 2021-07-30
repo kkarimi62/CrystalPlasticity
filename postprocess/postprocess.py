@@ -16,7 +16,7 @@ if __name__ == '__main__':
 #
 	nruns	 = range(3)
 	jobname  = 'CnaFeNi' 
-	DeleteExistingFolder = None
+	DeleteExistingFolder = True
 	readPath = os.getcwd() + '/../testRuns/glassFeNi' #--- source
 	EXEC_DIR = '.'     #--- path for executable file
 	durtn = '00:29:59'
