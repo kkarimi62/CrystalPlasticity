@@ -5,7 +5,7 @@ import numpy as np
 import ovito.io as io #import import_file
 
 from ovito.vis import Viewport, TachyonRenderer, RenderSettings
-
+import os
 import math
 import pdb
 
@@ -27,17 +27,21 @@ if AnalysisType == 0:
 if AnalysisType == 1:
 	cnm = md.CoordinationNumberModifier(cutoff = 10.0, number_of_bins = 200)
 	pipeline.modifiers.append(cnm)
+	try:
+		os.system('rm %s'%OutputFile)
+	except:
+		pass
 	sfile = open(OutputFile,'a')
 	
 for frame in range(pipeline.source.num_frames):
-#	pdb.set_trace()
+	pdb.set_trace()
     # This loads the input data for the current frame and
     # evaluates the applied modifiers:
 	pipeline.compute(frame)
 	itime = pipeline.source.attributes['Timestep']
 	if AnalysisType == 1:
 		sfile.write('#ITIME\n%s\n'%itime)
-		np.savetxt(sfile, cnm.rdf, header='r\tg(r)')
+		np.savetxt(sfile, cnm.rdf, header="r g(r)")
 
 if AnalysisType == 1:
 	sfile.close()	
