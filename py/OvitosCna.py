@@ -24,8 +24,9 @@ if AnalysisType == 0:
 	pipeline.modifiers.append(cna)
 
 #apply modifier
-if AnalysisType == 1:
-	cnm = md.CoordinationNumberModifier(cutoff = 10.0, number_of_bins = 200)
+if AnalysisType == 1
+	number_of_bins = 200:
+	cnm = md.CoordinationNumberModifier(cutoff = 10.0, number_of_bins = number_of_bins)
 	pipeline.modifiers.append(cnm)
 	try:
 		os.system('rm %s'%OutputFile)
@@ -40,7 +41,7 @@ for frame in range(pipeline.source.num_frames):
 	pipeline.compute(frame)
 	itime = pipeline.source.attributes['Timestep']
 	if AnalysisType == 1:
-		sfile.write('#ITIME\n%s\n#r\tg(r)\n'%itime)
+		sfile.write('#ITIME\n%s\n#NROWS\n%s\n#r\tg(r)\n'%(itime,number_of_bins))
 		for item in cnm.rdf:
 			sfile.write('%s\t%s\n'%(item[0],item[1]))
 #		np.savetxt(sfile, cnm.rdf, header="r g(r)")
