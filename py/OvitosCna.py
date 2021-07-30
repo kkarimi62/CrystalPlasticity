@@ -34,7 +34,7 @@ if AnalysisType == 1:
 	sfile = open(OutputFile,'a')
 	
 for frame in range(pipeline.source.num_frames):
-	pdb.set_trace()
+#	pdb.set_trace()
     # This loads the input data for the current frame and
     # evaluates the applied modifiers:
 	pipeline.compute(frame)
