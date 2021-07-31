@@ -17,7 +17,7 @@ if __name__ == '__main__':
 	nruns	 = range(1)
 	jobname  = 'test11thMelt2ndNatom50kQrate1Srate6Strs' 
 	DeleteExistingFolder = True
-	readPath = os.getcwd() + '/../testRuns/test11thMelt2ndNatom50kQrate1Srate6' #--- source
+	readPath = os.getcwd() + '/../testRuns/Preparation/test11thMelt2ndNatom50kQrate1Srate6' #--- source
 	EXEC_DIR = '.'     #--- path for executable file
 	durtn = '00:59:59'
 	mem = '16gb'
