@@ -15095,11 +15095,11 @@ a.anchor-link {
     <span class="c1">#</span>
     <span class="k">for</span> <span class="n">GlassType</span><span class="p">,</span> <span class="n">marker</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">fillstyle</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span> <span class="p">[</span> 
                                          <span class="s1">&#39;FeNi&#39;</span><span class="p">,</span>
-<span class="c1">#                                           &#39;CoNiFe&#39;,</span>
-<span class="c1">#                                             &#39;CoNiCrFe&#39;,</span>
-<span class="c1">#                                             &#39;CoCrFeMn&#39;,</span>
-<span class="c1">#                                             &#39;CoNiCrFeMn&#39;,</span>
-<span class="c1">#                                             &#39;Co5Cr5Fe40Mn27Ni26&#39;</span>
+                                          <span class="s1">&#39;CoNiFe&#39;</span><span class="p">,</span>
+                                            <span class="s1">&#39;CoNiCrFe&#39;</span><span class="p">,</span>
+                                            <span class="s1">&#39;CoCrFeMn&#39;</span><span class="p">,</span>
+                                            <span class="s1">&#39;CoNiCrFeMn&#39;</span><span class="p">,</span>
+                                            <span class="s1">&#39;Co5Cr5Fe40Mn27Ni26&#39;</span>
                                         <span class="p">],</span><span class="n">markers</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="n">fillstyles</span> <span class="p">)):</span>
 
         <span class="n">sarr</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s1">&#39;StrsStrn</span><span class="si">%s</span><span class="s1">/Run2/loadCurve.txt&#39;</span><span class="o">%</span><span class="k">GlassType</span>)
@@ -17059,7 +17059,7 @@ During handling of the above exception, another exception occurred:
 <span class="n">natoms</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span> <span class="n">atoms0</span><span class="o">.</span><span class="n">x</span> <span class="p">)</span> 
 <span class="n">CellVectorOrtho</span><span class="p">,</span> <span class="n">VectorNorm</span> <span class="o">=</span> <span class="n">lp</span><span class="o">.</span><span class="n">GetOrthogonalBasis</span><span class="p">(</span> <span class="n">box0</span><span class="o">.</span><span class="n">CellVector</span> <span class="p">)</span>
 <span class="n">volume</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span> <span class="n">CellVectorOrtho</span> <span class="p">)</span>
-<span class="n">dmean</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span> <span class="n">volume</span> <span class="o">/</span> <span class="n">natoms</span> <span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">3.0</span><span class="p">)</span> 
+<span class="n">dmean</span> <span class="o">=</span> <span class="mf">0.25</span><span class="o">*</span><span class="p">(</span> <span class="n">volume</span> <span class="o">/</span> <span class="n">natoms</span> <span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">3.0</span><span class="p">)</span> 
 
 <span class="c1">#--- grid tiling mapped box with original size</span>
 <span class="c1">#--- values are interpolated onto this grid</span>
@@ -17090,12 +17090,12 @@ During handling of the above exception, another exception occurred:
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
 <span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-1-65498207ac22&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-fg">&lt;ipython-input-1-8802ac005cb3&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
 <span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-red-fg">#--- mean dist between atoms</span>
 <span class="ansi-green-fg">----&gt; 2</span><span class="ansi-red-fg"> </span>natoms <span class="ansi-blue-fg">=</span> len<span class="ansi-blue-fg">(</span> atoms0<span class="ansi-blue-fg">.</span>x <span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">      3</span> CellVectorOrtho<span class="ansi-blue-fg">,</span> VectorNorm <span class="ansi-blue-fg">=</span> lp<span class="ansi-blue-fg">.</span>GetOrthogonalBasis<span class="ansi-blue-fg">(</span> box0<span class="ansi-blue-fg">.</span>CellVector <span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">      4</span> volume <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>linalg<span class="ansi-blue-fg">.</span>det<span class="ansi-blue-fg">(</span> CellVectorOrtho <span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      5</span> dmean <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">0.5</span><span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">(</span> volume <span class="ansi-blue-fg">/</span> natoms <span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">**</span> <span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">1.0</span><span class="ansi-blue-fg">/</span><span class="ansi-cyan-fg">3.0</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      5</span> dmean <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">0.25</span><span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">(</span> volume <span class="ansi-blue-fg">/</span> natoms <span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">**</span> <span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">1.0</span><span class="ansi-blue-fg">/</span><span class="ansi-cyan-fg">3.0</span><span class="ansi-blue-fg">)</span>
 
 <span class="ansi-red-fg">NameError</span>: name &#39;atoms0&#39; is not defined</pre>
 </div>
@@ -17725,8 +17725,8 @@ During handling of the above exception, another exception occurred:
                  <span class="n">cTOL</span> <span class="o">=</span> <span class="mf">8.0e-2</span><span class="p">,</span>
                  <span class="n">dpi</span> <span class="o">=</span> <span class="mi">60</span><span class="p">,</span>
                 <span class="p">)</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="s1">&#39;Cx.txt&#39;</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">xdata0</span><span class="p">,</span><span class="n">ydata0</span><span class="p">],</span><span class="n">header</span><span class="o">=</span><span class="s1">&#39;x</span><span class="se">\t</span><span class="s1">c(x)&#39;</span><span class="p">)</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="s1">&#39;Cy.txt&#39;</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">xdata</span><span class="p">,</span><span class="n">ydata</span><span class="p">],</span><span class="n">header</span><span class="o">=</span><span class="s1">&#39;y</span><span class="se">\t</span><span class="s1">c(y)&#39;</span><span class="p">)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="s1">&#39;Cx.txt&#39;</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">xdata0</span><span class="o">.</span><span class="n">real</span><span class="p">,</span><span class="n">ydata0</span><span class="o">.</span><span class="n">real</span><span class="p">],</span><span class="n">header</span><span class="o">=</span><span class="s1">&#39;x</span><span class="se">\t</span><span class="s1">c(x)&#39;</span><span class="p">)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="s1">&#39;Cy.txt&#39;</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">xdata</span><span class="o">.</span><span class="n">real</span><span class="p">,</span><span class="n">ydata</span><span class="o">.</span><span class="n">real</span><span class="p">],</span><span class="n">header</span><span class="o">=</span><span class="s1">&#39;y</span><span class="se">\t</span><span class="s1">c(y)&#39;</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -17749,7 +17749,7 @@ During handling of the above exception, another exception occurred:
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
 <span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-1-ad1bcfacea4f&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-fg">&lt;ipython-input-1-3ebb0614e69b&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
 <span class="ansi-green-intense-fg ansi-bold">      4</span>     <span class="ansi-red-fg">#     print &#39;itime=&#39;,itime</span>
 <span class="ansi-green-intense-fg ansi-bold">      5</span>     <span class="ansi-red-fg">#--- bulk strain</span>
 <span class="ansi-green-fg">----&gt; 6</span><span class="ansi-red-fg">     </span>dx<span class="ansi-blue-fg">=</span>box<span class="ansi-blue-fg">.</span>CellVector<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">-</span>box0<span class="ansi-blue-fg">.</span>CellVector<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span>
@@ -17764,10 +17764,224 @@ During handling of the above exception, another exception occurred:
 
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h5 id="multiple-plots">multiple plots<a class="anchor-link" href="#multiple-plots">&#182;</a></h5>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[56]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">RemoteMachine</span><span class="o">=</span><span class="kc">None</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">RemoteMachine</span><span class="p">:</span>
+    <span class="c1">#</span>
+    <span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;text.usetex&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1">#--- comment tex stuff!</span>
+    <span class="c1">#</span>
+    <span class="n">nfreq</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="c1">#</span>
+    <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;black&#39;</span><span class="p">,</span><span class="s1">&#39;red&#39;</span><span class="p">,</span><span class="s1">&#39;green&#39;</span><span class="p">,</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span><span class="s1">&#39;cyan&#39;</span><span class="p">,</span><span class="s1">&#39;brown&#39;</span><span class="p">,</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span><span class="s1">&#39;magenta&#39;</span><span class="p">,</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span><span class="s1">&#39;yellow&#39;</span><span class="p">]</span>
+    <span class="n">fillstyles</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">]</span>
+    <span class="n">markers</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;o&#39;</span><span class="p">,</span><span class="s1">&#39;s&#39;</span><span class="p">,</span><span class="s1">&#39;D&#39;</span><span class="p">,</span><span class="s1">&#39;^&#39;</span><span class="p">,</span><span class="s1">&#39;&lt;&#39;</span><span class="p">,</span><span class="s1">&#39;&gt;&#39;</span><span class="p">,</span><span class="s1">&#39;v&#39;</span><span class="p">]</span>
+    <span class="c1">#</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="c1">#     ax.set_xlabel(r&#39;$\gamma$&#39;,fontsize=20)</span>
+<span class="c1">#     ax.set_ylabel(r&#39;$\sigma/\mu$&#39;,fontsize=20)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_minor_locator</span><span class="p">(</span><span class="n">AutoMinorLocator</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_minor_locator</span><span class="p">(</span><span class="n">AutoMinorLocator</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">labelsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">which</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1">#ax.set_title()</span>
+    <span class="c1">#</span>
+    <span class="k">for</span> <span class="n">GlassType</span><span class="p">,</span> <span class="n">marker</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">fillstyle</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span> <span class="p">[</span> 
+                                         <span class="s1">&#39;FeNi&#39;</span><span class="p">,</span>
+<span class="c1">#                                           &#39;CoNiFe&#39;,</span>
+<span class="c1">#                                             &#39;CoNiCrFe&#39;,</span>
+<span class="c1">#                                             &#39;CoCrFeMn&#39;,</span>
+<span class="c1">#                                             &#39;CoNiCrFeMn&#39;,</span>
+<span class="c1">#                                             &#39;Co5Cr5Fe40Mn27Ni26&#39;</span>
+                                        <span class="p">],</span><span class="n">markers</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="n">fillstyles</span> <span class="p">)):</span>
+
+        <span class="n">sarr</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s1">&#39;Crltn</span><span class="si">%s</span><span class="s1">/Run2/Cx.txt&#39;</span><span class="o">%</span><span class="k">GlassType</span>,dtype=str)
+        <span class="c1">#--- fliter</span>
+        <span class="n">ydata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span><span class="n">sarr</span><span class="p">[</span><span class="mi">0</span><span class="p">::</span><span class="n">nfreq</span><span class="p">,</span><span class="mi">1</span><span class="p">]))</span> <span class="c1">#--- first 2nd col is stress drop</span>
+        <span class="n">xdata</span> <span class="o">=</span> <span class="n">sarr</span><span class="p">[</span><span class="mi">0</span><span class="p">::</span><span class="n">nfreq</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="c1">#--- 2nd and 3rd cols are widths</span>
+    <span class="c1">#</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xdata</span><span class="p">,</span><span class="n">ydata</span><span class="p">,</span><span class="s1">&#39;-&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span><span class="c1">#, label = GlassType)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xdata</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="n">ydata</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+                <span class="n">marker</span><span class="o">=</span><span class="n">marker</span><span class="p">,</span>
+                <span class="n">markerfacecolor</span><span class="o">=</span><span class="n">fillstyle</span><span class="p">,</span>
+                <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="k">GlassType</span>)
+
+    <span class="c1">#</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="c1">#</span>
+    <span class="n">DrawFrame</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span><span class="mf">0.09</span><span class="p">,</span><span class="mf">0.15</span><span class="p">,</span><span class="mf">0.06</span><span class="p">,</span><span class="mf">0.04</span><span class="p">)</span>
+    <span class="c1">#</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;cr.png&#39;</span><span class="p">,</span><span class="n">dpi</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="mi">75</span><span class="p">,</span><span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span><span class="n">pad_inches</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">OSError</span>                                   Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-1-65505dba38e2&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">     28</span>                                         ],markers, colors, fillstyles )):
+<span class="ansi-green-intense-fg ansi-bold">     29</span> 
+<span class="ansi-green-fg">---&gt; 30</span><span class="ansi-red-fg">         </span>sarr  <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>loadtxt<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;Crltn%s/Run2/Cx.txt&#39;</span><span class="ansi-blue-fg">%</span>GlassType<span class="ansi-blue-fg">,</span>dtype<span class="ansi-blue-fg">=</span>str<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     31</span>         <span class="ansi-red-fg">#--- fliter</span>
+<span class="ansi-green-intense-fg ansi-bold">     32</span>         ydata <span class="ansi-blue-fg">=</span> list<span class="ansi-blue-fg">(</span>map<span class="ansi-blue-fg">(</span>float<span class="ansi-blue-fg">,</span>sarr<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">:</span>nfreq<span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span> <span class="ansi-red-fg">#--- first 2nd col is stress drop</span>
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/numpy/lib/npyio.py</span> in <span class="ansi-cyan-fg">loadtxt</span><span class="ansi-blue-fg">(fname, dtype, comments, delimiter, converters, skiprows, usecols, unpack, ndmin, encoding, max_rows)</span>
+<span class="ansi-green-intense-fg ansi-bold">    953</span>             fname <span class="ansi-blue-fg">=</span> os_fspath<span class="ansi-blue-fg">(</span>fname<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    954</span>         <span class="ansi-green-fg">if</span> _is_string_like<span class="ansi-blue-fg">(</span>fname<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 955</span><span class="ansi-red-fg">             </span>fh <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>lib<span class="ansi-blue-fg">.</span>_datasource<span class="ansi-blue-fg">.</span>open<span class="ansi-blue-fg">(</span>fname<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;rt&#39;</span><span class="ansi-blue-fg">,</span> encoding<span class="ansi-blue-fg">=</span>encoding<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    956</span>             fencoding <span class="ansi-blue-fg">=</span> getattr<span class="ansi-blue-fg">(</span>fh<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;encoding&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;latin1&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    957</span>             fh <span class="ansi-blue-fg">=</span> iter<span class="ansi-blue-fg">(</span>fh<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/numpy/lib/_datasource.py</span> in <span class="ansi-cyan-fg">open</span><span class="ansi-blue-fg">(path, mode, destpath, encoding, newline)</span>
+<span class="ansi-green-intense-fg ansi-bold">    264</span> 
+<span class="ansi-green-intense-fg ansi-bold">    265</span>     ds <span class="ansi-blue-fg">=</span> DataSource<span class="ansi-blue-fg">(</span>destpath<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">--&gt; 266</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">return</span> ds<span class="ansi-blue-fg">.</span>open<span class="ansi-blue-fg">(</span>path<span class="ansi-blue-fg">,</span> mode<span class="ansi-blue-fg">,</span> encoding<span class="ansi-blue-fg">=</span>encoding<span class="ansi-blue-fg">,</span> newline<span class="ansi-blue-fg">=</span>newline<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    267</span> 
+<span class="ansi-green-intense-fg ansi-bold">    268</span> 
+
+<span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/numpy/lib/_datasource.py</span> in <span class="ansi-cyan-fg">open</span><span class="ansi-blue-fg">(self, path, mode, encoding, newline)</span>
+<span class="ansi-green-intense-fg ansi-bold">    622</span>                                       encoding=encoding, newline=newline)
+<span class="ansi-green-intense-fg ansi-bold">    623</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 624</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">raise</span> IOError<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;%s not found.&#34;</span> <span class="ansi-blue-fg">%</span> path<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    625</span> 
+<span class="ansi-green-intense-fg ansi-bold">    626</span> 
+
+<span class="ansi-red-fg">OSError</span>: CrltnFeNi/Run2/Cx.txt not found.</pre>
+</div>
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+
+
+<div class="jp-RenderedImage jp-OutputArea-output ">
+<img src="data:image/png;base64,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
+"
+>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[57]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">eval</span><span class="p">(</span><span class="n">sarr</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-1-32786897a309&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>eval<span class="ansi-blue-fg">(</span>sarr<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">10</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">NameError</span>: name &#39;sarr&#39; is not defined</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[58]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sarr</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-1-1050e3fc9869&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>sarr
+
+<span class="ansi-red-fg">NameError</span>: name &#39;sarr&#39; is not defined</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[59]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># #--- extract length</span>
