@@ -14501,13 +14501,13 @@ a.anchor-link {
     <span class="n">xv2</span> <span class="o">=</span> <span class="n">xv</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">dx</span> <span class="o">=</span> <span class="n">xv2</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">xv2</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
     <span class="c1">#</span>
-    <span class="n">xdata</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,(</span><span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="n">n</span><span class="o">%</span><span class="k">2</span>)) * dx
-    <span class="n">ydata</span> <span class="o">=</span> <span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">:(</span><span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="n">n</span><span class="o">%</span><span class="k">2</span>)]
+    <span class="n">xdata0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,(</span><span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="n">n</span><span class="o">%</span><span class="k">2</span>)) * dx
+    <span class="n">ydata0</span> <span class="o">=</span> <span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">:(</span><span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="n">n</span><span class="o">%</span><span class="k">2</span>)]
     <span class="c1">#</span>
-    <span class="n">xc</span> <span class="o">=</span> <span class="n">Get_rc</span><span class="p">(</span> <span class="n">xdata</span><span class="p">,</span> <span class="n">ydata</span><span class="p">,</span> <span class="n">cTOL</span> <span class="p">)</span>
+    <span class="n">xc</span> <span class="o">=</span> <span class="n">Get_rc</span><span class="p">(</span> <span class="n">xdata0</span><span class="p">,</span> <span class="n">ydata0</span><span class="p">,</span> <span class="n">cTOL</span> <span class="p">)</span>
     <span class="c1">#</span>
     <span class="k">if</span> <span class="n">PLOT</span><span class="p">:</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span> <span class="n">xdata</span><span class="p">,</span> <span class="n">ydata</span><span class="p">,</span><span class="s1">&#39;-o&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$x$&#39;</span><span class="p">)</span>       
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span> <span class="n">xdata0</span><span class="p">,</span> <span class="n">ydata0</span><span class="p">,</span><span class="s1">&#39;-o&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$x$&#39;</span><span class="p">)</span>       
     <span class="c1">#--- along y </span>
     <span class="n">yv2</span> <span class="o">=</span> <span class="n">yv</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">dy</span> <span class="o">=</span> <span class="n">yv2</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">yv2</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
@@ -14533,7 +14533,7 @@ a.anchor-link {
         <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">fileName</span><span class="p">,</span><span class="n">dpi</span><span class="o">=</span><span class="n">dpi</span><span class="p">,</span><span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
     <span class="c1">#</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">xc</span><span class="p">,</span> <span class="n">yc</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">xc</span><span class="p">,</span> <span class="n">yc</span><span class="p">),</span> <span class="p">(</span><span class="n">xdata0</span><span class="p">,</span><span class="n">ydata0</span><span class="p">),</span> <span class="p">(</span><span class="n">xdata</span><span class="p">,</span><span class="n">ydata</span><span class="p">)</span> 
 
 
 <span class="k">def</span> <span class="nf">GetSlice2d</span><span class="p">(</span> <span class="n">hist</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span>
@@ -14858,8 +14858,6 @@ a.anchor-link {
 
 <span class="c1">#--- lammps output</span>
 <span class="c1">#path = &#39;/mnt/home/kkarimi/Project/git/CrystalPlasticity/testRuns/glassFeNi/Run0&#39;</span>
-<span class="c1">#path=&#39;/Users/Home/Desktop/Tmp/txt/git/CrystalPlasticity/BmgData&#39;</span>
-<span class="c1">#path=&#39;/Users/Home/Desktop/Tmp/txt&#39;</span>
 
 <span class="c1">#--- bulk stress files</span>
 <span class="n">indx</span> <span class="o">=</span> <span class="mi">0</span>
@@ -16691,7 +16689,7 @@ During handling of the above exception, another exception occurred:
 <span class="ansi-green-intense-fg ansi-bold">      4</span> ax <span class="ansi-blue-fg">=</span> fig<span class="ansi-blue-fg">.</span>add_subplot<span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">111</span><span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">      5</span> xstr <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">r&#39;$\gamma$&#39;</span>
 
-<span class="ansi-green-fg">&lt;ipython-input-1-318fc4ad5a18&gt;</span> in <span class="ansi-cyan-fg">MultipleFrames</span><span class="ansi-blue-fg">(path, title, irun, nmax)</span>
+<span class="ansi-green-fg">&lt;ipython-input-1-6ec63159d778&gt;</span> in <span class="ansi-cyan-fg">MultipleFrames</span><span class="ansi-blue-fg">(path, title, irun, nmax)</span>
 <span class="ansi-green-intense-fg ansi-bold">    339</span>             <span class="ansi-green-fg">continue</span>
 <span class="ansi-green-intense-fg ansi-bold">    340</span>         i<span class="ansi-blue-fg">+=</span><span class="ansi-cyan-fg">1</span>
 <span class="ansi-green-fg">--&gt; 341</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">return</span> sarr
@@ -17061,7 +17059,7 @@ During handling of the above exception, another exception occurred:
 <span class="n">natoms</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span> <span class="n">atoms0</span><span class="o">.</span><span class="n">x</span> <span class="p">)</span> 
 <span class="n">CellVectorOrtho</span><span class="p">,</span> <span class="n">VectorNorm</span> <span class="o">=</span> <span class="n">lp</span><span class="o">.</span><span class="n">GetOrthogonalBasis</span><span class="p">(</span> <span class="n">box0</span><span class="o">.</span><span class="n">CellVector</span> <span class="p">)</span>
 <span class="n">volume</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span> <span class="n">CellVectorOrtho</span> <span class="p">)</span>
-<span class="n">dmean</span> <span class="o">=</span> <span class="p">(</span> <span class="n">volume</span> <span class="o">/</span> <span class="n">natoms</span> <span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">3.0</span><span class="p">)</span> 
+<span class="n">dmean</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span> <span class="n">volume</span> <span class="o">/</span> <span class="n">natoms</span> <span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">3.0</span><span class="p">)</span> 
 
 <span class="c1">#--- grid tiling mapped box with original size</span>
 <span class="c1">#--- values are interpolated onto this grid</span>
@@ -17092,12 +17090,12 @@ During handling of the above exception, another exception occurred:
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
 <span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-1-9e8508ae68fd&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-fg">&lt;ipython-input-1-65498207ac22&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
 <span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-red-fg">#--- mean dist between atoms</span>
 <span class="ansi-green-fg">----&gt; 2</span><span class="ansi-red-fg"> </span>natoms <span class="ansi-blue-fg">=</span> len<span class="ansi-blue-fg">(</span> atoms0<span class="ansi-blue-fg">.</span>x <span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">      3</span> CellVectorOrtho<span class="ansi-blue-fg">,</span> VectorNorm <span class="ansi-blue-fg">=</span> lp<span class="ansi-blue-fg">.</span>GetOrthogonalBasis<span class="ansi-blue-fg">(</span> box0<span class="ansi-blue-fg">.</span>CellVector <span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">      4</span> volume <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>linalg<span class="ansi-blue-fg">.</span>det<span class="ansi-blue-fg">(</span> CellVectorOrtho <span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      5</span> dmean <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">(</span> volume <span class="ansi-blue-fg">/</span> natoms <span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">**</span> <span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">1.0</span><span class="ansi-blue-fg">/</span><span class="ansi-cyan-fg">3.0</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      5</span> dmean <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">0.5</span><span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">(</span> volume <span class="ansi-blue-fg">/</span> natoms <span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">**</span> <span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">1.0</span><span class="ansi-blue-fg">/</span><span class="ansi-cyan-fg">3.0</span><span class="ansi-blue-fg">)</span>
 
 <span class="ansi-red-fg">NameError</span>: name &#39;atoms0&#39; is not defined</pre>
 </div>
@@ -17719,6 +17717,7 @@ During handling of the above exception, another exception occurred:
     <span class="n">l1</span><span class="o">=</span><span class="n">box</span><span class="o">.</span><span class="n">CellVector</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">ebulk</span> <span class="o">=</span> <span class="n">dx</span><span class="o">/</span><span class="n">l1</span>
     <span class="c1">#---</span>
+    <span class="p">(</span><span class="n">xc</span><span class="p">,</span> <span class="n">yc</span><span class="p">),</span> <span class="p">(</span><span class="n">xdata0</span><span class="p">,</span><span class="n">ydata0</span><span class="p">),</span> <span class="p">(</span><span class="n">xdata</span><span class="p">,</span><span class="n">ydata</span><span class="p">)</span><span class="o">=</span>\
     <span class="n">PltCrltnFunc</span><span class="p">(</span> <span class="n">Crltn</span><span class="p">,</span> 
                  <span class="n">xv</span><span class="p">,</span><span class="n">yv</span><span class="p">,</span>
                  <span class="n">fileName</span> <span class="o">=</span> <span class="s1">&#39;cr_strain.</span><span class="si">%s</span><span class="s1">.png&#39;</span><span class="o">%</span><span class="k">itime</span>,
@@ -17726,6 +17725,8 @@ During handling of the above exception, another exception occurred:
                  <span class="n">cTOL</span> <span class="o">=</span> <span class="mf">8.0e-2</span><span class="p">,</span>
                  <span class="n">dpi</span> <span class="o">=</span> <span class="mi">60</span><span class="p">,</span>
                 <span class="p">)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="s1">&#39;Cx.txt&#39;</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">xdata0</span><span class="p">,</span><span class="n">ydata0</span><span class="p">],</span><span class="n">header</span><span class="o">=</span><span class="s1">&#39;x</span><span class="se">\t</span><span class="s1">c(x)&#39;</span><span class="p">)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="s1">&#39;Cy.txt&#39;</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">xdata</span><span class="p">,</span><span class="n">ydata</span><span class="p">],</span><span class="n">header</span><span class="o">=</span><span class="s1">&#39;y</span><span class="se">\t</span><span class="s1">c(y)&#39;</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -17748,7 +17749,7 @@ During handling of the above exception, another exception occurred:
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
 <span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-1-49ad223775fd&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-fg">&lt;ipython-input-1-ad1bcfacea4f&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
 <span class="ansi-green-intense-fg ansi-bold">      4</span>     <span class="ansi-red-fg">#     print &#39;itime=&#39;,itime</span>
 <span class="ansi-green-intense-fg ansi-bold">      5</span>     <span class="ansi-red-fg">#--- bulk strain</span>
 <span class="ansi-green-fg">----&gt; 6</span><span class="ansi-red-fg">     </span>dx<span class="ansi-blue-fg">=</span>box<span class="ansi-blue-fg">.</span>CellVector<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">-</span>box0<span class="ansi-blue-fg">.</span>CellVector<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span>
