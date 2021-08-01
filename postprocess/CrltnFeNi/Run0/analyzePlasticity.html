@@ -14433,12 +14433,18 @@ a.anchor-link {
     <span class="n">center</span> <span class="o">=</span> <span class="p">(</span><span class="n">ngrid</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="n">mgrid</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">xlabel</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">ylabel</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span> <span class="c1">#--- remove labels</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
     <span class="n">pos</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">((</span><span class="n">CenterMatrix</span><span class="p">(</span> <span class="n">val</span> <span class="p">)</span><span class="o">.</span><span class="n">real</span><span class="p">),</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;bwr&#39;</span><span class="p">,</span>
-                     <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="n">xlim</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">xlim</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">ylim</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">ylim</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span> <span class="c1">#,vmin=-.01, vmax=.01)</span>
+                     <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="n">xlim</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">xlim</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">ylim</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">ylim</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                     <span class="c1">#,vmin=-.01, vmax=.01</span>
+                    <span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">xlim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">frac</span><span class="p">,</span><span class="n">xlim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">frac</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">ylim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">frac</span><span class="p">,</span><span class="n">ylim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">frac</span><span class="p">)</span>
 
-    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span> <span class="n">pos</span><span class="p">,</span> <span class="n">fraction</span> <span class="o">=</span> <span class="mf">0.04</span><span class="p">)</span>
+<span class="c1">#    plt.colorbar( pos, fraction = 0.04)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">fileName</span><span class="p">,</span><span class="n">dpi</span><span class="o">=</span><span class="n">dpi</span><span class="p">,</span><span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
     
@@ -16689,12 +16695,12 @@ During handling of the above exception, another exception occurred:
 <span class="ansi-green-intense-fg ansi-bold">      4</span> ax <span class="ansi-blue-fg">=</span> fig<span class="ansi-blue-fg">.</span>add_subplot<span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">111</span><span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">      5</span> xstr <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">r&#39;$\gamma$&#39;</span>
 
-<span class="ansi-green-fg">&lt;ipython-input-1-6ec63159d778&gt;</span> in <span class="ansi-cyan-fg">MultipleFrames</span><span class="ansi-blue-fg">(path, title, irun, nmax)</span>
-<span class="ansi-green-intense-fg ansi-bold">    339</span>             <span class="ansi-green-fg">continue</span>
-<span class="ansi-green-intense-fg ansi-bold">    340</span>         i<span class="ansi-blue-fg">+=</span><span class="ansi-cyan-fg">1</span>
-<span class="ansi-green-fg">--&gt; 341</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">return</span> sarr
-<span class="ansi-green-intense-fg ansi-bold">    342</span> 
-<span class="ansi-green-intense-fg ansi-bold">    343</span> <span class="ansi-green-fg">def</span> MultipleFrames2nd<span class="ansi-blue-fg">(</span> path<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;&#39;</span><span class="ansi-blue-fg">,</span> title<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;&#39;</span><span class="ansi-blue-fg">,</span> nrun <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">,</span> ncols<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">3</span> <span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">&lt;ipython-input-1-c0e316e7e58c&gt;</span> in <span class="ansi-cyan-fg">MultipleFrames</span><span class="ansi-blue-fg">(path, title, irun, nmax)</span>
+<span class="ansi-green-intense-fg ansi-bold">    345</span>             <span class="ansi-green-fg">continue</span>
+<span class="ansi-green-intense-fg ansi-bold">    346</span>         i<span class="ansi-blue-fg">+=</span><span class="ansi-cyan-fg">1</span>
+<span class="ansi-green-fg">--&gt; 347</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">return</span> sarr
+<span class="ansi-green-intense-fg ansi-bold">    348</span> 
+<span class="ansi-green-intense-fg ansi-bold">    349</span> <span class="ansi-green-fg">def</span> MultipleFrames2nd<span class="ansi-blue-fg">(</span> path<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;&#39;</span><span class="ansi-blue-fg">,</span> title<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;&#39;</span><span class="ansi-blue-fg">,</span> nrun <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">,</span> ncols<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">3</span> <span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
 
 <span class="ansi-red-fg">UnboundLocalError</span>: local variable &#39;sarr&#39; referenced before assignment</pre>
 </div>
@@ -17059,7 +17065,7 @@ During handling of the above exception, another exception occurred:
 <span class="n">natoms</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span> <span class="n">atoms0</span><span class="o">.</span><span class="n">x</span> <span class="p">)</span> 
 <span class="n">CellVectorOrtho</span><span class="p">,</span> <span class="n">VectorNorm</span> <span class="o">=</span> <span class="n">lp</span><span class="o">.</span><span class="n">GetOrthogonalBasis</span><span class="p">(</span> <span class="n">box0</span><span class="o">.</span><span class="n">CellVector</span> <span class="p">)</span>
 <span class="n">volume</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span> <span class="n">CellVectorOrtho</span> <span class="p">)</span>
-<span class="n">dmean</span> <span class="o">=</span> <span class="mf">0.25</span><span class="o">*</span><span class="p">(</span> <span class="n">volume</span> <span class="o">/</span> <span class="n">natoms</span> <span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">3.0</span><span class="p">)</span> 
+<span class="n">dmean</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span> <span class="n">volume</span> <span class="o">/</span> <span class="n">natoms</span> <span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">3.0</span><span class="p">)</span> 
 
 <span class="c1">#--- grid tiling mapped box with original size</span>
 <span class="c1">#--- values are interpolated onto this grid</span>
@@ -17090,12 +17096,12 @@ During handling of the above exception, another exception occurred:
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
 <span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-1-8802ac005cb3&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-fg">&lt;ipython-input-1-65498207ac22&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
 <span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-red-fg">#--- mean dist between atoms</span>
 <span class="ansi-green-fg">----&gt; 2</span><span class="ansi-red-fg"> </span>natoms <span class="ansi-blue-fg">=</span> len<span class="ansi-blue-fg">(</span> atoms0<span class="ansi-blue-fg">.</span>x <span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">      3</span> CellVectorOrtho<span class="ansi-blue-fg">,</span> VectorNorm <span class="ansi-blue-fg">=</span> lp<span class="ansi-blue-fg">.</span>GetOrthogonalBasis<span class="ansi-blue-fg">(</span> box0<span class="ansi-blue-fg">.</span>CellVector <span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">      4</span> volume <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>linalg<span class="ansi-blue-fg">.</span>det<span class="ansi-blue-fg">(</span> CellVectorOrtho <span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      5</span> dmean <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">0.25</span><span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">(</span> volume <span class="ansi-blue-fg">/</span> natoms <span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">**</span> <span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">1.0</span><span class="ansi-blue-fg">/</span><span class="ansi-cyan-fg">3.0</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      5</span> dmean <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">0.5</span><span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">(</span> volume <span class="ansi-blue-fg">/</span> natoms <span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">**</span> <span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">1.0</span><span class="ansi-blue-fg">/</span><span class="ansi-cyan-fg">3.0</span><span class="ansi-blue-fg">)</span>
 
 <span class="ansi-red-fg">NameError</span>: name &#39;atoms0&#39; is not defined</pre>
 </div>
@@ -17637,9 +17643,9 @@ During handling of the above exception, another exception occurred:
     <span class="c1">#--- xy plane</span>
     <span class="n">val</span> <span class="o">=</span> <span class="n">crltn</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">PltCrltn</span><span class="p">(</span> <span class="n">val</span><span class="p">,</span> 
-              <span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span>
+              <span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
               <span class="n">xlim</span><span class="o">=</span><span class="n">VectorNorm</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">]),</span><span class="n">ylim</span><span class="o">=</span><span class="n">VectorNorm</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">]),</span>
-              <span class="n">frac</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="c1">#--- plot a patch</span>
+              <span class="n">frac</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="c1">#--- plot a patch</span>
               <span class="n">zscore</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
               <span class="n">fileName</span> <span class="o">=</span> <span class="s1">&#39;cxy_strain.</span><span class="si">%s</span><span class="s1">.png&#39;</span><span class="o">%</span><span class="k">itime</span>,
               <span class="n">dpi</span> <span class="o">=</span> <span class="mi">60</span>
@@ -17682,7 +17688,7 @@ During handling of the above exception, another exception occurred:
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
 <span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-1-b33036b4f419&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-fg">&lt;ipython-input-1-fc4513cb0629&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
 <span class="ansi-green-intense-fg ansi-bold">      3</span>     <span class="ansi-red-fg"># for itime in Crltn:</span>
 <span class="ansi-green-intense-fg ansi-bold">      4</span>     <span class="ansi-red-fg">#     print &#39;itime=&#39;,itime</span>
 <span class="ansi-green-fg">----&gt; 5</span><span class="ansi-red-fg">     </span>CellVectorOrtho<span class="ansi-blue-fg">,</span> VectorNorm <span class="ansi-blue-fg">=</span> lp<span class="ansi-blue-fg">.</span>GetOrthogonalBasis<span class="ansi-blue-fg">(</span> box<span class="ansi-blue-fg">.</span>CellVector <span class="ansi-blue-fg">)</span> <span class="ansi-red-fg">#--- box length</span>
@@ -17769,10 +17775,57 @@ During handling of the above exception, another exception occurred:
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h5 id="multiple-plots">multiple plots<a class="anchor-link" href="#multiple-plots">&#182;</a></h5>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[56]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># #--- extract length</span>
+<span class="c1"># ebulk = []</span>
+<span class="c1"># Xc = []</span>
+<span class="c1"># Yc = []</span>
+<span class="c1"># keys = Crltn.keys()</span>
+<span class="c1"># keys.sort()</span>
+<span class="c1"># for itime in keys:</span>
+<span class="c1">#     #--- bulk strain</span>
+<span class="c1">#     dx=CellVector[ itime ][0,1]-CellVector[ 0 ][0,1]</span>
+<span class="c1">#     l1=CellVector[ itime ][1,1]</span>
+<span class="c1">#     ebulk += [0.5*dx/l1]</span>
+    
+<span class="c1">#     xc, yc = PltCrltnFunc( Crltn[ itime ], </span>
+<span class="c1">#                           (xv,yv),</span>
+<span class="c1">#                           cTOL = 4e-2,</span>
+<span class="c1">#                           PLOT = None,</span>
+<span class="c1">#                          )</span>
+<span class="c1">#     Xc += [xc]</span>
+<span class="c1">#     Yc += [yc]</span>
+
+<span class="c1"># #--- plot</span>
+<span class="c1"># fig = plt.figure( figsize = (4,4))</span>
+<span class="c1"># ax = fig.add_subplot(111)</span>
+<span class="c1"># xstr = r&#39;$\epsilon$&#39;</span>
+<span class="c1"># ystr = r&#39;$r_c$&#39;</span>
+<span class="c1"># ax.set_xlabel(xstr,fontsize=16)</span>
+<span class="c1"># #ax.set_ylabel(ystr,fontsize=16)</span>
+<span class="c1"># ax.tick_params(labelsize=16)</span>
+<span class="c1"># #</span>
+<span class="c1"># ax.plot( 2*np.array(ebulk), Xc,&#39;-o&#39;, color=&#39;C0&#39;, label = r&#39;$x_c$&#39;)</span>
+<span class="c1"># ax.plot( 2*np.array(ebulk), Yc,&#39;-s&#39;, color=&#39;red&#39;, label = r&#39;$y_c$&#39;)</span>
+<span class="c1"># ax.legend(frameon=False)</span>
+<span class="c1"># plt.savefig(&#39;rc.png&#39;,dpi=75,bbox_inches=&#39;tight&#39;)</span>
+<span class="c1"># plt.show()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[57]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">RemoteMachine</span><span class="o">=</span><span class="kc">None</span>
@@ -17780,7 +17833,7 @@ During handling of the above exception, another exception occurred:
     <span class="c1">#</span>
     <span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;text.usetex&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1">#--- comment tex stuff!</span>
     <span class="c1">#</span>
-    <span class="n">nfreq</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">nfreq</span> <span class="o">=</span> <span class="mi">5</span>
     <span class="c1">#</span>
     <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;black&#39;</span><span class="p">,</span><span class="s1">&#39;red&#39;</span><span class="p">,</span><span class="s1">&#39;green&#39;</span><span class="p">,</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span><span class="s1">&#39;cyan&#39;</span><span class="p">,</span><span class="s1">&#39;brown&#39;</span><span class="p">,</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span><span class="s1">&#39;magenta&#39;</span><span class="p">,</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span><span class="s1">&#39;yellow&#39;</span><span class="p">]</span>
     <span class="n">fillstyles</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">]</span>
@@ -17796,7 +17849,7 @@ During handling of the above exception, another exception occurred:
     <span class="c1">#ax.set_title()</span>
     <span class="c1">#</span>
     <span class="k">for</span> <span class="n">GlassType</span><span class="p">,</span> <span class="n">marker</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">fillstyle</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span> <span class="p">[</span> 
-                                         <span class="s1">&#39;FeNi&#39;</span><span class="p">,</span>
+                                         <span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="s1">&#39;y&#39;</span>
 <span class="c1">#                                           &#39;CoNiFe&#39;,</span>
 <span class="c1">#                                             &#39;CoNiCrFe&#39;,</span>
 <span class="c1">#                                             &#39;CoCrFeMn&#39;,</span>
@@ -17804,18 +17857,20 @@ During handling of the above exception, another exception occurred:
 <span class="c1">#                                             &#39;Co5Cr5Fe40Mn27Ni26&#39;</span>
                                         <span class="p">],</span><span class="n">markers</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="n">fillstyles</span> <span class="p">)):</span>
 
-        <span class="n">sarr</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s1">&#39;Crltn</span><span class="si">%s</span><span class="s1">/Run2/Cx.txt&#39;</span><span class="o">%</span><span class="k">GlassType</span>,dtype=str)
+        <span class="n">sarr</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s1">&#39;CrltnFeNi/Run2/C</span><span class="si">%s</span><span class="s1">.txt&#39;</span><span class="o">%</span><span class="k">GlassType</span>,dtype=str)
         <span class="c1">#--- fliter</span>
-        <span class="n">ydata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span><span class="n">sarr</span><span class="p">[</span><span class="mi">0</span><span class="p">::</span><span class="n">nfreq</span><span class="p">,</span><span class="mi">1</span><span class="p">]))</span> <span class="c1">#--- first 2nd col is stress drop</span>
-        <span class="n">xdata</span> <span class="o">=</span> <span class="n">sarr</span><span class="p">[</span><span class="mi">0</span><span class="p">::</span><span class="n">nfreq</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="c1">#--- 2nd and 3rd cols are widths</span>
+        <span class="n">ydata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">eval</span><span class="p">,</span><span class="n">sarr</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]))</span> <span class="c1">#--- first 2nd col is stress drop</span>
+        <span class="n">xdata</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">eval</span><span class="p">,</span><span class="n">sarr</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]))</span> <span class="c1">#--- 2nd and 3rd cols are widths</span>
     <span class="c1">#</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xdata</span><span class="p">,</span><span class="n">ydata</span><span class="p">,</span><span class="s1">&#39;-&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span><span class="c1">#, label = GlassType)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xdata</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="n">ydata</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xdata</span><span class="p">[</span><span class="mi">0</span><span class="p">::</span><span class="n">nfreq</span><span class="p">],</span><span class="n">ydata</span><span class="p">[</span><span class="mi">0</span><span class="p">::</span><span class="n">nfreq</span><span class="p">],</span>
+                <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
                 <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
                 <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
                 <span class="n">marker</span><span class="o">=</span><span class="n">marker</span><span class="p">,</span>
                 <span class="n">markerfacecolor</span><span class="o">=</span><span class="n">fillstyle</span><span class="p">,</span>
-                <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="k">GlassType</span>)
+                <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;$</span><span class="si">%s</span><span class="s1">$&#39;</span><span class="o">%</span><span class="k">GlassType</span>)
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">()[:</span><span class="mi">2</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="s1">&#39;r-.&#39;</span><span class="p">)</span>
 
     <span class="c1">#</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
@@ -17846,12 +17901,12 @@ During handling of the above exception, another exception occurred:
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
 <span class="ansi-red-fg">OSError</span>                                   Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-1-65505dba38e2&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-fg">&lt;ipython-input-1-ba1751373512&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
 <span class="ansi-green-intense-fg ansi-bold">     28</span>                                         ],markers, colors, fillstyles )):
 <span class="ansi-green-intense-fg ansi-bold">     29</span> 
-<span class="ansi-green-fg">---&gt; 30</span><span class="ansi-red-fg">         </span>sarr  <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>loadtxt<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;Crltn%s/Run2/Cx.txt&#39;</span><span class="ansi-blue-fg">%</span>GlassType<span class="ansi-blue-fg">,</span>dtype<span class="ansi-blue-fg">=</span>str<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">---&gt; 30</span><span class="ansi-red-fg">         </span>sarr  <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>loadtxt<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;CrltnFeNi/Run2/C%s.txt&#39;</span><span class="ansi-blue-fg">%</span>GlassType<span class="ansi-blue-fg">,</span>dtype<span class="ansi-blue-fg">=</span>str<span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">     31</span>         <span class="ansi-red-fg">#--- fliter</span>
-<span class="ansi-green-intense-fg ansi-bold">     32</span>         ydata <span class="ansi-blue-fg">=</span> list<span class="ansi-blue-fg">(</span>map<span class="ansi-blue-fg">(</span>float<span class="ansi-blue-fg">,</span>sarr<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">:</span>nfreq<span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span> <span class="ansi-red-fg">#--- first 2nd col is stress drop</span>
+<span class="ansi-green-intense-fg ansi-bold">     32</span>         ydata <span class="ansi-blue-fg">=</span> list<span class="ansi-blue-fg">(</span>map<span class="ansi-blue-fg">(</span>eval<span class="ansi-blue-fg">,</span>sarr<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span> <span class="ansi-red-fg">#--- first 2nd col is stress drop</span>
 
 <span class="ansi-green-fg">~/.local/lib/python3.6/site-packages/numpy/lib/npyio.py</span> in <span class="ansi-cyan-fg">loadtxt</span><span class="ansi-blue-fg">(fname, dtype, comments, delimiter, converters, skiprows, usecols, unpack, ndmin, encoding, max_rows)</span>
 <span class="ansi-green-intense-fg ansi-bold">    953</span>             fname <span class="ansi-blue-fg">=</span> os_fspath<span class="ansi-blue-fg">(</span>fname<span class="ansi-blue-fg">)</span>
@@ -17898,126 +17953,13 @@ During handling of the above exception, another exception occurred:
 
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[57]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">eval</span><span class="p">(</span><span class="n">sarr</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-1-32786897a309&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>eval<span class="ansi-blue-fg">(</span>sarr<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">10</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
-
-<span class="ansi-red-fg">NameError</span>: name &#39;sarr&#39; is not defined</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[58]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sarr</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-1-1050e3fc9869&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>sarr
-
-<span class="ansi-red-fg">NameError</span>: name &#39;sarr&#39; is not defined</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[59]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># #--- extract length</span>
-<span class="c1"># ebulk = []</span>
-<span class="c1"># Xc = []</span>
-<span class="c1"># Yc = []</span>
-<span class="c1"># keys = Crltn.keys()</span>
-<span class="c1"># keys.sort()</span>
-<span class="c1"># for itime in keys:</span>
-<span class="c1">#     #--- bulk strain</span>
-<span class="c1">#     dx=CellVector[ itime ][0,1]-CellVector[ 0 ][0,1]</span>
-<span class="c1">#     l1=CellVector[ itime ][1,1]</span>
-<span class="c1">#     ebulk += [0.5*dx/l1]</span>
-    
-<span class="c1">#     xc, yc = PltCrltnFunc( Crltn[ itime ], </span>
-<span class="c1">#                           (xv,yv),</span>
-<span class="c1">#                           cTOL = 4e-2,</span>
-<span class="c1">#                           PLOT = None,</span>
-<span class="c1">#                          )</span>
-<span class="c1">#     Xc += [xc]</span>
-<span class="c1">#     Yc += [yc]</span>
-
-<span class="c1"># #--- plot</span>
-<span class="c1"># fig = plt.figure( figsize = (4,4))</span>
-<span class="c1"># ax = fig.add_subplot(111)</span>
-<span class="c1"># xstr = r&#39;$\epsilon$&#39;</span>
-<span class="c1"># ystr = r&#39;$r_c$&#39;</span>
-<span class="c1"># ax.set_xlabel(xstr,fontsize=16)</span>
-<span class="c1"># #ax.set_ylabel(ystr,fontsize=16)</span>
-<span class="c1"># ax.tick_params(labelsize=16)</span>
-<span class="c1"># #</span>
-<span class="c1"># ax.plot( 2*np.array(ebulk), Xc,&#39;-o&#39;, color=&#39;C0&#39;, label = r&#39;$x_c$&#39;)</span>
-<span class="c1"># ax.plot( 2*np.array(ebulk), Yc,&#39;-s&#39;, color=&#39;red&#39;, label = r&#39;$y_c$&#39;)</span>
-<span class="c1"># ax.legend(frameon=False)</span>
-<span class="c1"># plt.savefig(&#39;rc.png&#39;,dpi=75,bbox_inches=&#39;tight&#39;)</span>
-<span class="c1"># plt.show()</span>
+<div class=" highlight hl-ipython3"><pre><span></span> 
 </pre></div>
 
      </div>
