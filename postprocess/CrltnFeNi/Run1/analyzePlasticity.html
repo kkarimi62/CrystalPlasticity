@@ -14420,7 +14420,9 @@ a.anchor-link {
               <span class="n">fileName</span> <span class="o">=</span> <span class="s1">&#39;cxy.png&#39;</span><span class="p">,</span>
               <span class="n">dpi</span><span class="o">=</span><span class="mi">75</span><span class="p">,</span>
             <span class="p">):</span>
-        
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+    <span class="c1">#</span>
     <span class="n">val</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="c1">#--- zscore</span>
     <span class="k">if</span> <span class="n">zscore</span><span class="p">:</span>
@@ -14431,18 +14433,18 @@ a.anchor-link {
     <span class="c1">#</span>
     <span class="p">(</span><span class="n">mgrid</span><span class="p">,</span><span class="n">ngrid</span><span class="p">)</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">shape</span>
     <span class="n">center</span> <span class="o">=</span> <span class="p">(</span><span class="n">ngrid</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="n">mgrid</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">xlabel</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">ylabel</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">xlabel</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">ylabel</span><span class="p">)</span>
     
-    <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span> <span class="c1">#--- remove labels</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span> <span class="c1">#--- remove labels</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
 
-    <span class="n">pos</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">((</span><span class="n">CenterMatrix</span><span class="p">(</span> <span class="n">val</span> <span class="p">)</span><span class="o">.</span><span class="n">real</span><span class="p">),</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;bwr&#39;</span><span class="p">,</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">((</span><span class="n">CenterMatrix</span><span class="p">(</span> <span class="n">val</span> <span class="p">)</span><span class="o">.</span><span class="n">real</span><span class="p">),</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;bwr&#39;</span><span class="p">,</span>
                      <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="n">xlim</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">xlim</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">ylim</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">ylim</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
                      <span class="c1">#,vmin=-.01, vmax=.01</span>
                     <span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">xlim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">frac</span><span class="p">,</span><span class="n">xlim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">frac</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">ylim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">frac</span><span class="p">,</span><span class="n">ylim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">frac</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">xlim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">frac</span><span class="p">,</span><span class="n">xlim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">frac</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">ylim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">frac</span><span class="p">,</span><span class="n">ylim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">frac</span><span class="p">)</span>
 
 <span class="c1">#    plt.colorbar( pos, fraction = 0.04)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">fileName</span><span class="p">,</span><span class="n">dpi</span><span class="o">=</span><span class="n">dpi</span><span class="p">,</span><span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
@@ -16701,12 +16703,12 @@ a.anchor-link {
 <span class="ansi-green-intense-fg ansi-bold">      4</span> ax <span class="ansi-blue-fg">=</span> fig<span class="ansi-blue-fg">.</span>add_subplot<span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">111</span><span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">      5</span> xstr <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">r&#39;$\gamma$&#39;</span>
 
-<span class="ansi-green-fg">&lt;ipython-input-1-c0e316e7e58c&gt;</span> in <span class="ansi-cyan-fg">MultipleFrames</span><span class="ansi-blue-fg">(path, title, irun, nmax)</span>
-<span class="ansi-green-intense-fg ansi-bold">    345</span>             <span class="ansi-green-fg">continue</span>
-<span class="ansi-green-intense-fg ansi-bold">    346</span>         i<span class="ansi-blue-fg">+=</span><span class="ansi-cyan-fg">1</span>
-<span class="ansi-green-fg">--&gt; 347</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">return</span> sarr
-<span class="ansi-green-intense-fg ansi-bold">    348</span> 
-<span class="ansi-green-intense-fg ansi-bold">    349</span> <span class="ansi-green-fg">def</span> MultipleFrames2nd<span class="ansi-blue-fg">(</span> path<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;&#39;</span><span class="ansi-blue-fg">,</span> title<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;&#39;</span><span class="ansi-blue-fg">,</span> nrun <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">,</span> ncols<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">3</span> <span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">&lt;ipython-input-1-dfa2a4bd062b&gt;</span> in <span class="ansi-cyan-fg">MultipleFrames</span><span class="ansi-blue-fg">(path, title, irun, nmax)</span>
+<span class="ansi-green-intense-fg ansi-bold">    347</span>             <span class="ansi-green-fg">continue</span>
+<span class="ansi-green-intense-fg ansi-bold">    348</span>         i<span class="ansi-blue-fg">+=</span><span class="ansi-cyan-fg">1</span>
+<span class="ansi-green-fg">--&gt; 349</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">return</span> sarr
+<span class="ansi-green-intense-fg ansi-bold">    350</span> 
+<span class="ansi-green-intense-fg ansi-bold">    351</span> <span class="ansi-green-fg">def</span> MultipleFrames2nd<span class="ansi-blue-fg">(</span> path<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;&#39;</span><span class="ansi-blue-fg">,</span> title<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;&#39;</span><span class="ansi-blue-fg">,</span> nrun <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">,</span> ncols<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">3</span> <span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
 
 <span class="ansi-red-fg">UnboundLocalError</span>: local variable &#39;sarr&#39; referenced before assignment</pre>
 </div>
@@ -17505,27 +17507,38 @@ a.anchor-link {
     <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 
 
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">AttributeError</span>                            Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-1-fc4513cb0629&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-intense-fg ansi-bold">     14</span>               zscore <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">False</span><span class="ansi-blue-fg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">     15</span>               fileName <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;cxy_strain.%s.png&#39;</span><span class="ansi-blue-fg">%</span>itime<span class="ansi-blue-fg">,</span>
-<span class="ansi-green-fg">---&gt; 16</span><span class="ansi-red-fg">               </span>dpi <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">60</span>
-<span class="ansi-green-intense-fg ansi-bold">     17</span>             )
-<span class="ansi-green-intense-fg ansi-bold">     18</span>         <span class="ansi-red-fg"># #--- zx plane</span>
 
-<span class="ansi-green-fg">&lt;ipython-input-1-c0e316e7e58c&gt;</span> in <span class="ansi-cyan-fg">PltCrltn</span><span class="ansi-blue-fg">(value, xlabel, ylabel, xlim, ylim, frac, zscore, fileName, dpi)</span>
-<span class="ansi-green-intense-fg ansi-bold">     85</span>     plt<span class="ansi-blue-fg">.</span>ylabel<span class="ansi-blue-fg">(</span>ylabel<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     86</span> 
-<span class="ansi-green-fg">---&gt; 87</span><span class="ansi-red-fg">     </span>plt<span class="ansi-blue-fg">.</span>axes<span class="ansi-blue-fg">.</span>xaxis<span class="ansi-blue-fg">.</span>set_visible<span class="ansi-blue-fg">(</span><span class="ansi-green-fg">False</span><span class="ansi-blue-fg">)</span> <span class="ansi-red-fg">#--- remove labels</span>
-<span class="ansi-green-intense-fg ansi-bold">     88</span>     plt<span class="ansi-blue-fg">.</span>axes<span class="ansi-blue-fg">.</span>yaxis<span class="ansi-blue-fg">.</span>set_visible<span class="ansi-blue-fg">(</span><span class="ansi-green-fg">False</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     89</span> 
 
-<span class="ansi-red-fg">AttributeError</span>: &#39;function&#39; object has no attribute &#39;xaxis&#39;</pre>
+<div class="jp-RenderedImage jp-OutputArea-output ">
+<img src="data:image/png;base64,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
+"
+>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[55]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">get_xaxis</span><span class="p">()</span><span class="o">.</span><span class="n">set_visible</span><span class="p">)</span>
+</pre></div>
+
+     </div>
 </div>
 </div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
 
 <div class="jp-OutputArea-child">
 
@@ -17533,14 +17546,15 @@ a.anchor-link {
     <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 
 
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">AttributeError</span>                            Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-1-037d46962d4d&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>help<span class="ansi-blue-fg">(</span>plt<span class="ansi-blue-fg">.</span>axes<span class="ansi-blue-fg">.</span>get_xaxis<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>set_visible<span class="ansi-blue-fg">)</span>
 
-
-<div class="jp-RenderedImage jp-OutputArea-output ">
-<img src="data:image/png;base64,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
-"
->
+<span class="ansi-red-fg">AttributeError</span>: &#39;function&#39; object has no attribute &#39;get_xaxis&#39;</pre>
 </div>
-
 </div>
 
 </div>
@@ -17555,7 +17569,7 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[55]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[56]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">StrnAnalysis</span><span class="p">:</span>
@@ -17617,7 +17631,7 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[56]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[57]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># #--- extract length</span>
@@ -17664,7 +17678,7 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[57]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[58]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">RemoteMachine</span><span class="o">=</span><span class="kc">None</span>
