@@ -34,7 +34,7 @@ if __name__ == '__main__':
 		string[ inums ] = "\treadPath = os.getcwd() + \'/../testRuns/glass%s\'\n"%(PHI[iphi])
 #
 		inums = lnums[ 2 ] - 1
-		string[ inums ] = "\targv2nd = \'index=%s\'\n"%(iphi)
+		string[ inums ] = "\targv2nd = \'indx=%s\'\n"%(iphi)
 
 		sfile=open('junk%s.py'%iphi,'w');sfile.writelines(string);sfile.close()
 		os.system( 'python3 junk%s.py'%iphi )
