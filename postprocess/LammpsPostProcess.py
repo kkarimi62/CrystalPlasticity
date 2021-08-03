@@ -198,8 +198,8 @@ class Box:
             extraColumn = kwargs['AddMissing']
             if not self.BoxBounds.shape == (3,3):
                 self.BoxBounds = np.c_[self.BoxBounds,extraColumn]
-                print('BoxBounds.shape=%s,%s is not (3,3)!'%(self.BoxBounds.shape))
-                print('add %s!'%(extraColumn))
+#                print('BoxBounds.shape=%s,%s is not (3,3)!'%(self.BoxBounds.shape))
+#                print('add %s!'%(extraColumn))
 
         (xlo, xhi, xy) = list(map( float, self.BoxBounds[ 0 ] )) #--- xlo, xhi, xy
         lx = xhi - xlo - xy
