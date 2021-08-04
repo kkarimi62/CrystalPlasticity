@@ -12,7 +12,7 @@ if __name__ == '__main__':
              'CoNiCrFe',
              'CoCrFeMn',
              'CoNiCrFeMn',
-             'Co5Cr5Fe40Mn27Ni26'
+             'Co5Cr2Fe40Mn27Ni26'
 		  ]
 #	PHI = [1800,1933,2066,2200,2333]
 #	PHI=range(0,2000000+10000,4*100000) 
