@@ -14856,7 +14856,7 @@ a.anchor-link {
 <span class="c1">#--- by arguments</span>
 
 <span class="c1">#--- timestep</span>
-<span class="n">itime</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="c1">#itime = 0</span>
 <span class="c1">#</span>
 <span class="n">dlgr0</span> <span class="o">=</span> <span class="mf">2.5</span> <span class="c1">#--- 1st peak  in g(r)</span>
 <span class="n">dlgr</span> <span class="o">=</span> <span class="mf">4.0</span> <span class="c1">#--- 2nd peak in g(r) !!!!!!!!!!</span>
@@ -14881,7 +14881,7 @@ a.anchor-link {
 <span class="n">StrnAnalysis</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="c1">#</span>
 <span class="n">DminAnalysis</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">Ovitos</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">Ovitos</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1">#--- don&#39;t change!</span>
 <span class="c1">#</span>
 <span class="n">RemoteMachine</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1">#--- tex issue: don&#39;t run corresponding cells</span>
 <span class="c1"># &#39;Co&#39;, &#39;Ni&#39;, &#39;Cr&#39;, &#39;Fe&#39;, &#39;Mn&#39;</span>
@@ -14927,27 +14927,8 @@ a.anchor-link {
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="input-stress-file">input stress file<a class="anchor-link" href="#input-stress-file">&#182;</a></h1>
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="Dump-File">Dump File<a class="anchor-link" href="#Dump-File">&#182;</a></h2>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[34]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
@@ -15171,8 +15152,8 @@ a.anchor-link {
     <span class="c1">#</span>
     <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\gamma$&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\sigma$&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="c1">#     ax.set_xlabel(r&#39;$\gamma$&#39;,fontsize=20)</span>
+<span class="c1">#     ax.set_ylabel(r&#39;$\sigma$&#39;,fontsize=20)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_minor_locator</span><span class="p">(</span><span class="n">AutoMinorLocator</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_minor_locator</span><span class="p">(</span><span class="n">AutoMinorLocator</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">labelsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">which</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -15252,24 +15233,26 @@ a.anchor-link {
     <span class="c1">#ax.set_title()</span>
     <span class="c1">#</span>
     <span class="k">for</span> <span class="n">GlassType</span><span class="p">,</span> <span class="n">marker</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">fillstyle</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span> <span class="p">[</span> 
-                                         <span class="s1">&#39;0&#39;</span><span class="p">,</span><span class="s1">&#39;2&#39;</span>
+                                         <span class="s1">&#39;0&#39;</span><span class="p">,</span><span class="s1">&#39;1&#39;</span><span class="p">,</span><span class="s1">&#39;2&#39;</span>
                                         <span class="p">],</span><span class="n">markers</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="n">fillstyles</span> <span class="p">)):</span>
 
-        <span class="n">sarr</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s1">&#39;d2minFeNi/Run</span><span class="si">%s</span><span class="s1">/loadCurve.txt&#39;</span><span class="o">%</span><span class="k">GlassType</span>)
-        <span class="c1">#--- fliter</span>
-        <span class="n">nfreq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sarr</span><span class="p">)</span><span class="o">/</span><span class="mi">1000</span><span class="p">)])</span>
-        <span class="n">ydata</span> <span class="o">=</span> <span class="n">sarr</span><span class="p">[</span><span class="mi">0</span><span class="p">::</span><span class="n">nfreq</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="c1">#--- first 2nd col is stress drop</span>
-        <span class="n">xdata</span> <span class="o">=</span> <span class="n">sarr</span><span class="p">[</span><span class="mi">0</span><span class="p">::</span><span class="n">nfreq</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="c1">#--- 2nd and 3rd cols are widths</span>
-    <span class="c1">#</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xdata</span><span class="p">,</span><span class="n">ydata</span><span class="p">,</span>
-                <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-                <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
-                <span class="n">marker</span><span class="o">=</span><span class="n">marker</span><span class="p">,</span>
-                <span class="n">markerfacecolor</span><span class="o">=</span><span class="n">fillstyle</span><span class="p">,</span>
-                <span class="n">markeredgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">fillstyle</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-                <span class="n">markevery</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">xdata</span><span class="p">)</span><span class="o">/</span><span class="mi">10</span><span class="p">),</span>
-                <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="k">GlassType</span>)
-
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">sarr</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s1">&#39;d2minCo5Cr5Fe40Mn27Ni26/Run</span><span class="si">%s</span><span class="s1">/loadCurve.txt&#39;</span><span class="o">%</span><span class="k">GlassType</span>)
+            <span class="c1">#--- fliter</span>
+            <span class="n">nfreq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sarr</span><span class="p">)</span><span class="o">/</span><span class="mi">1000</span><span class="p">)])</span>
+            <span class="n">ydata</span> <span class="o">=</span> <span class="n">sarr</span><span class="p">[</span><span class="mi">0</span><span class="p">::</span><span class="n">nfreq</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="c1">#--- first 2nd col is stress drop</span>
+            <span class="n">xdata</span> <span class="o">=</span> <span class="n">sarr</span><span class="p">[</span><span class="mi">0</span><span class="p">::</span><span class="n">nfreq</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="c1">#--- 2nd and 3rd cols are widths</span>
+        <span class="c1">#</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xdata</span><span class="p">,</span><span class="n">ydata</span><span class="p">,</span>
+                    <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                    <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+                    <span class="n">marker</span><span class="o">=</span><span class="n">marker</span><span class="p">,</span>
+                    <span class="n">markerfacecolor</span><span class="o">=</span><span class="n">fillstyle</span><span class="p">,</span>
+                    <span class="n">markeredgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">fillstyle</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="n">markevery</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">xdata</span><span class="p">)</span><span class="o">/</span><span class="mi">10</span><span class="p">),</span>
+                    <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="k">GlassType</span>)
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">continue</span>
     <span class="c1">#</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
     <span class="c1">#</span>
@@ -15650,7 +15633,7 @@ a.anchor-link {
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">KeyError</span>                                  Traceback (most recent call last)
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
 <span class="ansi-green-fg">&lt;ipython-input-1-bcf35ad504a7&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
 <span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>atoms <span class="ansi-blue-fg">=</span> lp<span class="ansi-blue-fg">.</span>Atoms<span class="ansi-blue-fg">(</span> <span class="ansi-blue-fg">**</span>lmpData<span class="ansi-blue-fg">.</span>coord_atoms_broken<span class="ansi-blue-fg">[</span>itime<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">.</span>to_dict<span class="ansi-blue-fg">(</span>orient<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;list&#39;</span><span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">      2</span> df <span class="ansi-blue-fg">=</span> pd<span class="ansi-blue-fg">.</span>DataFrame<span class="ansi-blue-fg">(</span>atoms<span class="ansi-blue-fg">.</span>__dict__<span class="ansi-blue-fg">)</span>
@@ -15658,7 +15641,7 @@ a.anchor-link {
 <span class="ansi-green-intense-fg ansi-bold">      4</span> size <span class="ansi-blue-fg">=</span> list<span class="ansi-blue-fg">(</span>map<span class="ansi-blue-fg">(</span>AtomicRadius<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">,</span>list<span class="ansi-blue-fg">(</span>map<span class="ansi-blue-fg">(</span>int<span class="ansi-blue-fg">,</span>df<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;type&#39;</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">.</span>tolist<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">      5</span> <span class="ansi-green-fg">assert</span> len<span class="ansi-blue-fg">(</span>size<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">==</span> len<span class="ansi-blue-fg">(</span>df<span class="ansi-blue-fg">)</span>
 
-<span class="ansi-red-fg">KeyError</span>: 0</pre>
+<span class="ansi-red-fg">NameError</span>: name &#39;itime&#39; is not defined</pre>
 </div>
 </div>
 
@@ -16081,7 +16064,7 @@ a.anchor-link {
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">KeyError</span>                                  Traceback (most recent call last)
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
 <span class="ansi-green-fg">&lt;ipython-input-1-f39c20653e11&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
 <span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-red-fg">#--- extract atom and box properties</span>
 <span class="ansi-green-fg">----&gt; 2</span><span class="ansi-red-fg"> </span>atoms <span class="ansi-blue-fg">=</span> lp<span class="ansi-blue-fg">.</span>Atoms<span class="ansi-blue-fg">(</span> <span class="ansi-blue-fg">**</span>lmpData<span class="ansi-blue-fg">.</span>coord_atoms_broken<span class="ansi-blue-fg">[</span>itime<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">.</span>to_dict<span class="ansi-blue-fg">(</span>orient<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;list&#39;</span><span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">)</span>
@@ -16089,7 +16072,7 @@ a.anchor-link {
 <span class="ansi-green-intense-fg ansi-bold">      4</span> box <span class="ansi-blue-fg">=</span> lp<span class="ansi-blue-fg">.</span>Box<span class="ansi-blue-fg">(</span> BoxBounds <span class="ansi-blue-fg">=</span> lmpData<span class="ansi-blue-fg">.</span>BoxBounds<span class="ansi-blue-fg">[</span>itime<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">      5</span> box<span class="ansi-blue-fg">.</span>BasisVectors<span class="ansi-blue-fg">(</span> AddMissing <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>array<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0.0</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">0.0</span><span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">0.0</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
 
-<span class="ansi-red-fg">KeyError</span>: 0</pre>
+<span class="ansi-red-fg">NameError</span>: name &#39;itime&#39; is not defined</pre>
 </div>
 </div>
 
@@ -16246,13 +16229,13 @@ a.anchor-link {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h3 id="Plot">Plot<a class="anchor-link" href="#Plot">&#182;</a></h3>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[26]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="mi">1</span><span class="p">:</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="ow">not</span> <span class="n">RemoteMachine</span><span class="p">:</span>
     <span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;text.usetex&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1">#--- comment tex stuff!</span>
     <span class="c1">#</span>
     <span class="n">nfreq</span> <span class="o">=</span> <span class="mi">1</span>
@@ -16311,6 +16294,100 @@ a.anchor-link {
 </div>
 </div>
 
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="plot-gr-good-vs-bad">plot gr good vs bad<a class="anchor-link" href="#plot-gr-good-vs-bad">&#182;</a></h3>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[27]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="ow">not</span> <span class="n">RemoteMachine</span><span class="p">:</span>
+    <span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;text.usetex&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1">#--- comment tex stuff!</span>
+    <span class="c1">#</span>
+    <span class="n">nfreq</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="c1">#</span>
+    <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;black&#39;</span><span class="p">,</span><span class="s1">&#39;red&#39;</span><span class="p">,</span><span class="s1">&#39;green&#39;</span><span class="p">,</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span><span class="s1">&#39;cyan&#39;</span><span class="p">,</span><span class="s1">&#39;brown&#39;</span><span class="p">,</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span><span class="s1">&#39;magenta&#39;</span><span class="p">,</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span><span class="s1">&#39;yellow&#39;</span><span class="p">]</span>
+    <span class="n">fillstyles</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">]</span>
+    <span class="n">markers</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;o&#39;</span><span class="p">,</span><span class="s1">&#39;s&#39;</span><span class="p">,</span><span class="s1">&#39;D&#39;</span><span class="p">,</span><span class="s1">&#39;^&#39;</span><span class="p">,</span><span class="s1">&#39;&lt;&#39;</span><span class="p">,</span><span class="s1">&#39;&gt;&#39;</span><span class="p">,</span><span class="s1">&#39;v&#39;</span><span class="p">]</span>
+    <span class="c1">#</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+    <span class="c1">#</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mf">1e-2</span><span class="p">,</span><span class="mf">1e2</span><span class="p">)</span>
+    <span class="c1">#</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+    <span class="c1">#</span>
+<span class="c1">#    ax.set_xlabel(r&#39;$\gamma$&#39;,fontsize=20)</span>
+<span class="c1">#    ax.set_ylabel(r&#39;$\sigma/\mu$&#39;,fontsize=20)</span>
+    <span class="c1">#</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_minor_locator</span><span class="p">(</span><span class="n">AutoMinorLocator</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_minor_locator</span><span class="p">(</span><span class="n">AutoMinorLocator</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+    <span class="c1">#--- add major yticks</span>
+    <span class="n">ymin</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">()[</span><span class="mi">2</span><span class="p">]))</span>
+    <span class="n">ymax</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">()[</span><span class="mi">3</span><span class="p">]))</span>
+    <span class="n">nbin</span> <span class="o">=</span> <span class="n">ymax</span> <span class="o">-</span> <span class="n">ymin</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="n">ymin</span><span class="p">,</span><span class="n">ymax</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="n">nbin</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+    <span class="c1">#</span>
+    <span class="c1">#--- put minor bins y</span>
+    <span class="n">locmin</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">ticker</span><span class="o">.</span><span class="n">LogLocator</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span><span class="n">subs</span><span class="o">=</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">0.2</span><span class="p">,</span><span class="mf">0.3</span><span class="p">,</span><span class="mf">0.4</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.6</span><span class="p">,</span><span class="mf">0.7</span><span class="p">,</span><span class="mf">0.8</span><span class="p">,</span><span class="mf">0.9</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">numticks</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_minor_locator</span><span class="p">(</span><span class="n">locmin</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_minor_formatter</span><span class="p">(</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">ticker</span><span class="o">.</span><span class="n">NullFormatter</span><span class="p">())</span>
+    <span class="c1">#</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">labelsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">which</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1">#ax.set_title()</span>
+    <span class="c1">#</span>
+    <span class="n">ydata</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">xdata</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">GlassType</span><span class="p">,</span> <span class="n">marker</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">fillstyle</span><span class="p">,</span> <span class="n">indx</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span> <span class="p">[</span> 
+<span class="c1">#                                        &#39;Out&#39;,&#39;In&#39;,&#39;Diff&#39;</span>
+                                        <span class="s1">&#39;5&#39;</span><span class="p">,</span><span class="s1">&#39;95&#39;</span><span class="p">,</span><span class="s1">&#39;QuantDiff&#39;</span>
+                                        <span class="p">],</span><span class="n">markers</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="n">fillstyles</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="p">)):</span>
+        <span class="c1">#--- time step</span>
+        <span class="n">sarr</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s1">&#39;/Users/Home/Desktop/Tmp/txt/grBad</span><span class="si">%s</span><span class="s1">.txt&#39;</span><span class="o">%</span><span class="k">GlassType</span>)
+        <span class="c1">#--- fliter</span>
+        <span class="n">ydata</span><span class="p">[</span> <span class="n">indx</span> <span class="p">]</span> <span class="o">=</span> <span class="n">sarr</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span> <span class="c1">#--- first 2nd col is stress drop</span>
+        <span class="n">xdata</span><span class="p">[</span> <span class="n">indx</span> <span class="p">]</span> <span class="o">=</span> <span class="n">sarr</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="c1">#--- 2nd and 3rd cols are widths</span>
+    <span class="c1">#</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xdata</span><span class="p">[</span> <span class="n">indx</span> <span class="p">],</span><span class="n">ydata</span><span class="p">[</span> <span class="n">indx</span> <span class="p">],</span>
+                <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+                <span class="n">marker</span><span class="o">=</span><span class="n">marker</span><span class="p">,</span>
+                <span class="n">markerfacecolor</span><span class="o">=</span><span class="n">fillstyle</span><span class="p">,</span>
+                <span class="n">markeredgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">fillstyle</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="n">markevery</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">xdata</span><span class="p">[</span> <span class="n">indx</span> <span class="p">])</span><span class="o">/</span><span class="mi">10</span><span class="p">),</span>
+                <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="k">GlassType</span>)
+    <span class="c1">#</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="c1">#</span>
+    <span class="n">DrawFrame</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span><span class="mf">0.09</span><span class="p">,</span><span class="mf">0.15</span><span class="p">,</span><span class="mf">0.06</span><span class="p">,</span><span class="mf">0.04</span><span class="p">,</span><span class="n">LOG_Y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1">#</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;grBadQuant.png&#39;</span><span class="p">,</span><span class="n">dpi</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="mi">75</span><span class="p">,</span><span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span><span class="n">pad_inches</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[28]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="s1">&#39;/Users/Home/Desktop/Tmp/txt/grBadQuantDiff.txt&#39;</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">xdata</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">xdata</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">ydata</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">ydata</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
 <div class="jp-Cell-outputWrapper">
 
 
@@ -16322,47 +16399,15 @@ a.anchor-link {
     <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 
 
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>0
-</pre>
-</div>
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
 <span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-1-2a4fd6dbf45e&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-intense-fg ansi-bold">     32</span>         print<span class="ansi-blue-fg">(</span>iitime<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     33</span>         <span class="ansi-red-fg">#--- fliter</span>
-<span class="ansi-green-fg">---&gt; 34</span><span class="ansi-red-fg">         </span>data  <span class="ansi-blue-fg">=</span> gr<span class="ansi-blue-fg">[</span>iitime<span class="ansi-blue-fg">]</span>
-<span class="ansi-green-intense-fg ansi-bold">     35</span>         ydata <span class="ansi-blue-fg">=</span> data<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">:</span>nfreq<span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span> <span class="ansi-red-fg">#--- first 2nd col is stress drop</span>
-<span class="ansi-green-intense-fg ansi-bold">     36</span>         xdata <span class="ansi-blue-fg">=</span> data<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">:</span>nfreq<span class="ansi-blue-fg">,</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span> <span class="ansi-red-fg">#--- 2nd and 3rd cols are widths</span>
+<span class="ansi-green-fg">&lt;ipython-input-1-ed1e8cd6ccb9&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>np<span class="ansi-blue-fg">.</span>savetxt<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;/Users/Home/Desktop/Tmp/txt/grBadQuantDiff.txt&#39;</span><span class="ansi-blue-fg">,</span>np<span class="ansi-blue-fg">.</span>c_<span class="ansi-blue-fg">[</span>xdata<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span>xdata<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span>ydata<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">-</span>ydata<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
 
-<span class="ansi-red-fg">NameError</span>: name &#39;gr&#39; is not defined</pre>
+<span class="ansi-red-fg">NameError</span>: name &#39;xdata&#39; is not defined</pre>
 </div>
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-
-
-<div class="jp-RenderedImage jp-OutputArea-output ">
-<img src="data:image/png;base64,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
-"
->
-</div>
-
 </div>
 
 </div>
@@ -16382,7 +16427,7 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[27]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[29]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">DminAnalysis</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">Ovitos</span><span class="p">:</span>
@@ -16416,7 +16461,7 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[28]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[30]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#--- input: dump file output: d2min.xyz</span>
@@ -16461,7 +16506,7 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[29]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[31]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#--- read from d2min.xyz</span>
@@ -16518,7 +16563,7 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[30]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[32]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">DminAnalysis</span> <span class="ow">and</span> <span class="n">Ovitos</span><span class="p">:</span>
@@ -16621,7 +16666,7 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 
 
 <div class="jp-RenderedImage jp-OutputArea-output ">
-<img src="data:image/png;base64,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
+<img src="data:image/png;base64,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
 "
 >
 </div>
@@ -16640,7 +16685,7 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[31]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[33]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">DminAnalysis</span> <span class="ow">and</span> <span class="n">Ovitos</span><span class="p">:</span>
@@ -16683,7 +16728,7 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 
 
 <div class="jp-RenderedImage jp-OutputArea-output ">
-<img src="data:image/png;base64,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
+<img src="data:image/png;base64,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
 "
 >
 </div>
@@ -16702,7 +16747,7 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[32]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[34]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="ow">not</span> <span class="n">RemoteMachine</span><span class="p">:</span>
@@ -16763,7 +16808,7 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[33]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[35]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="ow">not</span> <span class="n">RemoteMachine</span><span class="p">:</span>
@@ -16778,23 +16823,23 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
     <span class="c1">#</span>
     <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\gamma$&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Norm. Std&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="c1">#     ax.set_xlabel(r&#39;$\gamma$&#39;,fontsize=20)</span>
+<span class="c1">#     ax.set_ylabel(r&#39;Norm. Std&#39;,fontsize=20)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_minor_locator</span><span class="p">(</span><span class="n">AutoMinorLocator</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_minor_locator</span><span class="p">(</span><span class="n">AutoMinorLocator</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">labelsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">which</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="c1">#ax.set_title()</span>
     <span class="c1">#</span>
     <span class="k">for</span> <span class="n">GlassType</span><span class="p">,</span> <span class="n">marker</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">fillstyle</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span> <span class="p">[</span> 
-                                         <span class="s1">&#39;FeNi&#39;</span><span class="p">,</span>
-                                          <span class="s1">&#39;CoNiFe&#39;</span><span class="p">,</span>
-                                            <span class="s1">&#39;CoNiCrFe&#39;</span><span class="p">,</span>
-                                            <span class="s1">&#39;CoCrFeMn&#39;</span><span class="p">,</span>
-                                            <span class="s1">&#39;CoNiCrFeMn&#39;</span><span class="p">,</span>
-                                            <span class="s1">&#39;Co5Cr5Fe40Mn27Ni26&#39;</span>
+<span class="c1">#                                          &#39;FeNi&#39;, #0,1,2</span>
+<span class="c1">#                                           &#39;CoNiFe&#39;, #0,2</span>
+                                             <span class="s1">&#39;CoNiCrFe/Run2&#39;</span><span class="p">,</span> <span class="c1">#0,1,2  ## bad 7</span>
+<span class="c1">#                                             &#39;CoCrFeMn&#39;, #0,1,2</span>
+<span class="c1">#                                             &#39;CoNiCrFeMn&#39;, #1,2 ##</span>
+                                            <span class="s1">&#39;Co5Cr5Fe40Mn27Ni26/Run0&#39;</span><span class="c1"># 0,1,2 # good 13</span>
                                         <span class="p">],</span><span class="n">markers</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="n">fillstyles</span> <span class="p">)):</span>
 
-        <span class="n">sarr</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s1">&#39;d2min</span><span class="si">%s</span><span class="s1">/Run2/D2minGamma.txt&#39;</span><span class="o">%</span><span class="k">GlassType</span>)
+        <span class="n">sarr</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s1">&#39;d2min</span><span class="si">%s</span><span class="s1">/D2minGamma.txt&#39;</span><span class="o">%</span><span class="k">GlassType</span>)
         <span class="c1">#--- fliter</span>
         <span class="n">ydata</span> <span class="o">=</span> <span class="n">sarr</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="c1">#--- first 2nd col is stress drop</span>
         <span class="n">xdata</span> <span class="o">=</span> <span class="n">sarr</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="c1">#--- 2nd and 3rd cols are widths</span>
@@ -16807,7 +16852,7 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
                 <span class="n">markerfacecolor</span><span class="o">=</span><span class="n">fillstyle</span><span class="p">,</span>
                 <span class="n">markeredgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">fillstyle</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
                 <span class="n">markevery</span><span class="o">=</span><span class="mi">6</span><span class="o">*</span><span class="mi">4</span><span class="p">,</span>
-                <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="k">GlassType</span>)
+                <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="k">GlassType</span>[0:-5])
     <span class="c1">#</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
     <span class="c1">#</span>
@@ -16822,6 +16867,46 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 </div>
 </div>
 
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[36]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">GlassType</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-1-ec6c720498f2&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>GlassType<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">-</span><span class="ansi-cyan-fg">5</span><span class="ansi-blue-fg">]</span>
+
+<span class="ansi-red-fg">NameError</span>: name &#39;GlassType&#39; is not defined</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
@@ -16830,7 +16915,7 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[34]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[37]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">DminAnalysis</span><span class="p">:</span>
@@ -16915,7 +17000,7 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[35]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[38]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">DminAnalysis</span><span class="p">:</span><span class="c1"># and not Ovitos:</span>
@@ -16992,7 +17077,7 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[36]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[39]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">DminAnalysis</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">Ovitos</span><span class="p">:</span>
@@ -17028,7 +17113,7 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[37]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[40]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="ow">not</span> <span class="n">RemoteMachine</span><span class="p">:</span>
@@ -17060,7 +17145,7 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[38]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[41]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">DminAnalysis</span> <span class="ow">and</span> <span class="n">CrltnFunctionUnstructured</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">Ovitos</span><span class="p">:</span>
@@ -17086,7 +17171,7 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[39]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[42]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># n=1000*4</span>
@@ -17123,7 +17208,7 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[40]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[43]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#--- load data</span>
@@ -17144,7 +17229,7 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[41]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[44]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">DminAnalysis</span> <span class="ow">and</span> <span class="n">CrltnFunctionUnstructured</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">Ovitos</span><span class="p">:</span>
@@ -17189,7 +17274,7 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[42]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[45]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">DminAnalysis</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">Ovitos</span><span class="p">:</span>
@@ -17255,7 +17340,7 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[43]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[46]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sarr</span> <span class="o">=</span> <span class="n">MultipleFrames</span><span class="p">(</span><span class="s1">&#39;widthFeNi&#39;</span><span class="p">,</span><span class="s1">&#39;rc_d2min.txt&#39;</span><span class="p">,</span><span class="n">irun</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -17325,10 +17410,10 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[44]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[47]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">CommonNeighAnl</span><span class="p">:</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">CommonNeighAnl</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">Ovitos</span><span class="p">:</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">TimeSeries</span><span class="p">:</span>
         <span class="c1">#--- extract atom and box properties</span>
         <span class="n">cna</span> <span class="o">=</span> <span class="n">lp</span><span class="o">.</span><span class="n">Atoms</span><span class="p">(</span> <span class="o">**</span><span class="n">lmpCna</span><span class="o">.</span><span class="n">coord_atoms_broken</span><span class="p">[</span><span class="n">itime</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">)</span> <span class="p">)</span>
@@ -17336,6 +17421,26 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
         <span class="n">cna</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">iitime</span> <span class="ow">in</span> <span class="n">lmpCna</span><span class="o">.</span><span class="n">coord_atoms_broken</span><span class="p">:</span>
             <span class="n">cna</span><span class="p">[</span><span class="n">iitime</span><span class="p">]</span> <span class="o">=</span> <span class="n">lp</span><span class="o">.</span><span class="n">Atoms</span><span class="p">(</span> <span class="o">**</span><span class="n">lmpCna</span><span class="o">.</span><span class="n">coord_atoms_broken</span><span class="p">[</span><span class="n">iitime</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">)</span> <span class="p">)</span>
+
+<span class="k">if</span> <span class="n">CommonNeighAnl</span> <span class="ow">and</span> <span class="n">Ovitos</span><span class="p">:</span>            
+    <span class="o">!</span>ovitos OvitosCna.py <span class="nv">$fileName</span> Cna.xyz <span class="m">0</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[48]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#--- read from d2min.xyz</span>
+<span class="k">if</span> <span class="n">CommonNeighAnl</span> <span class="ow">and</span> <span class="n">Ovitos</span><span class="p">:</span>
+    <span class="n">lmpData</span> <span class="o">=</span> <span class="n">lp</span><span class="o">.</span><span class="n">ReadDumpFile</span><span class="p">(</span> <span class="s1">&#39;Cna.xyz&#39;</span> <span class="p">)</span>
+    <span class="n">lmpData</span><span class="o">.</span><span class="n">GetCords</span><span class="p">(</span> <span class="n">ncount</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -17351,10 +17456,11 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[45]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[49]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">CommonNeighAnl</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">TimeSeries</span><span class="p">:</span>
+    <span class="n">cna</span> <span class="o">=</span> <span class="n">lp</span><span class="o">.</span><span class="n">Atoms</span><span class="p">(</span> <span class="o">**</span><span class="n">lmpData</span><span class="o">.</span><span class="n">coord_atoms_broken</span><span class="p">[</span><span class="n">itime</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">)</span> <span class="p">)</span>
     <span class="c1">#</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mf">1e6</span><span class="p">)</span>
@@ -17385,21 +17491,29 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 </div>
 </div>
 
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="output-timeseries">output timeseries<a class="anchor-link" href="#output-timeseries">&#182;</a></h3>
+</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[46]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[50]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">CommonNeighAnl</span> <span class="ow">and</span> <span class="n">TimeSeries</span><span class="p">:</span>
-    <span class="n">times</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cna</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">CommonNeighAnl</span><span class="p">:</span>
+    <span class="c1">#</span>
+    <span class="n">times</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">lmpData</span><span class="o">.</span><span class="n">coord_atoms_broken</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
     <span class="n">times</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
     <span class="n">ntime</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
     <span class="n">ebulk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="n">ntime</span> <span class="p">)</span>
     <span class="n">Count</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">ntime</span><span class="o">*</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">ntime</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
-    <span class="k">for</span> <span class="n">iitime</span><span class="p">,</span> <span class="n">indxx</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">times</span><span class="p">,</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">))):</span>
     <span class="c1">#</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cna</span><span class="p">[</span><span class="n">iitime</span><span class="p">]</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)[</span><span class="s1">&#39;StructureType&#39;</span><span class="p">],</span> <span class="n">return_counts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1">#bug !!! len(y)!=5</span>
+    <span class="k">for</span> <span class="n">iitime</span><span class="p">,</span> <span class="n">indxx</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">times</span><span class="p">,</span><span class="nb">range</span><span class="p">(</span><span class="n">ntime</span><span class="p">)):</span>
+        <span class="n">cna</span> <span class="o">=</span> <span class="n">lp</span><span class="o">.</span><span class="n">Atoms</span><span class="p">(</span> <span class="o">**</span><span class="n">lmpData</span><span class="o">.</span><span class="n">coord_atoms_broken</span><span class="p">[</span><span class="n">iitime</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">)</span> <span class="p">)</span>
+        <span class="c1">#</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cna</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)[</span><span class="s1">&#39;StructureType&#39;</span><span class="p">],</span> <span class="n">return_counts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1">#bug !!! len(y)!=5</span>
         <span class="c1">#</span>
         <span class="k">for</span> <span class="n">typee</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">):</span>
             <span class="n">typee</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">typee</span><span class="p">)</span>
@@ -17407,8 +17521,19 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
             <span class="n">Count</span><span class="p">[</span><span class="n">indxx</span><span class="p">,</span><span class="n">typee</span><span class="p">]</span> <span class="o">=</span> <span class="n">count</span>
         <span class="c1">#</span>
         <span class="c1">#--- strain</span>
-        <span class="n">dx</span><span class="o">=</span><span class="n">Box</span><span class="p">[</span><span class="n">iitime</span><span class="p">]</span><span class="o">.</span><span class="n">CellVector</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">box0</span><span class="o">.</span><span class="n">CellVector</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">l1</span><span class="o">=</span><span class="n">Box</span><span class="p">[</span><span class="n">iitime</span><span class="p">]</span><span class="o">.</span><span class="n">CellVector</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">indxx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">box0</span> <span class="o">=</span> <span class="n">lp</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span> <span class="n">BoxBounds</span> <span class="o">=</span> <span class="n">lmpData</span><span class="o">.</span><span class="n">BoxBounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
+            <span class="n">box0</span><span class="o">.</span><span class="n">BasisVectors</span><span class="p">(</span> <span class="n">AddMissing</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">]</span> <span class="p">))</span>
+
+        <span class="n">box</span> <span class="o">=</span> <span class="n">lp</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span> <span class="n">BoxBounds</span> <span class="o">=</span> <span class="n">lmpData</span><span class="o">.</span><span class="n">BoxBounds</span><span class="p">[</span><span class="n">iitime</span><span class="p">]</span> <span class="p">)</span>
+        <span class="n">box</span><span class="o">.</span><span class="n">BasisVectors</span><span class="p">(</span> <span class="n">AddMissing</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">]</span> <span class="p">))</span>
+        <span class="c1">#</span>
+        <span class="c1">#--- volume</span>
+        <span class="n">CellVectorOrtho</span><span class="p">,</span> <span class="n">VectorNorm</span> <span class="o">=</span> <span class="n">lp</span><span class="o">.</span><span class="n">GetOrthogonalBasis</span><span class="p">(</span> <span class="n">box</span><span class="o">.</span><span class="n">CellVector</span> <span class="p">)</span>
+        <span class="n">volume</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span> <span class="n">CellVectorOrtho</span> <span class="p">)</span>
+        <span class="c1">#--- bulk strain</span>
+        <span class="n">dx</span><span class="o">=</span><span class="n">box</span><span class="o">.</span><span class="n">CellVector</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">box0</span><span class="o">.</span><span class="n">CellVector</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">l1</span><span class="o">=</span><span class="n">box</span><span class="o">.</span><span class="n">CellVector</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">ebulk</span><span class="p">[</span><span class="n">indxx</span><span class="p">]</span> <span class="o">=</span> <span class="n">dx</span><span class="o">/</span><span class="n">l1</span>
 
     <span class="c1">#--- save</span>
@@ -17429,11 +17554,11 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[47]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[51]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">CommonNeighAnl</span><span class="p">:</span>
-    <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;CnaFeNi/Run2&#39;</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span>
     <span class="n">sarr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/StructureTypeCounts.txt&#39;</span><span class="o">%</span><span class="k">path</span>)
 
     <span class="c1">#</span>
@@ -17463,13 +17588,11 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[48]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[52]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">CommonNeighAnl</span><span class="p">:</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="ow">not</span> <span class="n">RemoteMachine</span><span class="p">:</span>
     <span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;text.usetex&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1">#--- comment tex stuff!</span>
-    <span class="c1">#</span>
-    <span class="n">nfreq</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="c1">#</span>
     <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;black&#39;</span><span class="p">,</span><span class="s1">&#39;red&#39;</span><span class="p">,</span><span class="s1">&#39;green&#39;</span><span class="p">,</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span><span class="s1">&#39;cyan&#39;</span><span class="p">,</span><span class="s1">&#39;brown&#39;</span><span class="p">,</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span><span class="s1">&#39;magenta&#39;</span><span class="p">,</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span><span class="s1">&#39;yellow&#39;</span><span class="p">]</span>
     <span class="n">fillstyles</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">]</span>
@@ -17501,22 +17624,24 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
     <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">labelsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">which</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="c1">#ax.set_title()</span>
     <span class="c1">#</span>
-    <span class="n">sarr</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s1">&#39;CnaCo5Cr5Fe40Mn27Ni26/Run2/StructureTypeCounts.txt&#39;</span><span class="p">)</span>
+    <span class="n">sarr</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s1">&#39;CnaCo5Cr5Fe40Mn27Ni26/Run0/StructureTypeCounts.txt&#39;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">GlassType</span><span class="p">,</span> <span class="n">marker</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">fillstyle</span><span class="p">,</span> <span class="n">indx</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span> <span class="p">[</span> 
 <span class="c1">#                                        &#39;Other&#39;,</span>
                                         <span class="s1">&#39;FCC&#39;</span><span class="p">,</span><span class="s1">&#39;HCP&#39;</span><span class="p">,</span><span class="s1">&#39;BCC&#39;</span><span class="p">,</span><span class="s1">&#39;ICO&#39;</span>
                                         <span class="p">],</span><span class="n">markers</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="n">fillstyles</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="p">)):</span>
 
         <span class="c1">#--- fliter</span>
-        <span class="n">ydata</span> <span class="o">=</span> <span class="n">sarr</span><span class="p">[</span><span class="mi">0</span><span class="p">::</span><span class="n">nfreq</span><span class="p">,</span><span class="n">indx</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="c1">#--- first 2nd col is stress drop</span>
-        <span class="n">xdata</span> <span class="o">=</span> <span class="n">sarr</span><span class="p">[</span><span class="mi">0</span><span class="p">::</span><span class="n">nfreq</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="c1">#--- 2nd and 3rd cols are widths</span>
+        <span class="n">ydata</span> <span class="o">=</span> <span class="n">sarr</span><span class="p">[:,</span><span class="n">indx</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="c1">#--- first 2nd col is stress drop</span>
+        <span class="n">xdata</span> <span class="o">=</span> <span class="n">sarr</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="c1">#--- 2nd and 3rd cols are widths</span>
     <span class="c1">#</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xdata</span><span class="p">,</span><span class="n">ydata</span><span class="p">,</span><span class="s1">&#39;-&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span><span class="c1">#, label = GlassType)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xdata</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="n">ydata</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xdata</span><span class="p">,</span><span class="n">ydata</span><span class="p">,</span>
+                <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span>
                 <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
                 <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
                 <span class="n">marker</span><span class="o">=</span><span class="n">marker</span><span class="p">,</span>
                 <span class="n">markerfacecolor</span><span class="o">=</span><span class="n">fillstyle</span><span class="p">,</span>
+                <span class="n">markeredgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">fillstyle</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="n">markevery</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">xdata</span><span class="p">)</span><span class="o">/</span><span class="mi">5</span><span class="p">),</span>
                 <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="k">GlassType</span>)
 
     <span class="c1">#</span>
@@ -17524,39 +17649,7 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
     <span class="c1">#</span>
     <span class="n">DrawFrame</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span><span class="mf">0.09</span><span class="p">,</span><span class="mf">0.15</span><span class="p">,</span><span class="mf">0.06</span><span class="p">,</span><span class="mf">0.04</span><span class="p">,</span><span class="n">LOG_Y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="c1">#</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;CrysFrac.png&#39;</span><span class="p">,</span><span class="n">dpi</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="mi">75</span><span class="p">,</span><span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span><span class="n">pad_inches</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[49]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">CommonNeighAnl</span><span class="p">:</span>
-    <span class="n">sarr</span> <span class="o">=</span> <span class="n">MultipleFrames</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;StructureTypeFeNi&#39;</span><span class="p">,</span><span class="n">irun</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;StructureTypeCounts.txt&#39;</span><span class="p">)</span>
-    <span class="c1">#</span>
-    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
-    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$\gamma$&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Frequency&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mf">1e0</span><span class="p">,</span><span class="mf">1e4</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
-    <span class="c1">#</span>
-    <span class="c1">#ax.plot(sarr[:,0],sarr[:,1],label=&#39;Other&#39;)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sarr</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">sarr</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;FCC&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sarr</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">sarr</span><span class="p">[:,</span><span class="mi">3</span><span class="p">],</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;HCP&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sarr</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">sarr</span><span class="p">[:,</span><span class="mi">4</span><span class="p">],</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;BCC&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sarr</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">sarr</span><span class="p">[:,</span><span class="mi">5</span><span class="p">],</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;ICO&#39;</span><span class="p">)</span>
-    <span class="c1">#</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;StructureTypeGamma.png&#39;</span><span class="p">,</span><span class="n">dpi</span><span class="o">=</span><span class="mi">75</span><span class="p">,</span><span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;CrysFracGood.png&#39;</span><span class="p">,</span><span class="n">dpi</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="mi">75</span><span class="p">,</span><span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span><span class="n">pad_inches</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
@@ -17573,7 +17666,7 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[50]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[53]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">CommonNeighAnl</span> <span class="ow">and</span> <span class="n">DminAnalysis</span><span class="p">:</span>
@@ -17611,7 +17704,7 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[51]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[54]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#--- mean dist between atoms </span>
@@ -17672,7 +17765,7 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[52]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[55]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">StrnAnalysis</span><span class="p">:</span>
@@ -17704,7 +17797,7 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[53]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[56]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">StrnAnalysis</span><span class="p">:</span>
@@ -17735,7 +17828,7 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[54]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[57]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">StrnAnalysis</span><span class="p">:</span>
@@ -17759,7 +17852,7 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[55]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[58]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">FilterMatrix</span><span class="p">(</span> <span class="n">CellVector</span><span class="p">,</span> <span class="n">CellOrigin</span><span class="p">,</span>
@@ -17837,7 +17930,7 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[56]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[59]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># fig=plt.figure(figsize=(4,4))</span>
@@ -17873,7 +17966,7 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[57]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[60]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># itime = np.max(Strain.keys())</span>
@@ -17911,7 +18004,7 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[58]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[61]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">StrnAnalysis</span><span class="p">:</span>
@@ -17950,7 +18043,7 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[59]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[62]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">GetAutoCorrelation</span><span class="p">(</span> <span class="n">val</span> <span class="p">):</span>
@@ -18003,7 +18096,7 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[60]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[63]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">StrnAnalysis</span><span class="p">:</span>
@@ -18054,7 +18147,7 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[61]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[64]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">StrnAnalysis</span><span class="p">:</span>
@@ -18091,7 +18184,7 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[62]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[65]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># #--- extract length</span>
@@ -18138,7 +18231,7 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[63]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[66]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">RemoteMachine</span><span class="o">=</span><span class="kc">None</span>
