@@ -6,12 +6,14 @@ if __name__ == '__main__':
 	lnums = [ 18, 20,26 ]
 	string=open('postprocess.py').readlines() #--- python script
 	#---
-	PHI = [	 'FeNi', 
+	PHI = [	 
+			 'FeNi', 
              'CoNiFe', 
              'CoNiCrFe',
              'CoCrFeMn',
              'CoNiCrFeMn',
-             'Co5Cr5Fe40Mn27Ni26']
+             'Co5Cr5Fe40Mn27Ni26'
+		  ]
 #	PHI = [1800,1933,2066,2200,2333]
 #	PHI=range(0,2000000+10000,4*100000) 
 	nphi = len(PHI)
@@ -27,7 +29,7 @@ if __name__ == '__main__':
 		#---	
 		inums = lnums[ 0 ] - 1
 #		string[ inums ] = "\tjobname=\'Natom250kQrate0.5Tstop%sSrate-5Strs'\n" % (PHI[iphi]) #--- change job name
-		string[ inums ] = "\tjobname=\'voronoi%s'\n" % (PHI[iphi]) #--- change job name
+		string[ inums ] = "\tjobname=\'YieldStrs%s'\n" % (PHI[iphi]) #--- change job name
 		#---	densities
 		inums = lnums[ 1 ] - 1
 #		string[ inums ] = "\treadPath = os.getcwd() + \'/../testRuns/Preparation/Natom250kQrate0.5Tstop%sSrate-5\'\n"%(PHI[iphi])
