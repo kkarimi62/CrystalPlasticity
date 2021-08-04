@@ -15,11 +15,11 @@ if __name__ == '__main__':
 	import os
 #
 	nruns	 = range(3)
-	jobname  = 'voronoiFeNi' 
+	jobname  = 'widthMismatchFeNi' 
 	DeleteExistingFolder = True
 	readPath = os.getcwd() + '/../testRuns/glassFeNi' #--- source
 	EXEC_DIR = '.'     #--- path for executable file
-	durtn = '4:59:59'
+	durtn = '00:59:59'
 	mem = '16gb'
 	partition = 'bigmem' #'cpu2019' #'bigmem' #'single' #'parallel' #'single'
 	argv = "path=%s"%(readPath) #--- don't change! 
