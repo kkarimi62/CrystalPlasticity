@@ -16578,9 +16578,9 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
     <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;PDF&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">labelsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
     <span class="c1">#ax.set_title(r&#39;itime=%s&#39;%itime)</span>
-    <span class="n">Plott</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">Plott</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="n">nn</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">nn</span> <span class="o">=</span> <span class="mi">50</span>
     <span class="n">times</span> <span class="o">=</span> <span class="n">lmpData</span><span class="o">.</span><span class="n">coord_atoms_broken</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
     <span class="n">Mean</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">Std</span> <span class="o">=</span> <span class="p">[]</span>
@@ -16646,7 +16646,7 @@ ERROR: The Python script &#39;OvitosCna.py&#39; has exited with an error.
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
 <span class="ansi-red-fg">KeyError</span>                                  Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-1-87f67f267705&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-fg">&lt;ipython-input-1-0b46437b9444&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
 <span class="ansi-green-intense-fg ansi-bold">     18</span>     Std <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">]</span>
 <span class="ansi-green-intense-fg ansi-bold">     19</span>     Ebulk <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">]</span>
 <span class="ansi-green-fg">---&gt; 20</span><span class="ansi-red-fg">     </span>box0 <span class="ansi-blue-fg">=</span> lp<span class="ansi-blue-fg">.</span>Box<span class="ansi-blue-fg">(</span> BoxBounds <span class="ansi-blue-fg">=</span> lmpData<span class="ansi-blue-fg">.</span>BoxBounds<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">)</span> <span class="ansi-red-fg">#--- reference state</span>
