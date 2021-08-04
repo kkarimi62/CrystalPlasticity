@@ -15,7 +15,7 @@ if __name__ == '__main__':
 	import os
 #
 	nruns	 = range(3)
-	jobname  = 'YieldStrsFeNi' 
+	jobname  = 'voronoiFeNi' 
 	DeleteExistingFolder = True
 	readPath = os.getcwd() + '/../testRuns/glassFeNi' #--- source
 	EXEC_DIR = '.'     #--- path for executable file
