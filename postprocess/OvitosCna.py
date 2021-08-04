@@ -11,7 +11,7 @@ import pdb
 
 InputFile = sys.argv[1] 
 OutputFile = sys.argv[2]
-AnalysisType = int(sys.argv[3]) #--- 0:CommonNeighborAnalysis 1:CoordinationNumber
+AnalysisType = int(sys.argv[3]) #--- 0:CommonNeighborAnalysis 1:g(r) 2:d2min
 
 print('InputFile=',InputFile)
 # Load input data and create a data pipeline.
@@ -53,7 +53,8 @@ if AnalysisType == 1:
 #--- export data
 if AnalysisType == 0:
 	io.export_file( pipeline, OutputFile, "lammps_dump",\
-					columns = ["Particle Identifier", "Particle Type", "Structure Type"],
+					columns = ["Particle Identifier", "Particle Type", "Position.X","Position.Y","Position.Z",\
+                               "Structure Type"],
 					multiple_frames=True )
 if AnalysisType == 2:
 	io.export_file( pipeline, OutputFile, "lammps_dump",\
