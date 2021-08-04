@@ -177,7 +177,25 @@ class Atoms:
         if 'StructureType' in kwargs:
             self.StructureType = kwargs['StructureType']
         if 'd2min' in kwargs:
-            self.d2min = kwargs['d2min']           
+            self.d2min = kwargs['d2min']
+        if 'VoronoiIndex1' in kwargs:
+            self.VoronoiIndex1=kwargs['VoronoiIndex1']
+        if 'VoronoiIndex2' in kwargs: 
+            self.VoronoiIndex2=kwargs['VoronoiIndex2']
+        if 'VoronoiIndex3' in kwargs: 
+            self.VoronoiIndex3=kwargs['VoronoiIndex3']
+        if 'VoronoiIndex4' in kwargs: 
+            self.VoronoiIndex4=kwargs['VoronoiIndex4']
+        if 'VoronoiIndex5' in kwargs: 
+            self.VoronoiIndex5=kwargs['VoronoiIndex5']
+        if 'VoronoiIndex6' in kwargs: 
+            self.VoronoiIndex6=kwargs['VoronoiIndex6']
+        if 'VoronoiIndex7' in kwargs: 
+            self.VoronoiIndex7=kwargs['VoronoiIndex7']
+        if 'VoronoiIndex8' in kwargs: 
+            self.VoronoiIndex8=kwargs['VoronoiIndex8']
+        if 'VoronoiIndex9' in kwargs:
+            self.VoronoiIndex9=kwargs['VoronoiIndex9']
         
 ############################################################
 #######  class with simulation cell attributes 
