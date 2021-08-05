@@ -17370,7 +17370,7 @@ num_frames= 201
             <span class="n">sarr_BandWidth</span> <span class="o">=</span> <span class="n">MultipleFrames2nd</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;widthMismatch</span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="k">GlassType</span>,nrun=3,title=&#39;rc_d2min.txt&#39;,ncols=3)
             <span class="n">sarr_Mismatch</span> <span class="o">=</span> <span class="n">MultipleFrames2nd</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;widthMismatch</span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="k">GlassType</span>,nrun=3,title=&#39;ModuMismatch.txt&#39;,ncols=1)
             <span class="c1">#--- fliter</span>
-            <span class="n">xdata</span> <span class="o">=</span> <span class="n">sarr_Mismatch</span>
+            <span class="n">xdata</span> <span class="o">=</span> <span class="n">ModuMismatch</span><span class="p">[</span><span class="n">indxx</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="c1">#sarr_Mismatch[:,0]</span>
             <span class="n">ydata</span> <span class="o">=</span> <span class="n">sarr_BandWidth</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="c1">#--- 2nd and 3rd cols are widths</span>
             <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">ydata</span><span class="p">),</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
             <span class="n">ydata</span> <span class="o">=</span> <span class="n">ydata</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">ydata</span><span class="p">)]</span>
@@ -17385,6 +17385,7 @@ num_frames= 201
                     <span class="n">markeredgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">fillstyle</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
                     <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="k">GlassType</span>)
         <span class="k">except</span><span class="p">:</span>
+            <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>
             <span class="k">continue</span>
 
     <span class="c1">#</span>
@@ -17407,7 +17408,7 @@ num_frames= 201
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[47]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ModuMismatch</span>
 </pre></div>
 
      </div>
@@ -17426,272 +17427,59 @@ num_frames= 201
     <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 
 
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Help on method legend in module matplotlib.axes._axes:
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-1-8a55b5378947&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>ModuMismatch
 
-legend(*args, **kwargs) method of matplotlib.axes._subplots.AxesSubplot instance
-    Place a legend on the axes.
-    
-    Call signatures::
-    
-        legend()
-        legend(labels)
-        legend(handles, labels)
-    
-    The call signatures correspond to three different ways how to use
-    this method.
-    
-    **1. Automatic detection of elements to be shown in the legend**
-    
-    The elements to be added to the legend are automatically determined,
-    when you do not pass in any extra arguments.
-    
-    In this case, the labels are taken from the artist. You can specify
-    them either at artist creation or by calling the
-    :meth:`~.Artist.set_label` method on the artist::
-    
-        line, = ax.plot([1, 2, 3], label=&#39;Inline label&#39;)
-        ax.legend()
-    
-    or::
-    
-        line, = ax.plot([1, 2, 3])
-        line.set_label(&#39;Label via method&#39;)
-        ax.legend()
-    
-    Specific lines can be excluded from the automatic legend element
-    selection by defining a label starting with an underscore.
-    This is default for all artists, so calling `.Axes.legend` without
-    any arguments and without setting the labels manually will result in
-    no legend being drawn.
-    
-    
-    **2. Labeling existing plot elements**
-    
-    To make a legend for lines which already exist on the axes
-    (via plot for instance), simply call this function with an iterable
-    of strings, one for each legend item. For example::
-    
-        ax.plot([1, 2, 3])
-        ax.legend([&#39;A simple line&#39;])
-    
-    Note: This way of using is discouraged, because the relation between
-    plot elements and labels is only implicit by their order and can
-    easily be mixed up.
-    
-    
-    **3. Explicitly defining the elements in the legend**
-    
-    For full control of which artists have a legend entry, it is possible
-    to pass an iterable of legend artists followed by an iterable of
-    legend labels respectively::
-    
-        legend((line1, line2, line3), (&#39;label1&#39;, &#39;label2&#39;, &#39;label3&#39;))
-    
-    Parameters
-    ----------
-    handles : sequence of `.Artist`, optional
-        A list of Artists (lines, patches) to be added to the legend.
-        Use this together with *labels*, if you need full control on what
-        is shown in the legend and the automatic mechanism described above
-        is not sufficient.
-    
-        The length of handles and labels should be the same in this
-        case. If they are not, they are truncated to the smaller length.
-    
-    labels : list of str, optional
-        A list of labels to show next to the artists.
-        Use this together with *handles*, if you need full control on what
-        is shown in the legend and the automatic mechanism described above
-        is not sufficient.
-    
-    Returns
-    -------
-    `~matplotlib.legend.Legend`
-    
-    Other Parameters
-    ----------------
-    
-    loc : str or pair of floats, default: :rc:`legend.loc` (&#39;best&#39; for axes, &#39;upper right&#39; for figures)
-        The location of the legend.
-    
-        The strings
-        ``&#39;upper left&#39;, &#39;upper right&#39;, &#39;lower left&#39;, &#39;lower right&#39;``
-        place the legend at the corresponding corner of the axes/figure.
-    
-        The strings
-        ``&#39;upper center&#39;, &#39;lower center&#39;, &#39;center left&#39;, &#39;center right&#39;``
-        place the legend at the center of the corresponding edge of the
-        axes/figure.
-    
-        The string ``&#39;center&#39;`` places the legend at the center of the axes/figure.
-    
-        The string ``&#39;best&#39;`` places the legend at the location, among the nine
-        locations defined so far, with the minimum overlap with other drawn
-        artists.  This option can be quite slow for plots with large amounts of
-        data; your plotting speed may benefit from providing a specific location.
-    
-        The location can also be a 2-tuple giving the coordinates of the lower-left
-        corner of the legend in axes coordinates (in which case *bbox_to_anchor*
-        will be ignored).
-    
-        For back-compatibility, ``&#39;center right&#39;`` (but no other location) can also
-        be spelled ``&#39;right&#39;``, and each &#34;string&#34; locations can also be given as a
-        numeric value:
-    
-            ===============   =============
-            Location String   Location Code
-            ===============   =============
-            &#39;best&#39;            0
-            &#39;upper right&#39;     1
-            &#39;upper left&#39;      2
-            &#39;lower left&#39;      3
-            &#39;lower right&#39;     4
-            &#39;right&#39;           5
-            &#39;center left&#39;     6
-            &#39;center right&#39;    7
-            &#39;lower center&#39;    8
-            &#39;upper center&#39;    9
-            &#39;center&#39;          10
-            ===============   =============
-    
-    bbox_to_anchor : `.BboxBase`, 2-tuple, or 4-tuple of floats
-        Box that is used to position the legend in conjunction with *loc*.
-        Defaults to `axes.bbox` (if called as a method to `.Axes.legend`) or
-        `figure.bbox` (if `.Figure.legend`).  This argument allows arbitrary
-        placement of the legend.
-    
-        Bbox coordinates are interpreted in the coordinate system given by
-        *bbox_transform*, with the default transform
-        Axes or Figure coordinates, depending on which ``legend`` is called.
-    
-        If a 4-tuple or `.BboxBase` is given, then it specifies the bbox
-        ``(x, y, width, height)`` that the legend is placed in.
-        To put the legend in the best location in the bottom right
-        quadrant of the axes (or figure)::
-    
-            loc=&#39;best&#39;, bbox_to_anchor=(0.5, 0., 0.5, 0.5)
-    
-        A 2-tuple ``(x, y)`` places the corner of the legend specified by *loc* at
-        x, y.  For example, to put the legend&#39;s upper right-hand corner in the
-        center of the axes (or figure) the following keywords can be used::
-    
-            loc=&#39;upper right&#39;, bbox_to_anchor=(0.5, 0.5)
-    
-    ncol : int, default: 1
-        The number of columns that the legend has.
-    
-    prop : None or `matplotlib.font_manager.FontProperties` or dict
-        The font properties of the legend. If None (default), the current
-        :data:`matplotlib.rcParams` will be used.
-    
-    fontsize : int or {&#39;xx-small&#39;, &#39;x-small&#39;, &#39;small&#39;, &#39;medium&#39;, &#39;large&#39;, &#39;x-large&#39;, &#39;xx-large&#39;}
-        The font size of the legend. If the value is numeric the size will be the
-        absolute font size in points. String values are relative to the current
-        default font size. This argument is only used if *prop* is not specified.
-    
-    labelcolor : str or list
-        Sets the color of the text in the legend. Can be a valid color string
-        (for example, &#39;red&#39;), or a list of color strings. The labelcolor can
-        also be made to match the color of the line or marker using &#39;linecolor&#39;,
-        &#39;markerfacecolor&#39; (or &#39;mfc&#39;), or &#39;markeredgecolor&#39; (or &#39;mec&#39;).
-    
-    numpoints : int, default: :rc:`legend.numpoints`
-        The number of marker points in the legend when creating a legend
-        entry for a `.Line2D` (line).
-    
-    scatterpoints : int, default: :rc:`legend.scatterpoints`
-        The number of marker points in the legend when creating
-        a legend entry for a `.PathCollection` (scatter plot).
-    
-    scatteryoffsets : iterable of floats, default: ``[0.375, 0.5, 0.3125]``
-        The vertical offset (relative to the font size) for the markers
-        created for a scatter plot legend entry. 0.0 is at the base the
-        legend text, and 1.0 is at the top. To draw all markers at the
-        same height, set to ``[0.5]``.
-    
-    markerscale : float, default: :rc:`legend.markerscale`
-        The relative size of legend markers compared with the originally
-        drawn ones.
-    
-    markerfirst : bool, default: True
-        If *True*, legend marker is placed to the left of the legend label.
-        If *False*, legend marker is placed to the right of the legend label.
-    
-    frameon : bool, default: :rc:`legend.frameon`
-        Whether the legend should be drawn on a patch (frame).
-    
-    fancybox : bool, default: :rc:`legend.fancybox`
-        Whether round edges should be enabled around the `~.FancyBboxPatch` which
-        makes up the legend&#39;s background.
-    
-    shadow : bool, default: :rc:`legend.shadow`
-        Whether to draw a shadow behind the legend.
-    
-    framealpha : float, default: :rc:`legend.framealpha`
-        The alpha transparency of the legend&#39;s background.
-        If *shadow* is activated and *framealpha* is ``None``, the default value is
-        ignored.
-    
-    facecolor : &#34;inherit&#34; or color, default: :rc:`legend.facecolor`
-        The legend&#39;s background color.
-        If ``&#34;inherit&#34;``, use :rc:`axes.facecolor`.
-    
-    edgecolor : &#34;inherit&#34; or color, default: :rc:`legend.edgecolor`
-        The legend&#39;s background patch edge color.
-        If ``&#34;inherit&#34;``, use take :rc:`axes.edgecolor`.
-    
-    mode : {&#34;expand&#34;, None}
-        If *mode* is set to ``&#34;expand&#34;`` the legend will be horizontally
-        expanded to fill the axes area (or *bbox_to_anchor* if defines
-        the legend&#39;s size).
-    
-    bbox_transform : None or `matplotlib.transforms.Transform`
-        The transform for the bounding box (*bbox_to_anchor*). For a value
-        of ``None`` (default) the Axes&#39;
-        :data:`~matplotlib.axes.Axes.transAxes` transform will be used.
-    
-    title : str or None
-        The legend&#39;s title. Default is no title (``None``).
-    
-    title_fontsize : int or {&#39;xx-small&#39;, &#39;x-small&#39;, &#39;small&#39;, &#39;medium&#39;, &#39;large&#39;, &#39;x-large&#39;, &#39;xx-large&#39;}, default: :rc:`legend.title_fontsize`
-        The font size of the legend&#39;s title.
-    
-    borderpad : float, default: :rc:`legend.borderpad`
-        The fractional whitespace inside the legend border, in font-size units.
-    
-    labelspacing : float, default: :rc:`legend.labelspacing`
-        The vertical space between the legend entries, in font-size units.
-    
-    handlelength : float, default: :rc:`legend.handlelength`
-        The length of the legend handles, in font-size units.
-    
-    handletextpad : float, default: :rc:`legend.handletextpad`
-        The pad between the legend handle and text, in font-size units.
-    
-    borderaxespad : float, default: :rc:`legend.borderaxespad`
-        The pad between the axes and legend border, in font-size units.
-    
-    columnspacing : float, default: :rc:`legend.columnspacing`
-        The spacing between columns, in font-size units.
-    
-    handler_map : dict or None
-        The custom dictionary mapping instances or types to a legend
-        handler. This *handler_map* updates the default handler map
-        found at `matplotlib.legend.Legend.get_legend_handler_map`.
-    
-    
-    Notes
-    -----
-    Some artists are not supported by this function.  See
-    :doc:`/tutorials/intermediate/legend_guide` for details.
-    
-    Examples
-    --------
-    .. plot:: gallery/text_labels_and_annotations/legend.py
-
-</pre>
+<span class="ansi-red-fg">NameError</span>: name &#39;ModuMismatch&#39; is not defined</pre>
 </div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[48]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">xdata</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[48]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>array([ 0.        ,  1.15239474,  2.30478947,  3.45718421,  4.60957895,
+        5.76197368,  6.91436842,  8.06676316,  9.21915789, 10.37155263,
+       11.52394737, 12.67634211, 13.82873684, 14.98113158, 16.13352632,
+       17.28592105, 18.43831579, 19.59071053, 20.74310526, 21.8955    ,
+       23.04789474, 24.20028947, 25.35268421, 26.50507895, 27.65747368,
+       28.80986842, 29.96226316, 31.11465789, 32.26705263, 33.41944737,
+       34.57184211, 35.72423684, 36.87663158, 38.02902632, 39.18142105,
+       40.33381579, 41.48621053, 42.63860526, 43.791     ])</pre>
+</div>
+
 </div>
 
 </div>
@@ -17706,7 +17494,7 @@ legend(*args, **kwargs) method of matplotlib.axes._subplots.AxesSubplot instance
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[48]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[49]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">VorAnl</span> <span class="ow">and</span> <span class="n">Ovitos</span><span class="p">:</span>
@@ -17726,7 +17514,7 @@ legend(*args, **kwargs) method of matplotlib.axes._subplots.AxesSubplot instance
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[49]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[50]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#--- read from d2min.xyz</span>
@@ -17748,7 +17536,7 @@ legend(*args, **kwargs) method of matplotlib.axes._subplots.AxesSubplot instance
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[50]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[51]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">row_histogram</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
@@ -17795,8 +17583,8 @@ legend(*args, **kwargs) method of matplotlib.axes._subplots.AxesSubplot instance
                                          <span class="mf">100.0</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">counts</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">voro_indices</span><span class="p">)))</span>
                 <span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">unique_indices</span><span class="p">[</span><span class="n">i</span><span class="p">])),</span> <span class="mf">100.0</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">counts</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">voro_indices</span><span class="p">),</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;C0&#39;</span><span class="p">)</span>
             <span class="c1">#</span>
-            <span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
-            <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mf">.1</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+<span class="c1">#             plt.yscale(&#39;log&#39;)</span>
+<span class="c1">#             plt.ylim(.1,100)</span>
             <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Voronoi Index(n3,n4,n5,n6)&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
             <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Percentage&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
             <span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">labelrotation</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span><span class="n">labelsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
@@ -17829,7 +17617,7 @@ legend(*args, **kwargs) method of matplotlib.axes._subplots.AxesSubplot instance
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[51]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[52]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">GetMotifsTimeseries</span><span class="p">(</span> <span class="n">lmpData</span><span class="p">,</span> 
@@ -17855,8 +17643,8 @@ legend(*args, **kwargs) method of matplotlib.axes._subplots.AxesSubplot instance
             <span class="n">unique_indices</span> <span class="o">=</span> <span class="n">Unique_indices</span><span class="p">[</span><span class="n">itime</span><span class="p">]</span>
             <span class="n">percent</span><span class="p">[</span><span class="n">indx</span><span class="p">][</span><span class="n">itime</span><span class="p">]</span> <span class="o">=</span> <span class="n">counts</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">unique_indices</span><span class="o">==</span> <span class="n">motif</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)]</span>
     <span class="c1">#--- plot</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mf">.1</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+<span class="c1">#     plt.yscale(&#39;log&#39;)</span>
+<span class="c1">#     plt.ylim(.1,100)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;$\gamma$&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Percentage&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">labelsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
@@ -17893,7 +17681,7 @@ legend(*args, **kwargs) method of matplotlib.axes._subplots.AxesSubplot instance
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[52]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[53]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">DminAnalysis</span> <span class="ow">and</span> <span class="n">Ovitos</span><span class="p">:</span>
@@ -17997,7 +17785,7 @@ legend(*args, **kwargs) method of matplotlib.axes._subplots.AxesSubplot instance
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[53]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[54]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">CommonNeighAnl</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">Ovitos</span><span class="p">:</span>
@@ -18021,7 +17809,7 @@ legend(*args, **kwargs) method of matplotlib.axes._subplots.AxesSubplot instance
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[54]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[55]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#--- read from d2min.xyz</span>
@@ -18043,7 +17831,7 @@ legend(*args, **kwargs) method of matplotlib.axes._subplots.AxesSubplot instance
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[55]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[56]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">CommonNeighAnl</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">TimeSeries</span><span class="p">:</span>
@@ -18086,7 +17874,7 @@ legend(*args, **kwargs) method of matplotlib.axes._subplots.AxesSubplot instance
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[56]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[57]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">CommonNeighAnl</span><span class="p">:</span>
@@ -18141,7 +17929,7 @@ legend(*args, **kwargs) method of matplotlib.axes._subplots.AxesSubplot instance
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[57]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[58]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">CommonNeighAnl</span><span class="p">:</span>
@@ -18175,7 +17963,7 @@ legend(*args, **kwargs) method of matplotlib.axes._subplots.AxesSubplot instance
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[58]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[59]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="ow">not</span> <span class="n">RemoteMachine</span><span class="p">:</span>
@@ -18253,7 +18041,7 @@ legend(*args, **kwargs) method of matplotlib.axes._subplots.AxesSubplot instance
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[59]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[60]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">CommonNeighAnl</span> <span class="ow">and</span> <span class="n">DminAnalysis</span><span class="p">:</span>
@@ -18291,7 +18079,7 @@ legend(*args, **kwargs) method of matplotlib.axes._subplots.AxesSubplot instance
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[60]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[61]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#--- mean dist between atoms </span>
@@ -18322,7 +18110,7 @@ legend(*args, **kwargs) method of matplotlib.axes._subplots.AxesSubplot instance
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[61]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[62]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">StrnAnalysis</span><span class="p">:</span>
@@ -18354,7 +18142,7 @@ legend(*args, **kwargs) method of matplotlib.axes._subplots.AxesSubplot instance
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[62]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[63]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">StrnAnalysis</span><span class="p">:</span>
@@ -18385,7 +18173,7 @@ legend(*args, **kwargs) method of matplotlib.axes._subplots.AxesSubplot instance
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[63]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[64]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">StrnAnalysis</span><span class="p">:</span>
@@ -18409,7 +18197,7 @@ legend(*args, **kwargs) method of matplotlib.axes._subplots.AxesSubplot instance
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[64]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[65]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">FilterMatrix</span><span class="p">(</span> <span class="n">CellVector</span><span class="p">,</span> <span class="n">CellOrigin</span><span class="p">,</span>
@@ -18487,7 +18275,7 @@ legend(*args, **kwargs) method of matplotlib.axes._subplots.AxesSubplot instance
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[65]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[66]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># fig=plt.figure(figsize=(4,4))</span>
@@ -18523,7 +18311,7 @@ legend(*args, **kwargs) method of matplotlib.axes._subplots.AxesSubplot instance
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[66]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[67]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># itime = np.max(Strain.keys())</span>
@@ -18561,7 +18349,7 @@ legend(*args, **kwargs) method of matplotlib.axes._subplots.AxesSubplot instance
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[67]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[68]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">StrnAnalysis</span><span class="p">:</span>
@@ -18600,7 +18388,7 @@ legend(*args, **kwargs) method of matplotlib.axes._subplots.AxesSubplot instance
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[68]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[69]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">GetAutoCorrelation</span><span class="p">(</span> <span class="n">val</span> <span class="p">):</span>
@@ -18653,7 +18441,7 @@ legend(*args, **kwargs) method of matplotlib.axes._subplots.AxesSubplot instance
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[69]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[70]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">StrnAnalysis</span><span class="p">:</span>
@@ -18704,7 +18492,7 @@ legend(*args, **kwargs) method of matplotlib.axes._subplots.AxesSubplot instance
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[70]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[71]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">StrnAnalysis</span><span class="p">:</span>
@@ -18741,7 +18529,7 @@ legend(*args, **kwargs) method of matplotlib.axes._subplots.AxesSubplot instance
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[71]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[72]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># #--- extract length</span>
@@ -18788,7 +18576,7 @@ legend(*args, **kwargs) method of matplotlib.axes._subplots.AxesSubplot instance
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[72]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[73]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">RemoteMachine</span><span class="o">=</span><span class="kc">None</span>
