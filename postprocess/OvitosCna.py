@@ -64,6 +64,7 @@ for frame in range(0,pipeline.source.num_frames,nevery):
     # evaluates the applied modifiers:
     pipeline.compute(frame)
     itime = pipeline.source.attributes['Timestep']
+    print(itime)
     
     if AnalysisType == 1:
         sfile.write('#ITIME\n%s\n'%itime)
@@ -92,13 +93,18 @@ if AnalysisType == 2:
                                "Nonaffine Squared Displacement"],
                     multiple_frames=True )
 
-if AnalysisType == 3:
+if AnalysisType == 3: 
     io.export_file( pipeline, OutputFile, "lammps_dump",\
                     columns = ["Particle Identifier", "Particle Type", "Position.X","Position.Y","Position.Z",\
                                "Voronoi Index.0","Voronoi Index.1","Voronoi Index.2",\
                                "Voronoi Index.3","Voronoi Index.4","Voronoi Index.5",\
                                "Voronoi Index.6","Voronoi Index.7","Voronoi Index.8"],
-                    multiple_frames=True )   
+                     start_frame = 0,
+                     end_frame = pipeline.source.num_frames,
+                     every_nth_frame = nevery,
+                    
+                    multiple_frames=True 
+                  )   
 
 # Export the computed RDF data to a text file.
 
