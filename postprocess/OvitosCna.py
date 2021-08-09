@@ -11,9 +11,10 @@ import pdb
 
 InputFile = sys.argv[1] 
 OutputFile = sys.argv[2]
-AnalysisType = int(sys.argv[3]) #--- 0:CommonNeighborAnalysis 1:g(r) 2:d2min 3:voronoi analysis
+nevery = int(sys.argv[3])
+AnalysisType = int(sys.argv[4]) #--- 0:CommonNeighborAnalysis 1:g(r) 2:d2min 3:voronoi analysis
 if AnalysisType == 3:
-    radii=list(map(float,sys.argv[4:]))
+    radii=list(map(float,sys.argv[5:]))
 
     
 print('InputFile=',InputFile)
@@ -58,7 +59,7 @@ if AnalysisType == 3:
     
 
 
-for frame in range(pipeline.source.num_frames):
+for frame in range(0,pipeline.source.num_frames,nevery):
     # This loads the input data for the current frame and
     # evaluates the applied modifiers:
     pipeline.compute(frame)
