@@ -14,13 +14,13 @@ if __name__ == '__main__':
 	import os
 
 	nruns	 = range(3)
-	jobname  = 'd2minRatioCoNiCrFe' 
-	readPath = os.getcwd() + '/../testRuns/glassCoNiCrFe' # --- source
+	jobname  = 'd2minRatioCo5Cr2Fe40Mn27Ni26' 
+	readPath = os.getcwd() + '/../testRuns/glassCo5Cr2Fe40Mn27Ni26' # --- source
 	EXEC_DIR = '.'     #--- path for executable file
 	durtn = '00:59:59'
 	resources = {'mem':'16gb', 'partition':'o12h','nodes':1,'ppn':1}
 	argv = "path=%s"%(readPath) #--- don't change! 
-	argv2nd = "indx=2" 
+	argv2nd = "indx=5" 
 	PYFILdic = { 
 		0:'ElasticConstants.ipynb',
 		1:'analyzePlasticity.ipynb',
