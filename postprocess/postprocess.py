@@ -15,15 +15,15 @@ if __name__ == '__main__':
 	import os
 #
 	nruns	 = range(3)
-	jobname  = 'd2minRatioCoNiCrFe' 
+	jobname  = 'd2minRatioCo5Cr2Fe40Mn27Ni26' 
 	DeleteExistingFolder = True
-	readPath = os.getcwd() + '/../testRuns/glassCoNiCrFe' #--- source
+	readPath = os.getcwd() + '/../testRuns/glassCo5Cr2Fe40Mn27Ni26' #--- source
 	EXEC_DIR = '.'     #--- path for executable file
 	durtn = '00:29:59'
 	mem = '16gb'
 	partition = 'parallel' #'cpu2019' #'bigmem' #'single' #'parallel' #'single'
 	argv = "path=%s"%(readPath) #--- don't change! 
-	argv2nd = "indx=2" 
+	argv2nd = "indx=5" 
 	PYFILdic = { 
 		0:'ElasticConstants.ipynb',
 		1:'analyzePlasticity.ipynb',
