@@ -131,6 +131,33 @@ class ReadDumpFile:
         return np.array([slist.readline().split() for i in range( nrows )]), CellVector, itime, cols
 
 ############################################################
+#######  class WriteDumpFile writes LAMMPS dump files 
+############################################################    
+class WriteDumpFile:
+    def __init__(self, atomm, boxx ):
+        self.atom = atomm
+        self.box = boxx
+        
+    def Write(self, outpt ):
+        natom = len(self.atom.x)
+        (xlo,xhi,xy)=self.box.BoxBounds[0,:]
+        (ylo,yhi,junk)=self.box.BoxBounds[1,:]
+        (zlo,zhi,junk)=self.box.BoxBounds[2,:]
+        sfile=open(outpt,'w')
+        sfile.write('ITEM: TIMESTEP\n%s\nITEM: NUMBER OF ATOMS\n%s\nITEM: BOX BOUNDS xy xz yz pp pp pp\n\
+                     %s %s %s\n%s\t%s\t%s\n%s\t%s\t%s\nITEM: ATOMS id type x y z\n'\
+                     %(0,natom,xlo,xhi,xy,ylo,yhi,0.0,zlo,zhi,0.0))
+
+        for idd, typee, x, y, z in zip(self.atom.id, self.atom.type, self.atom.x, self.atom.y, self.atom.z ):
+            sfile.write('%s %s %s %s %s\n'%(int(idd),int(typee),x,y,z))
+            
+        sfile.close()
+
+
+
+        
+
+############################################################
 #######  class with atom-related attributes 
 ############################################################    
 class Atoms:
@@ -196,6 +223,8 @@ class Atoms:
             self.VoronoiIndex8=kwargs['VoronoiIndex8']
         if 'VoronoiIndex9' in kwargs:
             self.VoronoiIndex9=kwargs['VoronoiIndex9']
+        if 'AtomicVolume' in kwargs:
+            self.AtomicVolume=kwargs['AtomicVolume']
         
 ############################################################
 #######  class with simulation cell attributes 
@@ -884,29 +913,38 @@ class ComputeStrn( Compute ):
 
 if __name__ in '__main__':
 
-    fileName = '/Users/Home/Desktop/Tmp/txt/git/CrystalPlasticity/BmgData/FeNi_glass.dump'
-    myRDF = ReadDumpFile( fileName )
-    myRDF.GetCords( ncount = sys.maxint )
+#     fileName = '/Users/Home/Desktop/Tmp/txt/git/CrystalPlasticity/BmgData/FeNi_glass.dump'
+#     myRDF = ReadDumpFile( fileName )
+#     myRDF.GetCords( ncount = sys.maxint )
 
-    #
-    myAtoms = Atoms( **myRDF.coord_atoms_broken[0].to_dict(orient='list') )
-    #
-    pdb.set_trace()
-    myBox = Box( BoxBounds = myRDF.BoxBounds[0] )
-    myBox.BasisVectors()
-
-#--- test on random data
+#     #
+#     myAtoms = Atoms( **myRDF.coord_atoms_broken[0].to_dict(orient='list') )
+#     #
+#     pdb.set_trace()
+#     myBox = Box( BoxBounds = myRDF.BoxBounds[0] )
+#     myBox.BasisVectors()
+    
     n=1000
     xyz = np.random.random((n,3)) 
     atom_tmp = Atoms(**pd.DataFrame(np.c_[np.arange(n),np.ones(n),xyz],
                                        columns=['id','type','x','y','z']).to_dict(orient='list'))
-    box_tmp = lp.Box(CellOrigin=np.array([0,0,0]),CellVector=np.array([[1,0,0],[0,1,0],[0,0,1]]))
-    val = np.random.random(n) #np.sin(2*np.pi*xyz[:,0])
-    crltn = ComputeCrltn(    atom_tmp, box_tmp,
-                                 val,
-                                 cutoff=1.0*3**.5, dx=0.05,
-                                 NMAX = n, n_neigh_per_atom = 10000,
-                         )
-    crltn.Distance()
-    crltn.AutoCrltn(RADIAL = True)
-    bin_edges,  hist, err = crltn.Get()
+    box_tmp = Box(BoxBounds=np.array([[1,0,0],[0,1,0],[0,0,1]]))
+    
+    wdf = WriteDumpFile(atom_tmp,box_tmp)
+    wdf.Write('junk.xyz')
+    
+#--- test on random data
+#     n=1000
+#     xyz = np.random.random((n,3)) 
+#     atom_tmp = Atoms(**pd.DataFrame(np.c_[np.arange(n),np.ones(n),xyz],
+#                                        columns=['id','type','x','y','z']).to_dict(orient='list'))
+#     box_tmp = lp.Box(CellOrigin=np.array([0,0,0]),CellVector=np.array([[1,0,0],[0,1,0],[0,0,1]]))
+#     val = np.random.random(n) #np.sin(2*np.pi*xyz[:,0])
+#     crltn = ComputeCrltn(    atom_tmp, box_tmp,
+#                                  val,
+#                                  cutoff=1.0*3**.5, dx=0.05,
+#                                  NMAX = n, n_neigh_per_atom = 10000,
+#                          )
+#     crltn.Distance()
+#     crltn.AutoCrltn(RADIAL = True)
+#     bin_edges,  hist, err = crltn.Get()

@@ -45,7 +45,9 @@ if AnalysisType == 3:
     # Set atomic radii (required for polydisperse Voronoi tessellation).
     #atypes = pipeline.source.particle_properties.particle_type.type_list
     type_property = pipeline.source.particle_properties.particle_type
+#     print(radii)
     for t in type_property.type_list:
+#         print(t.id)
         t.radius = radii[t.id-1]
     # Set up the Voronoi analysis modifier.
     voro = md.VoronoiAnalysisModifier(
@@ -98,7 +100,7 @@ if AnalysisType == 3:
                     columns = ["Particle Identifier", "Particle Type", "Position.X","Position.Y","Position.Z",\
                                "Voronoi Index.0","Voronoi Index.1","Voronoi Index.2",\
                                "Voronoi Index.3","Voronoi Index.4","Voronoi Index.5",\
-                               "Voronoi Index.6","Voronoi Index.7","Voronoi Index.8"],
+                               "Voronoi Index.6","Voronoi Index.7","Voronoi Index.8", "Atomic Volume"],
                      start_frame = 0,
                      end_frame = pipeline.source.num_frames,
                      every_nth_frame = nevery,
