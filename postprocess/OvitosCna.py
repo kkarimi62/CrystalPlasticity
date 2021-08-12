@@ -88,12 +88,18 @@ if AnalysisType == 0:
     io.export_file( pipeline, OutputFile, "lammps_dump",\
                     columns = ["Particle Identifier", "Particle Type", "Position.X","Position.Y","Position.Z",\
                                "Structure Type"],
-                    multiple_frames=True )
+                     start_frame = 0,
+                     end_frame = pipeline.source.num_frames,
+                     every_nth_frame = nevery,
+                     multiple_frames=True )
 if AnalysisType == 2:
     io.export_file( pipeline, OutputFile, "lammps_dump",\
                     columns = ["Particle Identifier", "Particle Type", "Position.X","Position.Y","Position.Z",\
                                "Nonaffine Squared Displacement"],
-                    multiple_frames=True )
+                     start_frame = 0,
+                     end_frame = pipeline.source.num_frames,
+                     every_nth_frame = nevery,
+                     multiple_frames=True )
 
 if AnalysisType == 3: 
     io.export_file( pipeline, OutputFile, "lammps_dump",\
