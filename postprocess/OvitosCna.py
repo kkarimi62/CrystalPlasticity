@@ -66,7 +66,7 @@ for frame in range(0,pipeline.source.num_frames,nevery):
     # evaluates the applied modifiers:
     pipeline.compute(frame)
     itime = pipeline.source.attributes['Timestep']
-    print(itime)
+#    print(itime)
     
     if AnalysisType == 1:
         sfile.write('#ITIME\n%s\n'%itime)
