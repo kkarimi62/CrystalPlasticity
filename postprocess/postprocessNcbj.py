@@ -26,7 +26,7 @@ if __name__ == '__main__':
 		1:'analyzePlasticity.ipynb',
 		2:'analyzePlasticityTimeSeries.ipynb',
 		}
-	keyno = 2
+	keyno = 0
 #---
 #---
 	PYFIL = PYFILdic[ keyno ] 
