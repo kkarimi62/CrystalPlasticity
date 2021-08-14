@@ -6,7 +6,7 @@ def makeOAR( EXEC_DIR, node, core, partitionime, PYFIL, argv,argv2nd):
 	#---
 	someFile = open( 'oarScript.sh', 'w' )
 	print('#!/bin/bash\n', file=someFile)
-	print('EXEC_DIR=%s\nmodule unload gcc/4.6.3;module load python/3.6.1-x86_64-gcc71\n' %( EXEC_DIR ), file=someFile)
+	print('EXEC_DIR=%s\n' %( EXEC_DIR ), file=someFile)
 	print('jupyter nbconvert --execute $EXEC_DIR/%s --to html --ExecutePreprocessor.timeout=-1 --ExecutePreprocessor.allow_errors=True;ls output.html'%(PYFIL), file=someFile)
 	someFile.close()										  
 #
