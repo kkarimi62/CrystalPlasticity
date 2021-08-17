@@ -562,7 +562,7 @@ class ComputeRdf( Compute, Wrap ):
         return np.matmul( self.CellVector, self.beta.T ).T #--- xyz in reference state
 
     
-    def Distance( self, WRAP = True ):
+    def Distance( self, WRAP = True , **kwargs ):
         self.GetDimensionlessCords() #--- dimensionless cords
         eta = self.beta 
         #---    
@@ -570,7 +570,16 @@ class ComputeRdf( Compute, Wrap ):
         i = 0
         nr = 0
         self.rlist = np.zeros(nmax*self.n_neigh_per_atom)
-        while i < nmax: #--- pair-wise dist.
+        #--- filter center particle
+        filtr = np.ones(len(self.x),dtype=int) * True
+        if 'FilterCenter' in kwargs:
+            filtr = kwargs['FilterCenter']
+        #
+        kount = 0
+        while i < nmax: #--- pair-wise dist: i is the center atom index
+            if not filtr[i]: 
+                i += 1
+                continue
             #--- distance matrix
             df_dx = eta[ i+1:,0 ] - eta[ i, 0 ] #--- avoid double counting
             df_dy = eta[ i+1:,1 ] - eta[ i, 1 ]
@@ -595,27 +604,42 @@ class ComputeRdf( Compute, Wrap ):
             assert nr+len(df_sq) <= self.rlist.shape[0], '%s, %s increase buffer size!'%(nr+len(df_sq),self.rlist.shape[0])
             self.rlist[nr:nr+len(df_sq)] = df_sq
             #---
+            kount += 1
             i += 1
             nr += len( df_sq )
+        self.NMAX=kount
+        print(self.NMAX)
 
-    def PairCrltn( self, nbins = 32 ):
+    def PairCrltn( self, nbins = 32, **kwargs ):
         #--- histogram
         slist = self.rlist[self.rlist>0]
         rmin = slist.min()
         rmax = slist.max()
+        
+        volume = 4.0*np.pi*rmax**3/3
+        self.rho = (len( slist ) + 1) / volume
+
         #ndecades =  int(np.ceil(np.log10(rmax/rmin)))
-        bins = np.linspace(rmin,rmax,nbins) #np.logspace(np.log10(rmin),np.log10(rmax),ndecades*4)
-        hist, bin_edges = np.histogram( slist, bins = bins, density=True  ) #--- normalized g(r)
-
-        rmean, bin_edges = np.histogram( slist, bins = bins, weights = slist ) #--- \sum r_i
+        if 'bins' in kwargs:
+            bins=kwargs['bins']
+        else:
+            ßbins = np.linspace(rmin,rmax,nbins) #np.logspace(np.log10(rmin),np.log10(rmax),ndecades*4)
+        hist, bin_edges = np.histogram( slist, bins = bins) #, density=True  ) #--- normalized g(r)
+#         print(bin_edges)
+        dr = bin_edges[1]-bin_edges[0]
+        
+        
+#        rmean, bin_edges = np.histogram( slist, bins = bins, weights = slist ) #--- \sum r_i
         count, bin_edges = np.histogram( slist, bins = bins ) #--- n_i
-        rmean /= count #--- average distance: \sum r_i/n_i
+#         rmean /= count #--- average distance: \sum r_i/n_i
+        rmean=0.5*(bin_edges[:-1]+bin_edges[1:])
 
 
 
-
-        hist *= len( slist ) #--- 
-        hist /= 4*np.pi*rmean*rmean*self.NMAX
+        hist = hist.astype(float)
+#        hist *= len( slist ) #--- 
+#        pdb.set_trace()
+        hist /= 4*np.pi*rmean*rmean*dr #self.NMAX
         hist /= self.rho    
         
         self.rmean = rmean
