@@ -28,11 +28,9 @@ if __name__ == '__main__':
 	for iphi in range( nphi ):
 		#---	
 		inums = lnums[ 0 ] - 1
-#		string[ inums ] = "\tjobname=\'Natom250kQrate0.5Tstop%sSrate-5Strs'\n" % (PHI[iphi]) #--- change job name
-		string[ inums ] = "\tjobname=\'HminMismatch2nd%s'\n" % (PHI[iphi]) #--- change job name
+		string[ inums ] = "\tjobname=\'d2minRatio%s'\n" % (PHI[iphi]) #--- change job name
 		#---	densities
 		inums = lnums[ 1 ] - 1
-#		string[ inums ] = "\treadPath = os.getcwd() + \'/../testRuns/Preparation/Natom250kQrate0.5Tstop%sSrate-5\'\n"%(PHI[iphi])
 		string[ inums ] = "\treadPath = os.getcwd() + \'/../testRuns/glass%s\'\n"%(PHI[iphi])
 #
 		inums = lnums[ 2 ] - 1
