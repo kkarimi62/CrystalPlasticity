@@ -1116,7 +1116,7 @@ double MEAM::dsg(int i, int j, double** x, int numneigh, int* firstneigh, int nu
      ddUdrijds = 0.0;
     }
    
-   dUdsij=ddUdrijds=dUdsij=ddUdrdrijm[0]=ddUdrdrijm[1]=ddUdrdrijm[2]=0.0 //kam
+   dUdsij=ddUdrijds=dUdsij=ddUdrdrijm[0]=ddUdrdrijm[1]=ddUdrdrijm[2]=0.0; //kam
    double dsg_alpha_beta_dr = ((-recip2*(dUdrij+dUdsij*ds)+recip*(ddUddrij+ddUdrijds*ds+dUdsij*dds))*delij[alpha]+ddUdrdrijm[alpha])*delij[beta];
    double dsg_alpha_beta_ds = 0.0;//kam (recip*(ddUdrijds+ddUddsij*ds)*delij[alpha]+ddUdrijmds[alpha])*delij[beta];
 
