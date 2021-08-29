@@ -1108,7 +1108,7 @@ double  ak, ro0k, rhoa2k;
         for (m = 0; m < 3; m++) ddUdrijmds[m] = 0.0;
         ddUdrijds = 0.0;
         if (!iszero(dscrfcn[fnoffset + jn])) {
-           dUdsij = phi + frhop[i] * drho2ds1 + frhop[j] * drho2ds2; //--- Eq. 4.41(b)
+           dUdsij = phi;//kam + frhop[i] * drho2ds1 + frhop[j] * drho2ds2; //--- Eq. 4.41(b)
 //            ddUddsij = frhopp[i] * drho2ds1 * drho2ds1 + frhop[i] * ddrho2dsds1 +
 //                       frhopp[j] * drho2ds2 * drho2ds2 + frhop[j] * ddrho2dsds2;
 //        if((i==0 and j==1) or (i==1 and j==0) )
