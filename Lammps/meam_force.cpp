@@ -1152,9 +1152,9 @@ double  ak, ro0k, rhoa2k;
         }
 
         //     Add the part of the force due to dUdrij and dUdsij (-1.0/(rij*rij))
-        force = dUdrij * recip + dUdsij * dscrfcn[fnoffset + jn]; //-- recip = 1/r_{ij}
+        force = dUdrij * recip;//kammmmmm + dUdsij * dscrfcn[fnoffset + jn]; //-- recip = 1/r_{ij}
         for (m = 0; m < 3; m++) {
-         forcem = delij[m] * force + dUdrijm[m]; //--- Eq. (4.40)
+         forcem = delij[m] * force;//kammmmm + dUdrijm[m]; //--- Eq. (4.40)
           f[i][m] = f[i][m] + forcem;
           f[j][m] = f[j][m] - forcem;
         }
