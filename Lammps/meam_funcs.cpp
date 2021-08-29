@@ -1198,8 +1198,8 @@ double MEAM::dsg(int i, int j, double** x, int numneigh, int* firstneigh, int nu
               //
               //     Tabulate per-atom virial as symmetrized stress tensor
             if (!iszero(dsij1) || !iszero(dsij2) || !iszero(dsg_alpha_beta_drjk) || !iszero(dsg_alpha_beta_drik) ){ //modify!!!!!!!
-              mod3bdy += (dsg_alpha_beta_drjk + dsg_alpha_beta_ds * dsij2) * deljk[gamma] * deljk[lambda]+
-                         (dsg_alpha_beta_drik + dsg_alpha_beta_ds * dsij1) * delki[gamma] * delki[lambda];
+              mod3bdy 0.0; //+= (dsg_alpha_beta_drjk + dsg_alpha_beta_ds * dsij2) * deljk[gamma] * deljk[lambda]+
+                         //(dsg_alpha_beta_drik + dsg_alpha_beta_ds * dsij1) * delki[gamma] * delki[lambda];
                
             }
           }
