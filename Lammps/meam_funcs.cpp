@@ -1203,8 +1203,8 @@ double MEAM::dsg(int i, int j, double** x, int numneigh, int* firstneigh, int nu
                       ddsij1drij = da * dCikj1+a * ddCikj1; //--- units of s/r^3
                       ddsij2drij = da * dCikj2+a * ddCikj2; //--- units of s/r^3                
 
-                      dsg_alpha_beta_drjk = 0.0;//kam recip * dUdsij * ddsij2drij * delij[alpha] * delij[beta];
-                      dsg_alpha_beta_drik = 0.0;//kam recip * dUdsij * ddsij1drij * delij[alpha] * delij[beta];
+                      dsg_alpha_beta_drjk = recip * dUdsij * ddsij2drij * delij[alpha] * delij[beta];
+                      dsg_alpha_beta_drik = recip * dUdsij * ddsij1drij * delij[alpha] * delij[beta];
                     }
                   }
                 }
