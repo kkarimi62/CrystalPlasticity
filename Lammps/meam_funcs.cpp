@@ -941,7 +941,7 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
      int nv2=0,m,n;
      for(m=0;m<alpha+1;m++){
        for(n=m;n<3;n++){
-         if(m==alpha and n==gamma)
+         if((m==alpha and n==gamma) or (m==gamma and n==alpha))
           break;
          nv2++;
        }
