@@ -1092,7 +1092,7 @@ double MEAM::dsg(int i, int j, double** x, int numneigh, int* firstneigh, int nu
      for(m=0;m<row+1;m++){
        for(n=m;n<3;n++){
          if(m==row and n==col){
-            printf("alpha=%d\tgamma=%d\tnv2=%d\n",alpha,gamma,nv2);
+//             printf("alpha=%d\tgamma=%d\tnv2=%d\n",alpha,gamma,nv2);
             dsg_alpha_beta_drm[gamma] = (recip*((ddUdrdrijm[gamma]+ddUdrijmds[gamma]*ds)*delij[alpha]+(dUdrij+dUdsij*ds)*(alpha == gamma ? 1 : 0))+ddUdrmdrn[nv2])*delij[beta];
             break;
          }
