@@ -1132,6 +1132,7 @@ double  ak, ro0k, rhoa2k;
           }  
          }
         
+	if(i==0 and j==1) printf("i=%d,j=%d,%e\t%e\t%e\n",i,j,ddUdrijds,ddUddsij,ddUdrijmds[0]);
         
         
         
@@ -1151,6 +1152,9 @@ double  ak, ro0k, rhoa2k;
           for(m=0;m<3;m++) ddUdrijmds[m] *= scaleij;
         }
 
+	if(i==0 and j==1) printf("i=%d,j=%d,%e\t%e\t%e\n",i,j,ddUdrijds,ddUddsij,ddUdrijmds[0]);
+	   
+	      
         //     Add the part of the force due to dUdrij and dUdsij (-1.0/(rij*rij))
         force = dUdrij * recip + dUdsij * dscrfcn[fnoffset + jn]; //-- recip = 1/r_{ij}
         for (m = 0; m < 3; m++) {
