@@ -1278,31 +1278,33 @@ double  ak, ro0k, rhoa2k;
                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
                          dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn);
 
-		
-		// 	  assert(!isnan(vm[ 15 ]));
-      k=2;
-	sik = scrfcn[k] * fcpair[k]; //--- 4.11a
+	dsg( i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
+                        0,1,r3, ds,  dds,  recip,
+                         dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
+                         dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn);	
+//       k=2;
+// 	sik = scrfcn[k] * fcpair[k]; //--- 4.11a
 
-	eltk = fmap[type[k]];
-      delik[0] = x[k][0] - x[i][0]; 
-      delik[1] = x[k][1] - x[i][1];
-      delik[2] = x[k][2] - x[i][2];
-      rik2 = delik[0] * delik[0] + delik[1] * delik[1] + delik[2] * delik[2];
-        rik = sqrt(rik2);
-          invrek = 1.0 / this->re_meam[eltk][eltk];
-          ak = rik * invrek - 1.0;
-          ro0k = this->rho0_meam[eltk];
-          rhoa2k = ro0k * MathSpecial::fm_exp(-this->beta2_meam[eltk] * ak);
+// 	eltk = fmap[type[k]];
+//       delik[0] = x[k][0] - x[i][0]; 
+//       delik[1] = x[k][1] - x[i][1];
+//       delik[2] = x[k][2] - x[i][2];
+//       rik2 = delik[0] * delik[0] + delik[1] * delik[1] + delik[2] * delik[2];
+//         rik = sqrt(rik2);
+//           invrek = 1.0 / this->re_meam[eltk][eltk];
+//           ak = rik * invrek - 1.0;
+//           ro0k = this->rho0_meam[eltk];
+//           rhoa2k = ro0k * MathSpecial::fm_exp(-this->beta2_meam[eltk] * ak);
 
-	if(i==0 and j==2)
-		printf("sik=%e\n",sij);
-	if(i==0 and j==1)	
-          fprintf ( pFile, "%e %e %e %e %e %e %e %e %e %e %e %e %e %e %e %e %e %e %e\n", 
-		   delij[0], delij[1], delij[2], rij, sij, rhoa2j, 
-		   delik[0], delik[1], delik[2], rik, sik, rhoa2k,
-		   rho2[i],
-		  ddUddrij,ddUdrijds,ddUddsij,ddUdrdrijm[0],ddUdrijmds[0],ddUdrmdrn[0]);
-// 		  -v[3]*2.0, -vm[ 15 ]*2 );
+// 	if(i==0 and j==2)
+// 		printf("sik=%e\n",sij);
+// 	if(i==0 and j==1)	
+//           fprintf ( pFile, "%e %e %e %e %e %e %e %e %e %e %e %e %e %e %e %e %e %e %e\n", 
+// 		   delij[0], delij[1], delij[2], rij, sij, rhoa2j, 
+// 		   delik[0], delik[1], delik[2], rik, sik, rhoa2k,
+// 		   rho2[i],
+// 		  ddUddrij,ddUdrijds,ddUddsij,ddUdrdrijm[0],ddUdrijmds[0],ddUdrmdrn[0]);
+// // 		  -v[3]*2.0, -vm[ 15 ]*2 );
 
 		  
           vm[ 16 ] = -0.5*GetModulus(

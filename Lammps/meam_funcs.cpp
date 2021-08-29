@@ -1064,8 +1064,160 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
           }
           //     end of k loop
         }
+     
+   
          return mod2bdy + mod3bdy;
      
  };
 
+double MEAM::dsg(int i, int j, double** x, int numneigh, int* firstneigh, int numneigh_full, int* firstneigh_full, int* type, int* fmap, double sij,
+                        int alpha, int beta,  double r3,double ds, double dds, double recip,
+                        double dUdrij, double dUdsij, double ddUddrij, double ddUdrijds, double ddUddsij,
+                        double* dUdrijm, double* delij, double* ddUdrdrijm, double* ddUdrijmds, double* ddUdrmdrn){
+   
+   double dsg_alpha_beta_drm[3];
+   double recip2 = recip * recip;
+   int nv2,m,n;
+   for(int gamma=0;gamma<3;gamma++){
+     nv2=0;
+     for(m=0;m<alpha+1;m++){
+       for(n=m;n<3;n++){
+         if(m==alpha and n==gamma){
+            dsg_alpha_beta_drm[gamma] = (recip*((ddUdrdrijm[gamma]+ddUdrijmds[gamma]*ds)*delij[alpha]+(dUdrij+dUdsij*ds)*(alpha == gamma ? 1 : 0))+ddUdrmdrn[nv2])*delij[beta];
+            break;
+         }
+         nv2++;
+       }
+     }
+   }
+      
+         
+   //
+   double ddUdrijmds_tmp[ 3 ];
+   if (iszero(ds)) {
+     dUdsij = 0.0;
+     ddUddsij = 0.0;
+     for (m = 0; m < 3; m++){
+        ddUdrijmds_tmp[m] = ddUdrijmds[m];
+        ddUdrijmds[m] = 0.0;
+     }
+     ddUdrijds = 0.0;
+    }
+   
 
+   double dsg_alpha_beta_dr = ((-recip2*(dUdrij+dUdsij*ds)+recip*(ddUddrij+ddUdrijds*ds+dUdsij*dds))*delij[alpha]+ddUdrdrijm[alpha])*delij[beta];
+   double dsg_alpha_beta_ds = (recip*(ddUdrijds+ddUddsij*ds)*delij[alpha]+ddUdrijmds[alpha])*delij[beta];
+
+   double mod2bdy = 0.0;//(recip*(dsg_alpha_beta_dr+dsg_alpha_beta_ds*ds)*delij[gamma]+dsg_alpha_beta_drm[gamma])*delij[lambda];
+   double mod3bdy = 0.0;
+  
+  for (m = 0; m < 3; m++){
+     ddUdrijmds[m] = ddUdrijmds_tmp[m];
+  }
+
+              double xik, xjk, cikj, sikj, dfc, ddfc, a;
+            double dCikj1, dCikj2;
+            double ddCikj1, ddCikj2;
+            double delc, rik2, rjk2, rik, rjk;
+   
+        //     Now compute forces on other atoms k due to change in sij     stiffness ?
+        
+        if (iszero(sij) || isone(sij) ) return mod2bdy; //: cont jn loop
+        double dxik(0), dyik(0), dzik(0), dsij1, deljk[3], delki[3];
+        double dxjk(0), dyjk(0), dzjk(0), dsij2;
+        double rij2 = 1.0/recip2, rij=1.0/recip;
+        double da,dcikj,dsikj,dsij,ddsij1drij,ddsij2drij,dsg_alpha_beta_drjk,dsg_alpha_beta_drik;
+        int kn,k,eltk,elti,eltj;
+        elti = fmap[type[i]];
+        eltj = fmap[type[j]];
+         
+        for (kn = 0; kn < numneigh_full; kn++) {
+          k = firstneigh_full[kn];
+          eltk = fmap[type[k]];
+          if (k != j && eltk >= 0) {
+ 
+            
+            const double Cmax = this->Cmax_meam[elti][eltj][eltk];
+            const double Cmin = this->Cmin_meam[elti][eltj][eltk];
+
+            dsij1 = 0.0;
+            dsij2 = 0.0;
+            dsg_alpha_beta_drik=0.0;
+            dsg_alpha_beta_drjk=0.0;
+            ddsij1drij = 0.0;
+            ddsij2drij = 0.0;
+            if (!iszero(sij) && !isone(sij)) {
+              const double rbound = rij2 * this->ebound_meam[elti][eltj];
+              delc = Cmax - Cmin;
+              dxjk = deljk[0]=x[k][0] - x[j][0];
+              dyjk = deljk[1]=x[k][1] - x[j][1];
+              dzjk = deljk[2]=x[k][2] - x[j][2];
+              rjk2 = dxjk * dxjk + dyjk * dyjk + dzjk * dzjk;
+              rjk = sqrt( rjk2 );
+              if (rjk2 <= rbound) {
+                dxik = delki[0]=x[k][0] - x[i][0];
+                dyik = delki[1]=x[k][1] - x[i][1];
+                dzik = delki[2]=x[k][2] - x[i][2];
+                rik2 = dxik * dxik + dyik * dyik + dzik * dzik;
+                rik = sqrt( rik2 );
+                if (rik2 <= rbound) {
+                  xik = rik2 / rij2;
+                  xjk = rjk2 / rij2;
+                  dxik=-2*rik2 /rij2/rij;
+                  dxjk = -2*rjk2 / rij2/rij;
+                  a = 1 - (xik - xjk) * (xik - xjk);
+                  da = -2*(xik - xjk) * (dxik - dxjk);
+                  if (!iszero(a)) {
+                    cikj = (2.0 * (xik + xjk) + a - 2.0) / a;
+                    dcikj = (2.0 * (dxik + dxjk) + da) / a +(2.0 * (xik + xjk) + a - 2.0) *(-da)/ a / a;
+
+                    if (cikj >= Cmin && cikj <= Cmax) {
+                      assert(!iszero(delc));
+                      cikj = (cikj - Cmin) / delc;
+                      dcikj /= delc;
+
+                      sikj = dfcut(cikj, dfc, ddfc);
+                      dsikj = dfc * dcikj;
+                      dCfunc2(rij2, rik2, rjk2, dCikj1, dCikj2); //--- 4.17b/rik, 4.17c/rjk
+                      ddCfunc2(rij2, rik2, rjk2, ddCikj1, ddCikj2 );
+                      dsij=ds;
+                      assert(!iszero(sikj));
+                      a = sij / delc * dfc / sikj;
+                      da = (dsij*dfc/sikj+sij*ddfc*dcikj/sikj-dsikj*sij*dfc/sikj/sikj)/delc;
+
+                      dsij1 = a * dCikj1; //--- 4.22b/rik: units of s/r^2
+                      dsij2 = a * dCikj2; //--- 4.22c/rjk
+                       
+                      ddsij1drij = da * dCikj1+a * ddCikj1; //--- units of s/r^3
+                      ddsij2drij = da * dCikj2+a * ddCikj2; //--- units of s/r^3                
+
+                      dsg_alpha_beta_drjk = recip * dUdsij * ddsij2drij * delij[alpha] * delij[beta];
+                      dsg_alpha_beta_drik = recip * dUdsij * ddsij1drij * delij[alpha] * delij[beta];
+                    }
+                  }
+                }
+              }
+            }
+
+              //
+              //     Tabulate per-atom virial as symmetrized stress tensor
+            if (!iszero(dsij1) || !iszero(dsij2) || !iszero(dsg_alpha_beta_drjk) || !iszero(dsg_alpha_beta_drik) ){ //modify!!!!!!!
+              mod3bdy= 0.0; //+= (dsg_alpha_beta_drjk + dsg_alpha_beta_ds * dsij2) * deljk[gamma] * deljk[lambda]+
+                         //(dsg_alpha_beta_drik + dsg_alpha_beta_ds * dsij1) * delki[gamma] * delki[lambda];
+               
+            }
+          }
+          //     end of k loop
+        }
+   
+      if(i==0 and j==1 and alpha==0 and beta==1){
+         FILE * pFile;
+         pFile = fopen ("sfile.txt","a");
+         fprintf( pFile,"rik\trjk\trij\tsij\tdelij[0]\tdelij[1]\tdelij[2]\trij\tdsgdrm[0]\tdsgdrm[1]\tdsgdrm[2]\tdsg_dr\tdsg_ds\tdsg_drik\tdsg_drjk\n");
+         fprintf( pFile,"%e\t%e\t%e\t%e\t%e\t%e\t%e\t%e\t%e\t%e\t%e\t%e\t%e\n",rik,rjk,1.0/recip,sij,delij[0],delij[1],delij[2],dsg_alpha_beta_drm[0],dsg_alpha_beta_drm[1],dsg_alpha_beta_drm[2],dsg_alpha_beta_dr,dsg_alpha_beta_ds,dsg_alpha_beta_drik,dsg_alpha_beta_drjk);
+         fclose(pFile);
+      }
+      
+         return mod2bdy + mod3bdy;
+     
+ };
