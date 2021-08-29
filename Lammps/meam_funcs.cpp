@@ -1064,12 +1064,7 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
           }
           //     end of k loop
         }
-   
-      double dsg_alpha_beta_dr = ((-recip2*(dUdrij+dUdsij*ds)+recip*(ddUddrij+ddUdrijds*ds+dUdsij*dds))*delij[alpha]+ddUdrdrijm[alpha])*delij[beta];
-   double dsg_alpha_beta_ds = (recip*(ddUdrijds+ddUddsij*ds)*delij[alpha]+ddUdrijmds[alpha])*delij[beta];
-   dsg_alpha_beta_drm[gamma] = (recip*((ddUdrdrijm[gamma]+ddUdrijmds[gamma]*ds)*delij[alpha]+(dUdrij+dUdsij*ds)*(alpha == gamma ? 1 : 0))+ddUdrmdrn[nv2])*delij[beta];
-
-   
+     
    
          return mod2bdy + mod3bdy;
      
