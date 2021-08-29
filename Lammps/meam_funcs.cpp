@@ -1118,7 +1118,7 @@ double MEAM::dsg(int i, int j, double** x, int numneigh, int* firstneigh, int nu
    
    double dsg_alpha_beta_dr = ((-recip2*(dUdrij+dUdsij*ds)+recip*(ddUddrij+ddUdrijds*ds+dUdsij*dds))*delij[alpha]+ddUdrdrijm[alpha])*delij[beta];
    double dsg_alpha_beta_ds = (recip*(ddUdrijds+ddUddsij*ds)*delij[alpha]+ddUdrijmds[alpha])*delij[beta];
-   if(i==0 and j==1) printf("dsg_alpha_beta_ds=%e\n",dsg_alpha_beta_ds);
+   if(i==0 and j==1) printf("i=%d,j=%d,dsg_alpha_beta_ds=%e\n",i,j,dsg_alpha_beta_ds);
    
    double mod2bdy = 0.0;//(recip*(dsg_alpha_beta_dr+dsg_alpha_beta_ds*ds)*delij[gamma]+dsg_alpha_beta_drm[gamma])*delij[lambda];
    double mod3bdy = 0.0;
