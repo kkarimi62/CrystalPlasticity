@@ -1099,7 +1099,7 @@ double  ak, ro0k, rhoa2k;
 // 	phi=0.0;phip=0.0;phipp=0.0;
         dUdrij = phip;//kam * sij;//kam + frhop[i] * drho2dr1 + frhop[j] * drho2dr2; //--- Eq. 4.41(a)
         ddUddrij = phipp;//kam * sij;//kam + ( frhopp[i] * drho2dr1 * drho2dr1 + frhop[i] * ddrho2drdr1 ) + //--- 1st deriv. of Eq. 4.41(a) wrt r
-                                 ( frhopp[j] * drho2dr2 * drho2dr2 + frhop[j] * ddrho2drdr2 );  
+                                // ( frhopp[j] * drho2dr2 * drho2dr2 + frhop[j] * ddrho2drdr2 );  
         
 //            if((i==0 and j==1) or (i==1 and j==0) )
 //              fprintf (pFile, "%e %e %e\n",rij, dUdrij,ddUddrij);
@@ -1277,6 +1277,8 @@ double  ak, ro0k, rhoa2k;
                         0,1,0,1,r3, ds,  dds,  recip,
                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
                          dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn);
+
+	if(i==0 and j==1) printf("i=%d,j=%d,%e\t%e\t%e\n",i,j,ddUdrijds,ddUddsij,ddUdrijmds[0]);
 
 	dsg( i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
                         0,1,r3, ds,  dds,  recip,
