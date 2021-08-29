@@ -953,16 +953,16 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
 //             printf("alpha=%d\tgamma=%d\tnv2=%d\n",alpha,gamma,nv2);
    
    //
-   double ddUdrijmds_tmp[ 3 ];
-   if (iszero(ds)) {
-     dUdsij = 0.0;
-     ddUddsij = 0.0;
-     for (m = 0; m < 3; m++){
-        ddUdrijmds_tmp[m] = ddUdrijmds[m];
-        ddUdrijmds[m] = 0.0;
-     }
-     ddUdrijds = 0.0;
-    }
+//    double ddUdrijmds_tmp[ 3 ];
+//    if (iszero(ds)) {
+//      dUdsij = 0.0;
+//      ddUddsij = 0.0;
+//      for (m = 0; m < 3; m++){
+//         ddUdrijmds_tmp[m] = ddUdrijmds[m];
+//         ddUdrijmds[m] = 0.0;
+//      }
+//      ddUdrijds = 0.0;
+//     }
    
    double dsg_alpha_beta_drm[3];
    double recip2 = recip * recip;
@@ -973,9 +973,9 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
    double mod2bdy = (recip*(dsg_alpha_beta_dr+dsg_alpha_beta_ds*ds)*delij[gamma]+dsg_alpha_beta_drm[gamma])*delij[lambda];
    double mod3bdy = 0.0;
   
-  for (m = 0; m < 3; m++){
-     ddUdrijmds[m] = ddUdrijmds_tmp[m];
-  }
+//   for (m = 0; m < 3; m++){
+//      ddUdrijmds[m] = ddUdrijmds_tmp[m];
+//   }
    
         //     Now compute forces on other atoms k due to change in sij     stiffness ?
         
@@ -1105,16 +1105,16 @@ double MEAM::dsg(int i, int j, double** x, int numneigh, int* firstneigh, int nu
    
    
    //
-   double ddUdrijmds_tmp[ 3 ];
-   if (iszero(ds)) {
-     dUdsij = 0.0;
-     ddUddsij = 0.0;
-     for (m = 0; m < 3; m++){
-        ddUdrijmds_tmp[m] = ddUdrijmds[m];
-        ddUdrijmds[m] = 0.0;
-     }
-     ddUdrijds = 0.0;
-    }
+//    double ddUdrijmds_tmp[ 3 ];
+//    if (iszero(ds)) {
+//      dUdsij = 0.0;
+//      ddUddsij = 0.0;
+//      for (m = 0; m < 3; m++){
+//         ddUdrijmds_tmp[m] = ddUdrijmds[m];
+//         ddUdrijmds[m] = 0.0;
+//      }
+//      ddUdrijds = 0.0;
+//     }
    
    double dsg_alpha_beta_dr = ((-recip2*(dUdrij+dUdsij*ds)+recip*(ddUddrij+ddUdrijds*ds+dUdsij*dds))*delij[alpha]+ddUdrdrijm[alpha])*delij[beta];
    double dsg_alpha_beta_ds = (recip*(ddUdrijds+ddUddsij*ds)*delij[alpha]+ddUdrijmds[alpha])*delij[beta];
@@ -1123,9 +1123,9 @@ double MEAM::dsg(int i, int j, double** x, int numneigh, int* firstneigh, int nu
    double mod2bdy = 0.0;//(recip*(dsg_alpha_beta_dr+dsg_alpha_beta_ds*ds)*delij[gamma]+dsg_alpha_beta_drm[gamma])*delij[lambda];
    double mod3bdy = 0.0;
   
-  for (m = 0; m < 3; m++){
-     ddUdrijmds[m] = ddUdrijmds_tmp[m];
-  }
+//   for (m = 0; m < 3; m++){
+//      ddUdrijmds[m] = ddUdrijmds_tmp[m];
+//   }
 
               double xik, xjk, cikj, sikj, dfc, ddfc, a;
             double dCikj1, dCikj2;
