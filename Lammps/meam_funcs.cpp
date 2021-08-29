@@ -1225,7 +1225,7 @@ double MEAM::dsg(int i, int j, double** x, int numneigh, int* firstneigh, int nu
          FILE * pFile;
          pFile = fopen ("sfile.txt","a");
          fprintf( pFile,"#rik\trjk\trij\tsij\tdelij[0]\tdelij[1]\tdelij[2]\tdsgdrm[0]\tdsgdrm[1]\tdsgdrm[2]\tdsg_dr\tdsg_ds\tdsg_drik\tdsg_drjk\n");
-         fprintf( pFile,"%e\t%e\t%e\t%e\t%e\t%e\t%e\t%e\t%e\t%e\t%e\t%e\t%e\t%e\t%e\n",rik,rjk,rij,sij,delij[0],delij[1],delij[2],dsg_alpha_beta_drm[0],dsg_alpha_beta_drm[1],dsg_alpha_beta_drm[2],dsg_alpha_beta_dr,dsg_alpha_beta_ds,dsg_alpha_beta_drik,dsg_alpha_beta_drjk);
+         fprintf( pFile,"%e\t%e\t%e\t%e\t%e\t%e\t%e\t%e\t%e\t%e\t%e\t%e\t%e\t%e\n",rik,rjk,rij,sij,delij[0],delij[1],delij[2],dsg_alpha_beta_drm[0],dsg_alpha_beta_drm[1],dsg_alpha_beta_drm[2],dsg_alpha_beta_dr,dsg_alpha_beta_ds,dsg_alpha_beta_drik,dsg_alpha_beta_drjk);
          fclose(pFile);
       }
       
