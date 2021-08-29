@@ -1093,7 +1093,7 @@ double MEAM::dsg(int i, int j, double** x, int numneigh, int* firstneigh, int nu
        for(n=m;n<3;n++){
          if(m==row and n==col){
 //             printf("alpha=%d\tgamma=%d\tnv2=%d\n",alpha,gamma,nv2);
-            dsg_alpha_beta_drm[gamma] = (recip*((ddUdrdrijm[gamma]+ddUdrijmds[gamma]*ds)*delij[alpha]+(dUdrij+dUdsij*ds)*(alpha == gamma ? 1 : 0))+ddUdrmdrn[nv2])*delij[beta];
+            dsg_alpha_beta_drm[gamma] = 0.0;//kam (recip*((ddUdrdrijm[gamma]+ddUdrijmds[gamma]*ds)*delij[alpha]+(dUdrij+dUdsij*ds)*(alpha == gamma ? 1 : 0))+ddUdrmdrn[nv2])*delij[beta];
             break;
          }
          nv2++;
@@ -1116,9 +1116,9 @@ double MEAM::dsg(int i, int j, double** x, int numneigh, int* firstneigh, int nu
      ddUdrijds = 0.0;
     }
    
-
+   dUdsij=ddUdrijds=dUdsij=ddUdrdrijm[0]=ddUdrdrijm[1]=ddUdrdrijm[2]=0.0 //kam
    double dsg_alpha_beta_dr = ((-recip2*(dUdrij+dUdsij*ds)+recip*(ddUddrij+ddUdrijds*ds+dUdsij*dds))*delij[alpha]+ddUdrdrijm[alpha])*delij[beta];
-   double dsg_alpha_beta_ds = (recip*(ddUdrijds+ddUddsij*ds)*delij[alpha]+ddUdrijmds[alpha])*delij[beta];
+   double dsg_alpha_beta_ds = 0.0;//kam (recip*(ddUdrijds+ddUddsij*ds)*delij[alpha]+ddUdrijmds[alpha])*delij[beta];
 
    double mod2bdy = 0.0;//(recip*(dsg_alpha_beta_dr+dsg_alpha_beta_ds*ds)*delij[gamma]+dsg_alpha_beta_drm[gamma])*delij[lambda];
    double mod3bdy = 0.0;
@@ -1203,8 +1203,8 @@ double MEAM::dsg(int i, int j, double** x, int numneigh, int* firstneigh, int nu
                       ddsij1drij = da * dCikj1+a * ddCikj1; //--- units of s/r^3
                       ddsij2drij = da * dCikj2+a * ddCikj2; //--- units of s/r^3                
 
-                      dsg_alpha_beta_drjk = recip * dUdsij * ddsij2drij * delij[alpha] * delij[beta];
-                      dsg_alpha_beta_drik = recip * dUdsij * ddsij1drij * delij[alpha] * delij[beta];
+                      dsg_alpha_beta_drjk = 0.0;//kam recip * dUdsij * ddsij2drij * delij[alpha] * delij[beta];
+                      dsg_alpha_beta_drik = 0.0;//kam recip * dUdsij * ddsij1drij * delij[alpha] * delij[beta];
                     }
                   }
                 }
