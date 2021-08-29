@@ -1075,6 +1075,8 @@ double MEAM::dsg(int i, int j, double** x, int numneigh, int* firstneigh, int nu
                         double dUdrij, double dUdsij, double ddUddrij, double ddUdrijds, double ddUddsij,
                         double* dUdrijm, double* delij, double* ddUdrdrijm, double* ddUdrijmds, double* ddUdrmdrn){
    
+   double dsg_alpha_beta_drm[3];
+   double recip2 = recip * recip;
    for(int gamma=0;gamma<3;gamma++){
      int nv2=0,m,n;
      for(m=0;m<alpha+1;m++){
@@ -1100,8 +1102,7 @@ double MEAM::dsg(int i, int j, double** x, int numneigh, int* firstneigh, int nu
      ddUdrijds = 0.0;
     }
    
-   double dsg_alpha_beta_drm[3];
-   double recip2 = recip * recip;
+
    double dsg_alpha_beta_dr = ((-recip2*(dUdrij+dUdsij*ds)+recip*(ddUddrij+ddUdrijds*ds+dUdsij*dds))*delij[alpha]+ddUdrdrijm[alpha])*delij[beta];
    double dsg_alpha_beta_ds = (recip*(ddUdrijds+ddUddsij*ds)*delij[alpha]+ddUdrijmds[alpha])*delij[beta];
 
