@@ -1097,8 +1097,8 @@ double  ak, ro0k, rhoa2k;
        frhop[i] = 1.0;frhopp[i]=0.0;
         frhop[j] = 0.0;frhopp[j]=0.0;
 // 	phi=0.0;phip=0.0;phipp=0.0;
-        dUdrij = phip;//kam * sij;//kam + frhop[i] * drho2dr1 + frhop[j] * drho2dr2; //--- Eq. 4.41(a)
-        ddUddrij = phipp;//kam * sij;//kam + ( frhopp[i] * drho2dr1 * drho2dr1 + frhop[i] * ddrho2drdr1 ) + //--- 1st deriv. of Eq. 4.41(a) wrt r
+        dUdrij = phip * sij;//kam + frhop[i] * drho2dr1 + frhop[j] * drho2dr2; //--- Eq. 4.41(a)
+        ddUddrij = phipp * sij;//kam + ( frhopp[i] * drho2dr1 * drho2dr1 + frhop[i] * ddrho2drdr1 ) + //--- 1st deriv. of Eq. 4.41(a) wrt r
                                 // ( frhopp[j] * drho2dr2 * drho2dr2 + frhop[j] * ddrho2drdr2 );  
         
 //            if((i==0 and j==1) or (i==1 and j==0) )
@@ -1108,7 +1108,7 @@ double  ak, ro0k, rhoa2k;
         for (m = 0; m < 3; m++) ddUdrijmds[m] = 0.0;
         ddUdrijds = 0.0;
         if (!iszero(dscrfcn[fnoffset + jn])) {
-//           dUdsij = phi + frhop[i] * drho2ds1 + frhop[j] * drho2ds2; //--- Eq. 4.41(b)
+           dUdsij = phi + frhop[i] * drho2ds1 + frhop[j] * drho2ds2; //--- Eq. 4.41(b)
 //            ddUddsij = frhopp[i] * drho2ds1 * drho2ds1 + frhop[i] * ddrho2dsds1 +
 //                       frhopp[j] * drho2ds2 * drho2ds2 + frhop[j] * ddrho2dsds2;
 //        if((i==0 and j==1) or (i==1 and j==0) )
@@ -1117,7 +1117,7 @@ double  ak, ro0k, rhoa2k;
           
 //           for (m = 0; m < 3; m++) ddUdrijmds[m] = frhopp[i] * drho2ds1 * drho2drm1[m] + frhop[i] * ddrho2drmds1[m] +
 //                                                   frhopp[j] * drho2ds2 * drho2drm2[m] + frhop[j] * ddrho2drmds2[m];
-//            ddUdrijds = phip + frhopp[i] * drho2ds1 * drho2dr1 + frhop[i] * ddrho2drds1 +
+            ddUdrijds = phip;// + frhopp[i] * drho2ds1 * drho2dr1 + frhop[i] * ddrho2drds1 +
 //                               frhopp[j] * drho2ds2 * drho2dr2 + frhop[j] * ddrho2drds2;
         }
         nv2 = 0;
@@ -1132,7 +1132,7 @@ double  ak, ro0k, rhoa2k;
           }  
          }
         
-	if(i==0 and j==1) printf("i=%d,j=%d,%e\t%e\t%e\n",i,j,ddUdrijds,ddUddsij,ddUdrijmds[0]);
+// 	if(i==0 and j==1) printf("i=%d,j=%d,%e\t%e\t%e\n",i,j,ddUdrijds,ddUddsij,ddUdrijmds[0]);
         
         
         
@@ -1152,7 +1152,7 @@ double  ak, ro0k, rhoa2k;
           for(m=0;m<3;m++) ddUdrijmds[m] *= scaleij;
         }
 
-	if(i==0 and j==1) printf("i=%d,j=%d,%e\t%e\t%e\n",i,j,ddUdrijds,ddUddsij,ddUdrijmds[0]);
+// 	if(i==0 and j==1) printf("i=%d,j=%d,%e\t%e\t%e\n",i,j,ddUdrijds,ddUddsij,ddUdrijmds[0]);
 	   
 	      
         //     Add the part of the force due to dUdrij and dUdsij (-1.0/(rij*rij))
@@ -1282,14 +1282,14 @@ double  ak, ro0k, rhoa2k;
                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
                          dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn);
 
-	if(i==0 and j==1) printf("i=%d,j=%d,%e\t%e\t%e\n",i,j,ddUdrijds,ddUddsij,ddUdrijmds[0]);
+// 	if(i==0 and j==1) printf("i=%d,j=%d,%e\t%e\t%e\n",i,j,ddUdrijds,ddUddsij,ddUdrijmds[0]);
 
 	dsg( i, j, x, numneigh, firstneigh, numneigh_full, firstneigh_full, type, fmap, sij,
                         0,1,r3, ds,  dds,  recip,
                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
                          dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn);	
 		
-	if(i==0 and j==1) printf("s01=%e\n",delij[1] * fi[0]);
+// 	if(i==0 and j==1) printf("s01=%e\n",delij[1] * fi[0]);
 //       k=2;
 // 	sik = scrfcn[k] * fcpair[k]; //--- 4.11a
 
