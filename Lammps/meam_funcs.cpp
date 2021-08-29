@@ -938,10 +938,14 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
                         int alpha, int beta, int gamma, int lambda,  double r3,double ds, double dds, double recip,
                         double dUdrij, double dUdsij, double ddUddrij, double ddUdrijds, double ddUddsij,
                         double* dUdrijm, double* delij, double* ddUdrdrijm, double* ddUdrijmds, double* ddUdrmdrn){
+     int row=alpha, col=gamma;
+     if(alpha > gamma){
+         row=gamma; col=alpha;
+     }
      int nv2=0,m,n;
-     for(m=0;m<alpha+1;m++){
+     for(m=0;m<row+1;m++){
        for(n=m;n<3;n++){
-         if((m==alpha and n==gamma) or (m==gamma and n==alpha))
+         if(m==row and n==col)
           break;
          nv2++;
        }
