@@ -1077,8 +1077,9 @@ double MEAM::dsg(int i, int j, double** x, int numneigh, int* firstneigh, int nu
    
    double dsg_alpha_beta_drm[3];
    double recip2 = recip * recip;
+   int nv2,m,n;
    for(int gamma=0;gamma<3;gamma++){
-     int nv2=0,m,n;
+     nv2=0;
      for(m=0;m<alpha+1;m++){
        for(n=m;n<3;n++){
          if(m==alpha and n==gamma){
