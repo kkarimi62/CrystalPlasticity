@@ -1282,6 +1282,8 @@ double  ak, ro0k, rhoa2k;
                         0,1,r3, ds,  dds,  recip,
                          dUdrij,  dUdsij,  ddUddrij,  ddUdrijds,  ddUddsij,
                          dUdrijm,  delij,  ddUdrdrijm,  ddUdrijmds,  ddUdrmdrn);	
+		
+	if(i==0 and j==1) printf("s01=%e\n",0.5*(delij[0] * fi[1] + delij[1] * fi[0]));
 //       k=2;
 // 	sik = scrfcn[k] * fcpair[k]; //--- 4.11a
 
