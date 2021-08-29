@@ -1097,8 +1097,8 @@ double  ak, ro0k, rhoa2k;
        frhop[i] = 1.0;frhopp[i]=0.0;
         frhop[j] = 0.0;frhopp[j]=0.0;
 	phi=0.0;phip=0.0;phipp=0.0;
-        dUdrij = phip * sij + frhop[i] * drho2dr1 + frhop[j] * drho2dr2; //--- Eq. 4.41(a)
-        ddUddrij = phipp * sij + ( frhopp[i] * drho2dr1 * drho2dr1 + frhop[i] * ddrho2drdr1 ) + //--- 1st deriv. of Eq. 4.41(a) wrt r
+        dUdrij = phip;//kam * sij;//kam + frhop[i] * drho2dr1 + frhop[j] * drho2dr2; //--- Eq. 4.41(a)
+        ddUddrij = phipp;//kam * sij;//kam + ( frhopp[i] * drho2dr1 * drho2dr1 + frhop[i] * ddrho2drdr1 ) + //--- 1st deriv. of Eq. 4.41(a) wrt r
                                  ( frhopp[j] * drho2dr2 * drho2dr2 + frhop[j] * ddrho2drdr2 );  
         
 //            if((i==0 and j==1) or (i==1 and j==0) )
@@ -1108,26 +1108,26 @@ double  ak, ro0k, rhoa2k;
         for (m = 0; m < 3; m++) ddUdrijmds[m] = 0.0;
         ddUdrijds = 0.0;
         if (!iszero(dscrfcn[fnoffset + jn])) {
-          dUdsij = phi + frhop[i] * drho2ds1 + frhop[j] * drho2ds2; //--- Eq. 4.41(b)
-           ddUddsij = frhopp[i] * drho2ds1 * drho2ds1 + frhop[i] * ddrho2dsds1 +
-                      frhopp[j] * drho2ds2 * drho2ds2 + frhop[j] * ddrho2dsds2;
+//           dUdsij = phi + frhop[i] * drho2ds1 + frhop[j] * drho2ds2; //--- Eq. 4.41(b)
+//            ddUddsij = frhopp[i] * drho2ds1 * drho2ds1 + frhop[i] * ddrho2dsds1 +
+//                       frhopp[j] * drho2ds2 * drho2ds2 + frhop[j] * ddrho2dsds2;
 //        if((i==0 and j==1) or (i==1 and j==0) )
 //             fprintf(pFile, "%d %d %e %e %e\n",i,j,rho[i],frhop[i],frhopp[i]);
           
           
-          for (m = 0; m < 3; m++) ddUdrijmds[m] = frhopp[i] * drho2ds1 * drho2drm1[m] + frhop[i] * ddrho2drmds1[m] +
-                                                  frhopp[j] * drho2ds2 * drho2drm2[m] + frhop[j] * ddrho2drmds2[m];
-           ddUdrijds = phip + frhopp[i] * drho2ds1 * drho2dr1 + frhop[i] * ddrho2drds1 +
-                              frhopp[j] * drho2ds2 * drho2dr2 + frhop[j] * ddrho2drds2;
+//           for (m = 0; m < 3; m++) ddUdrijmds[m] = frhopp[i] * drho2ds1 * drho2drm1[m] + frhop[i] * ddrho2drmds1[m] +
+//                                                   frhopp[j] * drho2ds2 * drho2drm2[m] + frhop[j] * ddrho2drmds2[m];
+//            ddUdrijds = phip + frhopp[i] * drho2ds1 * drho2dr1 + frhop[i] * ddrho2drds1 +
+//                               frhopp[j] * drho2ds2 * drho2dr2 + frhop[j] * ddrho2drds2;
         }
         nv2 = 0;
         for (m = 0; m < 3; m++) {
-          dUdrijm[m] = frhop[i] * drho2drm1[m] + frhop[j] * drho2drm2[m]; //--- Eq. 4.41(c)
-          ddUdrdrijm[m] = frhopp[i] * drho2dr1 * drho2drm1[m] + frhop[i] * ddrho2drmdr1[m] + 
-                           frhopp[j] * drho2dr2 * drho2drm2[m] + frhop[j] * ddrho2drmdr2[m]; //--- deriv of Eq. 4.41(c) wrt r
+          dUdrijm[m] = 0.0;//kamfrhop[i] * drho2drm1[m] + frhop[j] * drho2drm2[m]; //--- Eq. 4.41(c)
+          ddUdrdrijm[m] = 0.0;//kamfrhopp[i] * drho2dr1 * drho2drm1[m] + frhop[i] * ddrho2drmdr1[m] + 
+                           //frhopp[j] * drho2dr2 * drho2drm2[m] + frhop[j] * ddrho2drmdr2[m]; //--- deriv of Eq. 4.41(c) wrt r
           for (n = m; n < 3; n++) {
-            ddUdrmdrn[nv2] =  frhopp[i] * drho2drm1[m] * drho2drm1[n] + frhop[i] * ddrho2drmdrn1[nv2]+
-                              frhopp[j] * drho2drm2[m] * drho2drm2[n] + frhop[j] * ddrho2drmdrn2[nv2];
+            ddUdrmdrn[nv2] =  0.0;//kamfrhopp[i] * drho2drm1[m] * drho2drm1[n] + frhop[i] * ddrho2drmdrn1[nv2]+
+                              //frhopp[j] * drho2drm2[m] * drho2drm2[n] + frhop[j] * ddrho2drmdrn2[nv2];
             nv2++;
           }  
          }
@@ -1152,9 +1152,9 @@ double  ak, ro0k, rhoa2k;
         }
 
         //     Add the part of the force due to dUdrij and dUdsij (-1.0/(rij*rij))
-        force = dUdrij * recip;//kammmmmm + dUdsij * dscrfcn[fnoffset + jn]; //-- recip = 1/r_{ij}
+        force = dUdrij * recip + dUdsij * dscrfcn[fnoffset + jn]; //-- recip = 1/r_{ij}
         for (m = 0; m < 3; m++) {
-         forcem = delij[m] * force;//kammmmm + dUdrijm[m]; //--- Eq. (4.40)
+         forcem = delij[m] * force + dUdrijm[m]; //--- Eq. (4.40)
           f[i][m] = f[i][m] + forcem;
           f[j][m] = f[j][m] - forcem;
         }
