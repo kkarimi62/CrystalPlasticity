@@ -950,7 +950,7 @@ double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh,
          nv2++;
        }
      }
-            printf("alpha=%d\tgamma=%d\tnv2=%d\n",alpha,gamma,nv2);
+//             printf("alpha=%d\tgamma=%d\tnv2=%d\n",alpha,gamma,nv2);
    
    //
    double ddUdrijmds_tmp[ 3 ];
@@ -1082,12 +1082,17 @@ double MEAM::dsg(int i, int j, double** x, int numneigh, int* firstneigh, int nu
    
    double dsg_alpha_beta_drm[3];
    double recip2 = recip * recip;
-   int nv2,m,n;
+   int nv2,m,n, row,col;
    for(int gamma=0;gamma<3;gamma++){
+     row=alpha;col=gamma;
+     if(alpha > gamma){
+         row=gamma; col=alpha;
+     }      
      nv2=0;
-     for(m=0;m<alpha+1;m++){
+     for(m=0;m<row+1;m++){
        for(n=m;n<3;n++){
-         if(m==alpha and n==gamma){
+         if(m==row and n==col){
+            printf("alpha=%d\tgamma=%d\tnv2=%d\n",alpha,gamma,nv2);
             dsg_alpha_beta_drm[gamma] = (recip*((ddUdrdrijm[gamma]+ddUdrijmds[gamma]*ds)*delij[alpha]+(dUdrij+dUdsij*ds)*(alpha == gamma ? 1 : 0))+ddUdrmdrn[nv2])*delij[beta];
             break;
          }
@@ -1096,7 +1101,9 @@ double MEAM::dsg(int i, int j, double** x, int numneigh, int* firstneigh, int nu
      }
    }
       
-         
+        
+   
+   
    //
    double ddUdrijmds_tmp[ 3 ];
    if (iszero(ds)) {
