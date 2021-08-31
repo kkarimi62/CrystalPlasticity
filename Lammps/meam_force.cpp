@@ -273,7 +273,7 @@ double  ak, ro0k, rhoa2k;
         } 
         // rho2 terms
         // arho2[i][m][n]=A2j*delij[m]*delij[n]*sij:
-        // arho2b[i][m][n]=rhoa2j*sij:
+        // arho2b[i]=rhoa2j*sij:
 //	rhoa2j=rhoa2i=1.0;drhoa2j=drhoa2i=0.0;ddrhoa2j=ddrhoa2i=0.0;
         A2j = rhoa2j / rij2;
         A2i = rhoa2i / rij2;
@@ -1095,8 +1095,11 @@ double  ak, ro0k, rhoa2k;
        frhop[i] = 1.0;frhopp[i]=0.0;
         frhop[j] = 0.0;frhopp[j]=0.0;
 // 	phi=0.0;phip=0.0;phipp=0.0;
-        dUdrij = phip * sij + frhop[i] * drho2dr1 + frhop[j] * drho2dr2; //--- Eq. 4.41(a)
-        ddUddrij = phipp * sij + ( frhopp[i] * drho2dr1 * drho2dr1 + frhop[i] * ddrho2drdr1 ) + //--- 1st deriv. of Eq. 4.41(a) wrt r
+//        dUdrij = phip * sij + frhop[i] * drho2dr1 + frhop[j] * drho2dr2; //--- Eq. 4.41(a)
+        dUdrij = frhop[i] * drho2dr1 + frhop[j] * drho2dr2; //--- Eq. 4.41(a)
+//         ddUddrij = phipp * sij + ( frhopp[i] * drho2dr1 * drho2dr1 + frhop[i] * ddrho2drdr1 ) + //--- 1st deriv. of Eq. 4.41(a) wrt r
+//                                  ( frhopp[j] * drho2dr2 * drho2dr2 + frhop[j] * ddrho2drdr2 );  
+        ddUddrij =  ( frhopp[i] * drho2dr1 * drho2dr1 + frhop[i] * ddrho2drdr1 ) + //--- 1st deriv. of Eq. 4.41(a) wrt r
                                  ( frhopp[j] * drho2dr2 * drho2dr2 + frhop[j] * ddrho2drdr2 );  
         
 //            if((i==0 and j==1) or (i==1 and j==0) )
@@ -1106,7 +1109,8 @@ double  ak, ro0k, rhoa2k;
         for (m = 0; m < 3; m++) ddUdrijmds[m] = 0.0;
         ddUdrijds = 0.0;
         if (!iszero(dscrfcn[fnoffset + jn])) {
-           dUdsij = phi + frhop[i] * drho2ds1 + frhop[j] * drho2ds2; //--- Eq. 4.41(b)
+//           dUdsij = phi + frhop[i] * drho2ds1 + frhop[j] * drho2ds2; //--- Eq. 4.41(b)
+           dUdsij = frhop[i] * drho2ds1 + frhop[j] * drho2ds2; //--- Eq. 4.41(b)
             ddUddsij = frhopp[i] * drho2ds1 * drho2ds1 + frhop[i] * ddrho2dsds1 +
                        frhopp[j] * drho2ds2 * drho2ds2 + frhop[j] * ddrho2dsds2;
 //        if((i==0 and j==1) or (i==1 and j==0) )
@@ -1115,7 +1119,9 @@ double  ak, ro0k, rhoa2k;
           
            for (m = 0; m < 3; m++) ddUdrijmds[m] = frhopp[i] * drho2ds1 * drho2drm1[m] + frhop[i] * ddrho2drmds1[m] +
                                                    frhopp[j] * drho2ds2 * drho2drm2[m] + frhop[j] * ddrho2drmds2[m];
-            ddUdrijds = phip + frhopp[i] * drho2ds1 * drho2dr1 + frhop[i] * ddrho2drds1 +
+//             ddUdrijds = phip + frhopp[i] * drho2ds1 * drho2dr1 + frhop[i] * ddrho2drds1 +
+//                                frhopp[j] * drho2ds2 * drho2dr2 + frhop[j] * ddrho2drds2;
+            ddUdrijds = frhopp[i] * drho2ds1 * drho2dr1 + frhop[i] * ddrho2drds1 +
                                frhopp[j] * drho2ds2 * drho2dr2 + frhop[j] * ddrho2drds2;
         }
         nv2 = 0;
