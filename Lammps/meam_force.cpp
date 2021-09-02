@@ -449,7 +449,7 @@ double  ak, ro0k, rhoa2k;
         //rho2=arho2[i][nv2]*arho2[i][nv2]-arho2b[i]/3
         a2 = 2 * sij / rij2;
 	da2 = -2*a2/rij;
-	da2ds = 2.0/rij2;
+//	da2ds = 2.0/rij2;
         drho2dr1 = a2 * (drhoa2j - 2 * rhoa2j / rij) * arg1i2 - 2.0 / 3.0 * arho2b[i] * drhoa2j * sij; //--- 4.30(d): arho2b is W_{2i}      
 //         ddrho2drds1 = da2ds * (drhoa2j - 2 * rhoa2j / rij) * arg1i2 + a2 * (drhoa2j - 2 * rhoa2j / rij) * darg1i2ds+
 // 			- 2.0 / 3.0 * darho2bdsi * drhoa2j * sij- 2.0 / 3.0 * arho2b[i] * drhoa2j;      
