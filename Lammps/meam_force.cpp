@@ -559,7 +559,7 @@ double  ak, ro0k, rhoa2k;
           drho3drm2[m] = (-a3 * drho3drm2[m] + a3a * arho3b[j][m]) * rhoa3i; 
         }
           if(i==0 and j == 1)
-           	fprintf ( pFile, "%e %e %e %e %e %e %e %e %e %e %e\n", sij, drho2dr1, drho2ds1, drho2drm[0], drho2drm[1], drho2drm[2], 
+           	fprintf ( pFile, "%e %e %e %e %e %e %e %e %e %e %e\n", sij, drho2dr1, drho2ds1, drho2drm1[0], drho2drm1[1], drho2drm1[2], 
 			 			       ddrho2drdr1, ddrho2dsdr1, ddrho2drmds1[0], ddrho2drmds1[1], ddrho2drmds1[2] );
         //
 //	sij=1.0;//!!!!!!!!!!!!
