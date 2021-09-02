@@ -449,7 +449,10 @@ double  ak, ro0k, rhoa2k;
         //rho2=arho2[i][nv2]*arho2[i][nv2]-arho2b[i]/3
         a2 = 2 * sij / rij2;
 	da2 = -2*a2/rij;
+	da2ds = 2.0/rij2;
         drho2dr1 = a2 * (drhoa2j - 2 * rhoa2j / rij) * arg1i2 - 2.0 / 3.0 * arho2b[i] * drhoa2j * sij; //--- 4.30(d): arho2b is W_{2i}      
+//         ddrho2drds1 = da2ds * (drhoa2j - 2 * rhoa2j / rij) * arg1i2 + a2 * (drhoa2j - 2 * rhoa2j / rij) * darg1i2ds+
+// 			- 2.0 / 3.0 * darho2bdsi * drhoa2j * sij- 2.0 / 3.0 * arho2b[i] * drhoa2j;      
         drho2dr2 = a2 * (drhoa2i - 2 * rhoa2i / rij) * arg1j2 - 2.0 / 3.0 * arho2b[j] * drhoa2i * sij;
 // 	printf("drho2dr1=%e\n",drho2dr1);
         //--- 2nd derivative wrt rij (atom j)
@@ -558,9 +561,6 @@ double  ak, ro0k, rhoa2k;
 		  	    (-a3 * drho3drm2[m] + a3a * arho3b[j][m]) * drhoa3i; 
           drho3drm2[m] = (-a3 * drho3drm2[m] + a3a * arho3b[j][m]) * rhoa3i; 
         }
-          if(i==0 and j == 1)
-           	fprintf ( pFile, "%e %e %e %e %e %e %e %e %e %e %e\n", sij, drho2dr1, drho2ds1, drho2drm1[0], drho2drm1[1], drho2drm1[2], 
-			 			       ddrho2drdr1, ddrho2drds1, ddrho2drmds1[0], ddrho2drmds1[1], ddrho2drmds1[2] );
         //
 //	sij=1.0;//!!!!!!!!!!!!
         Get_ddrho3drmdrn( i, //--- deriv. of 4.30(i) wrt rn
@@ -807,7 +807,7 @@ double  ak, ro0k, rhoa2k;
           drho2ds1 = a2 * rhoa2j * arg1i2 - 2.0 / 3.0 * arho2b[i] * rhoa2j; //--- (4.30e)
           drho2ds2 = a2 * rhoa2i * arg1j2 - 2.0 / 3.0 * arho2b[j] * rhoa2i;
           ddrho2drds1 = da2 * rhoa2j * arg1i2 + a2 * drhoa2j * arg1i2 + a2 * rhoa2j * arg1i2_d
-		  	- 2.0 / 3.0 * darho2bdri * rhoa2j- 2.0 / 3.0 * arho2b[i] * drhoa2j;
+// 		  	- 2.0 / 3.0 * darho2bdri * rhoa2j- 2.0 / 3.0 * arho2b[i] * drhoa2j;
           ddrho2drds2 = da2 * rhoa2i * arg1j2 + a2 * drhoa2i * arg1j2 + a2 * rhoa2i * arg1j2_d
 		  	- 2.0 / 3.0 * darho2bdrj * rhoa2i- 2.0 / 3.0 * arho2b[j] * drhoa2i;
           ddrho2dsds1 = a2 * rhoa2j * darg1i2ds - 2.0 / 3.0 * darho2bdsi * rhoa2j; 
@@ -1084,6 +1084,10 @@ double  ak, ro0k, rhoa2k;
                         ddrhodrmds2 //--- modify  negative sign?????
                        );         
         }
+
+	if(i==0 and j == 1)
+		fprintf ( pFile, "%e %e %e %e %e %e %e %e %e %e %e\n", sij, drho2dr1, drho2ds1, drho2drm1[0], drho2drm1[1], drho2drm1[2], 
+		ddrho2drdr1, ddrho2drds1, ddrho2drmds1[0], ddrho2drmds1[1], ddrho2drmds1[2] );
 
         //     Compute derivatives of energy wrt rij, sij, and rij[3]
 //          sij = rij*rij;
