@@ -558,8 +558,9 @@ double  ak, ro0k, rhoa2k;
 		  	    (-a3 * drho3drm2[m] + a3a * arho3b[j][m]) * drhoa3i; 
           drho3drm2[m] = (-a3 * drho3drm2[m] + a3a * arho3b[j][m]) * rhoa3i; 
         }
-//          if(i==0 and j == 1)
-//           	fprintf ( pFile, "%e %e %e %e\n", delij[0],rij, drho3drm1[0], ddrho3drmdr1[0] );
+          if(i==0 and j == 1)
+           	fprintf ( pFile, "%e %e %e %e %e %e %e %e %e %e %e\n", sij, drho2dr1, drho2ds1, drho2drm[0], drho2drm[1], drho2drm[2], 
+			 			       ddrho2drdr1, ddrho2dsdr1, ddrho2drmds1[0], ddrho2drmds1[1], ddrho2drmds1[2] );
         //
 //	sij=1.0;//!!!!!!!!!!!!
         Get_ddrho3drmdrn( i, //--- deriv. of 4.30(i) wrt rn
