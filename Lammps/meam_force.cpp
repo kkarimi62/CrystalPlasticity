@@ -560,7 +560,7 @@ double  ak, ro0k, rhoa2k;
         }
           if(i==0 and j == 1)
            	fprintf ( pFile, "%e %e %e %e %e %e %e %e %e %e %e\n", sij, drho2dr1, drho2ds1, drho2drm1[0], drho2drm1[1], drho2drm1[2], 
-			 			       ddrho2drdr1, ddrho2dsdr1, ddrho2drmds1[0], ddrho2drmds1[1], ddrho2drmds1[2] );
+			 			       ddrho2drdr1, ddrho2drds1, ddrho2drmds1[0], ddrho2drmds1[1], ddrho2drmds1[2] );
         //
 //	sij=1.0;//!!!!!!!!!!!!
         Get_ddrho3drmdrn( i, //--- deriv. of 4.30(i) wrt rn
