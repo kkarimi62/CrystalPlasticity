@@ -1,7 +1,7 @@
 # Amin Esfandiarpour - Amin.esfandiarpour@ncbj.gov.pl- Am.esfandiyarpour@gmail.com
 
 variable initTemp equal 0 #300          	# desired temperature
-variable runTime equal 20#2 #20 #40 #0000 #2000000   	# number of increment 
+variable runTime equal 200#2 #20 #40 #0000 #2000000   	# number of increment 
 variable srate equal 1.0e10
 #log	     	shearCoNiFe_glass${initTemp}-${srate}.log
 
@@ -64,7 +64,7 @@ variable minusSrate equal -${srate1}
 #fix            2 all deform 1  x erate ${srate1}  y erate ${minusSrate} units box  remap x
 
 group atomk id 3
-fix 111 atomk move  linear 1.0e-3 0.0 0.0
+fix 111 atomk move  linear 1.0e-4 0.0 0.0
 #fix 111 atomk move  rotate 0.0 0.0 0.0 0.0 0.0 1.0 1.0
 
 compute 	1 all stress/atom NULL pair
