@@ -1087,8 +1087,8 @@ double  ak, ro0k, rhoa2k;
 
 	if(i==0 and j == 1)
 		fprintf ( pFile, "%20.15e %20.15e %20.15e %20.15e %20.15e %20.15e %20.15e %20.15e %20.15e %20.15e %20.15e %20.15e\n", 
-		sij, rho1[i], drho1dr1, drho1ds1, drho1drm1[0], drho1drm1[1], drho1drm1[2], 
-		ddrho1drdr1, ddrho1drds1, ddrho1drmds1[0], ddrho1drmds1[1], ddrho1drmds1[2] );
+		sij, rho0[i], drho0dr1, drho0ds1, drho0drm1[0], drho0drm1[1], drho0drm1[2], 
+		ddrho0drdr1, ddrho0drds1, ddrho0drmds1[0], ddrho0drmds1[1], ddrho0drmds1[2] );
 
         //     Compute derivatives of energy wrt rij, sij, and rij[3]
 //          sij = rij*rij;
