@@ -807,7 +807,7 @@ double  ak, ro0k, rhoa2k;
           drho2ds1 = a2 * rhoa2j * arg1i2 - 2.0 / 3.0 * arho2b[i] * rhoa2j; //--- (4.30e)
           drho2ds2 = a2 * rhoa2i * arg1j2 - 2.0 / 3.0 * arho2b[j] * rhoa2i;
           ddrho2drds1 = da2 * rhoa2j * arg1i2 + a2 * drhoa2j * arg1i2 + a2 * rhoa2j * arg1i2_d
-// 		  	- 2.0 / 3.0 * darho2bdri * rhoa2j- 2.0 / 3.0 * arho2b[i] * drhoa2j;
+ 		  	- 2.0 / 3.0 * darho2bdri * rhoa2j- 2.0 / 3.0 * arho2b[i] * drhoa2j;
           ddrho2drds2 = da2 * rhoa2i * arg1j2 + a2 * drhoa2i * arg1j2 + a2 * rhoa2i * arg1j2_d
 		  	- 2.0 / 3.0 * darho2bdrj * rhoa2i- 2.0 / 3.0 * arho2b[j] * drhoa2i;
           ddrho2dsds1 = a2 * rhoa2j * darg1i2ds - 2.0 / 3.0 * darho2bdsi * rhoa2j; 
