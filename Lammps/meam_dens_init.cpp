@@ -341,7 +341,7 @@ MEAM::calc_rho1(int i, int /*ntype*/, int* type, int* fmap, double** x, int numn
   for (jn = 0; jn < numneigh; jn++) {
     if (!iszero(scrfcn[jn])) {
       j = firstneigh[jn];
-      if(!(i==0 and j == 1)) continue; //comment!!!!!
+//      if(!(i==0 and j == 1)) continue; //comment!!!!!
       sij = scrfcn[jn] * fcpair[jn];
       delij[0] = x[j][0] - xtmp;
       delij[1] = x[j][1] - ytmp;
