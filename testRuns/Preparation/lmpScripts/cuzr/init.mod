@@ -40,10 +40,6 @@ variable dmax equal 1.0e-2
 boundary    	p p p
 #---
 
-#--- Need to set mass to something, just to satisfy LAMMPS
-#mass 1 1.0e-20
-mass            1  91.22 
-mass		2  63.54 
 
 #--- discretization time
 variable            dt        equal     0.005         # Time step
