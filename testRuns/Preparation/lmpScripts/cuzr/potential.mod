@@ -3,7 +3,6 @@
 
 # Choose potential
 pair_style	eam/alloy
-ZrCu.lammps.eam Zr Cu
 pair_coeff              * * ${PathEam}/ZrCu.lammps.eam Zr Cu
 
 # Setup neighbor style
