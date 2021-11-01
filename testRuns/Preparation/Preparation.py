@@ -28,7 +28,7 @@ if __name__ == '__main__':
 	#
 	jobname  = {
 				1:'CuZrNatom1K',
-			   }[9]
+			   }[1]
 	sourcePath = os.getcwd() +\
 				{	
 					1:'/../postprocess/NiCoCrNatom1K',
