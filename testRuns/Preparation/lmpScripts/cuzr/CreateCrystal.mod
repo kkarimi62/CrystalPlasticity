@@ -9,7 +9,7 @@ variable    lx              equal   floor(${volume}^(1.0/3.0)/${a})
 lattice    fcc ${a} orient    x 1 0 0 orient y 0 1 0 orient z 0 0 1 &   
            origin 0.1 0.1 0.1
 region    		mybox block 0 ${lx} 0 ${lx} 0 ${lx}   ## define box sizes along x, y, z (in the unit of a0)
-create_box      3 mybox              ## create the simulation box, allowing a max of three species
+create_box      2 mybox              ## create the simulation box, allowing a max of three species
 create_atoms    1 box               ## create type-1 metal atoms in the box
 #
 
