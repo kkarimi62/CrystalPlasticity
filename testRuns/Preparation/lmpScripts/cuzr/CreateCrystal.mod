@@ -23,7 +23,7 @@ mass		2  63.54
 #--- ternary alloys
 #--- get number of atoms
 variable	natom	equal	"atoms"
-variable	natom2	equal	floor(${natom}*0.64)
+variable	natom2	equal	floor(${natom}*0.36)
 #variable	natom3	equal	floor(${natom2})
 # 
 group kind1 type 1

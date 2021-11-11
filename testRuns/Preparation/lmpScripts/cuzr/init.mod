@@ -49,9 +49,9 @@ variable            damp_t    equal     100*${dt}     # Thermostat damping
 variable            damp_p    equal     1000*${dt}    # Barostat damping
 
 #--- thermal treatment
+variable TdotMelt 	equal 50.0   #--- melting rate
 variable Tinit 	equal ${tstart}  #--- init temperature
 variable Tfinal equal ${tstop}  #--- final temperature
-variable TdotMelt 	equal 50.0   #--- melting rate
 variable TdotQuench equal 0.002*${TdotMelt}   #--- quench rate
 variable Pinit	equal 1.0132  #--- number of time steps
 variable tEquilibrate	equal 100*${damp_t}  #--- equilibration time

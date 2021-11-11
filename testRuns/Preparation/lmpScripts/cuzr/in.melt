@@ -39,15 +39,17 @@ dump_modify 1 flush yes format line "%d %d %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e %
 
 
 # Setup minimization style
+fix     p1        all        box/relax   iso  ${Pinit} #vmax 0.001 #--- equilibrate at p=0
 minimize ${etol} ${ftol} ${maxiter} ${maxeval}
+unfix	p1
 
 #-----------------------------
 #--- thermalize to room temperature
 #-----------------------------
 velocity	all	create	${Tinit} 39849 mom yes rot yes dist gaussian
-fix 		fix_nvt	all	nvt	temp	${Tinit}	${Tinit}	${damp_t}	drag	1.0
-run			${nRunEquilibrate}
-unfix		fix_nvt
+#fix 		fix_nvt	all	nvt	temp	${Tinit}	${Tinit}	${damp_t}	drag	1.0
+#run			${nRunEquilibrate}
+#unfix		fix_nvt
 
 #-----------------------------
 #--- melt & quench
