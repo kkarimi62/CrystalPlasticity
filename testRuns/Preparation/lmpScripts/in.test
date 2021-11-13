@@ -1,0 +1,136 @@
+#-----------------------------
+#--- Model parameters
+#-----------------------------
+
+variable natoms	equal ${natom}  #--- system size 
+variable Ntype	equal 5		#--- number of atom types
+variable a      equal ${cutoff}   #--- lattice constant
+variable Dt		equal 0.01 #--- discretization time
+variable Tinit 	equal 300.0  #--- init temperature
+variable Tfinal equal 3000.0 #--- final temperature
+variable tDampTemp 	equal 100*${Dt}   #--- thermostat equilibration time scale
+variable TdotMelt 	equal 50.0   #--- melting rate
+variable TdotQuench equal 0.002*${TdotMelt}   #--- quench rate
+variable Pinit	equal 1.0132  #--- number of time steps
+variable Nfreq	equal 10000000000  #--- number of time steps
+variable tEquilibrate	equal 100*${Dt}  #--- equilibration time
+variable tDampPress 	equal ${tDampTemp}   #--- barostat equilibration time scale
+
+#-----------------------------
+#--- Compute Variables
+#-----------------------------
+variable	nRunEquilibrate	equal	${tEquilibrate}/${Dt}
+variable	tMelting		equal	(${Tfinal}-${Tinit})/${TdotMelt}
+variable	tQuench			equal	(${Tfinal}-${Tinit})/${TdotQuench}
+variable	nRunMelting		equal	${tMelting}/${Dt}
+variable	nRunQuench		equal	${tQuench}/${Dt}
+variable	volume			equal	${natoms}*${a}^3.0/4.0 #--- natom * vol. of the voronoi cell
+variable 	lx				equal	${volume}^(1.0/3.0) 
+
+#-----------------------------
+#--- system details
+#-----------------------------
+units		metal
+atom_style	atomic
+boundary	p p p
+
+#-----------------------------
+#--- define box & lattice
+#-----------------------------
+region mybox block 0.0 ${lx} 0.0 ${lx} 0.0 ${lx}
+lattice fcc ${a} 
+create_box ${Ntype} mybox  
+
+#-----------------------------
+#--- assign particle types
+#-----------------------------
+#create_atoms 4  box ratio 0.5 7467  #--- seed
+#create_atoms 2  box ratio 0.5 2465 
+#create_atoms 3 box ratio 0.2 524658
+#create_atoms 4 box ratio 0.2 4658
+#create_atoms 5 box ratio 0.2 9224658
+#change_box all triclinic
+#--- 2nd method
+create_atoms    ${Ntype} box
+group fe_group type ${Ntype}
+set group fe_group type/fraction 4 0.5  940248
+group ni_group type ${Ntype}
+set group ni_group type 2
+
+#neigh_modify delay 0
+#neighbor    0.3 bin 
+#neigh_modify    delay 5
+
+#-----------------------------
+#--- interactions
+#-----------------------------
+pair_style meam/c
+pair_coeff * * ${MEAM_library_DIR}/library_CoNiCrFeMn.meam Co Ni Cr Fe Mn ${MEAM_library_DIR}/parameters.meam Co Ni Cr Fe Mn
+
+#--- print temperature, pressure, and volume
+variable varPress equal press
+variable varTemp equal temp
+variable varStep equal step
+variable varVolu equal vol
+fix extra all print ${Nfreq} "${varStep} ${varTemp} ${varPress} ${varVolu}" file temperature.txt
+
+#--- thermo
+thermo			${Nfreq}
+thermo_style	custom step ke pe press temp vol 
+
+#-----------------------------
+#--- set dynamics
+#-----------------------------
+timestep ${Dt}
+
+#-----------------------------
+#--- compute & dump variables
+#-----------------------------
+dump      	1 all custom ${Nfreq} ${OUT_PATH}/xyz.dump id type x y z 
+
+#--- minimization
+#min_style 	cg
+#minimize	1.0e-08 0.0 1000 100000
+
+#-----------------------------
+#--- thermalize to room temperature
+#-----------------------------
+velocity	all	create	${Tinit} 39849 mom yes rot yes dist gaussian
+fix 		fix_nvt	all	nvt	temp	${Tinit}	${Tinit}	${tDampTemp}	drag	1.0
+run			${nRunEquilibrate}
+unfix		fix_nvt
+
+#-----------------------------
+#--- melt & quench
+#-----------------------------
+#--- initial equilibration
+#fix		fix_initEq	all npt temp ${Tinit} ${Tinit} ${tDampTemp} iso ${Pinit} ${Pinit} ${tDampPress} drag 1.0  
+#run 	${nRunEquilibrate}
+#unfix	fix_initEq
+
+#--- melting
+#fix		fix_melt	all npt temp ${Tinit} ${Tfinal} ${tDampTemp} iso ${Pinit} ${Pinit} ${tDampPress}  
+#run		${nRunMelting}
+#unfix	fix_melt
+
+#--- final equilibration
+#fix		fix_finalEq	all npt temp ${Tfinal} ${Tfinal} ${tDampTemp} iso ${Pinit} ${Pinit} ${tDampPress}  
+#run 	${nRunEquilibrate}
+#unfix	fix_finalEq
+
+#--- quench
+#fix		fix_quench	all npt temp ${Tfinal} ${Tinit} ${tDampTemp} iso ${Pinit} ${Pinit} ${tDampPress}  
+#run		${nRunQuench}
+#unfix	fix_quench
+
+#--- final equilibration
+#fix		fix_finalEq	all npt temp ${Tinit} ${Tinit} ${tDampTemp} iso ${Pinit} ${Pinit} ${tDampPress}  
+#run 	${nRunEquilibrate}
+
+#-----------------------------
+#--- compute & dump variables
+#-----------------------------
+#dump		2 all custom 1 AsQuenched.dump id type x y z vx vy vz
+#dump_modify 2 flush yes format line "%d %d %15.14e %15.14e %15.14e %4.3e %4.3e %4.3e"
+#run			0
+

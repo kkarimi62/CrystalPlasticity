@@ -27,7 +27,7 @@ if __name__ == '__main__':
 	nNode	 = 1
 	#
 	jobname  = {
-				1:'CuZrNatom1K',
+				1:'CuZrNatom1KT300Sheared',
 			   }[1]
 	sourcePath = os.getcwd() +\
 				{	
@@ -47,7 +47,7 @@ if __name__ == '__main__':
 	#
 	MEAM_library_DIR='/home/kamran.karimi1/Project/git/lammps2nd/lammps/potentials'
 	#
-	SCRPT_DIR = os.getcwd()+'/lmpScripts/'+{1:'cuzr'}[1]
+	SCRPT_DIR = os.getcwd()+'/lmpScripts' #/'+{1:'cuzr'}[1]
 	#
 	SCRATCH = None
 	OUT_PATH = '.'
@@ -70,8 +70,8 @@ if __name__ == '__main__':
 				} 
 	#
 	Variable = {
-				0:' -var natoms 1000 -var cutoff 3.52 -var tstart 300.0 -var tstop 2000 -var nevery 1000 -var ParseData 0  -var DumpFile dumpInit.xyz -var WriteData data_init.txt',
-				6:' -var T 300 -var DataFile Equilibrated_300.dat',
+				0:' -var natoms 1000 -var cutoff 3.52 -var tstart 300.0 -var tstop 2000.0 -var nevery 1000 -var ParseData 0  -var DumpFile dumpInit.xyz -var WriteData data_init.txt',
+				6:' -var buff 0.0 -var T 300.0 -var GammaXY 0.2 -var GammaDot 1.0e-04 -var ndump 100 -var ParseData 1 -var DataFile data_init.txt -var DumpFile dumpSheared.xyz',
 				4:' -var T 600 -var t_sw 20.0 -var DataFile Equilibrated_600.dat -var nevery 1000 -var ParseData 1 -var WriteData swapped_600.dat', 
 				5:' -var DataFile data.txt -var buff 3.0 -var DumpFile dumpMin.xyz -var nevery 1000 -var ParseData 1 -var WriteData data_minimized.txt', 
 				7:' -var buff 3.0 -var T 600 -var teq 200.0 -var nevery 1000 -var ParseData 1 -var DataFile data_init.txt -var DumpFile dumpThermalized.xyz -var WriteData Equilibrated_600.dat',
@@ -84,7 +84,7 @@ if __name__ == '__main__':
 				} 
 	#--- different scripts in a pipeline
 	indices = {
-				1:[0], #--- melt & quench
+				1:[0,6], #--- melt & quench
 
 			  }[1]
 	Pipeline = list(map(lambda x:LmpScript[x],indices))

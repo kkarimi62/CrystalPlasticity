@@ -1,0 +1,37 @@
+#----------------------------------------------------------------------------------------#
+
+#------------------------------ General variables ---------------------------------------#
+ # Simulation variables
+
+  variable        T         equal     300
+  variable		  P    		equal     0.01
+
+ # Time variables
+
+  variable        t_eq      equal     100000        # Equlibration time
+  variable        dt        equal     0.001         # Time step
+  variable        damp_t    equal     100*${dt}     # Thermostat damping
+  variable        damp_p    equal     100*${dt}    # Barostat damping
+  variable        nthermo   equal     10     		# output frequency
+#----------------------------------------------------------------------------------------#
+
+  units           metal
+  atom_style      atomic
+  read_data       data.txt    
+
+# Interatomic potential information.
+
+  neigh_modify    delay   0
+  pair_style      meam/c
+  pair_coeff      * *  ${MEAM_library_DIR}/library_CoNiCrFeMn.meam Co Ni Cr Fe Mn ${MEAM_library_DIR}/parameters.meam Co Ni Cr Fe Mn
+  timestep        ${dt}
+  
+#-------------------                 Simulation & output setup    ---------------------------
+   fix             1             all npt temp $T $T ${damp_t} iso ${P} ${P} ${damp_p}  #fixedpoint 0.0 0.0 0.0
+   thermo          ${nthermo}
+   #
+   dump    1 all custom ${nthermo} ${OUT_PATH}/dumpFile.xyz id type x y z 
+   dump_modify 1 flush yes format line "%d %d %4.3e %4.3e %4.3e"
+   #
+   run             ${t_eq}
+  
