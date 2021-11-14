@@ -15,5 +15,5 @@ min_modify	     dmax ${dmax} line quadratic
 
 # Setup output
 thermo		1000
-thermo_style custom step temp pe press vol #pxx pyy pzz pxy pxz pyz lx ly lz vol
+thermo_style custom step temp pe press xy vol #pxx pyy pzz pxy pxz pyz lx ly lz vol
 thermo_modify norm no
