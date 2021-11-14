@@ -5,9 +5,13 @@ include ${INC}/init.mod
 include ${INC}/CreateBox.mod
 include ${INC}/potential.mod
 
+
 #-----------------------------
 #--- Compute Variables
 #-----------------------------
+variable Tinit 	equal ${tstart}  #--- init temperature
+variable Tfinal equal ${tstop}  #--- final temperature
+variable tEquilibrate	equal 100*${damp_t}  #--- equilibration time
 variable	nRunEquilibrate	equal	${tEquilibrate}/${dt}
 variable	tMelting		equal	(${Tfinal}-${Tinit})/${TdotMelt}
 variable	tQuench			equal	(${Tfinal}-${Tinit})/${TdotQuench}
