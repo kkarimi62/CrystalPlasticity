@@ -23,25 +23,27 @@ if __name__ == '__main__':
 
 	nruns	 = 1
 	#
-	nThreads = [1,9][1]
+	nThreads = [1,9][0]
 	nNode	 = 1
 	#
 	jobname  = {
 				1:'CuZrNatom32KT300Tdot1E-1Sheared',
-			   }[1]
+				2:'CuZrNatom32KT300Tdot1E-1Elasticity',
+			   }[2]
 	sourcePath = os.getcwd() +\
 				{	
 					1:'/../postprocess/NiCoCrNatom1K',
+					2:'CuZrNatom32KT300Tdot1E-1Sheared',
 					4:'/junk',
-				}[4] #--- must be different than sourcePath
+				}[2] #--- must be different than sourcePath
         #
 	sourceFiles = { 0:False,
 					1:['Equilibrated_300.dat'],
 					2:['data.txt','ScriptGroup.txt'],
-					3:['data.txt'], 
+					3:['data_init.txt'], 
 					4:['data_minimized.txt'],
 					5:['data_init.txt','ScriptGroup.0.txt'], #--- only one partition! for multiple ones, use 'submit.py'
-				 }[0] #--- to be copied from the above directory
+				 }[3] #--- to be copied from the above directory
 	#
 	EXEC_DIR = '/home/kamran.karimi1/Project/git/lammps2nd/lammps/src' #--- path for executable file
 	#
@@ -63,7 +65,7 @@ if __name__ == '__main__':
 					6:'in.shearDispTemp', 
 					8:'in.shearLoadTemp',
 					9:'in.elastic',
-					10:'in.elasticSoftWall',
+					10:'in.elasticTemp',
 					'p0':'partition.py',
 					'p1':'WriteDump.py',
 					'p2':'DislocateEdge.py',
@@ -77,22 +79,22 @@ if __name__ == '__main__':
 				7:' -var buff 3.0 -var T 600 -var teq 200.0 -var nevery 1000 -var ParseData 1 -var DataFile data_init.txt -var DumpFile dumpThermalized.xyz -var WriteData Equilibrated_600.dat',
 				8:' -var buff 3.0 -var T 0.1 -var sigm 1.5 -var sigmdt 0.01 -var ParseData 1 -var DataFile Equilibrated_300.dat -var DumpFile dumpSheared.xyz',
 				9:' -var natoms 1000 -var cutoff 3.52 -var ParseData 1',
-				10:' -var ParseData 1 -var DataFile swapped_600.dat',
+				10:' -var T 300.0 -var teq	2.0	-var nevery 10 -var ParseData 1 -var DataFile data_init.txt',
 				'p0':' swapped_600.dat 10.0 %s'%(os.getcwd()+'/../postprocess'),
 				'p1':' swapped_600.dat ElasticConst.txt DumpFileModu.xyz %s'%(os.getcwd()+'/../postprocess'),
 				'p2':' %s 3.52 40.0 20.0 40.0 data.txt'%(os.getcwd()+'/../postprocess'),
 				} 
 	#--- different scripts in a pipeline
 	indices = {
-				1:[0,6], #--- melt & quench
-
-			  }[1]
+				1:[0,6], #--- melt & quench, shear
+				2:[10], #--- melt & quench, elastic moduli at finite T
+			  }[2]
 	Pipeline = list(map(lambda x:LmpScript[x],indices))
 	Variables = list(map(lambda x:Variable[x], indices))
 	EXEC = list(map(lambda x:'lmp' if type(x) == type(0) else 'py', indices))	
 	#
 	EXEC_lmp = ['lmp_mpi','lmp_serial'][0]
-	durtn = ['96:59:59','00:59:59'][0]
+	durtn = ['96:59:59','00:59:59'][1]
 	mem = '8gb'
 	partition = ['gpu-v100','parallel','cpu2019','single'][1]
 	#---

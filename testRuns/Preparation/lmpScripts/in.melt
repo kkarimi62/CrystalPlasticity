@@ -26,8 +26,8 @@ variable varPress equal press
 variable varTemp equal temp
 variable varStep equal step
 variable varVolu equal vol
-variable varTime equal ${varStep}*${dt}
-fix extra all print ${nevery} "${varTime} ${varTemp} ${varPress} ${varVolu}" file temperature.txt
+variable varTime equal v_varStep*${dt}
+fix extra all print ${nevery} "${varStep} ${varTime} ${varTemp} ${varPress} ${varVolu}" screen no title "step time temp press vol" file temperature.txt
 
 
 #-----------------------------
