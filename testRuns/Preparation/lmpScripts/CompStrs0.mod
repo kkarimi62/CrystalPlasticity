@@ -47,7 +47,7 @@ dump_modify 1 flush yes append yes format line "%d %d %15.14e %15.14e %15.14e %1
 #jump	${INC}/CompStrs0.mod loop0_CompStrs0
 
 
-uncompute	pinit
-uncompute	peratom
+#uncompute	pinit
+#uncompute	peratom
 
 
