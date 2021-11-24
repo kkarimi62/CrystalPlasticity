@@ -52,10 +52,10 @@ if "${dir} == 6" then &
 
 # Relax atoms positions
 
-velocity	all       create     $T     97364  mom    yes  rot  yes  dist  gaussian  # Dynamics starts
-fix			FixTherm        all        nvt temp   $T  $T  ${damp_t}  
+#velocity	all       create     $T     97364  mom    yes  rot  yes  dist  gaussian  # Dynamics starts
+#fix			FixTherm        all        nvt temp   $T  $T  ${damp_t}  
 #fix fixLangevin all langevin ${temp} ${temp} ${tdamp} ${seed}
-run ${nrun}
+#run ${nrun}
 
 #minimize ${etol} ${ftol} ${maxiter} ${maxeval}
 

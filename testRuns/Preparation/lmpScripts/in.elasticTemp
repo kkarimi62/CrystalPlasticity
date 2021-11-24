@@ -79,9 +79,9 @@ write_restart restart.equil
 # uxx Perturbation
 variable dir loop 1 1 # 6 #--- six modes
 	label loop0
-	include	${INC}/CompStrs1.mod #--- compute stress
 	include ${INC}/displace.mod #--- deform
 	#--- loop : compute current stress
+	include	${INC}/CompStrs1.mod #--- compute stress
 	run ${nrun}
 	reset_timestep	0
 #	variable 	iatom 	loop ${natom} #0	${ncc}
