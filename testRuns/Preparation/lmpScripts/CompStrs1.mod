@@ -1,18 +1,16 @@
-#undump		1
-
 #--- compute stress
-compute     peratoms all stress/atom NULL
-compute     p all reduce sum c_peratoms[1] c_peratoms[2] c_peratoms[3] c_peratoms[4] c_peratoms[5] c_peratoms[6]
+compute     peratom all stress/atom NULL
+compute     p all reduce sum c_peratom[1] c_peratom[2] c_peratom[3] c_peratom[4] c_peratom[5] c_peratom[6]
 #
 variable    press equal -(c_p[1]+c_p[2]+c_p[3])/(3*vol)
-variable 	pxx1_${dir} atom -c_peratoms[1]
-variable 	pyy1_${dir} atom -c_peratoms[2]
-variable 	pzz1_${dir} atom -c_peratoms[3]
-variable 	pyz1_${dir} atom -c_peratoms[6]
-variable 	pxz1_${dir} atom -c_peratoms[5]
-variable 	pxy1_${dir} atom -c_peratoms[4]
+variable 	pxx1_${dir} atom -c_peratom[1]
+variable 	pyy1_${dir} atom -c_peratom[2]
+variable 	pzz1_${dir} atom -c_peratom[3]
+variable 	pyz1_${dir} atom -c_peratom[6]
+variable 	pxz1_${dir} atom -c_peratom[5]
+variable 	pxy1_${dir} atom -c_peratom[4]
 
-dump        2 all custom ${nevery} dump_def${dir}.xyz id type x y z c_peratoms[1] c_peratoms[2] c_peratoms[3] c_peratoms[4] c_peratoms[5] c_peratoms[6]
+dump        2 all custom ${nevery} dump_def${dir}.xyz id type x y z c_peratom[1] c_peratom[2] c_peratom[3] c_peratom[4] c_peratom[5] c_peratom[6]
 dump_modify 2 flush yes append yes format line "%d %d %15.14e %15.14e %15.14e %15.14e %15.14e %15.14e %15.14e %15.14e %15.14e"
 
 #--- store initial stress
@@ -31,5 +29,5 @@ dump_modify 2 flush yes append yes format line "%d %d %15.14e %15.14e %15.14e %1
 #variable	pxy1_${dir}	atom ${pxy0}
 
 #uncompute	p
-#uncompute	peratoms
+#uncompute	peratom
 
