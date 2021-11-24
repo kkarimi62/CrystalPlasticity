@@ -11,7 +11,7 @@ variable 	pxz0 atom -c_peratom[5]
 variable 	pxy0 atom -c_peratom[4]
 
 #--- store initial stress
-thermo_style	custom	step	v_press #v_sxx0[1] #	pxx #v_press
+#thermo_style	custom	step	v_press #v_sxx0[1] #	pxx #v_press
 
 dump        1 all custom ${nevery} dump_init.xyz id type x y z c_peratom[1] c_peratom[2] c_peratom[3] c_peratom[4] c_peratom[5] c_peratom[6]
 dump_modify 1 flush yes append yes format line "%d %d %15.14e %15.14e %15.14e %15.14e %15.14e %15.14e %15.14e %15.14e %15.14e"
