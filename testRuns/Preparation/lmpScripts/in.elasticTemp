@@ -81,6 +81,8 @@ variable dir loop 1 6 #--- six modes
 	include	${INC}/CompStrs1.mod #--- compute stress
 	include ${INC}/displace.mod #--- deform
 	#--- loop : compute current stress
+	run ${nrun}
+	reset_timestep	0
 #	variable 	iatom 	loop ${natom} #0	${ncc}
 #		label loop1
 		#
