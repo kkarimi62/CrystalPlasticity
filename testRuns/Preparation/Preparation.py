@@ -27,15 +27,15 @@ if __name__ == '__main__':
 	nNode	 = 1
 	#
 	jobname  = {
-				1:'CuZrNatom32KT300Tdot1E-1Sheared',
+				1:'CuZrNatom32KT300Tdot1E-3Sheared',
 				2:'CuZrNatom32KT300Tdot1E-1Elasticity',
-			   }[2]
+			   }[1]
 	sourcePath = os.getcwd() +\
 				{	
 					1:'/../postprocess/NiCoCrNatom1K',
 					2:'/CuZrNatom32KT300Tdot1E-1Sheared',
 					4:'/junk',
-				}[2] #--- must be different than sourcePath
+				}[4] #--- must be different than sourcePath
         #
 	sourceFiles = { 0:False,
 					1:['Equilibrated_300.dat'],
@@ -43,7 +43,7 @@ if __name__ == '__main__':
 					3:['data_init.txt'], 
 					4:['data_minimized.txt'],
 					5:['data_init.txt','ScriptGroup.0.txt'], #--- only one partition! for multiple ones, use 'submit.py'
-				 }[3] #--- to be copied from the above directory
+				 }[0] #--- to be copied from the above directory
 	#
 	EXEC_DIR = '/home/kamran.karimi1/Project/git/lammps2nd/lammps/src' #--- path for executable file
 	#
@@ -72,7 +72,7 @@ if __name__ == '__main__':
 				} 
 	#
 	Variable = {
-				0:' -var natoms 32000 -var cutoff 3.52 -var tstart 300.0 -var tstop 2000.0 -var TdotMelt 100.0 -var TdotQuench 0.1 -var Pinit 1.0132 -var nevery 1000 -var ParseData 0  -var DumpFile dumpInit.xyz -var WriteData data_init.txt',
+				0:' -var natoms 32000 -var cutoff 3.52 -var tstart 300.0 -var tstop 2000.0 -var TdotMelt 100.0 -var TdotQuench 0.001 -var Pinit 1.0132 -var nevery 1000 -var ParseData 0  -var DumpFile dumpInit.xyz -var WriteData data_init.txt',
 				6:' -var buff 0.0 -var T 300.0 -var GammaXY 0.2 -var GammaDot 1.0e-04 -var ndump 100 -var ParseData 1 -var DataFile data_init.txt -var DumpFile dumpSheared.xyz',
 				4:' -var T 600 -var t_sw 20.0 -var DataFile Equilibrated_600.dat -var nevery 1000 -var ParseData 1 -var WriteData swapped_600.dat', 
 				5:' -var DataFile data.txt -var buff 3.0 -var DumpFile dumpMin.xyz -var nevery 1000 -var ParseData 1 -var WriteData data_minimized.txt', 
@@ -88,15 +88,15 @@ if __name__ == '__main__':
 	indices = {
 				1:[0,6], #--- melt & quench, shear
 				2:[10], #--- melt & quench, elastic moduli at finite T
-			  }[2]
+			  }[1]
 	Pipeline = list(map(lambda x:LmpScript[x],indices))
 	Variables = list(map(lambda x:Variable[x], indices))
 	EXEC = list(map(lambda x:'lmp' if type(x) == type(0) else 'py', indices))	
 	#
 	EXEC_lmp = ['lmp_mpi','lmp_serial'][0]
-	durtn = ['96:59:59','00:59:59'][1]
+	durtn = ['96:59:59','00:59:59'][0]
 	mem = '8gb'
-	partition = ['gpu-v100','parallel','cpu2019','single'][2]
+	partition = ['gpu-v100','parallel','cpu2019','single'][1]
 	#---
 	os.system( 'rm -rf %s' % jobname ) #--- rm existing
 	os.system( 'rm jobID.txt' )
