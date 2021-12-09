@@ -90,7 +90,7 @@ if __name__ == '__main__':
 	indices = {
 				1:[0,6], #--- melt & quench, shear
 				2:[10], #--- melt & quench, elastic moduli at finite T
-			  }[1]
+			  }[2]
 	Pipeline = list(map(lambda x:LmpScript[x],indices))
 	Variables = list(map(lambda x:Variable[x], indices))
 	EXEC = list(map(lambda x:'lmp' if type(x) == type(0) else 'py', indices))	
