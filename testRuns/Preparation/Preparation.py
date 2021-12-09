@@ -35,7 +35,7 @@ if __name__ == '__main__':
 				{	
 					1:'/../postprocess/NiCoCrNatom1K',
 					2:'/CuZrNatom32KT300Tdot1E-1Sheared',
-					3:'../testRuns/glassFeNi',
+					3:'/../testRuns/glassFeNi',
 					4:'/junk',
 				}[3] #--- must be different than sourcePath
         #
