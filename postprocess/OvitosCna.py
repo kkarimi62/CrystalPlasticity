@@ -46,13 +46,13 @@ if AnalysisType == 3:
     #atypes = pipeline.source.particle_properties.particle_type.type_list
     type_property = pipeline.source.particle_properties.particle_type
 #     print(radii)
-    for t in type_property.type_list:
+#    for t in type_property.type_list:
 #         print(t.id)
-        t.radius = radii[t.id-1]
+#        t.radius = radii[t.id-1]
     # Set up the Voronoi analysis modifier.
     voro = md.VoronoiAnalysisModifier(
                                     compute_indices = True,
-                                    use_radii = True,
+                                    use_radii = False, #True,
                                     edge_count = 9, # Length after which Voronoi index vectors are truncated
                                     edge_threshold = 0.1
                                     )

@@ -42,7 +42,7 @@ def GetOrthogonalBasis( CellVector ):
     
     return np.c_[a0, a1_perp, a2], [l0, l1, l2]
 
-def GetCubicGrid( CellOrigin, CellVector, dmean, margin  ):
+def GetCubicGrid( CellOrigin, CellVector, dmean, margin, odd=True  ):
 
     CellVectorOrtho, VectorNorm = GetOrthogonalBasis( CellVector )
     
@@ -50,16 +50,18 @@ def GetCubicGrid( CellOrigin, CellVector, dmean, margin  ):
 
 
     [nx, ny, nz] = list(map( int, (np.array(VectorNorm)+2*margin) / dmean ))
-    if nx%2 == 0:
-        nx += 1
-    if ny%2 == 0:
-        ny += 1
-    if nz%2 == 0:
-        nz += 1
+#    print('nx=',nx)
+    if odd:
+        if nx%2 == 0:
+            nx += 1
+        if ny%2 == 0:
+            ny += 1
+        if nz%2 == 0:
+            nz += 1
     
-    x = np.linspace( CellOrigin[0] - margin, CellOrigin[0] + VectorNorm[ 0 ] + margin, nx,endpoint=True)
-    y = np.linspace( CellOrigin[1] - margin, CellOrigin[1] + VectorNorm[ 1 ] + margin, ny,endpoint=True)
-    z = np.linspace( CellOrigin[2] - margin, CellOrigin[2] + VectorNorm[ 2 ] + margin, nz,endpoint=True)
+    x = np.linspace( CellOrigin[0] - margin, CellOrigin[0] + VectorNorm[ 0 ] + margin, nx+1,endpoint=True)
+    y = np.linspace( CellOrigin[1] - margin, CellOrigin[1] + VectorNorm[ 1 ] + margin, ny+1,endpoint=True)
+    z = np.linspace( CellOrigin[2] - margin, CellOrigin[2] + VectorNorm[ 2 ] + margin, nz+1,endpoint=True)
 
     return (x, y, z), np.meshgrid(x, y,z)
 
@@ -129,6 +131,44 @@ class ReadDumpFile:
         cols = slist.readline().split()[2:]
 
         return np.array([slist.readline().split() for i in range( nrows )]), CellVector, itime, cols
+    
+    def ReadData( self, ncount = 1, columns = {} ):
+        itime = 0
+        slist = open( self.path )    
+        #
+        [slist.readline() for i in range(2)]
+        #
+        natom = int(slist.readline().split()[0])
+        ntype = int(slist.readline().split()[0])
+        #
+        slist.readline()
+        #
+        cell_vector = np.array([slist.readline().split()[0:2] for i in range( 3 )])
+        #
+        [slist.readline() for i in range(6+ntype)]
+        #       
+        sarr = np.array([slist.readline().split()[:5] for i in range( natom )]) #--- get coord
+
+        #--- insert in a data frame
+        self.coord_atoms_broken[ itime ] = pd.DataFrame( np.c_[sarr].astype('float'), columns = ['id','type','x','y','z'] )
+
+        #--- cast id and type to 'int'
+        self.coord_atoms_broken[ itime ]['id'] = list(map(int,self.coord_atoms_broken[ itime ]['id'].tolist()))[:]
+        self.coord_atoms_broken[ itime ]['type'] = list(map(int,self.coord_atoms_broken[ itime ]['type'].tolist()))[:]
+
+        #--- sort
+        self.coord_atoms_broken[ itime ].sort_values( by = 'id', inplace = True )
+
+        #--- reset index
+        self.coord_atoms_broken[ itime ].reset_index( drop=True, inplace=True )
+                
+        #---
+        if len(columns) > 0: #--- change column name
+            self.coord_atoms_broken[ itime ].rename(index=str, columns=columns, inplace = True )
+
+        self.BoxBounds[ itime ] = cell_vector
+#         print(self.coord_atoms_broken[ itime ])
+
 
 ############################################################
 #######  class WriteDumpFile writes LAMMPS dump files 
@@ -138,18 +178,56 @@ class WriteDumpFile:
         self.atom = atomm
         self.box = boxx
         
-    def Write(self, outpt ):
+    def Write(self, outpt, attrs=['id', 'type', 'x', 'y', 'z' ]):
         natom = len(self.atom.x)
         (xlo,xhi,xy)=self.box.BoxBounds[0,:]
         (ylo,yhi,junk)=self.box.BoxBounds[1,:]
         (zlo,zhi,junk)=self.box.BoxBounds[2,:]
         sfile=open(outpt,'w')
         sfile.write('ITEM: TIMESTEP\n%s\nITEM: NUMBER OF ATOMS\n%s\nITEM: BOX BOUNDS xy xz yz pp pp pp\n\
-                     %s %s %s\n%s\t%s\t%s\n%s\t%s\t%s\nITEM: ATOMS id type x y z\n'\
-                     %(0,natom,xlo,xhi,xy,ylo,yhi,0.0,zlo,zhi,0.0))
+                     %s %s %s\n%s\t%s\t%s\n%s\t%s\t%s\nITEM: ATOMS %s\n'\
+                     %(0,natom,xlo,xhi,xy,ylo,yhi,0.0,zlo,zhi,0.0," ".join(map(str,attrs))))
 
+#                     %s %s %s\n%s\t%s\t%s\n%s\t%s\t%s\nITEM: ATOMS id type x y z\n'\
+
+
+        for row in np.c_[pd.DataFrame(self.atom.__dict__)[attrs]]:
+            for col in row:
+                sfile.write('%4.3e\t'%col)
+            sfile.write('\n')
+#        for idd, typee, x, y, z in zip(self.atom.id, self.atom.type, self.atom.x, self.atom.y, self.atom.z ):
+#            sfile.write('%s %s %s %s %s\n'%(int(idd),int(typee),x,y,z))
+            
+        sfile.close()
+        
+############################################################
+#######  class WriteDumpFile writes LAMMPS data files 
+############################################################    
+class WriteDataFile:
+    def __init__(self, atomm, boxx, mass ):
+        self.atom = atomm
+        self.box = boxx
+        self.Mass = mass
+#        assert len(set(atomm.type)) == len(mass), 'wrong atom types!'
+        
+    def Write(self, outpt ):
+        natom = len(self.atom.x)
+        ntype = len(self.Mass)
+        (xlo,xhi,xy)=self.box.BoxBounds[0,:]
+        (ylo,yhi,junk)=self.box.BoxBounds[1,:]
+        (zlo,zhi,junk)=self.box.BoxBounds[2,:]
+        sfile=open(outpt,'w')
+        sfile.write('LAMMPS Description\n\n%s atoms\n\n%s atom types\n\n\
+                     %15.14e %15.14e xlo xhi\n%15.14e %15.14e ylo yhi\n%15.14e %15.14e zlo zhi\n\nMasses\n\n'\
+                     %(natom,ntype,float(xlo),float(xhi),float(ylo),float(yhi),float(zlo),float(zhi)))
+
+        for typee in self.Mass: #set(self.atom.type):
+            sfile.write('%s %s\n'%(int(typee),self.Mass[typee]))
+            
+        sfile.write('\nAtoms #molecule-tag atom-type x y z\n\n')
+                 
         for idd, typee, x, y, z in zip(self.atom.id, self.atom.type, self.atom.x, self.atom.y, self.atom.z ):
-            sfile.write('%s %s %s %s %s\n'%(int(idd),int(typee),x,y,z))
+            sfile.write('%s %s %15.14e %15.14e %15.14e\n'%(int(idd),int(typee),x,y,z))
             
         sfile.close()
 
@@ -278,7 +356,13 @@ class Atoms:
         if 'C56' in kwargs:
         	self.C56 = kwargs['C56']
         if 'C66' in kwargs:
-        	self.C66 = kwargs['C66']                    
+        	self.C66 = kwargs['C66']            
+    def __getitem__(self,key):
+        return self.__dict__[key]
+
+#     def ____setattr__(self,key,val):
+#         print('self.%s=%s'%(key,val))
+#         self.__dict__[key] = val
 ############################################################
 #######  class with simulation cell attributes 
 ############################################################    
@@ -286,6 +370,7 @@ class Box:
     def __init__( self, **kwargs ):
         if 'BoxBounds' in kwargs:
             self.BoxBounds = kwargs['BoxBounds']
+            self.BasisVectors(**kwargs)
         if 'CellOrigin' in kwargs:
             self.CellOrigin = kwargs['CellOrigin']
         if 'CellVector' in kwargs:
@@ -305,18 +390,21 @@ class Box:
         lx = xhi - xlo - xy
         CellVector0 = np.array( [ lx, 0.0, 0.0 ] )
 
-        (ylo, yhi, junk) =  list(map( float, self.BoxBounds[ 1 ] )) #--- ylo, yhi, xy
+        (ylo, yhi, xz) =  list(map( float, self.BoxBounds[ 1 ] )) #--- ylo, yhi, xy
         ly = yhi - ylo
         a1 = np.array( [ 0.0, ly, 0.0 ] )
         CellVector1 = CellVector0 * ( xy / lx ) + a1
 
-        (zlo, zhi, junk) =  list(map( float, self.BoxBounds[ 2 ] )) #--- zlo, zhi, xy
+        (zlo, zhi, yz) =  list(map( float, self.BoxBounds[ 2 ] )) #--- zlo, zhi, xy
         lz = zhi - zlo
         CellVector2 = np.array( [ 0.0, 0.0, lz ] )
 
         self.CellOrigin = np.array( [ xlo, ylo, zlo ] )
         self.CellVector = np.c_[ CellVector0, CellVector1, CellVector2 ] 
-        
+
+    def SetBoxBounds( self, **kwargs ):
+        self.BoxBounds = np.c_[self.CellOrigin, self.CellOrigin + np.matmul(self.CellVector, np.array([1,1,1])), np.array([0,0,0])]
+
 
 class Wrap():
 ###########################################################
@@ -415,7 +503,6 @@ class Copy( Atoms, Wrap ):
         xyz_original = XYZ_shifted.copy()
         assert XYZ_shifted.shape[1] % 3 == 0, 'shifted coordinates must be integer multiple of 3!'
         #
-#        ID_TYPE_shifted, attr1 = ConcatAttr( self, ['id','type','dx','dy','dz','exy','sxy','sxx','syy','szz','d2min','StructureType']) #--- add remaining 'Atoms' attrs
         ID_TYPE_shifted, attr1 = ConcatAttr( self, ['id','type','dx','dy','dz','exy','sxy','sxx','syy','szz','d2min','StructureType','AtomicVolume','C66','C55','C44']) #--- add remaining 'Atoms' attrs
         id_type_original = ID_TYPE_shifted.copy()
 		
