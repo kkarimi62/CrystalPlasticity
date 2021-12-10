@@ -42,7 +42,7 @@ if __name__ == '__main__':
 	sourceFiles = { 0:False,
 					1:['Equilibrated_300.dat'],
 					2:['data.txt','ScriptGroup.txt'],
-					3:['FeNi_glass.data','FeNi_glass.dump','FeNi.txt'], 
+					3:['data.0.txt','FeNi_glass.dump','FeNi.txt'], 
 					4:['data_minimized.txt'],
 					5:['data_init.txt','ScriptGroup.0.txt'], #--- only one partition! for multiple ones, use 'submit.py'
 				 }[3] #--- to be copied from the above directory
@@ -81,7 +81,7 @@ if __name__ == '__main__':
 				7:' -var buff 3.0 -var T 600 -var teq 200.0 -var nevery 1000 -var ParseData 1 -var DataFile data_init.txt -var DumpFile dumpThermalized.xyz -var WriteData Equilibrated_600.dat',
 				8:' -var buff 3.0 -var T 0.1 -var sigm 1.5 -var sigmdt 0.01 -var ParseData 1 -var DataFile Equilibrated_300.dat -var DumpFile dumpSheared.xyz',
 				9:' -var natoms 1000 -var cutoff 3.52 -var ParseData 1',
-				10:' -var T 300.0 -var teq	2.0	-var nevery 100 -var ParseData 1 -var DataFile FeNi_glass.data',
+				10:' -var T 300.0 -var teq	2.0	-var nevery 100 -var ParseData 1 -var DataFile data.0.data',
 				'p0':' swapped_600.dat 10.0 %s'%(os.getcwd()+'/../postprocess'),
 				'p1':' swapped_600.dat ElasticConst.txt DumpFileModu.xyz %s'%(os.getcwd()+'/../postprocess'),
 				'p2':' %s 3.52 40.0 20.0 40.0 data.txt'%(os.getcwd()+'/../postprocess'),
@@ -89,7 +89,7 @@ if __name__ == '__main__':
 	#--- different scripts in a pipeline
 	indices = {
 				1:[0,6], #--- melt & quench, shear
-				2:[10], #--- melt & quench, elastic moduli at finite T
+				2:[10], #--- elastic moduli at finite T
 			  }[2]
 	Pipeline = list(map(lambda x:LmpScript[x],indices))
 	Variables = list(map(lambda x:Variable[x], indices))
