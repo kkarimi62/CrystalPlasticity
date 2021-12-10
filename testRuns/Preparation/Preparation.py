@@ -21,7 +21,7 @@ if __name__ == '__main__':
 	import os
 	import numpy as np
 
-	nruns	 = 3
+	runs	 = [2]
 	#
 	nThreads = [1,9][1]
 	nNode	 = 1
@@ -103,8 +103,8 @@ if __name__ == '__main__':
 	os.system( 'rm -rf %s' % jobname ) #--- rm existing
 	os.system( 'rm jobID.txt' )
 	# --- loop for submitting multiple jobs
-	counter = 0
-	for irun in xrange( nruns ):
+	irun = 0
+	for counter in runs:
 #               cutoff = cutoffs[ irun ]
 		print ' i = %s' % counter
 		writPath = os.getcwd() + '/%s/Run%s' % ( jobname, counter ) # --- curr. dir
@@ -126,6 +126,6 @@ if __name__ == '__main__':
 						    --chdir %s -c %s -n %s %s/oarScript.sh >> jobID.txt'\
 						   % ( partition, mem, durtn, jobname, counter, jobname, counter, jobname, counter \
 						       , writPath, nThreads, nNode, writPath ) ) # --- runs oarScript.sh! 
-		counter += 1
+		irun += 1
 											 
 	os.system( 'mv jobID.txt %s' % ( os.getcwd() + '/%s' % ( jobname ) ) )
