@@ -21,7 +21,7 @@ if __name__ == '__main__':
 	import os
 	import numpy as np
 
-	nruns	 = 1
+	nruns	 = 3
 	#
 	nThreads = [1,9][1]
 	nNode	 = 1
@@ -29,7 +29,7 @@ if __name__ == '__main__':
 	jobname  = {
 				1:'CuZrNatom32KT300Tdot1E-3Sheared',
 				2:'CuZrNatom32KT300Tdot1E-1Elasticity',
-				3:'FeNiT300Elasticity2nd',
+				3:'FeNiT300Elasticity',
 			   }[3]
 	sourcePath = os.getcwd() +\
 				{	
@@ -42,7 +42,7 @@ if __name__ == '__main__':
 	sourceFiles = { 0:False,
 					1:['Equilibrated_300.dat'],
 					2:['data.txt','ScriptGroup.txt'],
-					3:['FeNi_glass.data','FeNi_glass.dump'], 
+					3:['FeNi_glass.data','FeNi_glass.dump','FeNi.txt'], 
 					4:['data_minimized.txt'],
 					5:['data_init.txt','ScriptGroup.0.txt'], #--- only one partition! for multiple ones, use 'submit.py'
 				 }[3] #--- to be copied from the above directory
