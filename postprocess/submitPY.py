@@ -6,14 +6,15 @@ if __name__ == '__main__':
 	lnums = [ 18, 20,26 ]
 	string=open('postprocess.py').readlines() #--- python script
 	#---
-	PHI = [	 
-			 'FeNi', 
-             'CoNiFe', 
-             'CoNiCrFe',
-             'CoCrFeMn',
-             'CoNiCrFeMn',
-             'Co5Cr2Fe40Mn27Ni26'
-		  ]
+	PHI=range(0,200,1)
+#	PHI = [	 
+#			 'FeNi', 
+#             'CoNiFe', 
+#             'CoNiCrFe',
+#             'CoCrFeMn',
+#             'CoNiCrFeMn',
+#             'Co5Cr2Fe40Mn27Ni26'
+#		  ]
 #	PHI = [1800,1933,2066,2200,2333]
 #	PHI=range(0,2000000+10000,4*100000) 
 	nphi = len(PHI)
@@ -28,13 +29,13 @@ if __name__ == '__main__':
 	for iphi in range( nphi ):
 		#---	
 		inums = lnums[ 0 ] - 1
-		string[ inums ] = "\tjobname=\'d2minRatio%s'\n" % (PHI[iphi]) #--- change job name
+		string[ inums ] = "\tjobname=\'FeNiT300Elasticity%s'\n" % (PHI[iphi]) #--- change job name
 		#---	densities
 		inums = lnums[ 1 ] - 1
-		string[ inums ] = "\treadPath = os.getcwd() + \'/../testRuns/glass%s\'\n"%(PHI[iphi])
+		string[ inums ] = "\treadPath = os.getcwd() + \'/../testRuns/Preparation/FeNiT300Elasticity%s\'\n"%(PHI[iphi])
 #
 		inums = lnums[ 2 ] - 1
-		string[ inums ] = "\targv2nd = \'indx=%s\'\n"%(iphi)
+		string[ inums ] = "\targv2nd = \'itime=%s\'\n"%(PHI[iphi]*10000)
 
 		sfile=open('junk%s.py'%iphi,'w');sfile.writelines(string);sfile.close()
 		os.system( 'python3 junk%s.py'%iphi )

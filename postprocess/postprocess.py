@@ -14,7 +14,7 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argv2nd):
 if __name__ == '__main__':
 	import os
 #
-	nruns	 = range(3)
+	runs	 = [1]
 	jobname  = 'FeNiT300Elasticity' 
 	DeleteExistingFolder = True
 	readPath = os.getcwd() + '/../testRuns/Preparation/FeNiT300Elasticity' #--- source
@@ -23,7 +23,7 @@ if __name__ == '__main__':
 	mem = '16gb'
 	partition = ['parallel','cpu2019','bigmem','single'][2] 
 	argv = "path=%s"%(readPath) #--- don't change! 
-	argv2nd = "indx=0" 
+	argv2nd = "itime=0" 
 	PYFILdic = { 
 		0:'ElasticConstants.ipynb',
 		1:'analyzePlasticity.ipynb',
@@ -39,8 +39,7 @@ if __name__ == '__main__':
 	if DeleteExistingFolder:
 		os.system( 'rm -rf %s' % jobname ) # --- rm existing
 	# --- loop for submitting multiple jobs
-	counter = 0
-	for counter in nruns:
+	for counter in runs:
 		print(' i = %s' % counter)
 		writPath = os.getcwd() + '/%s/Run%s' % ( jobname, counter ) # --- curr. dir
 		os.system( 'mkdir -p %s' % ( writPath ) ) # --- create folder
