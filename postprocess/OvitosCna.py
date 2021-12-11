@@ -64,6 +64,7 @@ if AnalysisType == 3:
 for frame in range(0,pipeline.source.num_frames,nevery):
     # This loads the input data for the current frame and
     # evaluates the applied modifiers:
+    print('frame=%s'%frame)
     pipeline.compute(frame)
     itime = pipeline.source.attributes['Timestep']
 #    print(itime)
