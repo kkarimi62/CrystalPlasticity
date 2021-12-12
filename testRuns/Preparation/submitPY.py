@@ -12,7 +12,7 @@ if __name__ == '__main__':
 #	PHI = np.logspace(-5.0,-2.0,nphi,endpoint=True)
 #	PHI = np.linspace(2.3,2.9,nphi,endpoint=True)
 #	PHI = np.linspace(0.05,0.45,nphi,endpoint=True)
-	PHI=range(0,200,1) 
+	PHI=range(0,200,10) 
 #	PHI = [12500,25000,50000]
 #	PHI = np.linspace(1800, 3000, 10, endpoint=True, dtype=int) #--- melt. temp.
 	nphi = len(PHI)
