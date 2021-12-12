@@ -35,8 +35,10 @@ if AnalysisType == 1:
     sfile = open(OutputFile,'a')
 
 if AnalysisType == 2:
-    d2min = md.AtomicStrainModifier(output_nonaffine_squared_displacements=True,
-                                    eliminate_cell_deformation=True
+    d2min = md.AtomicStrainModifier(
+#                                    use_frame_offset=False,
+                                    output_nonaffine_squared_displacements=True,
+                                    eliminate_cell_deformation=True,
                                    )
     d2min.reference.load(InputFile)
     pipeline.modifiers.append(d2min)

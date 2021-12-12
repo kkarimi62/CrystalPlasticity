@@ -219,7 +219,7 @@ class WriteDataFile:
         sfile=open(outpt,'w')
         sfile.write('LAMMPS Description\n\n%s atoms\n\n%s atom types\n\n\
                      %15.14e %15.14e xlo xhi\n%15.14e %15.14e ylo yhi\n%15.14e %15.14e zlo zhi\n%15.14e %15.14e %15.14e xy xz yz\n\nMasses\n\n'\
-                     %(natom,ntype,float(xlo),float(xhi),float(ylo),float(yhi),float(zlo),float(zhi),float(xy),0.0,0.0))
+                     %(natom,ntype,float(xlo),float(xhi)-float(xy),float(ylo),float(yhi),float(zlo),float(zhi),float(xy),0.0,0.0)) #--- tilted box for data file: xhi-xy
 
         for typee in self.Mass: #set(self.atom.type):
             sfile.write('%s %s\n'%(int(typee),self.Mass[typee]))
