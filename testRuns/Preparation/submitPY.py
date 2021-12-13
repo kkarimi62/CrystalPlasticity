@@ -20,7 +20,7 @@ if __name__ == '__main__':
 #	nn = 4
 #	NTHRESH = np.linspace(0.05,0.11,nn,endpoint=True)
 	#---
-	jobname = 'CoNiCrFeT300Elasticity' #'testCpuRunTime'
+	jobname = 'CoCrFeMnT300Elasticity' #'testCpuRunTime'
 
 #	PHI = [[PHI[iphi],NTHRESH[inn]] for iphi in xrange( nphi ) for inn in xrange(nn)]
 #	nphi = len(PHI)
