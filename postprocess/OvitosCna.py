@@ -5,16 +5,26 @@ import numpy as np
 import ovito.io as io #import import_file
 
 from ovito.vis import Viewport, TachyonRenderer, RenderSettings
+from ovito.data import CutoffNeighborFinder
 
 import math
 import pdb
 
+def GetNpairs(data, finder):        
+    Npairs = 0
+    for index in range(data.number_of_particles):
+        for neigh in finder.find(index):
+            Npairs += 1
+    return Npairs
+    
 InputFile = sys.argv[1] 
 OutputFile = sys.argv[2]
 nevery = int(sys.argv[3])
 AnalysisType = int(sys.argv[4]) #--- 0:CommonNeighborAnalysis 1:g(r) 2:d2min 3:voronoi analysis
 if AnalysisType == 3:
     radii=list(map(float,sys.argv[5:]))
+if AnalysisType == 4:
+    cutoff = float(sys.argv[5])
 
     
 print('InputFile=',InputFile)
@@ -60,30 +70,56 @@ if AnalysisType == 3:
                                     )
     pipeline.modifiers.append(voro)
 
-    
+#--- neighbor list
+if AnalysisType == 4:
+    sfile = open(OutputFile,'a')
 
 
 for frame in range(0,pipeline.source.num_frames,nevery):
     # This loads the input data for the current frame and
     # evaluates the applied modifiers:
     print('frame=%s'%frame)
-    pipeline.compute(frame)
+#    pipeline.compute(frame)
+    data = pipeline.compute(frame)
     itime = pipeline.source.attributes['Timestep']
 #    print(itime)
     
     if AnalysisType == 1:
         sfile.write('#ITIME\n%s\n'%itime)
         np.savetxt(sfile, cnm.rdf, header='r\tg(r)')
+    #--- compute neighbor list
+    if AnalysisType == 4:
+        type_property = pipeline.source.particle_properties.particle_type
+        finder = CutoffNeighborFinder(cutoff, data)
+        npairs = GetNpairs(data, finder)
+        
+        sfile.write('ITIME: TIMESTEP\n%s\n'%itime)
+        sfile.write('ITEM: NUMBER OF ATOMS\n%s\n'%(npairs))
+        sfile.write('ITEM: BOX BOUNDS xy xz yz pp pp pp\n0.0\t0.0\t0.0\n0.0\t0.0\t0.0\n0.0\t0.0\t0.0\n')
+        sfile.write('ITEM: ATOMS id\ttype\tJ\tDIST\tDX\tDY\tDZ\tPBC_SHIFT_X\tPBC_SHIFT_Y\tPBC_SHIFT_Z\n')
+
+
+        # Loop over all particles:
+        for index in range(data.number_of_particles):
+            atomi_id = data.particle_properties.particle_identifier.array[index]
+            atomi_type = type_property.array[index]
+#            print("Neighbors of particle %i:" % atomi_id)
+#            pdb.set_trace()
+            # Iterate over the neighbors of the current particle:
+            for neigh in finder.find(index):
+                atomj_id = data.particle_properties.particle_identifier.array[neigh.index]
+#                print(neigh.index, neigh.distance, neigh.delta, neigh.pbc_shift)
+                sfile.write('%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n'%(atomi_id,atomi_type,atomj_id, neigh.distance, neigh.delta[0],neigh.delta[1],neigh.delta[2], neigh.pbc_shift[0],neigh.pbc_shift[1],neigh.pbc_shift[2]))
 
     # Access computed Voronoi indices as NumPy array.
     # This is an (N)x(edge_count) array.
 #     if AnalysisType == 3:
 #         voro_indices = pipeline.output.particle_properties['Voronoi Index'].array
     
-#     pdb.set_trace()
+#    pdb.set_trace()
 
 
-if AnalysisType == 1:
+if AnalysisType == 1 or AnalysisType == 4:
     sfile.close()
     
 #--- export data
