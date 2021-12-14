@@ -29,10 +29,10 @@ if __name__ == '__main__':
 	for iphi in range( nphi ):
 		#---	
 		inums = lnums[ 0 ] - 1
-		string[ inums ] = "\tjobname=\'FeNiT300Elasticity%s'\n" % (PHI[iphi]) #--- change job name
+		string[ inums ] = "\tjobname=\'CoNiFeT300Elasticity%s'\n" % (PHI[iphi]) #--- change job name
 		#---	densities
 		inums = lnums[ 1 ] - 1
-		string[ inums ] = "\treadPath = os.getcwd() + \'/../testRuns/Preparation/FeNiT300Elasticity%s\'\n"%(PHI[iphi])
+		string[ inums ] = "\treadPath = os.getcwd() + \'/../testRuns/Preparation/CoNiFeT300Elasticity%s\'\n"%(PHI[iphi])
 #
 		inums = lnums[ 2 ] - 1
 		string[ inums ] = "\targv2nd = \'itime=%s\'\n"%(PHI[iphi]*10000)
