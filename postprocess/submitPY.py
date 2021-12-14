@@ -9,10 +9,10 @@ if __name__ == '__main__':
 	PHI=range(0,200,10)
 #	PHI = [	 
 #			 'FeNi', 
-#             'CoNiCrFeMn', 
-#             'CoNiCrFeMn',
-#             'CoNiCrFeMn',
-#             'CoNiCrFeMnMn',
+#             'Co5Cr2Fe40Mn27Ni26', 
+#             'Co5Cr2Fe40Mn27Ni26',
+#             'Co5Cr2Fe40Mn27Ni26',
+#             'Co5Cr2Fe40Mn27Ni26Mn',
 #             'Co5Cr2Fe40Mn27Ni26'
 #		  ]
 #	PHI = [1800,1933,2066,2200,2333]
@@ -29,10 +29,10 @@ if __name__ == '__main__':
 	for iphi in range( nphi ):
 		#---	
 		inums = lnums[ 0 ] - 1
-		string[ inums ] = "\tjobname=\'CoNiCrFeMnT300Elasticity%s'\n" % (PHI[iphi]) #--- change job name
+		string[ inums ] = "\tjobname=\'Co5Cr2Fe40Mn27Ni26T300Elasticity%s'\n" % (PHI[iphi]) #--- change job name
 		#---	densities
 		inums = lnums[ 1 ] - 1
-		string[ inums ] = "\treadPath = os.getcwd() + \'/../testRuns/Preparation/CoNiCrFeMnT300Elasticity%s\'\n"%(PHI[iphi])
+		string[ inums ] = "\treadPath = os.getcwd() + \'/../testRuns/Preparation/Co5Cr2Fe40Mn27Ni26T300Elasticity%s\'\n"%(PHI[iphi])
 #
 		inums = lnums[ 2 ] - 1
 		string[ inums ] = "\targv2nd = \'itime=%s\'\n"%(PHI[iphi]*10000)
