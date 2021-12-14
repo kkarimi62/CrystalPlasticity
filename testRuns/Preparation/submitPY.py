@@ -29,7 +29,7 @@ if __name__ == '__main__':
 		string[ inums ] = "\t3:'%s',\n" % ('%s%s'%(jobname,PHI[iphi])) #--- change job name
 		#---
 		inums = lnums[ 1 ] - 1
-		string[ inums ] = "\t3:'/../glassCoNiFe',\n")
+		string[ inums ] = "\t3:'/../glassCoNiFe',\n"
 		#---
 		inums = lnums[ 2 ] - 1
 		string[ inums ] = "\t3:['data.%s.txt','CoNiFe_glass.dump','CoNiFe.txt'],\n"%(PHI[iphi])
