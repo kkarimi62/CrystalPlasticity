@@ -3,7 +3,7 @@ if __name__ == '__main__':
 	import os
 	import numpy as np
 	#---
-	lnums = [ 32, 45, 84  ]
+	lnums = [ 32, 38, 45, 84  ]
 	string=open('Preparation.py').readlines() #--- python script
 	#---
 #        MC = [-0.25,-0.1,0.0,0.1,0.2]
@@ -20,27 +20,21 @@ if __name__ == '__main__':
 #	nn = 4
 #	NTHRESH = np.linspace(0.05,0.11,nn,endpoint=True)
 	#---
-	jobname = 'Co5Cr2Fe40Mn27Ni26T300Elasticity' #'testCpuRunTime'
-
-#	PHI = [[PHI[iphi],NTHRESH[inn]] for iphi in xrange( nphi ) for inn in xrange(nn)]
-#	nphi = len(PHI)
+	jobname = 'CoNiFeT300Elasticity' 
+	#
 	for iphi in range( nphi ):
 		#---	
-#		inums = lnums[ 0 ] - 1
-#		string[ inums ] = "\tnThreads=%s\n"%(PHI[iphi])
 		#---	densities
 		inums = lnums[ 0 ] - 1
 		string[ inums ] = "\t3:'%s',\n" % ('%s%s'%(jobname,PHI[iphi])) #--- change job name
-#		string[ inums ] = "\targv=\'-p\tmccc\t%e\t-p\tbvall\t%e\t-p\tDfff\t%e\'\n"%(mc, bval, df)
-#		string[ inums ] = "\targv2nd=\' -p\titime\t%s\'\n"%(PHI[iphi])
-#		string[ inums ] = "\targv2nd=\'itime=%s\'\n"%(PHI[iphi])
 		#---
 		inums = lnums[ 1 ] - 1
-#		string[ inums ] = "\tTfinal=%s\n"%(PHI[iphi])
-		string[ inums ] = "\t3:['data.%s.txt','FeNi_glass.dump','FeNi.txt'],\n"%(PHI[iphi])
-#		string[ inums ] = "\targv=\'-p\tmccc\t%e\t-p\tbvall\t%e\t-p\tDfff\t%e\'\n"%(mc, bval, df)
+		string[ inums ] = "\t3:'/../glassCoNiFe',\n"%(PHI[iphi])
 		#---
 		inums = lnums[ 2 ] - 1
+		string[ inums ] = "\t3:['data.%s.txt','CoNiFe_glass.dump','CoNiFe.txt'],\n"%(PHI[iphi])
+		#---
+		inums = lnums[ 3 ] - 1
 		string[ inums ] = "\t10:' -var T 300.0 -var teq  2.0 -var nevery 100 -var ParseData 1 -var DataFile data.%s.txt',\n"%(PHI[iphi])
 
 		sfile=open('junk%s.py'%iphi,'w');sfile.writelines(string);sfile.close()
