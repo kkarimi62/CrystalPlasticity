@@ -8,12 +8,12 @@ if __name__ == '__main__':
 	#---
 	PHI=range(0,200,10)
 #	PHI = [	 
-#			 'CoNiFe', 
-#             'CoNiFe', 
-#             'CoNiFe',
-#             'CoNiFe',
-#             'CoNiFeMn',
-#             'CoNiFe'
+#			 'CoNiCrFe', 
+#             'CoNiCrFe', 
+#             'CoNiCrFe',
+#             'CoNiCrFe',
+#             'CoNiCrFeMn',
+#             'CoNiCrFe'
 #		  ]
 #	PHI = [1800,1933,2066,2200,2333]
 #	PHI=range(0,2000000+10000,4*100000) 
@@ -29,13 +29,13 @@ if __name__ == '__main__':
 	for iphi in range( nphi ):
 		#---	
 		inums = lnums[ 0 ] - 1
-		string[ inums ] = "\tjobname=\'CoNiFeT300Elasticity%s'\n" % (PHI[iphi]) #--- change job name
+		string[ inums ] = "\tjobname=\'CoNiCrFeT300Elasticity%s'\n" % (PHI[iphi]) #--- change job name
 		#---	densities
 		inums = lnums[ 1 ] - 1
-		string[ inums ] = "\treadPath = os.getcwd() + \'/../testRuns/Preparation/CoNiFeT300Elasticity%s\'\n"%(PHI[iphi])
+		string[ inums ] = "\treadPath = os.getcwd() + \'/../testRuns/Preparation/CoNiCrFeT300Elasticity%s\'\n"%(PHI[iphi])
 #
 		inums = lnums[ 2 ] - 1
-		string[ inums ] = "\targv2nd = \'itime=%s\\nindx=1\'\n"%(PHI[iphi]*10000)
+		string[ inums ] = "\targv2nd = \'itime=%s\\nindx=2\'\n"%(PHI[iphi]*10000)
 
 		sfile=open('junk%s.py'%iphi,'w');sfile.writelines(string);sfile.close()
 		os.system( 'python3 junk%s.py'%iphi )
