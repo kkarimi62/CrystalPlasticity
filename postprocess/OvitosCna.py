@@ -96,7 +96,7 @@ for frame in range(0,pipeline.source.num_frames,nevery):
         sfile.write('ITIME: TIMESTEP\n%s\n'%itime)
         sfile.write('ITEM: NUMBER OF ATOMS\n%s\n'%(npairs))
         sfile.write('ITEM: BOX BOUNDS xy xz yz pp pp pp\n0.0\t0.0\t0.0\n0.0\t0.0\t0.0\n0.0\t0.0\t0.0\n')
-        sfile.write('ITEM: ATOMS id\ttype\tJ\tDIST\tDX\tDY\tDZ\tPBC_SHIFT_X\tPBC_SHIFT_Y\tPBC_SHIFT_Z\n')
+        sfile.write('ITEM: ATOMS id\ttype\tJ\tJtype\tDIST\tDX\tDY\tDZ\tPBC_SHIFT_X\tPBC_SHIFT_Y\tPBC_SHIFT_Z\n')
 
 
         # Loop over all particles:
@@ -108,8 +108,9 @@ for frame in range(0,pipeline.source.num_frames,nevery):
             # Iterate over the neighbors of the current particle:
             for neigh in finder.find(index):
                 atomj_id = data.particle_properties.particle_identifier.array[neigh.index]
+                atomj_type = type_property.array[neigh.index]
 #                print(neigh.index, neigh.distance, neigh.delta, neigh.pbc_shift)
-                sfile.write('%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n'%(atomi_id,atomi_type,atomj_id, neigh.distance, neigh.delta[0],neigh.delta[1],neigh.delta[2], neigh.pbc_shift[0],neigh.pbc_shift[1],neigh.pbc_shift[2]))
+                sfile.write('%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n'%(atomi_id,atomi_type,atomj_id, atomj_type, neigh.distance, neigh.delta[0],neigh.delta[1],neigh.delta[2], neigh.pbc_shift[0],neigh.pbc_shift[1],neigh.pbc_shift[2]))
 
     # Access computed Voronoi indices as NumPy array.
     # This is an (N)x(edge_count) array.
