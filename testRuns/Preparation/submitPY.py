@@ -12,7 +12,7 @@ if __name__ == '__main__':
 #	PHI = np.logspace(-5.0,-2.0,nphi,endpoint=True)
 #	PHI = np.linspace(2.3,2.9,nphi,endpoint=True)
 #	PHI = np.linspace(0.05,0.45,nphi,endpoint=True)
-	PHI=range(0,200,10) 
+	PHI=range(0,200,1) 
 #	PHI = [12500,25000,50000]
 #	PHI = np.linspace(1800, 3000, 10, endpoint=True, dtype=int) #--- melt. temp.
 	nphi = len(PHI)
@@ -20,7 +20,7 @@ if __name__ == '__main__':
 #	nn = 4
 #	NTHRESH = np.linspace(0.05,0.11,nn,endpoint=True)
 	#---
-	jobname = 'Co5Cr2Fe40Mn27Ni26T300Elasticity' 
+	jobname = 'FeNiT300Elasticity' 
 	#
 	for iphi in range( nphi ):
 		#---	
@@ -29,10 +29,10 @@ if __name__ == '__main__':
 		string[ inums ] = "\t3:'%s',\n" % ('%s%s'%(jobname,PHI[iphi])) #--- change job name
 		#---
 		inums = lnums[ 1 ] - 1
-		string[ inums ] = "\t3:'/../glassCo5Cr2Fe40Mn27Ni26',\n"
+		string[ inums ] = "\t3:'/../glassFeNi',\n"
 		#---
 		inums = lnums[ 2 ] - 1
-		string[ inums ] = "\t3:['data.%s.txt','Co5Cr2Fe40Mn27Ni26_glass.dump','Co5Cr2Fe40Mn27Ni26.txt'],\n"%(PHI[iphi])
+		string[ inums ] = "\t3:['data.%s.txt','FeNi_glass.dump','FeNi.txt'],\n"%(PHI[iphi])
 		#---
 		inums = lnums[ 3 ] - 1
 		string[ inums ] = "\t10:' -var T 300.0 -var teq  2.0 -var nevery 100 -var ParseData 1 -var DataFile data.%s.txt',\n"%(PHI[iphi])
