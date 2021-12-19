@@ -20,7 +20,7 @@ if __name__ == '__main__':
 #	nn = 4
 #	NTHRESH = np.linspace(0.05,0.11,nn,endpoint=True)
 	#---
-	jobname = 'CoNiCrFeMnT300Elasticity' 
+	jobname = 'Co5Cr2Fe40Mn27Ni26T300Elasticity' 
 	#
 	for iphi in range( nphi ):
 		#---	
@@ -29,10 +29,10 @@ if __name__ == '__main__':
 		string[ inums ] = "\t3:'%s',\n" % ('%s%s'%(jobname,PHI[iphi])) #--- change job name
 		#---
 		inums = lnums[ 1 ] - 1
-		string[ inums ] = "\t3:'/../glassCoNiCrFeMn',\n"
+		string[ inums ] = "\t3:'/../glassCo5Cr2Fe40Mn27Ni26',\n"
 		#---
 		inums = lnums[ 2 ] - 1
-		string[ inums ] = "\t3:['data.%s.txt','CoNiCrFeMn_glass.dump','CoNiCrFeMn.txt'],\n"%(PHI[iphi])
+		string[ inums ] = "\t3:['data.%s.txt','Co5Cr2Fe40Mn27Ni26_glass.dump','Co5Cr2Fe40Mn27Ni26.txt'],\n"%(PHI[iphi])
 		#---
 		inums = lnums[ 3 ] - 1
 		string[ inums ] = "\t10:' -var T 300.0 -var teq  2.0 -var nevery 100 -var ParseData 1 -var DataFile data.%s.txt',\n"%(PHI[iphi])
