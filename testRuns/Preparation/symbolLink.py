@@ -5,7 +5,7 @@ if __name__ == '__main__':
 	import sys
 	#--- 
         for loop in range(0,200,1):
-            jobname  = 'CoNiCrFeT300Elasticity%s'%loop
+            jobname  = 'CoCrFeMnT300Elasticity%s'%loop
             job_id = int(open('%s/jobID.txt'%jobname).readlines()[0].split()[3])
 #            job_id = 12158618 
             N = 3
