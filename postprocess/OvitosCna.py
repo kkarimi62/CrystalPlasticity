@@ -91,6 +91,7 @@ for frame in range(0,pipeline.source.num_frames,nevery):
     if AnalysisType == 4:
         type_property = pipeline.source.particle_properties.particle_type
         finder = CutoffNeighborFinder(cutoff, data)
+        print('neigh. list built.')
         npairs = GetNpairs(data, finder)
         
         sfile.write('ITIME: TIMESTEP\n%s\n'%itime)

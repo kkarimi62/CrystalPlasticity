@@ -15,9 +15,9 @@ if __name__ == '__main__':
 	import os
 #
 	runs	 = [0,1,2]
-	jobname  = 'FeNiT300Elasticity' 
+	jobname  = 'CoNiFeT300Elasticity0' 
 	DeleteExistingFolder = True
-	readPath = os.getcwd() + '/../testRuns/Preparation/FeNiT300Elasticity' #--- source
+	readPath = os.getcwd() + '/../testRuns/Preparation/CoNiFeT300Elasticity0' #--- source
 	EXEC_DIR = '.'     #--- path for executable file
 	durtn = '01:59:59'
 	mem = '16gb'
