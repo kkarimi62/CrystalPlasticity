@@ -4,7 +4,7 @@ if __name__ == '__main__':
 	import os
 	import sys
 	#--- 
-	PHI = [  
+    PHI = [  
              'FeNi',
              'CoNiFe',
              'CoNiCrFe',
@@ -12,7 +12,7 @@ if __name__ == '__main__':
              'CoNiCrFeMn',
              'Co5Cr2Fe40Mn27Ni26'
          ] 
-	for loopi in PHI: 
+    for loopi in PHI: 
         for loop in range(0,1,1):
             jobname  = 'ElasticityT300/%s/itime%s'%(loopi,loop)
             job_id = int(open('%s/jobID.txt'%jobname).readlines()[0].split()[3])
