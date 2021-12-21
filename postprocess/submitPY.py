@@ -7,7 +7,7 @@ if __name__ == '__main__':
 	string=open('postprocess.py').readlines() #--- python script
 	#---
 #	PHI=range(0,200,1)
-#	PHI = [	 
+	PHI = [	 
             'FeNi',
             'CoNiFe',
             'CoNiCrFe',
