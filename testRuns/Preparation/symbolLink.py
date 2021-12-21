@@ -4,10 +4,18 @@ if __name__ == '__main__':
 	import os
 	import sys
 	#--- 
-        for loop in range(0,200,1):
-            jobname  = 'Co5Cr2Fe40Mn27Ni26T300Elasticity%s'%loop
+	PHI = [  
+             'FeNi',
+             'CoNiFe',
+             'CoNiCrFe',
+             'CoCrFeMn',
+             'CoNiCrFeMn',
+             'Co5Cr2Fe40Mn27Ni26'
+         ] 
+	for loopi in PHI: 
+        for loop in range(0,1,1):
+            jobname  = 'ElasticityT300/%s/itime%s'%(loopi,loop)
             job_id = int(open('%s/jobID.txt'%jobname).readlines()[0].split()[3])
-#            job_id = 12158618 
             N = 3
 	#---
 	    job_ids = [ job_id + i for i in xrange( N ) ]
