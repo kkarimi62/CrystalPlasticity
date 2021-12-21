@@ -4,7 +4,7 @@ if __name__ == '__main__':
 	import os
 	import sys
 	#--- 
-    PHI = [  
+	PHI = [  
              'FeNi',
              'CoNiFe',
              'CoNiCrFe',
