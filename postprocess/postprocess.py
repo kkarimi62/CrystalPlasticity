@@ -16,7 +16,7 @@ if __name__ == '__main__':
 #
 	runs	 = [0,1,2]
 	jobname  = 'ElasticityT300/CoNiCrFe' 
-	DeleteExistingFolder = True
+	DeleteExistingFolder = False
 	readPath = os.getcwd() + '/../testRuns/Preparation/CoNiCrFeT300Elasticity0' #--- source
 	EXEC_DIR = '.'     #--- path for executable file
 	durtn = '01:59:59'
