@@ -15,7 +15,7 @@ if __name__ == '__main__':
 	import os
 #
 	runs	 = [0,1,2]
-	jobname  = 'CoNiCrFeT300Elasticity0' 
+	jobname  = 'ElasticityT300/CoNiCrFe' 
 	DeleteExistingFolder = True
 	readPath = os.getcwd() + '/../testRuns/Preparation/CoNiCrFeT300Elasticity0' #--- source
 	EXEC_DIR = '.'     #--- path for executable file
