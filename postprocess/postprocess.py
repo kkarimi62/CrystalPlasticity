@@ -48,7 +48,7 @@ if __name__ == '__main__':
 		os.system( 'chmod +x oarScript.sh; mv oarScript.sh .env %s; cp %s/%s %s' % ( writPath, EXEC_DIR, PYFIL, writPath ) ) # --- create folder & mv oar scrip & cp executable
 		os.system( 'sbatch --partition=%s --mem=%s --time=%s --job-name %s.%s --output %s.%s.out --error %s.%s.err \
 						    --chdir %s -c %s -n %s %s/oarScript.sh'\
-						   % ( partition, mem, durtn, jobname, counter, jobname, counter, jobname, counter \
+						   % ( partition, mem, durtn, jobname[:4], counter, jobname[:4], counter, jobname[:4], counter \
 						       , writPath, 1, 1, writPath ) ) # --- runs oarScript.sh!
 											 
 
