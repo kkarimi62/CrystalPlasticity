@@ -29,20 +29,20 @@ if __name__ == '__main__':
 	jobname  = {
 				1:'CuZrNatom32KT300Tdot1E-3Sheared',
 				2:'CuZrNatom32KT300Tdot1E-1Elasticity',
-				3:'FeNiT300Elasticity',
+				3:'ElasticityT300/CoNiCrFe/itime0',
 			   }[3]
 	sourcePath = os.getcwd() +\
 				{	
 					1:'/../postprocess/NiCoCrNatom1K',
 					2:'/CuZrNatom32KT300Tdot1E-1Sheared',
-					3:'/../glassFeNi',
+					3:'/../glassCoNiCrFe',
 					4:'/junk',
 				}[3] #--- must be different than sourcePath
         #
 	sourceFiles = { 0:False,
 					1:['Equilibrated_300.dat'],
 					2:['data.txt','ScriptGroup.txt'],
-					3:['data.0.txt','FeNi_glass.dump','FeNi.txt'], 
+					3:['data.0.txt','CoNiCrFe_glass.dump','CoNiCrFe.txt'], 
 					4:['data_minimized.txt'],
 					5:['data_init.txt','ScriptGroup.0.txt'], #--- only one partition! for multiple ones, use 'submit.py'
 				 }[3] #--- to be copied from the above directory
@@ -95,12 +95,15 @@ if __name__ == '__main__':
 	Variables = list(map(lambda x:Variable[x], indices))
 	EXEC = list(map(lambda x:'lmp' if type(x) == type(0) else 'py', indices))	
 	#
+	DeleteExistingFolder = False
+	#
 	EXEC_lmp = ['lmp_mpi','lmp_serial'][0]
 	durtn = ['96:59:59','00:59:59'][1]
 	mem = '8gb'
 	partition = ['gpu-v100','parallel','cpu2019','single'][1]
 	#---
-	os.system( 'rm -rf %s' % jobname ) #--- rm existing
+	if DeleteExistingFolder:
+		os.system( 'rm -rf %s' % jobname ) #--- rm existing
 	os.system( 'rm jobID.txt' )
 	# --- loop for submitting multiple jobs
 	irun = 0
@@ -124,7 +127,7 @@ if __name__ == '__main__':
 		os.system( 'chmod +x oarScript.sh; mv oarScript.sh %s' % ( writPath) ) # --- create folder & mv oar scrip & cp executable
 		os.system( 'sbatch --partition=%s --mem=%s --time=%s --job-name %s.%s --output %s.%s.out --error %s.%s.err \
 						    --chdir %s -c %s -n %s %s/oarScript.sh >> jobID.txt'\
-						   % ( partition, mem, durtn, jobname, counter, jobname, counter, jobname, counter \
+						   % ( partition, mem, durtn, jobname[:4], counter, jobname[:4], counter, jobname[:4], counter \
 						       , writPath, nThreads, nNode, writPath ) ) # --- runs oarScript.sh! 
 		irun += 1
 											 
