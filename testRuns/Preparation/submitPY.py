@@ -33,7 +33,7 @@ if __name__ == '__main__':
 		#---	
 		#---	densities
 		inums = lnums[ 0 ] - 1
-		string[ inums ] = "\t3:'ElasticityT300\/%s\/itime0',\n" % ('%s'%(PHI[iphi])) #--- change job name
+		string[ inums ] = "\t3:'ElasticityT300/%s/itime0',\n" % ('%s'%(PHI[iphi])) #--- change job name
 		#---
 		inums = lnums[ 1 ] - 1
 		string[ inums ] = "\t3:'/../glass%s',\n"%(PHI[iphi])
