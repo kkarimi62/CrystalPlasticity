@@ -33,16 +33,16 @@ if __name__ == '__main__':
 		#---	
 		#---	densities
 		inums = lnums[ 0 ] - 1
-		string[ inums ] = "\t3:'ElasticityT300/%s/itime0',\n" % ('%s'%(PHI[iphi])) #--- change job name
+		string[ inums ] = "\t3:'ElasticityT300/%s/itime200',\n" % ('%s'%(PHI[iphi])) #--- change job name
 		#---
 		inums = lnums[ 1 ] - 1
 		string[ inums ] = "\t3:'/../glass%s',\n"%(PHI[iphi])
 		#---
 		inums = lnums[ 2 ] - 1
-		string[ inums ] = "\t3:['data.0.txt','%s_glass.dump','%s.txt'],\n"%(PHI[iphi],PHI[iphi])
+		string[ inums ] = "\t3:['data.200.txt','%s_glass.dump','%s.txt'],\n"%(PHI[iphi],PHI[iphi])
 		#---
 		inums = lnums[ 3 ] - 1
-		string[ inums ] = "\t10:' -var T 300.0 -var teq  2.0 -var nevery 100 -var ParseData 1 -var DataFile data.%s.txt',\n"%(0)
+		string[ inums ] = "\t10:' -var T 300.0 -var teq  2.0 -var nevery 100 -var ParseData 1 -var DataFile data.%s.txt',\n"%(200)
 
 		sfile=open('junk%s.py'%iphi,'w');sfile.writelines(string);sfile.close()
 		os.system( 'python junk%s.py'%iphi )
