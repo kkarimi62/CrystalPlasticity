@@ -14,7 +14,7 @@ if __name__ == '__main__':
          ] 
    
 	for loopi in PHI: #--- composition 
-		for loop in range(0,1,1): #--- itimes
+		for loop in [200]: #range(0,1,1): #--- itimes
 			jobname  = 'ElasticityT300/%s/itime%s'%(loopi,loop)
 			job_id = int(open('%s/jobID.txt'%jobname).readlines()[0].split()[3])
 			N = 3 #--- nruns
