@@ -59,9 +59,9 @@ def GetCubicGrid( CellOrigin, CellVector, dmean, margin, odd=True  ):
         if nz%2 == 0:
             nz += 1
     
-    x = np.linspace( CellOrigin[0] - margin, CellOrigin[0] + VectorNorm[ 0 ] + margin, nx+1,endpoint=True)
-    y = np.linspace( CellOrigin[1] - margin, CellOrigin[1] + VectorNorm[ 1 ] + margin, ny+1,endpoint=True)
-    z = np.linspace( CellOrigin[2] - margin, CellOrigin[2] + VectorNorm[ 2 ] + margin, nz+1,endpoint=True)
+    x = np.linspace( CellOrigin[0] - margin, CellOrigin[0] + VectorNorm[ 0 ] + margin, nx+1)[:-1]#,endpoint=True)
+    y = np.linspace( CellOrigin[1] - margin, CellOrigin[1] + VectorNorm[ 1 ] + margin, ny+1)[:-1]#,endpoint=True)
+    z = np.linspace( CellOrigin[2] - margin, CellOrigin[2] + VectorNorm[ 2 ] + margin, nz+1)[:-1]#,endpoint=True)
 
     return (x, y, z), np.meshgrid(x, y,z)
 
@@ -178,23 +178,25 @@ class WriteDumpFile:
         self.atom = atomm
         self.box = boxx
         
-    def Write(self, outpt, attrs=['id', 'type', 'x', 'y', 'z' ]):
+    def Write(self, outpt, attrs=['id', 'type', 'x', 'y', 'z' ], fmt = '%i %i %15.14e %15.14e %15.14e' ):
         natom = len(self.atom.x)
-        (xlo,xhi,xy)=self.box.BoxBounds[0,:]
-        (ylo,yhi,junk)=self.box.BoxBounds[1,:]
-        (zlo,zhi,junk)=self.box.BoxBounds[2,:]
+        (xlo,xhi,xy)=list(map(float,self.box.BoxBounds[0,:]))
+        (ylo,yhi,junk)=list(map(float,self.box.BoxBounds[1,:]))
+        (zlo,zhi,junk)=list(map(float,self.box.BoxBounds[2,:]))
         sfile=open(outpt,'w')
-        sfile.write('ITEM: TIMESTEP\n%s\nITEM: NUMBER OF ATOMS\n%s\nITEM: BOX BOUNDS xy xz yz pp pp pp\n\
-                     %s %s %s\n%s\t%s\t%s\n%s\t%s\t%s\nITEM: ATOMS %s\n'\
+        sfile.write('ITEM: TIMESTEP\n%d\nITEM: NUMBER OF ATOMS\n%d\nITEM: BOX BOUNDS xy xz yz pp pp pp\n\
+                     %15.14e %15.14e %15.14e\n%15.14e\t%15.14e\t%15.14e\n%15.14e\t%15.14e\t%15.14e\nITEM: ATOMS %s\n'\
                      %(0,natom,xlo,xhi,xy,ylo,yhi,0.0,zlo,zhi,0.0," ".join(map(str,attrs))))
 
 #                     %s %s %s\n%s\t%s\t%s\n%s\t%s\t%s\nITEM: ATOMS id type x y z\n'\
 
+        np.savetxt(sfile,np.c_[pd.DataFrame(self.atom.__dict__)[attrs]],
+                   fmt=fmt )
 
-        for row in np.c_[pd.DataFrame(self.atom.__dict__)[attrs]]:
-            for col in row:
-                sfile.write('%4.3e\t'%col)
-            sfile.write('\n')
+#        for row in :
+#            for col in row:
+#                sfile.write('%4.3e\t'%col)
+#            sfile.write('\n')
 #        for idd, typee, x, y, z in zip(self.atom.id, self.atom.type, self.atom.x, self.atom.y, self.atom.z ):
 #            sfile.write('%s %s %s %s %s\n'%(int(idd),int(typee),x,y,z))
             
@@ -356,7 +358,11 @@ class Atoms:
         if 'C56' in kwargs:
         	self.C56 = kwargs['C56']
         if 'C66' in kwargs:
-        	self.C66 = kwargs['C66']            
+        	self.C66 = kwargs['C66']     
+        if 'tmp' in kwargs:
+            self.tmp = kwargs[ 'tmp' ]
+
+            
     def __getitem__(self,key):
         return self.__dict__[key]
 
@@ -499,11 +505,20 @@ class Copy( Atoms, Wrap ):
         
     def FullCopies( self ):
         #--- concat. coordinates
-        XYZ_shifted, attr0 = ConcatAttr( self, ['x','y','z','xu','yu','zu','xm','ym','zm'] ) #--- add every coord. based attr
+        xyz_attr = ['x','y','z','xu','yu','zu','xm','ym','zm'] #--- add every coord. based attr
+        XYZ_shifted, attr0 = ConcatAttr( self,  xyz_attr ) 
         xyz_original = XYZ_shifted.copy()
         assert XYZ_shifted.shape[1] % 3 == 0, 'shifted coordinates must be integer multiple of 3!'
         #
-        ID_TYPE_shifted, attr1 = ConcatAttr( self, ['id','type','dx','dy','dz','exy','sxy','sxx','syy','szz','d2min','StructureType','AtomicVolume','C66','C55','C44']) #--- add remaining 'Atoms' attrs
+#        pdb.set_trace()
+        #--- include other attrs. except those of the box
+        attr_list = list(self.__dict__.keys())
+        for item in xyz_attr+['CellVector', 'CellOrigin']:
+            try:
+                attr_list.remove(item)
+            except:
+                continue
+        ID_TYPE_shifted, attr1 = ConcatAttr( self, attr_list) #['id','type','dx','dy','dz','exy','sxy','sxx','syy','szz','d2min','StructureType','AtomicVolume','C66','C55','C44']) #--- add remaining 'Atoms' attrs
         id_type_original = ID_TYPE_shifted.copy()
 		
         #--- cell copies
@@ -752,6 +767,8 @@ class ComputeRdf( Compute, Wrap ):
         print(self.NMAX)
 
     def PairCrltn( self, nbins = 32, **kwargs ):
+        if 'rlist' in kwargs:
+            self.rlist = kwargs['rlist']
         #--- histogram
         slist = self.rlist[self.rlist>0]
         rmin = slist.min()
@@ -854,7 +871,17 @@ class ComputeCrltn( ComputeRdf ):
             i += 1
             nr += len( df_sq )
 
-    def AutoCrltn( self, RADIAL = True ):
+    def AutoCrltn( self, RADIAL = True, **kwargs ):
+        if 'rlist' in kwargs:
+            self.rlist = kwargs['rlist']
+#            print(self.rlist.shape)
+        if 'rvect' in kwargs:
+            self.rvect = kwargs['rvect']
+        if 'flist' in kwargs:
+            self.flist = kwargs['flist']
+#            print(self.flist.shape)
+           
+        #---
         self.RADIAL = RADIAL
         #--- histogram
         slist = self.rlist[self.rlist>0]
