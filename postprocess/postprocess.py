@@ -17,15 +17,15 @@ if __name__ == '__main__':
 	runs	 = [0,1,2]
 	jobname  = {
 				'1':'ElasticityT300/CoNiCrFe/itime0', 
-				'2':'MlTrain/CoNiCrFePCA', 
-				}['2']
-	DeleteExistingFolder = True
+				'2':'MlTrain/CoNiCrFePca', 
+				}['1']
+	DeleteExistingFolder = False
 	readPath = os.getcwd() + {
 								'1':'/../testRuns/Preparation/ElasticityT300/CoNiCrFe/itime200',
 								'2':'/../testRuns/glassCoNiCrFe',
- 							}['2'] #--- source
+ 							}['1'] #--- source
 	EXEC_DIR = '.'     #--- path for executable file
-	durtn = '23:59:59'
+	durtn = '01:59:59'
 	mem = '128gb'
 	partition = ['parallel','cpu2019','bigmem','single'][2] 
 	argv = "path=%s"%(readPath) #--- don't change! 
