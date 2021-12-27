@@ -17,7 +17,7 @@ if __name__ == '__main__':
 	runs	 = [0,1,2]
 	jobname  = {
 				'1':'ElasticityT300/CoNiCrFe/itime0', 
-				'2':'MlTrain/CoNiCrFeTSNE', 
+				'2':'MlTrain/CoNiCrFePCA', 
 				}['2']
 	DeleteExistingFolder = True
 	readPath = os.getcwd() + {
