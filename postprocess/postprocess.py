@@ -16,20 +16,20 @@ if __name__ == '__main__':
 #
 	runs	 = [0,1,2]
 	jobname  = {
-				'1':'ElasticityT300/Co5Cr2Fe40Mn27Ni26/itime200', 
-				'2':'MlTrain/Co5Cr2Fe40Mn27Ni26TSNE', 
+				'1':'ElasticityT300/CoNiCrFe/itime200', 
+				'2':'MlTrain/CoNiCrFeTSNE', 
 				}['2']
 	DeleteExistingFolder = True
 	readPath = os.getcwd() + {
-								'1':'/../testRuns/Preparation/ElasticityT300/Co5Cr2Fe40Mn27Ni26/itime200',
-								'2':'/../testRuns/glassCo5Cr2Fe40Mn27Ni26',
+								'1':'/../testRuns/Preparation/ElasticityT300/CoNiCrFe/itime200',
+								'2':'/../testRuns/glassCoNiCrFe',
  							}['2'] #--- source
 	EXEC_DIR = '.'     #--- path for executable file
 	durtn = '23:59:59'
 	mem = '128gb'
 	partition = ['parallel','cpu2019','bigmem','single'][2] 
 	argv = "path=%s"%(readPath) #--- don't change! 
-	argv2nd = "itime=2000000\nindx=5" 
+	argv2nd = "itime=2000000\nindx=2" 
 	PYFILdic = { 
 		0:'ElasticConstants.ipynb',
 		1:'analyzePlasticity.ipynb',
