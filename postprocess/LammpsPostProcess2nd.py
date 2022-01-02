@@ -871,6 +871,44 @@ class ComputeCrltn( ComputeRdf ):
             i += 1
             nr += len( df_sq )
 
+    def AutoCrltn2nd( self, RADIAL = True, **kwargs ):
+        if 'rlist' in kwargs:
+            self.rlist = kwargs['rlist']
+#            print(self.rlist.shape)
+        if 'rvect' in kwargs:
+            self.rvect = kwargs['rvect']
+        if 'xlist' in kwargs:
+            self.xlist = kwargs['xlist']
+        if 'ylist' in kwargs:
+            self.ylist = kwargs['ylist']
+        #---
+        self.RADIAL = RADIAL
+        #--- histogram
+        rmin = self.rlist.min()
+        rmax = self.rlist.max()
+
+        if RADIAL:
+            nbin = int((rmax-rmin)/self.dx)
+            bins = np.linspace(rmin,rmax,nbin) #np.logspace(np.log10(rmin),np.log10(rmax),ndecades*4)
+            #
+            self.xmean, bin_edges = np.histogram( self.rlist, bins = bins, weights = self.xlist ) #--- \sum xi
+            self.ymean, bin_edges = np.histogram( self.rlist, bins = bins, weights = self.ylist ) #--- \sum yi
+            self.x2mean, bin_edges = np.histogram( self.rlist, bins = bins, weights = self.xlist * self.xlist ) #--- \sum xi.xi
+            self.y2mean, bin_edges = np.histogram( self.rlist, bins = bins, weights = self.ylist * self.ylist ) #--- \sum yi.yi
+            self.xymean, bin_edges = np.histogram( self.rlist, bins = bins, weights = self.xlist * self.ylist ) #--- \sum xi.yi
+            #
+            self.rmean, bin_edges = np.histogram( self.rlist, bins = bins, weights = self.rlist ) #--- \sum r_i
+            self.count, bin_edges = np.histogram( self.rlist, bins = bins ) #--- n_i
+            #
+            self.xmean /= self.count
+            self.ymean /= self.count
+            self.x2mean /= self.count
+            self.y2mean /= self.count
+            self.xymean /= self.count
+            self.rmean /= self.count #--- average distance: \sum r_i/n_i
+#            self.fmean /= self.count
+            
+            
     def AutoCrltn( self, RADIAL = True, **kwargs ):
         if 'rlist' in kwargs:
             self.rlist = kwargs['rlist']
@@ -939,7 +977,13 @@ class ComputeCrltn( ComputeRdf ):
 
     def Get( self ):
         if self.RADIAL:
-            return self.rmean, self.fmean, 1/self.count**0.5
+#            pdb.set_trace()
+
+            stdx = (self.x2mean -  self.xmean * self.xmean)**.5
+            stdy = (self.y2mean -  self.ymean * self.ymean)**.5
+            crltn = (self.xymean-self.xmean*self.ymean)/stdx/stdy
+#            return self.rmean, self.fmean, 1/self.count**0.5
+            return self.rmean, crltn, 1/self.count**0.5
         else:
             return self.rx, self.ry, self.rz,  self.fmean, 1/self.count**0.5
 
@@ -1103,6 +1147,138 @@ class ComputeStrn( Compute ):
 #		return Atoms(**df.to_dict(orient = 'list ') )
 
 
+class AngularStruct:
+    def __init__(self,neighh):
+        '''
+            constructor call: neighbor list as input
+        '''
+        
+        #--- group based on atom id
+        self.groups = neighh.groupby(by='id').groups #--- dictionary key: atomi val: index
+        #--- atom IDs as input 
+        self.atomis = self.groups.keys() #np.arange(1,10,1) #groups.keys()
+        #---
+        self.neigh = neighh
+        
+    def GetPairs(self,atomJs):
+        '''
+            return all pairs out of an input list of atoms
+        '''
+        indxj,indxk=np.meshgrid(atomJs,atomJs)
+        return np.array(list(zip(indxj.flatten(),indxk.flatten())))
+
+        
+    def cost(self,a,b):
+        '''
+            inner product between unit vectors a, b
+        '''
+        return np.dot(a,b)
+        
+    def GetTriplets(self,atomi):
+        '''
+            return a dataframe of triplets and associated distance vectors
+        '''
+        atomJs = self.neigh.iloc[self.groups[atomi]]['J'].astype(int).to_list()
+        dx = self.neigh.iloc[self.groups[atomi]]['DX'].to_list()
+        dy = self.neigh.iloc[self.groups[atomi]]['DY'].to_list()
+        dz = self.neigh.iloc[self.groups[atomi]]['DZ'].to_list()
+        #
+        indx_ij_ik = self.GetPairs(atomJs)
+        indx_j = indx_ij_ik[:,0]
+        indx_k = indx_ij_ik[:,1]
+        filtr = indx_j < indx_k #--- avoid double counting
+        indx_j = indx_j[ filtr ]
+        indx_k = indx_k[ filtr ]
+        #    
+        dx_ij_ik = self.GetPairs(dx)[ filtr ]
+        dy_ij_ik = self.GetPairs(dy)[ filtr ]
+        dz_ij_ik = self.GetPairs(dz)[ filtr ]
+        listi = np.ones(len(indx_j),dtype=int)*atomi
+        #
+        dx_ik = dx_ij_ik[:,1]
+        dx_ij = dx_ij_ik[:,0]
+        dx_jk = dx_ik - dx_ij
+        #
+        dy_ik = dy_ij_ik[:,1]
+        dy_ij = dy_ij_ik[:,0]
+        dy_jk = dy_ik - dy_ij
+        #
+        dz_ik = dz_ij_ik[:,1]
+        dz_ij = dz_ij_ik[:,0]
+        dz_jk = dz_ik - dz_ij
+        #
+        r2_ik = dx_ik * dx_ik +  dy_ik * dy_ik + dz_ik * dz_ik
+        r2_ij = dx_ij * dx_ij +  dy_ij * dy_ij + dz_ij * dz_ij
+        r2_jk = dx_jk * dx_jk +  dy_jk * dy_jk + dz_jk * dz_jk
+        #
+        rij = np.sqrt(r2_ij)
+        rik = np.sqrt(r2_ik)
+        #
+        dx_ij /= rij
+        dx_ik /= rik
+        #
+        dy_ij /= rij
+        dy_ik /= rik
+        #
+        dz_ij /= rij
+        dz_ik /= rik
+        #
+        slist=np.concatenate((np.c_[listi],np.c_[indx_j],np.c_[indx_k], 
+                              np.c_[dx_ij], np.c_[dx_ik], 
+                              np.c_[dy_ij], np.c_[dy_ik], 
+                              np.c_[dz_ij], np.c_[dz_ik],
+                              np.c_[r2_ij], np.c_[r2_ik], np.c_[r2_jk]
+
+                             ),axis=1,dtype=object)
+
+        return pd.DataFrame(slist,columns=['i','j','k','dxij','dxik',
+                                                       'dyij','dyik',
+                                                       'dzij','dzik',
+                                                       'r2_ij', 'r2_ik', 'r2_jk'
+                                          ])
+        
+    def AngularStructPerAtom(self,atomi):
+        '''
+            Return triplets and associated length and angle
+        '''
+        #--- data frame of triplets
+    #    t0=time.time()
+        tmp = self.GetTriplets(atomi) #--- return (atomi,j,k) triplets
+    #    print('assembly: t=%s s'%(time.time()-t0))
+        #--- compute density
+    #    a2 = a * a
+    #    t0=time.time()
+        col1st = tmp.apply(lambda x: x.r2_ij+x.r2_ik+x.r2_jk,axis=1)
+        col2nd = tmp.apply(lambda x: self.cost(np.array([x.dxij,x.dyij,x.dzij]),np.array([x.dxik,x.dyik,x.dzik])),
+              axis=1)
+
+    #    print('compute: t=%s s'%(time.time()-t0))
+        #--- return density of atomi
+        return pd.DataFrame({'i':tmp.i,'j':tmp.j,'k':tmp.k,'r2':col1st,'cost':col2nd})
+        
+    
+    def GetDistAngle(self):
+        '''
+            Assemble list of triplets and associated lengths and angles
+        '''
+        slist = list(map(lambda x:self.AngularStructPerAtom(x),self.atomis))
+        list_concat = np.concatenate(slist)
+        self.DataFrameDistAng = pd.DataFrame(list_concat,columns=['i','j','k','r2','cost'])
+
+    def Get(self,a,b,c):
+        '''
+            Return feature vector corresponding to parameter list (a,b,c)
+        '''
+        a2 = a * a
+        rho = self.DataFrameDistAng.apply(lambda x: 
+                        np.exp(-(x.r2)/a2)*
+                        (1.0+b*x.cost)**c,
+              axis=1)        
+        tmp=pd.DataFrame(np.c_[self.DataFrameDistAng.i,rho],columns=['id','rho'])
+        tmp_sum=tmp.groupby(by='id').rho.agg(np.sum)
+        return np.array(tmp_sum)
+        
+    
 if __name__ in '__main__':
 
 #     fileName = '/Users/Home/Desktop/Tmp/txt/git/CrystalPlasticity/BmgData/FeNi_glass.dump'
@@ -1140,3 +1316,5 @@ if __name__ in '__main__':
 #     crltn.Distance()
 #     crltn.AutoCrltn(RADIAL = True)
 #     bin_edges,  hist, err = crltn.Get()
+
+
