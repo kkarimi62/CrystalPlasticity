@@ -1229,7 +1229,7 @@ class AngularStruct:
                               np.c_[dz_ij], np.c_[dz_ik],
                               np.c_[r2_ij], np.c_[r2_ik], np.c_[r2_jk]
 
-                             ),axis=1,dtype=object)
+                             ),axis=1) #,dtype=object)
 
         return pd.DataFrame(slist,columns=['i','j','k','dxij','dxik',
                                                        'dyij','dyik',
