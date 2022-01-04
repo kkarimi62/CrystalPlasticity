@@ -1,0 +1,44 @@
+boundary p p p
+#----------------------------------------------------------------------------------------#
+
+#------------------------------ General variables ---------------------------------------#
+
+ # Time variables
+
+  variable        t_eq      equal     100000        # Equlibration time
+  variable        dt        equal     0.001         # Time step
+  variable        nthermo   equal     1000     		# output frequency
+  variable		  Pstart    equal     0.01
+  variable		  Pdamp		equal     10*${dt}
+  variable		  Pstop    equal      ${Pstart}
+
+#----------------------------------------------------------------------------------------#
+
+  units           metal
+  atom_style      atomic
+  read_data       data.txt    
+
+# Interatomic potential information.
+
+  neigh_modify    delay   0
+  pair_style      soft ${cutoff}
+  pair_coeff      * *  1.0
+  timestep        ${dt}
+  
+
+
+#-------------------                 Simulation & output setup    ---------------------------
+  fix 1 all nve
+  fix 2 all viscous 0.006
+  fix 3 all press/berendsen iso ${Pstart} ${Pstop} ${Pdamp}
+
+  thermo          ${nthermo}
+#  thermo_modify   lost      ignore
+  dump    1 all custom ${nthermo} ${OUT_PATH}/dumpFile.xyz id type x y z 
+  dump_modify 1 flush yes format line "%d %d %4.3e %4.3e %4.3e"
+  run             ${t_eq}
+
+  reset_timestep  0
+  dump    2 all custom 1 ${OUT_PATH}/dumpFileCords.xyz id type x y z 
+  dump_modify 2 flush yes format line "%d %d %4.3e %4.3e %4.3e"
+  run	0

@@ -1,0 +1,37 @@
+LAMMPS (29 Oct 2020)
+#----------------------------------------------------------------------------------------#
+
+#------------------------------ General variables ---------------------------------------#
+ # Simulation variables
+
+  variable        T         equal     300
+
+ # Time variables
+
+  variable        t_eq      equal     100000        # Equlibration time
+  variable        dt        equal     0.001         # Time step
+  variable        damp_t    equal     200*${dt}     # Thermostat damping
+  variable        damp_t    equal     200*0.001     
+  variable        damp_p    equal     2500*${dt}    # Barostat damping
+  variable        damp_p    equal     2500*0.001    
+  variable        nthermo   equal     1000     		# output frequency
+#----------------------------------------------------------------------------------------#
+
+  units           metal
+  atom_style      atomic
+  read_data       data.txt
+Reading data file ...
+  orthogonal box = (0.0000000 0.0000000 0.0000000) to (1.0000000 1.0000000 1.0000000)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  1000 atoms
+  read_data CPU = 0.002 seconds
+
+# Interatomic potential information.
+
+  neigh_modify    delay   0
+  pair_style      meam/c
+  pair_coeff      * *  ${pair_coeff_args} #library_CoNiCrFeMn.meam Co Ni Cr Fe Mn parameters.meam Co Ni Cr Fe Mn
+  pair_coeff      * *  library_CoNiCrFeMn.meam Co Ni Cr Fe Mn parameters.meam Co Ni Cr Fe Mn 
+ERROR: Cannot open MEAM library file  (../pair_meamc.cpp:223)
+Last command:   pair_coeff      * *  ${pair_coeff_args} #library_CoNiCrFeMn.meam Co Ni Cr Fe Mn parameters.meam Co Ni Cr Fe Mn

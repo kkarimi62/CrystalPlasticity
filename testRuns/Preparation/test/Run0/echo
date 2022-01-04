@@ -1,0 +1,9 @@
+LAMMPS (29 Oct 2020)
+Reading data file ...
+  orthogonal box = (0.0000000 0.0000000 0.0000000) to (79.732439 79.732439 79.732439)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  50688 atoms
+  read_data CPU = 0.139 seconds
+ERROR: Could not find fix group ID (../modify.cpp:815)
+Last command:   fix all viscous 1.0

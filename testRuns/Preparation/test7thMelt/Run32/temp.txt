@@ -1,0 +1,2 @@
+# Fix print output for fix extra
+2.10551181102362 -nan

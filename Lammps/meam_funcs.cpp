@@ -18,6 +18,9 @@
 #include "meam.h"
 #include "math_special.h"
 #include <cmath>
+#include <cassert>
+#include <math.h>
+#include <stdio.h>
 
 using namespace LAMMPS_NS;
 
@@ -439,9 +442,14 @@ MEAM::Get_ddrho1drdr(int i, //--- deriv of 4.30(a) wrt rij
                     ){
         double rij2 = rij * rij;
         double a1 = 2 * sij / rij;
+        double da1 = -2.0 * sij / rij2;
         double drho1dr1 = a1 * (drhoa1j - rhoa1j / rij) * arg1i1; //--- 4.30(a)
-
-        double ddrho1ddr1 = a1 * ( ( - 0.5 * drho1dr1 / sij ) + ( ddrhoa1j - drhoa1j / rij + rhoa1j / rij2 ) * arg1i1 + (drhoa1j - rhoa1j / rij) * arg1i1_d ); 
+   
+         double ddrho1ddr1 = da1 * (drhoa1j - rhoa1j / rij) * arg1i1 + 
+                              a1 * (ddrhoa1j - (drhoa1j/rij-rhoa1j/rij2)) * arg1i1 +
+                              a1 * (drhoa1j - rhoa1j / rij) * arg1i1_d;
+        
+//        double ddrho1ddr1 = a1 * ( ( - 0.5 * drho1dr1 / sij ) + ( ddrhoa1j - drhoa1j / rij + rhoa1j / rij2 ) * arg1i1 + (drhoa1j - rhoa1j / rij) * arg1i1_d ); 
         return ddrho1ddr1;
 }
 
@@ -455,8 +463,10 @@ MEAM::Get_ddrho1drmdr(int i,
         double a1;
         int m;
         a1 = 2.0 * sij / rij;
+        double da1 = -a1/rij;
         for (m = 0; m < 3; m++) {
-          ddrho1drmdr1[m] = a1 * ( ( - rhoa1j * arho1[i][m] / rij ) + ( rhoa1j * darho1dri[m] ) + ( arho1[i][m] * drhoa1j ) );
+          ddrho1drmdr1[m] =  da1 * rhoa1j * arho1[i][m] + a1 * drhoa1j * arho1[i][m] + a1 * rhoa1j * darho1dri[m];
+//          ddrho1drmdr1[m] = a1 * ( ( - rhoa1j * arho1[i][m] / rij ) + ( rhoa1j * darho1dri[m] ) + ( arho1[i][m] * drhoa1j ) );
         }
 }
 //---------------------------------------------------------------------------
@@ -544,8 +554,9 @@ MEAM::Get_ddrho2drmdrn(int i,
 //          drho2drm1[m] = 0.0;
 //          ddrho2drmdr1[m] = 0.0;
           for (n = 0; n < 3; n++) {
-             arg = rhoa2j * sij * ( delij[ m ] * delij[ n ] / rij2 + (1 ? m == n : 0) );
-             ddrho2drmdrn1[ nv2 ] = a2 * rhoa2j * ( arg + arho2[i][this->vind2D[n][m]] );
+//             arg = rhoa2j * sij * ( delij[ m ] * delij[ n ] / rij2 + (m == n ? 1 : 0) );
+//             ddrho2drmdrn1[ nv2 ] = a2 * rhoa2j * ( arg + arho2[i][this->vind2D[n][m]] ); //???
+             ddrho2drmdrn1[ nv2 ] = (4/rij2)*rhoa2j*rhoa2j*sij*sij*(m == n ? 1 : 0);
             nv2++;
           }
         }
@@ -626,29 +637,54 @@ MEAM::Get_ddrho3drmdrn( int i,
                        double* ddrho3drmdrn1 //--- modify 
                      ){
         double drho3drm1[3];
-        int m, n, p, nv2;
-        double arg1;
+        int m, k, n, p, nv2;
+        double dargdk,darho3imnpdk,darho3jmnpdk, darho3bimdrk;
+        double arg1,arg;
         double rij2 = rij * rij;
         double rij3 = rij * rij2;
-        double a3 = 6 * sij / rij3;
-        double a3a = 6 * sij / (5 * rij);
+        double rij4 = rij2 * rij2;
+        double a3 = 6.0* rhoa3j* sij / rij3;
+        double a3a = 6.0 * rhoa3j* sij / (5 * rij);
+         double a3b = rhoa3j * sij / rij3;
+         double a3c = rhoa3j*sij / rij;
    
         nv2 = 0;
         for (m = 0; m < 3; m++) {
-          for (n = 0; n < 3; n++) {
-            arg1 = 0.0;
-            for (p = n; p < 3; p++) {
-//              arg = delij[n] * delij[p] * this->v2D[nv2]; //--- ?????????
-              arg1 +=  ( arho3[i][this->vind3D[m][n][p]] + arho3[i][this->vind3D[m][p][n]] ) * delij[p];
-            }
-            arg1 +=  rhoa3j * sij * ((1 ? m == n : 0) * rij2 + 2.0 * delij[m]*delij[n]) / rij;
-            ddrho3drmdrn1[nv2] = rhoa3j * (a3 * arg1 -  a3a * rhoa3j * sij * ( 1 ? m == n : 0 ) / rij );
-            nv2 = nv2 + 1;
+          for (n = m; n < 3; n++) {
+            ddrho3drmdrn1[nv2] = a3*(a3b*(rij4*( m == n ? 1 : 0 )+2*rij2*delij[m]*delij[n])+2*a3b*rij2*delij[m]*delij[n])-a3a*a3c*( m == n ? 1 : 0 ); 
+             nv2++;
           }
-          //
- //--- negative sign???
-          //
-        }
+
+           
+          
+       }
+   
+   
+         //arho3[i][nv3]=rhoa3j.r[m].r[n].r[p]/r^3.s
+         //arho3b[i][m]=rhoa3j.r[m].s/r   
+//         nv2 = 0;
+//         for (m = 0; m < 3; m++) {
+//            for (k = m; k < 3; k++) {
+//               ddrho3drmdrn1[nv2]=0.0;
+//               for (n = 0; n < 3; n++) {
+//                for (p = n; p < 3; p++) {
+//                  arg = delij[n] * delij[p] * this->v2D[nv2];
+//                  dargdk = (( k == n ? 1 : 0 ) * delij[p]+delij[n] * ( p == k ? 1 : 0 )) * this->v2D[nv2];
+//                  darho3imnpdk = a3b * (( k == m ? 1 : 0 )*delij[n]*delij[p] + //---darho3[i][this->vind3D[m][n][p]]drk
+//                                                        delij[m]*( k == n ? 1 : 0 )*delij[p] + 
+//                                                        delij[m]*delij[n]*( k == p ? 1 : 0 ));
+//                  ddrho3drmdrn1[nv2] += darho3imnpdk * arg + arho3[i][this->vind3D[m][n][p]] * dargdk; //--- 4.30(i)
+//                }
+//              }
+//              darho3bimdrk =  a3c * ( m == k ? 1 : 0 ); //--- darho3b[i][m]/drk
+//              ddrho3drmdrn1[nv2] = a3 * rhoa3j * ddrho3drmdrn1[nv2] - a3a * rhoa3j * darho3bimdrk;
+//              nv2 = nv2 + 1;
+
+//            } // end of k loop
+//         }   // end of m loop
+   
+   
+   
 }
 //-------------------------------
 
@@ -695,7 +731,30 @@ MEAM::Get_ddrhodrdr(  int i, int elti,
                          rho[ i ] * ddrho_bkgd_drdr;        
         ddrhodrdr1 /= rho_bkgd; //rho_bkgd defined?
         return ddrhodrdr1;
+        
+
+
+//       ddgamma1[i] = (dGdr - 2 * ddGdrdr * gamma[i]- 2 * dGdr * dgamma[i]) * denom +
+//                    (G - 2 * dGdr * gamma[i]) * ddenom; //--- Eq. (4.36a): prefactor in the 1st term of the RHS 
+
+        
+        
+//         ddrhodrdr1 = ddgamma1[i] * drho0dr1 + dgamma1[i] * ddrho0dr1 +
+//                      ddgamma2[i] * (dt1dr1 * rho1[i] + t1i * drho1dr1 + dt2dr1 * rho2[i] + t2i * drho2dr1 + dt3dr1 * rho3[i] + t3i * drho3dr1) + 
+//                      dgamma2[i] * (ddt1drdr1 * rho1[i] + dt1dr1 * drho1dr[i]+ 
+//                                    dt1idr * drho1dr1 + t1i * ddrho1drdr1+
+//                                    ddt2drdr1 * rho2[i] + dt2dr1 * drho2dr[i] + 
+//                                    dt2idr * drho2dr1 + t2i * ddrho2drdr1 +
+//                                    ddt3drdr1 * rho3[i] + dt3dr1 * drho3dr[i]+ 
+//                                    dt3idr * drho3dr1 + t3i * ddrho3drdr1) -
+//                      ddgamma3[i] * (shpi[0] * dt1dr1 + shpi[1] * dt2dr1 + shpi[2] * dt3dr1) -
+//                      dgamma3[i] * (shpi[0] * ddt1drdr1 + shpi[1] * ddt2drdr1 + shpi[2] * ddt3drdr1); //shpi(r)? 
 }
+
+
+
+
+
 //-----------------------------------------------------------------------------
 void
 MEAM::Get_ddrhodrmdr( int i, int elti, //--- deriv. of Eq. 4.36(c) wrt. r
@@ -862,4 +921,137 @@ MEAM::Get_ddrhodrmds( int i, int elti, //--- deriv. of Eq. 4.36(c) wrt. r
             ddrhodrmds[ m ] = dLHS;
           }
 }
+
+double MEAM::GetModulus(int i, int j, double** x, int numneigh, int* firstneigh, int numneigh_full, int* firstneigh_full, int* type, int* fmap, double sij,
+                        int alpha, int beta, int gamma, int lambda,  double r3,double ds, double dds, double recip,
+                        double dUdrij, double dUdsij, double ddUddrij, double ddUdrijds, double ddUddsij,
+                        double* dUdrijm, double* delij, double* ddUdrdrijm, double* ddUdrijmds, double* ddUdrmdrn){
+     int nv2=0,m,n;
+     for(m=0;m<alpha+1;m++){
+       for(n=m;n<3;n++){
+         if(m==alpha and n==gamma)
+          break;
+         nv2++;
+       }
+     }
+
+   //
+   double ddUdrijmds_tmp[ 3 ];
+   if (iszero(ds)) {
+     dUdsij = 0.0;
+     ddUddsij = 0.0;
+     for (m = 0; m < 3; m++){
+        ddUdrijmds_tmp[m] = ddUdrijmds[m];
+        ddUdrijmds[m] = 0.0;
+     }
+     ddUdrijds = 0.0;
+    }
+   
+   double dsg_alpha_beta_drm[3];
+   double recip2 = recip * recip;
+   double dsg_alpha_beta_dr = ((-recip2*(dUdrij+dUdsij*ds)+recip*(ddUddrij+ddUdrijds*ds+dUdsij*dds))*delij[alpha]+ddUdrdrijm[alpha])*delij[beta];
+   double dsg_alpha_beta_ds = (recip*(ddUdrijds+ddUddsij*ds)*delij[alpha]+ddUdrijmds[alpha])*delij[beta];
+   dsg_alpha_beta_drm[gamma] = (recip*((ddUdrdrijm[gamma]+ddUdrijmds[gamma]*ds)*delij[alpha]+(dUdrij+dUdsij*ds)*(alpha == gamma ? 1 : 0))+ddUdrmdrn[nv2])*delij[beta];
+
+   double mod2bdy = (recip*(dsg_alpha_beta_dr+dsg_alpha_beta_ds*ds)*delij[gamma]+dsg_alpha_beta_drm[gamma])*delij[lambda];
+   double mod3bdy = 0.0;
+  
+  for (m = 0; m < 3; m++){
+     ddUdrijmds[m] = ddUdrijmds_tmp[m];
+  }
+   
+        //     Now compute forces on other atoms k due to change in sij     stiffness ?
+        
+        if (iszero(sij) || isone(sij) ) return mod2bdy; //: cont jn loop
+        double dxik(0), dyik(0), dzik(0), dsij1, deljk[3], delki[3];
+        double dxjk(0), dyjk(0), dzjk(0), dsij2;
+        double rij2 = 1.0/recip2, rij=1.0/recip;
+        double da,dcikj,dsikj,dsij,ddsij1drij,ddsij2drij,dsg_alpha_beta_drjk,dsg_alpha_beta_drik;
+        int kn,k,eltk,elti,eltj;
+        elti = fmap[type[i]];
+        eltj = fmap[type[j]];
+         
+        for (kn = 0; kn < numneigh_full; kn++) {
+          k = firstneigh_full[kn];
+          eltk = fmap[type[k]];
+          if (k != j && eltk >= 0) {
+            double xik, xjk, cikj, sikj, dfc, ddfc, a;
+            double dCikj1, dCikj2;
+            double ddCikj1, ddCikj2;
+            double delc, rik2, rjk2, rik, rjk;
+            
+            const double Cmax = this->Cmax_meam[elti][eltj][eltk];
+            const double Cmin = this->Cmin_meam[elti][eltj][eltk];
+
+            dsij1 = 0.0;
+            dsij2 = 0.0;
+            dsg_alpha_beta_drik=0.0;
+            dsg_alpha_beta_drjk=0.0;
+            if (!iszero(sij) && !isone(sij)) {
+              const double rbound = rij2 * this->ebound_meam[elti][eltj];
+              delc = Cmax - Cmin;
+              dxjk = deljk[0]=x[k][0] - x[j][0];
+              dyjk = deljk[1]=x[k][1] - x[j][1];
+              dzjk = deljk[2]=x[k][2] - x[j][2];
+              rjk2 = dxjk * dxjk + dyjk * dyjk + dzjk * dzjk;
+              rjk = sqrt( rjk2 );
+              if (rjk2 <= rbound) {
+                dxik = delki[0]=x[k][0] - x[i][0];
+                dyik = delki[1]=x[k][1] - x[i][1];
+                dzik = delki[2]=x[k][2] - x[i][2];
+                rik2 = dxik * dxik + dyik * dyik + dzik * dzik;
+                rik = sqrt( rik2 );
+                if (rik2 <= rbound) {
+                  xik = rik2 / rij2;
+                  xjk = rjk2 / rij2;
+                  dxik=-2*rik2 /rij2/rij;
+                  dxjk = -2*rjk2 / rij2/rij;
+                  a = 1 - (xik - xjk) * (xik - xjk);
+                  da = -2*(xik - xjk) * (dxik - dxjk);
+                  if (!iszero(a)) {
+                    cikj = (2.0 * (xik + xjk) + a - 2.0) / a;
+                    dcikj = (2.0 * (dxik + dxjk) + da) / a +(2.0 * (xik + xjk) + a - 2.0) *(-da)/ a / a;
+
+                    if (cikj >= Cmin && cikj <= Cmax) {
+                      assert(!iszero(delc));
+                      cikj = (cikj - Cmin) / delc;
+                      dcikj /= delc;
+
+                      sikj = dfcut(cikj, dfc, ddfc);
+                      dsikj = dfc * dcikj;
+                      dCfunc2(rij2, rik2, rjk2, dCikj1, dCikj2); //--- 4.17b/rik, 4.17c/rjk
+                      ddCfunc2(rij2, rik2, rjk2, ddCikj1, ddCikj2 );
+                      dsij=ds;
+                      assert(!iszero(sikj));
+                      a = sij / delc * dfc / sikj;
+                      da = (dsij*dfc/sikj+sij*ddfc*dcikj/sikj-dsikj*sij*dfc/sikj/sikj)/delc;
+
+                      dsij1 = a * dCikj1; //--- 4.22b/rik: units of s/r^2
+                      dsij2 = a * dCikj2; //--- 4.22c/rjk
+                       
+                      ddsij1drij = da * dCikj1+a * ddCikj1; //--- units of s/r^3
+                      ddsij2drij = da * dCikj2+a * ddCikj2; //--- units of s/r^3//                    
+
+                      dsg_alpha_beta_drjk = recip * dUdsij * ddsij2drij * delij[alpha] * delij[beta];
+                      dsg_alpha_beta_drik = recip * dUdsij * ddsij1drij * delij[alpha] * delij[beta];
+                    }
+                  }
+                }
+              }
+            }
+
+              //
+              //     Tabulate per-atom virial as symmetrized stress tensor
+            if (!iszero(dsij1) || !iszero(dsij2) || !iszero(dsg_alpha_beta_drjk) || !iszero(dsg_alpha_beta_drik) ){ //modify!!!!!!!
+              mod3bdy += (dsg_alpha_beta_drjk + dsg_alpha_beta_ds * dsij2) * deljk[gamma] * deljk[lambda]+
+                         (dsg_alpha_beta_drik + dsg_alpha_beta_ds * dsij1) * delki[gamma] * delki[lambda];
+               
+            }
+          }
+          //     end of k loop
+        }
+         return mod2bdy + mod3bdy;
+     
+ };
+
 

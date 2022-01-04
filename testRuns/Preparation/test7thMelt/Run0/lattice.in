@@ -1,0 +1,50 @@
+log Co0Ni0.5Cr0Fe0.5Mn0_30.log
+units           metal
+boundary        p p p
+atom_style      atomic
+###################### variable setting ########################################
+variable        a equal 3.58 # define the primary lattice constant “a”
+###################### create fcc  simulation for alloy ########################## 
+lattice         fcc $a
+region          box block 0 20 0 20 0 20
+create_box      5 box
+create_atoms    1 box
+variable N equal count(all)
+variable N_comp string Co0Ni0.5Cr0Fe0.5Mn0_30
+variable Ni_n equal ${N}*0.5
+variable Fe_n equal ${N}*0.5
+group kind1 type 1
+set group kind1 type/subset 2 ${Ni_n} 940248
+group kind2 type 2
+group remain1 subtract all  kind2
+set group remain1 type/subset 4 ${Fe_n} 54011
+###################### Define Interatomic Potential ######################
+mass 1 58.993
+mass 2 58.6934
+mass 3 51.9961
+mass 4 55.845
+mass 5 54.9380
+neigh_modify delay 0
+pair_style meam/c
+#pair_coeff * * ../../library_CoNiCrFeMn.meam Co Ni Cr Fe Mn ../../parameters.meam Co Ni Cr Fe Mn
+pair_coeff * * ${MEAM_library_DIR}/library_CoNiCrFeMn.meam Co Ni Cr Fe Mn ${MEAM_library_DIR}/parameters.meam Co Ni Cr Fe Mn
+neighbor    0.3 bin                ## define parameters for neighbor list
+neigh_modify    delay 5               ## define parameters for neighbor list
+
+####################### calculated properties SETTINGS ######################
+compute peratom all pe/atom
+compute eatoms all reduce sum c_peratom
+compute csym all centro/atom fcc
+#fix  1 all box/relax iso 0.0 vmax 0.05
+####################### thermal properties output on screen ######################
+#timestep        0.005
+thermo 100
+thermo_style custom step pe c_eatoms press
+#dump 1 all custom 100 min_${N_comp}.atom id type x y z c_peratom
+####################### minimize the total energy ######################
+
+dump      1 all custom 1 xyz.dump id type x y z 
+fix	1	all nve
+run 0
+#min_style       cg
+#minimize 1e-25 1e-25 100000 1000000
