@@ -1,0 +1,82 @@
+#-----------------------------
+#--- Model parameters
+#-----------------------------
+
+variable Ntype	equal 5		#--- number of atom types
+variable Dt		equal 0.01 #--- discretization time
+variable Tinit 	equal 300.0  #--- initial temperature
+variable GammaDot	equal	1.0e-05 #--- shearing rate
+variable StrnMax 	equal 	0.2  #--- total strain
+variable tDampTemp 	equal 100*${Dt}   #--- thermostat equilibration time scale
+variable Pinit	equal 1.0132  #--- number of time steps
+
+#-----------------------------
+#--- Compute Variables
+#-----------------------------
+variable 	NTIME  equal  floor(${StrnMax}/${GammaDot}/${Dt}) #--- timesteps
+variable 	Nfreq  equal  floor(${NTIME}/200)  #--- number of time steps
+
+
+#-----------------------------
+#--- system details
+#-----------------------------
+units		metal
+atom_style	atomic
+boundary	p p p
+
+
+#-----------------------------
+#--- define box & lattice
+#-----------------------------
+read_data	data.txt
+change_box	all	triclinic
+
+#neigh_modify delay 0
+#neighbor    0.3 bin 
+#neigh_modify    delay 5
+
+#-----------------------------
+#--- interactions
+#-----------------------------
+pair_style meam/c
+pair_coeff * * ${MEAM_library_DIR}/library_CoNiCrFeMn.meam Co Ni Cr Fe Mn ${MEAM_library_DIR}/parameters.meam Co Ni Cr Fe Mn
+
+#---------------------------------------------------
+#--- print temperature, pressure, and volume
+#---------------------------------------------------
+variable varPress equal press
+variable varTemp equal temp
+variable varStep equal step
+variable varVolu equal vol
+fix extra all print ${Nfreq} "${varStep} ${varTemp} ${varPress} ${varVolu}" file temperature.txt
+
+#--- thermo
+thermo	${Nfreq}
+thermo_style	custom step ke pe press temp vol 
+
+#-----------------------------
+#--- set dynamics
+#-----------------------------
+timestep ${Dt}
+
+#-----------------------------
+#--- compute & dump variables
+#-----------------------------
+compute     1 all stress/atom NULL pair
+dump    	1 all custom ${Nfreq} ${OUT_PATH}/DumpFile.xyz id type x y z c_1[1] c_1[2] c_1[3] c_1[4] c_1[5] c_1[6] 
+dump_modify 1 flush yes format line "%d %d %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e"
+
+#-----------------------------
+#--- thermalize to room temperature
+#-----------------------------
+fix         fix_nvt all nvt/sllod temp ${Tinit} ${Tinit} ${tDampTemp}    drag    1.0
+
+#-----------------------------
+#--- set simple shear
+#-----------------------------
+fix         fix_def all deform 1  xy erate ${GammaDot}  units box  remap v
+
+run			${NTIME}
+
+restart		${Nfreq}	shear.restart
+

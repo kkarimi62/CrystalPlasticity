@@ -1,0 +1,20 @@
+units           metal
+boundary        p p p
+atom_style      atomic
+read_data		Zr54Cu46.init.dat
+mass            1  91.22 
+mass		2  63.54 
+pair_style      eam/alloy
+pair_coeff      * * ZrCu.lammps.eam Zr Cu
+timestep        0.002
+velocity        all create 2000 4928459 dist gaussian
+fix             1 all npt temp 2000 2000 0.1 iso 0 0 0.2 
+dump            melt all atom 100000 dump.dat
+#dump            melt all custom 1000 dump.atom.slow tag type xu yu zu vx vy vz  sxx syy szz
+restart         1000000  restart.*
+thermo          100
+#thermo_style    custom step temp etotal pe press vol pxx pyy pzz pyz pxz pxy
+run             100000
+unfix		1
+fix             2 all npt temp  2000 0.01 0.1 iso 0 0 0.2
+run		10000000

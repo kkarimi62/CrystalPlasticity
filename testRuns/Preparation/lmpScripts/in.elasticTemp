@@ -1,0 +1,111 @@
+# Compute elastic constant tensor for a crystal
+#
+# Written by Aidan Thompson (Sandia, athomps@sandia.gov)
+#
+#  This script uses the following three include files.
+#
+#   init.mod      (must be modified for different crystal structures)
+# 	       	  Define units, deformation parameters and initial
+#		  configuration of the atoms and simulation cell.  
+#
+#
+#   potential.mod    (must be modified for different pair styles)
+# 		     Define pair style and other attributes 
+#		     not stored in restart file
+#
+#
+#   displaceSoftWall.mod    (displaceSoftWall.mod should not need to be modified)
+# 		    Perform positive and negative box displacements 
+# 		    in direction ${dir} and size ${up}. 
+# 		    It uses the resultant changes 
+#		    in stress to compute one
+# 		    row of the elastic stiffness tensor
+#		    
+#		    Inputs variables:
+#		    	   dir = the Voigt deformation component 
+#		    		    (1,2,3,4,5,6)  
+#		    Global constants:
+#       	    	   up = the deformation magnitude (strain units)
+#       		   cfac = conversion from LAMMPS pressure units to 
+#               	   output units for elastic constants 
+#
+#
+#  To run this on a different system, it should only be necessary to 
+#  modify the files init.mod and potential.mod. In order to calculate
+#  the elastic constants correctly, care must be taken to specify
+#  the correct units in init.mod (units, cfac and cunits). It is also
+#  important to verify that the minimization of energy w.r.t atom
+#  positions in the deformed cell is fully converged.
+#  One indication of this is that the elastic constants are insensitive
+#  to the choice of the variable ${up} in init.mod. Another is to check
+#  the final max and two-norm forces reported in the log file. If you know
+#  that minimization is not required, you can set maxiter = 0.0 in 
+#  init.mod. 
+#
+
+#--- include files
+include ${INC}/init.mod
+#atom_modify map yes	#--- access to atom-based variables
+include ${INC}/CreateBox.mod
+include ${INC}/potential.mod
+
+include	${INC}/CompStrs0.mod #--- initial stress
+
+#--- compute variables
+variable	nrun	equal	floor(${teq}/${dt})	
+
+#--- Compute initial state
+velocity	all       create     $T     97364  mom    yes  rot  yes  dist  gaussian  # Dynamics starts
+fix			FixTherm        all        nvt temp   $T  $T  ${damp_t}  
+#fix fixLangevin all langevin ${temp} ${temp} ${tdamp} ${seed}
+run ${nrun}
+reset_timestep	0
+
+#
+variable tmp equal lx
+variable lx0 equal ${tmp}
+variable tmp equal ly
+variable ly0 equal ${tmp}
+variable tmp equal lz
+variable lz0 equal ${tmp}
+
+#
+#displace_atoms all random ${atomjiggle} ${atomjiggle} ${atomjiggle} 87287 units box
+#
+# Write restart
+#unfix 3
+write_restart restart.equil
+#
+# uxx Perturbation
+variable dir loop 6 6 #--- six modes
+	label loop0
+	include ${INC}/displace.mod #--- deform
+	#--- loop : compute current stress
+	include	${INC}/CompStrs1.mod #--- compute stress
+	#---
+	fix			FixTherm        all        nvt temp   $T  $T  ${damp_t}  
+	run ${nrun}
+	reset_timestep	0
+#	variable 	iatom 	loop ${natom} #0	${ncc}
+#		label loop1
+		#
+#		group	freeGr	delete
+#		group	frozGr	delete
+#		include ScriptGroup.${icel}.txt
+		#
+#		variable xx	equal	v_sxx0_${icel}
+#		variable yy	equal	v_pxx1_${dir}_${icel}
+#		print "${icel} ${xx} ${yy}" append pdir${dir}.txt
+#		include ${INC}/DerivStrs.mod
+		#thermo_style	custom	step	 v_sxx0_${icel}	v_pxx1_${icel}	
+		#run0
+#	next 	iatom
+#	jump	in.elasticSoftWall  loop1
+#	variable	iatom	delete
+	#--- end of inner loop
+next	dir
+jump	in.elasticTemp  loop0
+#--- end of outer loop
+
+#--- print
+#include ${INC}/print.mod

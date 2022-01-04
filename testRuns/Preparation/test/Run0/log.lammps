@@ -1,0 +1,60 @@
+LAMMPS (29 Oct 2020)
+Reading data file ...
+  orthogonal box = (0.0000000 0.0000000 0.0000000) to (21.544347 21.544347 21.544347)
+  1 by 1 by 1 MPI processor grid
+WARNING: Atom style in data file differs from currently defined atom style (../read_data.cpp:515)
+  reading atoms ...
+  1000 atoms
+  read_data CPU = 0.005 seconds
+Neighbor list info ...
+  update every 1 steps, delay 0 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 4.1544347
+  ghost atom cutoff = 4.1544347
+  binsize = 2.0772173, bins = 11 11 11
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair soft, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton
+      stencil: half/bin/3d/newton
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 4.419 | 4.419 | 4.419 Mbytes
+Step Temp E_pair E_mol TotEng Press 
+       0            0     854.3102            0     854.3102     130499.5 
+    1000 1.6932399e-45            0            0 2.1864956e-46 2.3354346e-44 
+    2000 2.696725e-97            0            0 3.4823049e-98 3.7195114e-96 
+    3000 4.2949178e-149            0            0 5.5460653e-150 5.9238503e-148 
+    4000 6.8402668e-201            0            0 8.832897e-202 9.4345733e-200 
+    5000 1.0894097e-252            0            0 1.4067643e-253 1.5025898e-251 
+    6000 1.7350397e-304            0            0 2.2404721e-305 2.3930878e-303 
+    7000            0            0            0            0            0 
+    8000            0            0            0            0            0 
+    9000            0            0            0            0            0 
+   10000            0            0            0            0            0 
+Loop time of 1.60984 on 1 procs for 10000 steps with 1000 atoms
+
+Performance: 536.700 ns/day, 0.045 hours/ns, 6211.801 timesteps/s
+99.5% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 1.0786     | 1.0786     | 1.0786     |   0.0 | 67.00
+Neigh   | 0.0083196  | 0.0083196  | 0.0083196  |   0.0 |  0.52
+Comm    | 0.16183    | 0.16183    | 0.16183    |   0.0 | 10.05
+Output  | 0.019328   | 0.019328   | 0.019328   |   0.0 |  1.20
+Modify  | 0.25484    | 0.25484    | 0.25484    |   0.0 | 15.83
+Other   |            | 0.08693    |            |       |  5.40
+
+Nlocal:        1000.00 ave        1000 max        1000 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        1667.00 ave        1667 max        1667 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        14424.0 ave       14424 max       14424 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 14424
+Ave neighs/atom = 14.424000
+Neighbor list builds = 6
+Dangerous builds = 0
+Total wall time: 0:00:01

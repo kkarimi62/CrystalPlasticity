@@ -1,0 +1,85 @@
+#-----------------------------
+#--- Model parameters
+#-----------------------------
+include ${INC}/init.mod
+include ${INC}/CreateBox.mod
+include ${INC}/potential.mod
+
+#-----------------------------
+#--- Compute Variables
+#-----------------------------
+variable	nRunEquilibrate	equal	${tEquilibrate}/${dt}
+variable	tMelting		equal	(${Tfinal}-${Tinit})/${TdotMelt}
+variable	tQuench			equal	(${Tfinal}-${Tinit})/${TdotQuench}
+variable	nRunMelting		equal	${tMelting}/${dt}
+variable	nRunQuench		equal	${tQuench}/${dt}
+variable	volume			equal	${natoms}*${a}^3.0/4.0 #--- natom * vol. of the voronoi cell
+variable 	lx				equal	${volume}^(1.0/3.0) 
+
+
+#--- print temperature, pressure, and volume
+variable varPress equal press
+variable varTemp equal temp
+variable varStep equal step
+variable varVolu equal vol
+fix extra all print ${nevery} "${varStep} ${varTemp} ${varPress} ${varVolu}" file temperature.txt
+
+
+#-----------------------------
+#--- set dynamics
+#-----------------------------
+timestep ${dt}
+
+#-----------------------------
+#--- compute & dump variables
+#-----------------------------
+compute     1 all stress/atom NULL pair
+dump        1 all custom ${nevery} ${OUT_PATH}/${DumpFile} id type x y z c_1[1] c_1[2] c_1[3] c_1[4] c_1[5] c_1[6]
+dump_modify 1 flush yes format line "%d %d %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e"
+
+
+# Setup minimization style
+fix     p1        all        box/relax   iso  ${Pinit} #vmax 0.001 #--- equilibrate at p=0
+minimize ${etol} ${ftol} ${maxiter} ${maxeval}
+unfix	p1
+
+#-----------------------------
+#--- thermalize to room temperature
+#-----------------------------
+velocity	all	create	${Tinit} 39849 mom yes rot yes dist gaussian
+#fix 		fix_nvt	all	nvt	temp	${Tinit}	${Tinit}	${damp_t}	drag	1.0
+#run			${nRunEquilibrate}
+#unfix		fix_nvt
+
+#-----------------------------
+#--- melt & quench
+#-----------------------------
+#--- initial equilibration
+fix		fix_initEq	all npt temp ${Tinit} ${Tinit} ${damp_t} iso ${Pinit} ${Pinit} ${damp_p} drag 1.0  
+run 	${nRunEquilibrate}
+unfix	fix_initEq
+
+#--- melting
+fix		fix_melt	all npt temp ${Tinit} ${Tfinal} ${damp_t} iso ${Pinit} ${Pinit} ${damp_p}  
+run		${nRunMelting}
+unfix	fix_melt
+
+#--- final equilibration
+fix		fix_finalEq	all npt temp ${Tfinal} ${Tfinal} ${damp_t} iso ${Pinit} ${Pinit} ${damp_p}  
+run 	${nRunEquilibrate}
+unfix	fix_finalEq
+
+#--- quench
+fix		fix_quench	all npt temp ${Tfinal} ${Tinit} ${damp_t} iso ${Pinit} ${Pinit} ${damp_p}  
+run		${nRunQuench}
+unfix	fix_quench
+
+#--- final equilibration
+fix		fix_finalEq	all npt temp ${Tinit} ${Tinit} ${damp_t} iso ${Pinit} ${Pinit} ${damp_p}  
+run 	${nRunEquilibrate}
+
+restart		${nevery}	quench.restart
+
+write_data  ${WriteData} nocoeff
+run			0
+

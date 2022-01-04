@@ -1,0 +1,93 @@
+#-----------------------------
+#--- Model parameters
+#-----------------------------
+
+variable Lx		equal 20.0  #--- system size 
+variable Ntype	equal 5		#--- number of atom types
+#variable Rho	equal 0.1	#--- number density
+variable a      equal 3.0   #--- lattice constant
+variable Dt		equal 0.001 #--- discretization time
+variable T 		equal 300.0 #--- temperature
+variable Tdamp 	equal 10*${Dt} #--- thermostat equilibration time scale
+variable Nrun	equal 1000  #--- number of time steps
+variable Nfreq	equal 10  #--- number of time steps
+
+#-----------------------------
+#--- other parameters
+#-----------------------------
+#variable a		equal	${1/RHO**(1.0/3.0)} #--- lattice constant
+
+#-----------------------------
+#--- system details
+#-----------------------------
+units		metal
+atom_style	atomic
+boundary	p p p
+
+#-----------------------------
+#--- read data file
+#-----------------------------
+#read_data       FeNi_glass_${initTemp}.data
+
+#--- define box & lattice
+region mybox block 0.0 ${Lx} 0.0 ${Lx} 0.0 ${Lx}
+create_box ${Ntype} mybox
+lattice fcc ${a} 
+create_atoms 1 box ratio 0.5 74637  
+create_atoms 2 box ratio 0.5 24658 
+#create_atoms 3 box ratio 0.2 524658
+#create_atoms 4 box ratio 0.2 4658
+#create_atoms 5 box ratio 0.2 9224658
+#change_box all triclinic
+
+#-----------------------------
+#--- define mass
+#-----------------------------
+#mass 1 58.993
+#mass 2 58.6934
+#mass 3 51.9961
+#mass 4 55.845
+#mass 5 54.9380
+
+#-----------------------------
+#--- interactions
+#-----------------------------
+#neigh_modify delay 0
+pair_style meam/c
+pair_coeff * * ${MEAM_library_DIR}/library_CoNiCrFeMn.meam Co Ni Cr Fe Mn ${MEAM_library_DIR}/parameters.meam Co Ni Cr Fe Mn
+
+#-----------------------------
+#--- set dynamics
+#-----------------------------
+timestep ${Dt}
+#fix 11 all setforce 0.0 0.0 0.0
+fix 		1 all nvt temp ${T} ${T} ${Tdamp}
+#fix         2 all deform 1  xy erate ${srate1}  units box  remap x
+
+#-----------------------------
+#--- compute & dump variables
+#-----------------------------
+compute 	1 all stress/atom NULL pair
+#dump      1 all custom 1 NiFe_glass-${initTemp}-${srate}.dump id type x y z vx vy vz  meam_force.cpp ln.967: 15+6+1
+dump    11 all custom ${Nfreq} virialStress.xyz id type x y z #c_1[1] c_1[2] c_1[3] c_1[4] c_1[5] c_1[6] c_1[22] 
+#dump 2 all custom 10000 dump.NiFe_glass-${initTemp}-${srate}.unwrap id type xu yu zu 
+#variable strainxy equal "(xy)/v_L0y"
+#variable  tmp3 equal "vol"
+#variable Volume equal ${tmp3}
+#compute		reducedstress all reduce sum c_1[22]
+#compute		reducedstress2 all reduce sum c_1[4]
+#variable	stress equal (c_reducedstress)/(${Volume})
+#variable	stress2 equal (c_reducedstress2)/(${Volume})
+#variable s1xy equal "v_stress"
+#variable p1xy equal "v_strainxy"
+#variable p1 equal "-pxy/10000"
+thermo ${Nfreq}
+#thermo_style	custom step v_strainxy v_stress v_stress2 #ke pe press temp 
+#thermo_modify format line "%d %f %3.2e %3.2e"
+#fix def1 all print 1 "${p1xy} ${p1} ${s1xy}" append NiFe_glass-${initTemp}-${srate}.txt 
+
+#-----------------------------
+#--- run
+#-----------------------------
+run ${Nrun}    
+
