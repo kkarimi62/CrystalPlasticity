@@ -1244,6 +1244,7 @@ class AngularStruct:
         #--- data frame of triplets
     #    t0=time.time()
         tmp = self.GetTriplets(atomi) #--- return (atomi,j,k) triplets
+        assert tmp.shape[0] > 0, 'atom %s has no neighbor'%atomi
     #    print('assembly: t=%s s'%(time.time()-t0))
         #--- compute density
     #    a2 = a * a
