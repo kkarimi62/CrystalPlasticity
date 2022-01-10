@@ -21,7 +21,7 @@ if __name__ == '__main__':
 	import os
 	import numpy as np
 
-	runs	 = [0,1,2]
+	runs	 = [0] #,1,2]
 	#
 	nThreads = [1,9][1]
 	nNode	 = 1
@@ -30,14 +30,15 @@ if __name__ == '__main__':
 				1:'CuZrNatom32KT300Tdot1E-3Sheared',
 				2:'CuZrNatom32KT300Tdot1E-1Elasticity',
 				3:'ElasticityT300/CoNiCrFe/itime0',
-			   }[3]
+				4:'ElasticityT300/CuZr/itime100',
+			   }[4]
 	sourcePath = os.getcwd() +\
 				{	
 					1:'/../postprocess/NiCoCrNatom1K',
 					2:'/CuZrNatom32KT300Tdot1E-1Sheared',
 					3:'/../glassCoNiCrFe',
 					4:'/junk',
-				}[3] #--- must be different than sourcePath
+				}[2] #--- must be different than sourcePath
         #
 	sourceFiles = { 0:False,
 					1:['Equilibrated_300.dat'],
@@ -45,7 +46,8 @@ if __name__ == '__main__':
 					3:['data.0.txt','CoNiCrFe_glass.dump','CoNiCrFe.txt'], 
 					4:['data_minimized.txt'],
 					5:['data_init.txt','ScriptGroup.0.txt'], #--- only one partition! for multiple ones, use 'submit.py'
-				 }[3] #--- to be copied from the above directory
+					6:['data.1000000.txt','dumpSheared.xyz'], 
+				 }[6] #--- to be copied from the above directory
 	#
 	EXEC_DIR = '/home/kamran.karimi1/Project/git/lammps2nd/lammps/src' #--- path for executable file
 	#
@@ -81,7 +83,7 @@ if __name__ == '__main__':
 				7:' -var buff 3.0 -var T 600 -var teq 200.0 -var nevery 1000 -var ParseData 1 -var DataFile data_init.txt -var DumpFile dumpThermalized.xyz -var WriteData Equilibrated_600.dat',
 				8:' -var buff 3.0 -var T 0.1 -var sigm 1.5 -var sigmdt 0.01 -var ParseData 1 -var DataFile Equilibrated_300.dat -var DumpFile dumpSheared.xyz',
 				9:' -var natoms 1000 -var cutoff 3.52 -var ParseData 1',
-				10:' -var T 300.0 -var teq	2.0	-var nevery 100 -var ParseData 1 -var DataFile data.0.txt',
+				10:' -var T 300.0 -var teq	2.0	-var nevery 100 -var ParseData 1 -var DataFile data.1000000.txt',
 				'p0':' swapped_600.dat 10.0 %s'%(os.getcwd()+'/../postprocess'),
 				'p1':' swapped_600.dat ElasticConst.txt DumpFileModu.xyz %s'%(os.getcwd()+'/../postprocess'),
 				'p2':' %s 3.52 40.0 20.0 40.0 data.txt'%(os.getcwd()+'/../postprocess'),
