@@ -23,7 +23,8 @@ import numpy as np
 #imp.reload(lp)
 
 input_file = sys.argv[1]
-mass = {'1':58.933,'2':58.690, '3':51.960, '4':55.847,'5':54.940}
+#mass = {'1':58.933,'2':58.690, '3':51.960, '4':55.847,'5':54.940}
+mass = {'1':91.22,'2':63.55}
 
 atomi, boxi = GetAtoms( input_file, nevery = 1 ) #--- change it to 1
 #---
