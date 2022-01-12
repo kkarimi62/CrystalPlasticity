@@ -25,11 +25,11 @@ if __name__ == '__main__':
 		#---	
 		inums = lnums[ 0 ] - 1
 #		string[ inums ] = "\t\'1\':\'ElasticityT300/%s/itime%s',\n" % (PHI[iphi],itime) #--- change job name
-		string[ inums ] = "\t\'1\':\'PairCrltnT300/%s/itime%s',\n" % (PHI[iphi],itime) #--- change job name
+		string[ inums ] = "\t\'3\':\'PairCrltnT300/%s/itime%s',\n" % (PHI[iphi],itime) #--- change job name
 		#---	densities
 		inums = lnums[ 1 ] - 1
 #		string[ inums ] = "\t\'1\':\'/../testRuns/Preparation/ElasticityT300/%s/itime%s\',\n"%(PHI[iphi],itime)
-		string[ inums ] = "\t\'1\':\'/../testRuns/glass%s\',\n"%(PHI[iphi])
+		string[ inums ] = "\t\'2\':\'/../testRuns/glass%s\',\n"%(PHI[iphi])
 #
 		inums = lnums[ 2 ] - 1
 		string[ inums ] = "\targv2nd = \'itime=%s\\nindx=%s\'\n"%(itime*10000,iphi) #(PHI[iphi]*10000)
