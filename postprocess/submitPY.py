@@ -3,7 +3,7 @@ if __name__ == '__main__':
 	import os
 	import numpy as np
 	#---
-	lnums = [ 21, 26,33 ]
+	lnums = [ 22, 27,34 ]
 	string=open('postprocess.py').readlines() #--- python script
 	#---
 #	PHI=range(0,200,1)
@@ -25,7 +25,8 @@ if __name__ == '__main__':
 		#---	
 		inums = lnums[ 0 ] - 1
 #		string[ inums ] = "\t\'1\':\'ElasticityT300/%s/itime%s',\n" % (PHI[iphi],itime) #--- change job name
-		string[ inums ] = "\t\'3\':\'PairCrltnT300/%s/itime%s',\n" % (PHI[iphi],itime) #--- change job name
+#		string[ inums ] = "\t\'3\':\'PairCrltnT300/%s/itime%s',\n" % (PHI[iphi],itime) #--- change job name
+		string[ inums ] = "\t\'4\':\'VorAnlT300/%s',\n" % (PHI[iphi]) #--- change job name
 		#---	densities
 		inums = lnums[ 1 ] - 1
 #		string[ inums ] = "\t\'1\':\'/../testRuns/Preparation/ElasticityT300/%s/itime%s\',\n"%(PHI[iphi],itime)
