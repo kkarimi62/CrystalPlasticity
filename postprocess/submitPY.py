@@ -3,7 +3,7 @@ if __name__ == '__main__':
 	import os
 	import numpy as np
 	#---
-	lnums = [ 22, 27,34 ]
+	lnums = [ 23, 28,35 ]
 	string=open('postprocess.py').readlines() #--- python script
 	#---
 #	PHI=range(0,200,1)
