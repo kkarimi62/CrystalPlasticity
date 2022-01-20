@@ -18,18 +18,18 @@ if __name__ == '__main__':
 	jobname  = {
 				'1':'ElasticityT300/Co5Cr2Fe40Mn27Ni26/itime0', 
 				'2':'MlTrain/Co5Cr2Fe40Mn27Ni26', 
-				'3':'PairCrltnT300/Co5Cr2Fe40Mn27Ni26/itime0', 
+				'3':'PairCrltnT300/Co5Cr2Fe40Mn27Ni26', 
 				'4':'VorAnlT300/Co5Cr2Fe40Mn27Ni26', 
 				'5':'D2minAnalysisT300/Co5Cr2Fe40Mn27Ni26', 
-				}['5']
+				}['3']
 	DeleteExistingFolder = True
 	readPath = os.getcwd() + {
 								'1':'/../testRuns/Preparation/ElasticityT300/Co5Cr2Fe40Mn27Ni26/itime200',
 								'2':'/../testRuns/glassCo5Cr2Fe40Mn27Ni26',
  							}['2'] #--- source
 	EXEC_DIR = '.'     #--- path for executable file
-	durtn = '01:59:59'
-	mem = '64gb'
+	durtn = '23:59:59'
+	mem = '128gb'
 	partition = ['parallel','cpu2019','bigmem','single'][2] 
 	argv = "path=%s"%(readPath) #--- don't change! 
 	argv2nd = "itime=2000000\nindx=5" 
