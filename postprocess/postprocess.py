@@ -29,7 +29,7 @@ if __name__ == '__main__':
  							}['2'] #--- source
 	EXEC_DIR = '.'     #--- path for executable file
 	durtn = '00:59:59'
-	mem = '64gb'
+	mem = '32gb'
 	partition = ['parallel','cpu2019','bigmem','single'][2] 
 	argv = "path=%s"%(readPath) #--- don't change! 
 	argv2nd = "itime=2000000\nindx=5" 
