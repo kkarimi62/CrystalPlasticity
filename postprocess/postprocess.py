@@ -28,7 +28,7 @@ if __name__ == '__main__':
 								'2':'/../testRuns/glassCo5Cr2Fe40Mn27Ni26',
  							}['2'] #--- source
 	EXEC_DIR = '.'     #--- path for executable file
-	durtn = '01:59:59'
+	durtn = '00:59:59'
 	mem = '64gb'
 	partition = ['parallel','cpu2019','bigmem','single'][2] 
 	argv = "path=%s"%(readPath) #--- don't change! 
