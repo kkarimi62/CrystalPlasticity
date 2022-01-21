@@ -7,7 +7,6 @@ if __name__ == '__main__':
 	lnums = [ 19, 27,35 ]
 	string=open('postprocess.py').readlines() #--- python script
 	#---
-#	PHI=range(0,200,1)
 	PHI ={ 
 #            '0':'FeNi',
 #            '1':'CoNiFe',
@@ -15,7 +14,7 @@ if __name__ == '__main__':
 #           '3' :'CoCrFeMn',
 #            '4':'CoNiCrFeMn',
 #            '5':'Co5Cr2Fe40Mn27Ni26'
-		]
+		}
 	nphi = len(PHI)
 	#---
 	times=np.arange(0,200+8,8)	
