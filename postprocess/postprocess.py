@@ -14,7 +14,7 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argv2nd):
 if __name__ == '__main__':
 	import os
 #
-	runs	 = [0,1,2]
+	runs	 = [0] #,1,2]
 	jobname  = {
 				'1':'ElasticityT300/Co5Cr2Fe40Mn27Ni26/itime0', 
 				'2':'MlTrain/Co5Cr2Fe40Mn27Ni26', 
