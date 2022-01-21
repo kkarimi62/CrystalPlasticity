@@ -37,6 +37,6 @@ if __name__ == '__main__':
 			inums = lnums[ 2 ] - 1
 			string[ inums ] = "\targv2nd = \'itime=%s\\nindx=%s\'\n"%(itime*10000,key) #(PHI[iphi]*10000)
 
-			sfile=open('junk%s.py'%iphi,'w');sfile.writelines(string);sfile.close()
+			sfile=open('junk%s.py'%key,'w');sfile.writelines(string);sfile.close()
 			os.system( 'python3 junk%s.py'%iphi )
 			os.system( 'rm junk%s.py'%iphi )
