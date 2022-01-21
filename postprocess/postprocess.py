@@ -21,12 +21,12 @@ if __name__ == '__main__':
 				'3':'PairCrltnT300/Co5Cr2Fe40Mn27Ni26', 
 				'4':'VorAnlT300/Co5Cr2Fe40Mn27Ni26', 
 				'5':'D2minAnalysisT300/Co5Cr2Fe40Mn27Ni26', 
-				}['3']
+				}['1']
 	DeleteExistingFolder = True
 	readPath = os.getcwd() + {
-								'1':'/../testRuns/Preparation/ElasticityT300/Co5Cr2Fe40Mn27Ni26/itime200',
+								'1':'/../testRuns/Preparation/ElasticityT300/Co5Cr2Fe40Mn27Ni26/itime0',
 								'2':'/../testRuns/glassCo5Cr2Fe40Mn27Ni26',
- 							}['2'] #--- source
+ 							}['1'] #--- source
 	EXEC_DIR = '.'     #--- path for executable file
 	durtn = '00:59:59'
 	mem = '32gb'
