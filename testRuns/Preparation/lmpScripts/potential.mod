@@ -2,11 +2,11 @@
 # See in.elastic for more info.
 
 # Choose potential
-pair_style	eam/alloy
-pair_coeff              * * ${PathEam}/ZrCu.lammps.eam Zr Cu
+#pair_style	eam/alloy
+#pair_coeff              * * ${PathEam}/ZrCu.lammps.eam Zr Cu
 #
-#pair_style meam/c
-#pair_coeff * * ${PathEam}/library_CoNiCrFeMn.meam Co Ni Cr Fe Mn ${PathEam}/parameters_CoNiCrFeMn.meam Co Ni Cr Fe Mn
+pair_style meam/c
+pair_coeff * * ${PathEam}/library_CoNiCrFeMn.meam Co Ni Cr Fe Mn ${PathEam}/parameters_CoNiCrFeMn.meam Co Ni Cr Fe Mn
 
 # Setup neighbor style
 neighbor 1.0 nsq

@@ -3,7 +3,7 @@ if __name__ == '__main__':
 	import os
 	import numpy as np
 	#---
-	lnums = [ 32, 38, 45, 84   ]
+	lnums = [ 32, 39, 46, 86   ]
 	string=open('Preparation.py').readlines() #--- python script
 	#---
 #        MC = [-0.25,-0.1,0.0,0.1,0.2]
@@ -28,22 +28,24 @@ if __name__ == '__main__':
 #	nn = 4
 #	NTHRESH = np.linspace(0.05,0.11,nn,endpoint=True)
 	#---
-	#
-	for iphi in range( nphi ):
-		#---	
-		#---	densities
-		inums = lnums[ 0 ] - 1
-		string[ inums ] = "\t3:'ElasticityT300/%s/itime200',\n" % ('%s'%(PHI[iphi])) #--- change job name
-		#---
-		inums = lnums[ 1 ] - 1
-		string[ inums ] = "\t3:'/../glass%s',\n"%(PHI[iphi])
-		#---
-		inums = lnums[ 2 ] - 1
-		string[ inums ] = "\t3:['data.200.txt','%s_glass.dump','%s.txt'],\n"%(PHI[iphi],PHI[iphi])
-		#---
-		inums = lnums[ 3 ] - 1
-		string[ inums ] = "\t10:' -var T 300.0 -var teq  2.0 -var nevery 100 -var ParseData 1 -var DataFile data.%s.txt',\n"%(200)
+	times=np.arange(0,200+8,8)
+	#--- 
+	for itime in times:
+		for iphi in range( nphi ):
+			#---	
+			#---	densities
+			inums = lnums[ 0 ] - 1
+			string[ inums ] = "\t3:'ElasticityT300/%s/itime%s',\n" % ('%s'%(PHI[iphi],itime)) #--- change job name
+			#---
+			inums = lnums[ 1 ] - 1
+			string[ inums ] = "\t3:'/../glass%s',\n"%(PHI[iphi])
+			#---
+			inums = lnums[ 2 ] - 1
+			string[ inums ] = "\t3:['data.%s.txt','%s_glass.dump','%s.txt'],\n"%(itime,PHI[iphi],PHI[iphi])
+			#---
+			inums = lnums[ 3 ] - 1
+			string[ inums ] = "\t10:' -var T 300.0 -var teq  2.0 -var nevery 100 -var ParseData 1 -var DataFile data.%s.txt',\n"%(itime)
 
-		sfile=open('junk%s.py'%iphi,'w');sfile.writelines(string);sfile.close()
-		os.system( 'python junk%s.py'%iphi )
-		os.system( 'rm junk%s.py'%iphi )
+			sfile=open('junk%s.py'%iphi,'w');sfile.writelines(string);sfile.close()
+			os.system( 'python junk%s.py'%iphi )
+			os.system( 'rm junk%s.py'%iphi )
