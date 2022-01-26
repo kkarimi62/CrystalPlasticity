@@ -18,10 +18,10 @@ if __name__ == '__main__':
 	PHI ={
  #            '0':'FeNi',
  #            '1':'CoNiFe',
- #           '2':'CoNiCrFe',
+            '2':'CoNiCrFe',
  #           '3' :'CoCrFeMn',
  #            '4':'CoNiCrFeMn',
-             '5':'Co5Cr2Fe40Mn27Ni26'
+ #            '5':'Co5Cr2Fe40Mn27Ni26'
          }
 
 	nphi = len(PHI)
@@ -29,7 +29,7 @@ if __name__ == '__main__':
 #	nn = 4
 #	NTHRESH = np.linspace(0.05,0.11,nn,endpoint=True)
 	#---
-	times=[50,101,195]#np.arange(0,200+8,8)
+	times=[0,50,101,120,195] #np.arange(0,200+8,8)
 	#--- 
 	for itime in times:
 		for iphi in PHI:
