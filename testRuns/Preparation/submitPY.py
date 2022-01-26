@@ -16,12 +16,12 @@ if __name__ == '__main__':
 #	PHI = [12500,25000,50000]
 #	PHI = np.linspace(1800, 3000, 10, endpoint=True, dtype=int) #--- melt. temp.
 	PHI ={
- #            '0':'FeNi',
- #            '1':'CoNiFe',
+             '0':'FeNi',
+             '1':'CoNiFe',
             '2':'CoNiCrFe',
- #           '3' :'CoCrFeMn',
- #            '4':'CoNiCrFeMn',
- #            '5':'Co5Cr2Fe40Mn27Ni26'
+            '3' :'CoCrFeMn',
+             '4':'CoNiCrFeMn',
+             '5':'Co5Cr2Fe40Mn27Ni26'
          }
 
 	nphi = len(PHI)
@@ -29,7 +29,7 @@ if __name__ == '__main__':
 #	nn = 4
 #	NTHRESH = np.linspace(0.05,0.11,nn,endpoint=True)
 	#---
-	times=[0,50,101,120,195] #np.arange(0,200+8,8)
+	times=np.arange(0,200+1,1) #[0,50,101,120,195] #np.arange(0,200+8,8)
 	#--- 
 	for itime in times:
 		for iphi in PHI:
