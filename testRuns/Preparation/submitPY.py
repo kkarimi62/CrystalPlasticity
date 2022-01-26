@@ -29,7 +29,7 @@ if __name__ == '__main__':
 #	nn = 4
 #	NTHRESH = np.linspace(0.05,0.11,nn,endpoint=True)
 	#---
-	times=[0,50,101,120,195]#np.arange(0,200+8,8)
+	times=[50,101,195]#np.arange(0,200+8,8)
 	#--- 
 	for itime in times:
 		for iphi in PHI:
