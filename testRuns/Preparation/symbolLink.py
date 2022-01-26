@@ -6,16 +6,16 @@ if __name__ == '__main__':
 	import numpy as np
 	#--- 
 	PHI = [  
-#             'FeNi',
-#             'CoNiFe',
-#             'CoNiCrFe',
-#             'CoCrFeMn',
-#             'CoNiCrFeMn',
+             'FeNi',
+             'CoNiFe',
+             'CoNiCrFe',
+             'CoCrFeMn',
+             'CoNiCrFeMn',
              'Co5Cr2Fe40Mn27Ni26'
          ] 
    
 	for loopi in PHI: #--- composition 
-		for loop in [50,101,195]: #np.arange(0,200+8,8): #--- itimes
+		for loop in np.arange(0,200+1,1): #[50,101,195]: #np.arange(0,200+8,8): #--- itimes
 			jobname  = 'ElasticityT300/%s/itime%s'%(loopi,loop)
 			job_id = int(open('%s/jobID.txt'%jobname).readlines()[0].split()[3])
 			N = 3 #--- nruns

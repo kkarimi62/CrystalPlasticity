@@ -55,7 +55,7 @@ if __name__ == '__main__':
 	#
 	SCRPT_DIR = os.getcwd()+'/lmpScripts' #/'+{1:'cuzr'}[1]
 	#
-	SCRATCH = False
+	SCRATCH = True
 	OUT_PATH = '.'
 	if SCRATCH:
 		OUT_PATH = '/scratch/${SLURM_JOB_ID}'
