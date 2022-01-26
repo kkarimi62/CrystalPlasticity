@@ -17,7 +17,7 @@ if __name__ == '__main__':
 		}
 	nphi = len(PHI)
 	#---
-	times=[102] #np.arange(0,200+1,1) #[0,50,101,120,195] #np.arange(0,200+8,8)	
+	times=[0,50,101,120,195] #np.arange(0,200+1,1) #[0,50,101,120,195] #np.arange(0,200+8,8)	
 
 #	PHI = [[PHI[iphi],NTHRESH[inn]] for iphi in xrange( nphi ) for inn in xrange(nn)]
 #	nphi = len(PHI)
