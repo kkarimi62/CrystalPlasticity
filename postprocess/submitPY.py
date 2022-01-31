@@ -10,14 +10,14 @@ if __name__ == '__main__':
 	PHI ={ 
 #            '0':'FeNi',
 #            '1':'CoNiFe',
-           '2':'CoNiCrFe',
+#           '2':'CoNiCrFe',
 #           '3' :'CoCrFeMn',
 #            '4':'CoNiCrFeMn',
-#            '5':'Co5Cr2Fe40Mn27Ni26'
+            '5':'Co5Cr2Fe40Mn27Ni26'
 		}
 	nphi = len(PHI)
 	#---
-	times=np.arange(0,100,4) #[0,50,101,120,195] #np.arange(0,200+1,1) #[0,50,101,120,195] #np.arange(0,200+8,8)	
+	times=[70,100,130,160] #np.arange(0,100,4) #[0,50,101,120,195] #np.arange(0,200+1,1) #[0,50,101,120,195] #np.arange(0,200+8,8)	
 
 #	PHI = [[PHI[iphi],NTHRESH[inn]] for iphi in xrange( nphi ) for inn in xrange(nn)]
 #	nphi = len(PHI)
