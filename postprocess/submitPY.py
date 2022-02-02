@@ -8,12 +8,12 @@ if __name__ == '__main__':
 	string=open('postprocess.py').readlines() #--- python script
 	#---
 	PHI ={ 
-#            '0':'FeNi',
-#            '1':'CoNiFe',
-#           '2':'CoNiCrFe',
-#           '3' :'CoCrFeMn',
-#            '4':'CoNiCrFeMn',
-            '5':'Co5Cr2Fe40Mn27Ni26'
+            '0':'FeNi',
+            '1':'CoNiFe',
+           '2':'CoNiCrFe',
+           '3' :'CoCrFeMn',
+            '4':'CoNiCrFeMn',
+#            '5':'Co5Cr2Fe40Mn27Ni26'
 		}
 	nphi = len(PHI)
 	#---
