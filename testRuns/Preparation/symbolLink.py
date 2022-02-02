@@ -6,12 +6,12 @@ if __name__ == '__main__':
 	import numpy as np
 	#--- 
 	PHI = [  
-#             'FeNi',
-#             'CoNiFe',
+             'FeNi',
+             'CoNiFe',
 #             'CoNiCrFe',
-#             'CoCrFeMn',
-#             'CoNiCrFeMn',
-             'Co5Cr2Fe40Mn27Ni26'
+             'CoCrFeMn',
+             'CoNiCrFeMn',
+#             'Co5Cr2Fe40Mn27Ni26'
          ] 
    
 	for loopi in PHI: #--- composition 

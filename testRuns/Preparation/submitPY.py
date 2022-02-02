@@ -16,12 +16,12 @@ if __name__ == '__main__':
 #	PHI = [12500,25000,50000]
 #	PHI = np.linspace(1800, 3000, 10, endpoint=True, dtype=int) #--- melt. temp.
 	PHI ={
-#             '0':'FeNi',
-#             '1':'CoNiFe',
+             '0':'FeNi',
+             '1':'CoNiFe',
 #            '2':'CoNiCrFe',
-#            '3' :'CoCrFeMn',
-#             '4':'CoNiCrFeMn',
-             '5':'Co5Cr2Fe40Mn27Ni26'
+            '3' :'CoCrFeMn',
+             '4':'CoNiCrFeMn',
+#             '5':'Co5Cr2Fe40Mn27Ni26'
          }
 
 	nphi = len(PHI)
