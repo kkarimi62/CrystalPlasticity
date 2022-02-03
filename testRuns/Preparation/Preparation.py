@@ -21,7 +21,7 @@ if __name__ == '__main__':
 	import os
 	import numpy as np
 
-	runs	 = [0] #,1,2]
+	runs	 = [1] #[0] #,1,2]
 	#
 	nThreads = [1,9][1]
 	nNode	 = 1
@@ -97,7 +97,7 @@ if __name__ == '__main__':
 	Variables = list(map(lambda x:Variable[x], indices))
 	EXEC = list(map(lambda x:'lmp' if type(x) == type(0) else 'py', indices))	
 	#
-	DeleteExistingFolder = True
+	DeleteExistingFolder = False
 	#
 	EXEC_lmp = ['lmp_mpi','lmp_serial'][0]
 	durtn = ['96:59:59','00:59:59'][1]
