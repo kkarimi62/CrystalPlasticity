@@ -14,7 +14,7 @@ if __name__ == '__main__':
              'Co5Cr2Fe40Mn27Ni26'
          ] 
    
-	runs=[1] #[0,1,2] #--- nruns
+	runs=[2] #[0,1,2] #--- nruns
 	for loopi in PHI: #--- composition 
 		for loop in np.arange(0,200+1,1): #[50,101,195]: #np.arange(0,200+8,8): #--- itimes
 			jobname  = 'ElasticityT300/%s/itime%s'%(loopi,loop)
