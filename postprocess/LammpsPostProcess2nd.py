@@ -781,7 +781,7 @@ class ComputeRdf( Compute, Wrap ):
         if 'bins' in kwargs:
             bins=kwargs['bins']
         else:
-            ßbins = np.linspace(rmin,rmax,nbins) #np.logspace(np.log10(rmin),np.log10(rmax),ndecades*4)
+            bins = np.linspace(rmin,rmax,nbins) #np.logspace(np.log10(rmin),np.log10(rmax),ndecades*4)
         hist, bin_edges = np.histogram( slist, bins = bins) #, density=True  ) #--- normalized g(r)
 #         print(bin_edges)
         dr = bin_edges[1]-bin_edges[0]
