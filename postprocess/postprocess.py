@@ -14,7 +14,7 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argv2nd):
 if __name__ == '__main__':
 	import os
 #
-	runs	 = [0,1,2]
+	runs	 = [0] #,1,2]
 	jobname  = {
 				'1':'ElasticityT300/Co5Cr2Fe40Mn27Ni26/itime0', 
 				'2':'MlTrain/Co5Cr2Fe40Mn27Ni26/itime0', 
@@ -22,14 +22,14 @@ if __name__ == '__main__':
 				'4':'VorAnlT300/Co5Cr2Fe40Mn27Ni26', 
 				'5':'D2minAnalysisT300/Co5Cr2Fe40Mn27Ni26', 
 				}['2']
-	DeleteExistingFolder = False
+	DeleteExistingFolder = True
 	readPath = os.getcwd() + {
 								'1':'/../testRuns/Preparation/ElasticityT300/Co5Cr2Fe40Mn27Ni26/itime0',
 								'2':'/../testRuns/glassCo5Cr2Fe40Mn27Ni26',
  							}['2'] #--- source
 	EXEC_DIR = '.'     #--- path for executable file
 	durtn = '23:59:59'
-	mem = '128gb'
+	mem = '256gb'
 	partition = ['parallel','cpu2019','bigmem','single'][2] 
 	argv = "path=%s"%(readPath) #--- don't change! 
 	argv2nd = "itime=0\nindx=5" 
