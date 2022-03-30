@@ -17,7 +17,7 @@ if __name__ == '__main__':
 	runs	 = [0] #,1,2]
 	jobname  = {
 				'1':'ElasticityT300/Co5Cr2Fe40Mn27Ni26/itime0', 
-				'2':'MlTrain/Co5Cr2Fe40Mn27Ni26/itime0', 
+				'2':'MlTrain/Co5Cr2Fe40Mn27Ni26/itime0/Angular', 
 				'3':'PairCrltnT300/Co5Cr2Fe40Mn27Ni26', 
 				'4':'VorAnlT300/Co5Cr2Fe40Mn27Ni26', 
 				'5':'D2minAnalysisT300/Co5Cr2Fe40Mn27Ni26', 
