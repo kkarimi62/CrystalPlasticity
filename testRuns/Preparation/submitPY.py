@@ -30,7 +30,7 @@ if __name__ == '__main__':
 #	nn = 4
 #	NTHRESH = np.linspace(0.05,0.11,nn,endpoint=True)
 	#---
-	times=np.arange(0,200+1,50) #[0,50,101,120,195] #np.arange(0,200+8,8)
+	times=np.arange(0,200+1,4) #[0,50,101,120,195] #np.arange(0,200+8,8)
 	#--- 
 	count = 0
 	for itime in times:
