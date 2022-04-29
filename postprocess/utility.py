@@ -30,6 +30,90 @@ import time
 from scipy import ndimage
 from scipy.stats import chi2
 from scipy.optimize import curve_fit
+#--- user-defined
+import LammpsPostProcess2nd as lp
+import imp
+imp.reload(lp)
+
+
+def GetFrames( lmpData, **kwargs):
+    '''
+    return frame index
+    '''
+    if 'nevery' in kwargs and kwargs['nevery'] > 0: #--- return indices nevery times
+        return np.arange(0,len(lmpData.coord_atoms_broken.keys()),kwargs['nevery'])
+    if 'times' in kwargs: #--- return frame index
+        timee = np.array(list(lmpData.coord_atoms_broken.keys()))
+        nframe = len(lmpData.coord_atoms_broken.keys())
+        return np.array(list(map(lambda x:np.arange(nframe)[timee == x][0],kwargs['times'])))
+    
+    
+def PdfD2min( d2min, 
+             #times,     
+             Plott = True,
+             **kwargs
+             ):
+    #--- plot
+    if Plott:
+        fig = plt.figure(figsize=(4,4))
+        ax = fig.add_subplot(111)
+        #    ax.set_yscale('log')
+        #ax.set_xscale('log')
+        # ax.set_ylim(1e-5,10)
+        # ax.set_xlim(1e-2,1e4)
+        ax.set_xlabel(r'log$D^2$min($A^2$)',fontsize=16)
+        ax.set_ylabel(r'PDF',fontsize=16)
+        ax.tick_params(labelsize=16)
+        #ax.set_title(r'itime=%s'%itime)
+
+#     Mean = []
+#     Std = []
+#     Ebulk = []
+#     D2min = {}
+    if 1:
+#    for itimee in sorted(times): #[0::nn]:
+
+        # strain
+#        ebulk = GetStrain(lmpData, [itimee], 0 )[itimee]
+#         if ebulk == 0.0:
+#             continue
+#        Ebulk += [ebulk]    
+
+        #--- d2min
+#        d2min = lp.Atoms( **lmpData.coord_atoms_broken[itimee].to_dict(orient='list') )
+#        D2min[ itimee ] = np.array(d2min.d2min)
+#        Std += [ np.std(d2min.d2min) ]
+#        Mean += [ np.mean(d2min.d2min) ]
+
+    #--- size distribution
+        if Plott:
+            value = np.log10(d2min.d2min)
+            #--- filter based on the given limit
+#             if 'Limit' in kwargs:
+#                 (xlo,xhi)=kwargs['Limit']
+#                 filtr = np.all([value>=xlo,value<xhi],axis=0)
+#                 value = value[filtr]
+#                bins=np.linspace(xlo,xhi,)
+            #--- histogram
+            hist, edges2, error = GetPDF( value, linscale = True, n_per_decade=32)
+
+        #
+            ax.errorbar(edges2,hist,error,fmt='-o',
+                        markersize=8,markeredgewidth=0.7,
+                            linewidth=.5,
+                             barsabove=None,capsize=5,capthick=1,elinewidth=1) #,label='%3.2f'%ebulk)
+    #
+    if Plott:
+#        ax.legend(frameon=False, fontsize=12)
+        plt.savefig('pdfD2min.png',dpi=75,bbox_inches='tight')
+        plt.show()
+        
+ #   return Ebulk, Mean, Std, D2min
+
+def FilterDataFrame(df,column,limits):
+    (xlo,xhi) = limits
+    filtr = np.all([df[column]>=xlo,df[column]<xhi],axis=0)
+    return df[filtr]
 
 
 def PlotNonLinearDecisionBoundary( ax, X, clf,  ngrid  ):

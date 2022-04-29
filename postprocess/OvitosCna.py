@@ -7,7 +7,7 @@ from ovito.vis import Viewport, TachyonRenderer, RenderSettings
 from ovito.data import CutoffNeighborFinder
 import math
 import pdb
-
+import traceback
 
 
 def GetNpairs(data, finder):        
@@ -24,16 +24,24 @@ def GetPairAttrs(data, neigh,iatom):
         
         
 #--- command-line args
-InputFile = sys.argv[1] 
-OutputFile = sys.argv[2]
-nevery = int(sys.argv[3])
-AnalysisType = int(sys.argv[4]) #--- 0:CommonNeighborAnalysis 1:g(r) 2:d2min 3:voronoi analysis
-if AnalysisType == 2:
+InputFile = sys.argv[1] #--- input file
+OutputFile = sys.argv[2] #--- output
+#print(sys.argv[3])
+frames = [100,200] #list(map(int, eval(sys.argv[3]))) #--- compute at theses frames
+AnalysisType = int(sys.argv[4]) #--- 0:CommonNeighborAnalysis 1:g(r) 2:d2min 3:voronoi analysis 4: neighborlist
+#if AnalysisType != 4: #--- if not neighbor list analysis
+#    nevery = int(sys.argv[3]) #--- compute every nevery time
+if AnalysisType == 2: #--- d2min: reference file
     RefFile = sys.argv[5]
-if AnalysisType == 3:
+    use_frame_offset = bool(eval(sys.argv[6]))    
+    frame_offset = int(sys.argv[7])
+    reference_frame = int(sys.argv[8])
+#    print('reference_frame=',reference_frame)
+
+if AnalysisType == 3: #--- voronoi analysis
     radii=list(map(float,sys.argv[5:]))
-if AnalysisType == 4:
-    cutoff = float(sys.argv[5])
+if AnalysisType == 4: #--- neighbor list
+    cutoff = float(sys.argv[5]) #--- cutoff distance
 
     
 print('InputFile=',InputFile)
@@ -55,11 +63,13 @@ if AnalysisType == 1:
 
 if AnalysisType == 2:
     d2min = md.AtomicStrainModifier(
-#                                    use_frame_offset=False,
+                                    use_frame_offset = use_frame_offset, #True,
+#                                    frame_offset = frame_offset, #-1,
+#                                    reference_frame = reference_frame,
                                     output_nonaffine_squared_displacements=True,
                                     eliminate_cell_deformation=True,
                                    )
-    d2min.reference.load(RefFile)
+    d2min.reference.load(RefFile, multiple_frames = True)
     pipeline.modifiers.append(d2min)
 
 if AnalysisType == 3:
@@ -83,13 +93,22 @@ if AnalysisType == 3:
 if AnalysisType == 4:
     sfile = open(OutputFile,'ab')
 
+#if AnalysisType != 4:
+#    frames = range(0,pipeline.source.num_frames,nevery)
 
-for frame in range(0,pipeline.source.num_frames,nevery):
+#start_frame = 0
+for frame, indices in zip(frames,range(len(frames))):
     # This loads the input data for the current frame and
     # evaluates the applied modifiers:
-    print('frame=%s'%frame)
+    print('frame=%s/%s'%(frame,pipeline.source.num_frames))
 #    pipeline.compute(frame)
-    data = pipeline.compute(frame)
+    try:
+        data = pipeline.compute(frame)
+    except:
+        traceback.print_exc()
+#        start_frame = frames[indices+1]
+        print('start_frame=',start_frame)
+        continue
     itime = pipeline.source.attributes['Timestep']
 #    print(itime)
     
@@ -156,13 +175,17 @@ if AnalysisType == 0:
                      every_nth_frame = nevery,
                      multiple_frames=True )
 if AnalysisType == 2:
+#    print('start_frame=',start_frame)
+#    print(help(io.export_file))
     io.export_file( pipeline, OutputFile, "lammps_dump",\
                     columns = ["Particle Identifier", "Particle Type", "Position.X","Position.Y","Position.Z",\
                                "Nonaffine Squared Displacement"],
-                     start_frame = 0,
-                     end_frame = pipeline.source.num_frames,
-                     every_nth_frame = nevery,
-                     multiple_frames=True )
+                     start_frame = 100,
+                     end_frame = 200, #pipeline.source.num_frames,
+                     every_nth_frame = 100, #nevery,
+#                     multiple_frames=True 
+#                   frame=[100,100],
+                  )
 
 if AnalysisType == 3: 
     io.export_file( pipeline, OutputFile, "lammps_dump",\
