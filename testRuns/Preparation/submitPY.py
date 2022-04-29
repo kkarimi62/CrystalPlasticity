@@ -15,8 +15,7 @@ if __name__ == '__main__':
 #	PHI=range(0,200,1) 
 #	PHI = [12500,25000,50000]
 #	PHI = np.linspace(1800, 3000, 10, endpoint=True, dtype=int) #--- melt. temp.
-	PHI =
-		{
+	PHI ={
 			'0':'CuZr2',
 #             '0':'FeNi',
 #             '1':'CoNiFe',
