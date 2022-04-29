@@ -21,7 +21,7 @@ if __name__ == '__main__':
 	import os
 	import numpy as np
 
-	runs	 = [2] #[0] #,1,2]
+	runs	 = [0] #,1,2]
 	#
 	nThreads = [1,9][1]
 	nNode	 = 1
@@ -30,7 +30,7 @@ if __name__ == '__main__':
 				1:'CuZrNatom32KT300Tdot1E-3Sheared',
 				2:'CuZrNatom32KT300Tdot1E-1Elasticity',
 				3:'ElasticityT300/CoNiCrFe/itime0',
-				4:'ElasticityT300/CuZr/itime100',
+				4:'ElasticityT300/CuZr/itime0',
 			   }[3]
 	sourcePath = os.getcwd() +\
 				{	
@@ -38,7 +38,7 @@ if __name__ == '__main__':
 					2:'/CuZrNatom32KT300Tdot1E-1Sheared',
 					3:'/../glassCoNiCrFe',
 					4:'/junk',
-				}[3] #--- must be different than sourcePath
+				}[2] #--- must be different than sourcePath
         #
 	sourceFiles = { 0:False,
 					1:['Equilibrated_300.dat'],
@@ -46,8 +46,8 @@ if __name__ == '__main__':
 					3:['data.0.txt','CoNiCrFe_glass.dump','CoNiCrFe.txt'], 
 					4:['data_minimized.txt'],
 					5:['data_init.txt','ScriptGroup.0.txt'], #--- only one partition! for multiple ones, use 'submit.py'
-					6:['data.100.txt','dumpSheared.xyz'], 
-				 }[3] #--- to be copied from the above directory
+					6:['data.0.txt','dumpSheared.xyz'], 
+				 }[6] #--- to be copied from the above directory
 	#
 	EXEC_DIR = '/home/kamran.karimi1/Project/git/lammps2nd/lammps/src' #--- path for executable file
 	#
