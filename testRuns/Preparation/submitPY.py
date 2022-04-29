@@ -3,7 +3,7 @@ if __name__ == '__main__':
 	import os
 	import numpy as np
 	#---
-	lnums = [ 33, 38, 49, 86   ]
+	lnums = [ 34, 39, 50, 87   ]
 	string=open('Preparation.py').readlines() #--- python script
 	#---
 #        MC = [-0.25,-0.1,0.0,0.1,0.2]
@@ -53,5 +53,5 @@ if __name__ == '__main__':
 
 			sfile=open('junk%s.py'%count,'w');sfile.writelines(string);sfile.close()
 			os.system( 'python junk%s.py'%count )
-#			os.system( 'rm junk%s.py'%count )
+			os.system( 'rm junk%s.py'%count )
 			count += 1
