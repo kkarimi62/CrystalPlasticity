@@ -26,8 +26,8 @@ def GetPairAttrs(data, neigh,iatom):
 #--- command-line args
 InputFile = sys.argv[1] #--- input file
 OutputFile = sys.argv[2] #--- output
-#print(sys.argv[3])
-frames = [100,200] #list(map(int, eval(sys.argv[3]))) #--- compute at theses frames
+nevery = int(sys.argv[3])
+#frames = [100,200] #list(map(int, eval(sys.argv[3]))) #--- compute at theses frames
 AnalysisType = int(sys.argv[4]) #--- 0:CommonNeighborAnalysis 1:g(r) 2:d2min 3:voronoi analysis 4: neighborlist
 #if AnalysisType != 4: #--- if not neighbor list analysis
 #    nevery = int(sys.argv[3]) #--- compute every nevery time
