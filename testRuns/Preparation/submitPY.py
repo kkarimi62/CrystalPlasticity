@@ -38,7 +38,7 @@ if __name__ == '__main__':
 			#---	
 			#---	densities
 			inums = lnums[ 0 ] - 1
-			string[ inums ] = "\t3:'ElasticityT300/%s/itime%s',\n"%(PHI[iphi],itime) #--- change job name
+			string[ inums ] = "\t4:'ElasticityT300/%s/itime%s',\n"%(PHI[iphi],itime) #--- change job name
 			#---
 			inums = lnums[ 1 ] - 1
 #			string[ inums ] = "\t3:'/../glass%s',\n"%(PHI[iphi])
@@ -53,5 +53,5 @@ if __name__ == '__main__':
 
 			sfile=open('junk%s.py'%count,'w');sfile.writelines(string);sfile.close()
 			os.system( 'python junk%s.py'%count )
-#			os.system( 'rm junk%s.py'%count )
+			os.system( 'rm junk%s.py'%count )
 			count += 1
