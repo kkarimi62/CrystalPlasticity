@@ -32,6 +32,7 @@ if __name__ == '__main__':
 	#---
 	times=np.arange(0,200+1,50) #[0,50,101,120,195] #np.arange(0,200+8,8)
 	#--- 
+	count = 0
 	for itime in times:
 		for iphi in PHI:
 			#---	
@@ -50,6 +51,7 @@ if __name__ == '__main__':
 			inums = lnums[ 3 ] - 1
 			string[ inums ] = "\t10:' -var T 300.0 -var teq  2.0 -var nevery 100 -var ParseData 1 -var DataFile data.%s.txt',\n"%(itime)
 
-			sfile=open('junk%s.py'%iphi,'w');sfile.writelines(string);sfile.close()
-			os.system( 'python junk%s.py'%iphi )
-#			os.system( 'rm junk%s.py'%iphi )
+			sfile=open('junk%s.py'%count,'w');sfile.writelines(string);sfile.close()
+			os.system( 'python junk%s.py'%count )
+			os.system( 'rm junk%s.py'%count )
+			count += 1
