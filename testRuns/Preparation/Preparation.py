@@ -30,7 +30,7 @@ if __name__ == '__main__':
 				1:'CuZrNatom32KT300Tdot1E-3Sheared',
 				2:'CuZrNatom32KT300Tdot1E-1Elasticity',
 				3:'ElasticityT300/CoNiCrFe/itime0',
-				4:'ElasticityT300/CuZr/itime0',
+				4:'ElasticityT300/CuZr2/itime0',
 			   }[3]
 	sourcePath = os.getcwd() +\
 				{	
