@@ -8,19 +8,21 @@ if __name__ == '__main__':
 	string=open('postprocess.py').readlines() #--- python script
 	#---
 	PHI ={ 
-            '0':'FeNi',
-            '1':'CoNiFe',
-           '2':'CoNiCrFe',
-           '3' :'CoCrFeMn',
-            '4':'CoNiCrFeMn',
-            '5':'Co5Cr2Fe40Mn27Ni26'
+			'0':'CuZr2',
+#            '0':'FeNi',
+#            '1':'CoNiFe',
+#           '2':'CoNiCrFe',
+#           '3' :'CoCrFeMn',
+#            '4':'CoNiCrFeMn',
+#            '5':'Co5Cr2Fe40Mn27Ni26'
 		}
 	nphi = len(PHI)
 	#---
-	times=np.arange(0,200+1,2) #[70,100,130,160] #np.arange(0,100,4) #[0,50,101,120,195] #np.arange(0,200+1,1) #[0,50,101,120,195] #np.arange(0,200+8,8)	
+	times=np.arange(0,200+1,4) #[70,100,130,160] #np.arange(0,100,4) #[0,50,101,120,195] #np.arange(0,200+1,1) #[0,50,101,120,195] #np.arange(0,200+8,8)	
 
 #	PHI = [[PHI[iphi],NTHRESH[inn]] for iphi in xrange( nphi ) for inn in xrange(nn)]
 #	nphi = len(PHI)
+	count = 0
 	for itime in times:
 		for key in PHI:
 			#---	
@@ -37,6 +39,7 @@ if __name__ == '__main__':
 			inums = lnums[ 2 ] - 1
 			string[ inums ] = "\targv2nd = \'itime=%s\\nindx=%s\'\n"%(itime*10000,key) #(PHI[iphi]*10000)
 
-			sfile=open('junk%s.py'%key,'w');sfile.writelines(string);sfile.close()
-			os.system( 'python3 junk%s.py'%key )
-			os.system( 'rm junk%s.py'%key )
+			sfile=open('junk%s.py'%count,'w');sfile.writelines(string);sfile.close()
+			os.system( 'python3 junk%s.py'%count )
+			os.system( 'rm junk%s.py'%count )
+			count += 1
