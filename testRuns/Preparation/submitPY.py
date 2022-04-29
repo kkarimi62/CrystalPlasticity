@@ -42,11 +42,11 @@ if __name__ == '__main__':
 			#---
 			inums = lnums[ 1 ] - 1
 #			string[ inums ] = "\t3:'/../glass%s',\n"%(PHI[iphi])
-			string[ inums ] = "\t3:'/CuZrNatom32KT300Tdot1E-1Sheared',\n"
+			string[ inums ] = "\t2:'/CuZrNatom32KT300Tdot1E-1Sheared',\n"
 			#---
 			inums = lnums[ 2 ] - 1
 #			string[ inums ] = "\t3:['data.%s.txt','%s_glass.dump','%s.txt'],\n"%(itime,PHI[iphi],PHI[iphi])
-			string[ inums ] = "\t3:['data.%s.txt','dumpSheared.xyz'],\n"%(itime)
+			string[ inums ] = "\t6:['data.%s.txt','dumpSheared.xyz'],\n"%(itime)
 			#---
 			inums = lnums[ 3 ] - 1
 			string[ inums ] = "\t10:' -var T 300.0 -var teq  2.0 -var nevery 100 -var ParseData 1 -var DataFile data.%s.txt',\n"%(itime)
