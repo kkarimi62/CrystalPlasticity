@@ -97,7 +97,8 @@ if AnalysisType == 4:
 #    frames = range(0,pipeline.source.num_frames,nevery)
 
 #start_frame = 0
-for frame, indices in zip(frames,range(len(frames))):
+#for frame, indices in zip(frames,range(len(frames))):
+for frame in range(0,pipeline.source.num_frames,nevery):
     # This loads the input data for the current frame and
     # evaluates the applied modifiers:
     print('frame=%s/%s'%(frame,pipeline.source.num_frames))
@@ -107,7 +108,7 @@ for frame, indices in zip(frames,range(len(frames))):
     except:
         traceback.print_exc()
 #        start_frame = frames[indices+1]
-        print('start_frame=',start_frame)
+#        print('start_frame=',start_frame)
         continue
     itime = pipeline.source.attributes['Timestep']
 #    print(itime)
