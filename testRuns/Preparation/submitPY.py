@@ -30,7 +30,7 @@ if __name__ == '__main__':
 #	nn = 4
 #	NTHRESH = np.linspace(0.05,0.11,nn,endpoint=True)
 	#---
-	times=np.arange(0,200+1,4) #[0,50,101,120,195] #np.arange(0,200+8,8)
+	times=np.arange(0,200+1,50) #[0,50,101,120,195] #np.arange(0,200+8,8)
 	#--- 
 	for itime in times:
 		for iphi in PHI:
@@ -52,4 +52,4 @@ if __name__ == '__main__':
 
 			sfile=open('junk%s.py'%iphi,'w');sfile.writelines(string);sfile.close()
 			os.system( 'python junk%s.py'%iphi )
-			os.system( 'rm junk%s.py'%iphi )
+#			os.system( 'rm junk%s.py'%iphi )
