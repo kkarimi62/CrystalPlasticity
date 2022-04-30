@@ -1038,7 +1038,8 @@ def PlotPaperVersion(pathh_indx,
                                            'CoNiCrFe',
                                             'CoCrFeMn',
                                             'CoNiCrFeMn',
-                                            'Co5Cr2Fe40Mn27Ni26'
+                                            'Co5Cr2Fe40Mn27Ni26',
+                                            'CuZr2'
                                         ],markers, colors, fillstyles, markersizes )):
         if 'glass' in kwargs and kwargs['glass'] != mg:
             continue
