@@ -16,16 +16,16 @@ if __name__ == '__main__':
 #
 	runs	 = [0] #,1,2]
 	jobname  = {
-				'1':'ElasticityT300/CuZr2/itime0', 
-				'2':'MlTrain/CuZr2/itime0/Angular', 
-				'3':'PairCrltnT300/CuZr2', 
-				'4':'VorAnlT300/CuZr2', 
-				'5':'D2minAnalysisT300/CuZr2', 
+				'1':'ElasticityT300/CuZr3/itime0', 
+				'2':'MlTrain/CuZr3/itime0/Angular', 
+				'3':'PairCrltnT300/CuZr3', 
+				'4':'VorAnlT300/CuZr3', 
+				'5':'D2minAnalysisT300/CuZr3', 
 				}['1']
 	DeleteExistingFolder = False
 	readPath = os.getcwd() + {
-								'1':'/../testRuns/Preparation/ElasticityT300/CuZr2/itime0',
-								'2':'/../testRuns/glassCuZr2',
+								'1':'/../testRuns/Preparation/ElasticityT300/CuZr3/itime0',
+								'2':'/../testRuns/glassCuZr3',
  							}['1'] #--- source
 	EXEC_DIR = '.'     #--- path for executable file
 	durtn = '00:59:59'

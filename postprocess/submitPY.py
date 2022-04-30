@@ -14,7 +14,7 @@ if __name__ == '__main__':
 #           '3' :'CoCrFeMn',
 #            '4':'CoNiCrFeMn',
 #            '5':'Co5Cr2Fe40Mn27Ni26'
-			'6':'CuZr2',
+			'6':'CuZr3',
 		}
 	nphi = len(PHI)
 	#---
