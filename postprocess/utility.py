@@ -1039,10 +1039,12 @@ def PlotPaperVersion(pathh_indx,
                                             'CoCrFeMn',
                                             'CoNiCrFeMn',
                                             'Co5Cr2Fe40Mn27Ni26',
-                                            'CuZr2'
+                                            'CuZr3',
+#                                             'CuZr3'
                                         ],markers, colors, fillstyles, markersizes )):
         if 'glass' in kwargs and kwargs['glass'] != mg:
             continue
+        print(mg)
         Xdata = []
         Ydata = []
         #--- loop over realizations 
