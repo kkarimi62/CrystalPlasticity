@@ -98,7 +98,7 @@ if __name__ == '__main__':
 	Variables = list(map(lambda x:Variable[x], indices))
 	EXEC = list(map(lambda x:'lmp' if type(x) == type(0) else 'py', indices))	
 	#
-	DeleteExistingFolder = False
+	DeleteExistingFolder = True
 	#
 	EXEC_lmp = ['lmp_mpi','lmp_serial'][0]
 	durtn = ['96:59:59','00:59:59'][1]
