@@ -259,7 +259,7 @@ class Stats:
         #--- append percTrue
 
 
-        df_cls = pd.DataFrame(np.concatenate((np.c_[df_cls],np.c_[size],np.c_[radg_sq],np.c_[percTrue],),axis=1,dtype=np.object), 
+        df_cls = pd.DataFrame(np.concatenate((np.c_[df_cls],np.c_[size],np.c_[radg_sq],np.c_[percTrue],),axis=1, #dtype=np.object), 
                                               columns=['cls_id','size','rg_sq','percTrue'])
         #---
         #--- sort based on size
@@ -1043,7 +1043,6 @@ def PlotPaperVersion(pathh_indx,
                                         ],markers, colors, fillstyles, markersizes )):
         if 'glass' in kwargs and kwargs['glass'] != mg:
             continue
-            
         Xdata = []
         Ydata = []
         #--- loop over realizations 
