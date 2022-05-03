@@ -14,25 +14,25 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argv2nd):
 if __name__ == '__main__':
 	import os
 #
-	runs	 = [0] #,1,2]
+	runs	 = [0,1,2]
 	jobname  = {
-				'1':'ElasticityT300/CuZr3/itime0', 
-				'2':'MlTrain/CuZr3/itime0/Angular', 
-				'3':'PairCrltnT300/CuZr3', 
-				'4':'VorAnlT300/CuZr3', 
-				'5':'D2minAnalysisT300/CuZr3', 
+				'1':'ElasticityT300/Co5Cr2Fe40Mn27Ni26/itime0', 
+				'2':'MlTrain/Co5Cr2Fe40Mn27Ni26/itime0/Angular', 
+				'3':'PairCrltnT300/Co5Cr2Fe40Mn27Ni26', 
+				'4':'VorAnlT300/Co5Cr2Fe40Mn27Ni26', 
+				'5':'D2minAnalysisT300/Co5Cr2Fe40Mn27Ni26', 
 				}['1']
 	DeleteExistingFolder = True
 	readPath = os.getcwd() + {
-								'1':'/../testRuns/Preparation/ElasticityT300/CuZr3/itime0',
-								'2':'/../testRuns/glassCuZr3',
+								'1':'/../testRuns/Preparation/ElasticityT300/Co5Cr2Fe40Mn27Ni26/itime0',
+								'2':'/../testRuns/glassCo5Cr2Fe40Mn27Ni26',
  							}['1'] #--- source
 	EXEC_DIR = '.'     #--- path for executable file
 	durtn = '00:59:59'
 	mem = '64gb'
 	partition = ['parallel','cpu2019','bigmem','single'][2] 
 	argv = "path=%s"%(readPath) #--- don't change! 
-	argv2nd = "itime=0\nindx=6" 
+	argv2nd = "itime=0\nindx=5" 
 	PYFILdic = { 
 		0:'ElasticConstants.ipynb',
 		1:'analyzePlasticity.ipynb',
