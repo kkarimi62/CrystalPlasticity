@@ -11,7 +11,7 @@ if __name__ == '__main__':
 #             'CoNiCrFe',
 #             'CoCrFeMn',
 #             'CoNiCrFeMn',
-             'Co5Cr2Fe40Mn27Ni26',
+             'Co5Cr2Fe40Mn27Ni262nd',
 #			  'CuZr3'	
          ] 
    
