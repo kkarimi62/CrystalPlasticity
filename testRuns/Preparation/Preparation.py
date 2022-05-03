@@ -22,7 +22,7 @@ if __name__ == '__main__':
 	import os
 	import numpy as np
 
-	runs	 = [0] #,1,2]
+	runs	 = [0,1,2]
 	#
 	nThreads = [1,9][1]
 	nNode	 = 1
@@ -30,25 +30,24 @@ if __name__ == '__main__':
 	jobname  = {
 				1:'CuZrNatom32KT300Tdot1E-3Sheared',
 				2:'CuZrNatom32KT300Tdot1E-1Elasticity',
-				3:'ElasticityT300/CoNiCrFe/itime0',
-				4:'ElasticityT300/CuZr3/itime0',
+				4:'ElasticityT300/Co5Cr2Fe40Mn27Ni26/itime0',
 			   }[4]
 	sourcePath = os.getcwd() +\
 				{	
 					1:'/../postprocess/NiCoCrNatom1K',
 					2:'/CuZrNatom32KT300Tdot1E-1Sheared',
-					3:'/../glassCoNiCrFe',
+					3:'/../glassCo5Cr2Fe40Mn27Ni26',
 					4:'/junk',
-				}[2] #--- must be different than sourcePath
+				}[3] #--- must be different than sourcePath
         #
 	sourceFiles = { 0:False,
 					1:['Equilibrated_300.dat'],
 					2:['data.txt','ScriptGroup.txt'],
-					3:['data.0.txt','CoNiCrFe_glass.dump','CoNiCrFe.txt'], 
+					3:['data.0.txt','Co5Cr2Fe40Mn27Ni26_glass.dump','Co5Cr2Fe40Mn27Ni26.txt'], 
 					4:['data_minimized.txt'],
 					5:['data_init.txt','ScriptGroup.0.txt'], #--- only one partition! for multiple ones, use 'submit.py'
 					6:['data.0.txt','dumpSheared.xyz'], 
-				 }[6] #--- to be copied from the above directory
+				 }[3] #--- to be copied from the above directory
 	#
 	EXEC_DIR = '/home/kamran.karimi1/Project/git/lammps2nd/lammps/src' #--- path for executable file
 	#
