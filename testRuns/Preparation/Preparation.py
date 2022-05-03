@@ -22,7 +22,7 @@ if __name__ == '__main__':
 	import os
 	import numpy as np
 
-	runs	 = [0,1,2]
+	runs	 = [0] #,1,2]
 	#
 	nThreads = [1,9][1]
 	nNode	 = 1
@@ -30,7 +30,7 @@ if __name__ == '__main__':
 	jobname  = {
 				1:'CuZrNatom32KT300Tdot1E-3Sheared',
 				2:'CuZrNatom32KT300Tdot1E-1Elasticity',
-				4:'ElasticityT300/Co5Cr2Fe40Mn27Ni262nd/itime0',
+				4:'ElasticityT300/Co5Cr2Fe40Mn27Ni26/eps0/itime0',
 			   }[4]
 	sourcePath = os.getcwd() +\
 				{	
@@ -120,7 +120,7 @@ if __name__ == '__main__':
 		#---
 		for script,indx in zip(Pipeline,range(100)):
 #			os.system( 'cp %s/%s %s/lmpScript%s.txt' %( SCRPT_DIR, script, writPath, indx) ) #--- lammps script: periodic x, pxx, vy, load
-			os.system( 'ln -s %s/%s %s' %( SCRPT_DIR, script, writPath) ) #--- lammps script: periodic x, pxx, vy, load
+			os.system( 'cp %s/%s %s' %( SCRPT_DIR, script, writPath) ) #--- lammps script: periodic x, pxx, vy, load
 		if sourceFiles: 
 			for sf in sourceFiles:
 				os.system( 'ln -s %s/Run%s/%s %s' %(sourcePath, counter, sf, writPath) ) #--- lammps script: periodic x, pxx, vy, load
