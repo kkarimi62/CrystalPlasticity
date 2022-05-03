@@ -5,7 +5,7 @@
 # Define the finite deformation size. Try several values of this
 # variable to verify that results do not depend on it.
 # negative sign indicates loading 
-variable up equal -2.0e-03 #2.0e-2 #--- zero temp1.0e-6
+variable up equal 2.0e-2 #-2.0e-03 #2.0e-2 #--- zero temp1.0e-6
  
 # Define the amount of random jiggle for atoms
 # This prevents atoms from staying on saddle points

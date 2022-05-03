@@ -30,7 +30,7 @@ if __name__ == '__main__':
 	jobname  = {
 				1:'CuZrNatom32KT300Tdot1E-3Sheared',
 				2:'CuZrNatom32KT300Tdot1E-1Elasticity',
-				4:'ElasticityT300/Co5Cr2Fe40Mn27Ni26/itime0',
+				4:'ElasticityT300/Co5Cr2Fe40Mn27Ni262nd/itime0',
 			   }[4]
 	sourcePath = os.getcwd() +\
 				{	
