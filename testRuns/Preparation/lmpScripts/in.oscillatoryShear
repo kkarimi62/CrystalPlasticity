@@ -1,0 +1,36 @@
+# ---------- Initialize Simulation --------------------- 
+include ${INC}/init.mod
+# ---------- Create Atoms ---------------------
+include ${INC}/CreateBox.mod
+change_box all triclinic
+# ---------- Define Interatomic Potential --------------------- 
+include ${INC}/potential.mod
+#--- fix buffer zone
+#include ${INC}/buffer.mod
+
+#--- set variables
+variable t_eq       equal   10.0*${damp_t}         # Equlibration time
+variable Nstep_eq   equal   floor(${t_eq}/${dt}) #--- timesteps
+variable Nstep  	equal	floor(4*${Tp}/${dt}) #--- timesteps
+
+
+#--- set discretization time 
+timestep	${dt}
+
+# ----------------------------------- NVT Equilibration -----------------------------------------#
+velocity	all       create     $T     97364  mom    yes  rot  yes  dist  gaussian  # Dynamics starts
+fix			FixTherm        all        nvt temp   $T  $T  ${damp_t}  
+run	${Nstep}
+reset_timestep 0 
+
+#--- shear deformation
+fix		FixShear all deform 1 xy wiggle ${A} ${Tp} units box
+
+#-----------------------------
+#--- compute & dump variables
+#-----------------------------
+compute     1 all stress/atom NULL pair
+dump        1 all custom ${nevery} ${OUT_PATH}/${DumpFile} id type x y z c_1[1] c_1[2] c_1[3] c_1[4] c_1[5] c_1[6]
+dump_modify 1 flush yes format line "%d %d %5.4e %5.4e %5.4e %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e"
+
+run	${Nstep}
