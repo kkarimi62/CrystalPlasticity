@@ -20,7 +20,7 @@ timestep	${dt}
 # ----------------------------------- NVT Equilibration -----------------------------------------#
 velocity	all       create     $T     97364  mom    yes  rot  yes  dist  gaussian  # Dynamics starts
 fix			FixTherm        all        nvt temp   $T  $T  ${damp_t}  
-run	1 #${Nstep_eq}
+run	${Nstep_eq}
 reset_timestep 0 
 
 #--- shear deformation
