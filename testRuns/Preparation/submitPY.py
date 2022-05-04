@@ -3,7 +3,7 @@ if __name__ == '__main__':
 	import os
 	import numpy as np
 	#---
-	lnums = [ 33, 39, 46, 86   ]
+	lnums = [ 33, 39, 46, 88   ]
 	string=open('Preparation.py').readlines() #--- python script
 	#---
 #        MC = [-0.25,-0.1,0.0,0.1,0.2]
@@ -38,7 +38,7 @@ if __name__ == '__main__':
 			#---	
 			#---	densities
 			inums = lnums[ 0 ] - 1
-			string[ inums ] = "\t4:'ElasticityT300/%s/eps0/itime%s',\n"%(PHI[iphi],itime) #--- change job name
+			string[ inums ] = "\t4:'ElasticityT300/%s/itime%s',\n"%(PHI[iphi],itime) #--- change job name
 			#---
 			inums = lnums[ 1 ] - 1
 			string[ inums ] = "\t3:'/../glass%s',\n"%(PHI[iphi])
@@ -49,7 +49,8 @@ if __name__ == '__main__':
 #			string[ inums ] = "\t6:['data.%s.txt','dumpSheared.xyz'],\n"%(itime)
 			#---
 			inums = lnums[ 3 ] - 1
-			string[ inums ] = "\t10:' -var T 300.0 -var teq  2.0 -var nevery 100 -var ParseData 1 -var DataFile data.%s.txt',\n"%(itime)
+#			string[ inums ] = "\t10:' -var T 300.0 -var teq  2.0 -var nevery 100 -var ParseData 1 -var DataFile data.%s.txt',\n"%(itime)
+			string[ inums ] = "\t11:' -var T 300.0 -var A  0.1 -var Tp 0.4 -var nevery 40 -var DumpFile shearOscillation.xyz -var ParseData 1 -var DataFile data.%s.txt',\n"%(itime)
 
 			sfile=open('junk%s.py'%count,'w');sfile.writelines(string);sfile.close()
 			os.system( 'python junk%s.py'%count )
