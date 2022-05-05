@@ -24,6 +24,9 @@ if __name__ == '__main__':
 #             '4':'CoNiCrFeMn',
              '5':'Co5Cr2Fe40Mn27Ni26'
          }
+	EPS = { '0':0.01,
+			'1':0.1,
+			'2':1.0}
 
 	nphi = len(PHI)
 	#---
@@ -33,26 +36,27 @@ if __name__ == '__main__':
 	times=np.arange(0,200+1,4) #[0,50,101,120,195] #np.arange(0,200+8,8)
 	#--- 
 	count = 0
-	for itime in times:
-		for iphi in PHI:
+	for iphi in PHI:
+		for epsi in EPS:
+			for itime in times:
 			#---	
 			#---	densities
-			inums = lnums[ 0 ] - 1
-			string[ inums ] = "\t4:'ElasticityT300/%s/itime%s',\n"%(PHI[iphi],itime) #--- change job name
+				inums = lnums[ 0 ] - 1
+				string[ inums ] = "\t4:'ElasticityT300/%s/eps%s/itime%s',\n"%(PHI[iphi],epsi,itime) #--- change job name
 			#---
-			inums = lnums[ 1 ] - 1
-			string[ inums ] = "\t3:'/../glass%s',\n"%(PHI[iphi])
-#			string[ inums ] = "\t2:'/CuZrNatom32KT300Tdot1E-1Sheared',\n"
+				inums = lnums[ 1 ] - 1
+				string[ inums ] = "\t3:'/../glass%s',\n"%(PHI[iphi])
+#				string[ inums ] = "\t2:'/CuZrNatom32KT300Tdot1E-1Sheared',\n"
 			#---
-			inums = lnums[ 2 ] - 1
-			string[ inums ] = "\t3:['data.%s.txt','%s_glass.dump','%s.txt'],\n"%(itime,PHI[iphi],PHI[iphi])
-#			string[ inums ] = "\t6:['data.%s.txt','dumpSheared.xyz'],\n"%(itime)
+				inums = lnums[ 2 ] - 1
+				string[ inums ] = "\t3:['data.%s.txt','%s_glass.dump','%s.txt'],\n"%(itime,PHI[iphi],PHI[iphi])
+#				string[ inums ] = "\t6:['data.%s.txt','dumpSheared.xyz'],\n"%(itime)
 			#---
-			inums = lnums[ 3 ] - 1
-#			string[ inums ] = "\t10:' -var T 300.0 -var teq  2.0 -var nevery 100 -var ParseData 1 -var DataFile data.%s.txt',\n"%(itime)
-			string[ inums ] = "\t11:' -var T 300.0 -var A  0.1 -var Tp 0.4 -var nevery 40 -var DumpFile shearOscillation.xyz -var ParseData 1 -var DataFile data.%s.txt',\n"%(itime)
+				inums = lnums[ 3 ] - 1
+#				string[ inums ] = "\t10:' -var T 300.0 -var teq  2.0 -var nevery 100 -var ParseData 1 -var DataFile data.%s.txt',\n"%(itime)
+				string[ inums ] = "\t11:' -var T 300.0 -var A  %s -var Tp 0.4 -var nevery 40 -var DumpFile shearOscillation.xyz -var ParseData 1 -var DataFile data.%s.txt',\n"%(EPS[epsi],itime)
 
-			sfile=open('junk%s.py'%count,'w');sfile.writelines(string);sfile.close()
-			os.system( 'python junk%s.py'%count )
-			os.system( 'rm junk%s.py'%count )
-			count += 1
+				sfile=open('junk%s.py'%count,'w');sfile.writelines(string);sfile.close()
+				os.system( 'python junk%s.py'%count )
+				os.system( 'rm junk%s.py'%count )
+				count += 1
