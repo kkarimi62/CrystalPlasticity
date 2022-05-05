@@ -103,7 +103,7 @@ if __name__ == '__main__':
 	DeleteExistingFolder = True
 	#
 	EXEC_lmp = ['lmp_mpi','lmp_serial'][0]
-	durtn = ['96:59:59','00:59:59'][1]
+	durtn = ['96:59:59','03:59:59'][1]
 	mem = '8gb'
 	partition = ['gpu-v100','parallel','cpu2019','single'][1]
 	#---
