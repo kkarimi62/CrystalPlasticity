@@ -35,6 +35,53 @@ import LammpsPostProcess2nd as lp
 import imp
 imp.reload(lp)
 
+def GetAtoms( filee, nevery = 1 ):
+    lmpData = lp.ReadDumpFile( filee )
+    lmpData.GetCords( ncount = sys.maxsize, 
+                     columns = {'c_peratom[1]':'sxx','c_peratom[2]':'syy','c_peratom[3]':'szz',
+                                                       'c_peratom[4]':'sxy','c_peratom[5]':'sxz','c_peratom[6]':'syz'}
+                    )
+    nn=len(lmpData.coord_atoms_broken.keys())
+    itimee=list(lmpData.coord_atoms_broken.keys())[0:nn:nevery]
+
+    #--- volume
+    rad1=0.0#AtomicRadius[1]
+    rad2=0.0#AtomicRadius[2]
+    rad3=0.0#AtomicRadius[3]
+    neveryy = 10*nn #--- only initial frame for computing volumes
+    os.system('ovitos OvitosCna.py %s %s %s %s %s %s %s'%(filee,'Voronoi.xyz',neveryy,3,rad1,rad2,rad3))  
+#--- read from d2min.xyz
+    ovtData = lp.ReadDumpFile( 'Voronoi.xyz' )
+    ovtData.GetCords( ncount = sys.maxsize)
+    #--- atom obj
+    box0 = map(lambda x:lp.Box( BoxBounds = lmpData.BoxBounds[x], AddMissing = np.array([0.0,0.0,0.0] ) ), itimee ) #--- reference state
+    atoms0 = map(lambda x: lp.Atoms( **lmpData.coord_atoms_broken[x].to_dict(orient='series'),
+                        AtomicVolume = ovtData.coord_atoms_broken[0]['AtomicVolume'].tolist()), itimee )
+
+    return dict(zip(itimee,list(atoms0))), dict(zip(itimee,list(box0)))
+
+def GetTimeAverageSeries( atoms, col='x' ):
+    sarr = np.array(list(map( lambda x: atoms[x][col], atoms.keys() ))).T
+    return np.mean(sarr,axis=1)
+
+def GetTimeAverageAtom( atoms0 ):
+#    pdb.set_trace()
+    itime0 = list(atoms0.keys())[0]
+    attrs=atoms0[itime0].__dict__.keys()
+    #
+    sarr = np.array(list(map(lambda x: GetTimeAverageSeries( atoms0, col=x ), attrs))).T
+    df = pd.DataFrame(sarr,columns=attrs)
+    #--- pbc: mean of x is not valid! set it to initial values
+#    pdb.set_trace()
+    df.x = atoms0[itime0]['x'].to_list()
+    df.y = atoms0[itime0]['y'].to_list()
+    df.z = atoms0[itime0]['z'].to_list()
+    #---
+    sdict= df.to_dict(orient='series')    
+    atomi=lp.Atoms(**sdict)
+#    pd.DataFrame(atomi.__dict__)
+    return atomi
+
 
 def GetFrames( lmpData, **kwargs):
     '''
@@ -1039,7 +1086,7 @@ def PlotPaperVersion(pathh_indx,
                                             'CoCrFeMn',
                                             'CoNiCrFeMn',
                                             'Co5Cr2Fe40Mn27Ni26',
-                                            'CuZr3',
+                                            'Co5Cr2Fe40Mn27Ni262nd',
 #                                             'CuZr3'
                                         ],markers, colors, fillstyles, markersizes )):
         if 'glass' in kwargs and kwargs['glass'] != mg:
