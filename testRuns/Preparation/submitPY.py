@@ -24,16 +24,16 @@ if __name__ == '__main__':
 #             '4':'CoNiCrFeMn',
              '5':'Co5Cr2Fe40Mn27Ni26'
          }
-	EPS = { '0':0.01,
-			'1':0.1,
-			'2':1.0}
+	EPS = { '0':10.0,
+			'1':20.0,
+			'2':40.0}
 
 	nphi = len(PHI)
 	#---
 #	nn = 4
 #	NTHRESH = np.linspace(0.05,0.11,nn,endpoint=True)
 	#---
-	times=np.arange(0,200+1,4) #[0,50,101,120,195] #np.arange(0,200+8,8)
+	times=np.arange(0,200+1,8) #[0,50,101,120,195] #np.arange(0,200+8,8)
 	#--- 
 	count = 0
 	for iphi in PHI:
@@ -54,7 +54,7 @@ if __name__ == '__main__':
 			#---
 				inums = lnums[ 3 ] - 1
 #				string[ inums ] = "\t10:' -var T 300.0 -var teq  2.0 -var nevery 100 -var ParseData 1 -var DataFile data.%s.txt',\n"%(itime)
-				string[ inums ] = "\t11:' -var T 300.0 -var A  %s -var Tp 0.4 -var nevery 40 -var DumpFile shearOscillation.xyz -var ParseData 1 -var DataFile data.%s.txt',\n"%(EPS[epsi],itime)
+				string[ inums ] = "\t11:' -var T 300.0 -var A 0.1 -var Tp %s -var nevery 100 -var DumpFile shearOscillation.xyz -var ParseData 1 -var DataFile data.%s.txt',\n"%(EPS[epsi],itime)
 
 				sfile=open('junk%s.py'%count,'w');sfile.writelines(string);sfile.close()
 				os.system( 'python junk%s.py'%count )
