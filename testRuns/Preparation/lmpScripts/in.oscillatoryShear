@@ -11,7 +11,7 @@ include ${INC}/potential.mod
 #--- set variables
 variable t_eq       equal   10.0*${damp_t}         # Equlibration time
 variable Nstep_eq   equal   floor(${t_eq}/${dt}) #--- timesteps
-variable Nstep  	equal	floor(4*${Tp}/${dt}) #--- timesteps
+variable Nstep  	equal	floor(2*${Tp}/${dt}) #--- timesteps
 
 
 #--- set discretization time 
