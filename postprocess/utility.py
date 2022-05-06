@@ -1109,8 +1109,8 @@ def PlotPaperVersion(pathh_indx,
                           0:'%s/PairCrltnT300/%s/Run%s'%(os.getcwd(),mg,irun),
                           1:'%s/VorAnlT300/%s/Run%s'%(os.getcwd(),mg,irun),
                           2:'%s/D2minAnalysisT300/%s/Run%s'%(os.getcwd(),mg,irun),
-                          3:'%s/ElasticityT300/%s/eps3/itime%s/Run%s'%(os.getcwd(),mg,itimee,irun),
-                          4:'%s/ElasticityT300/%s/eps3/itime%s/Run%s/ModuAnl'%(os.getcwd(),mg,itimee,irun),
+                          3:'%s/ElasticityT300/%s/eps2/itime%s/Run%s'%(os.getcwd(),mg,itimee,irun),
+                          4:'%s/ElasticityT300/%s/eps2/itime%s/Run%s/ModuAnl'%(os.getcwd(),mg,itimee,irun),
                           5:'%s/Exponents/%s'%(os.getcwd(),mg),
                         }[pathh_indx]
                 file0 = {
