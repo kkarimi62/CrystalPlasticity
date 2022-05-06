@@ -16,17 +16,20 @@ if __name__ == '__main__':
          ] 
 
 	EPS = { 
-			'0':1.0,
-			'1':2.0,
-			'2':4.0,
+#			'0':1.0,
+#			'1':2.0,
+#			'2':4.0,
 #			'3':8.0
+			'4':16.0
+			'5':32.0
+			'6':64.0
 		  }
 	
    
 	runs=[0] #,1,2] #--- nruns
 	for loopi in PHI: #--- composition 
 		for epsi in EPS: #--- strain 
-			for loop in np.arange(0,100+1,2): #[50,101,195]: #np.arange(0,200+8,8): #--- itimes
+			for loop in np.arange(0,100+1,4): #[50,101,195]: #np.arange(0,200+8,8): #--- itimes
 				jobname  = 'ElasticityT300/%s/eps%s/itime%s'%(loopi,epsi,loop)
 #				jobname  = 'ElasticityT300/%s/itime%s'%(loopi,loop)
 				job_id = int(open('%s/jobID.txt'%jobname).readlines()[0].split()[3])
