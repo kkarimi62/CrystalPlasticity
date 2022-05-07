@@ -10,7 +10,7 @@ variable 	pyz1_${dir} atom -c_peratom[6]
 variable 	pxz1_${dir} atom -c_peratom[5]
 variable 	pxy1_${dir} atom -c_peratom[4]
 
-dump        2 all custom ${nevery} ${OUT_PATH}/dump_def${dir}.xyz id type x y z c_peratom[1] c_peratom[2] c_peratom[3] c_peratom[4] c_peratom[5] c_peratom[6]
+dump        2 all custom ${nevery} ${OUT_PATH}/${DumpFile}${dir}.xyz id type x y z c_peratom[1] c_peratom[2] c_peratom[3] c_peratom[4] c_peratom[5] c_peratom[6]
 dump_modify 2 flush yes append yes format line "%d %d %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e"
 
 #--- store initial stress
