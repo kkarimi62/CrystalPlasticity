@@ -3,7 +3,7 @@ if __name__ == '__main__':
 	import os
 	import numpy as np
 	#---
-	lnums = [ 33, 39, 46, 88   ]
+	lnums = [ 33, 39, 46, 88, 89   ]
 	string=open('Preparation.py').readlines() #--- python script
 	#---
 #        MC = [-0.25,-0.1,0.0,0.1,0.2]
@@ -25,13 +25,13 @@ if __name__ == '__main__':
              '5':'Co5Cr2Fe40Mn27Ni26'
          }
 	EPS = { 
-#			'0':1.0,
-#			'1':2.0,
-#			'2':4.0,
+			'0':1.0e-03,
+			'1':0.5e-03,
+			'2':0.25e-03,
 #			'3':8.0
-			'4':16.0,
-			'5':32.0,
-			'6':64.0,
+#			'4':16.0,
+#			'5':32.0,
+#			'6':64.0,
 		  }
 
 	nphi = len(PHI)
@@ -60,7 +60,11 @@ if __name__ == '__main__':
 			#---
 				inums = lnums[ 3 ] - 1
 #				string[ inums ] = "\t10:' -var T 300.0 -var teq  2.0 -var nevery 100 -var ParseData 1 -var DataFile data.%s.txt',\n"%(itime)
-				string[ inums ] = "\t11:' -var T 300.0 -var A 0.1 -var Tp %s -var nevery 1000 -var DumpFile shearOscillation.xyz -var ParseData 1 -var DataFile data.%s.txt',\n"%(EPS[epsi],itime)
+#				string[ inums ] = "\t11:' -var T 300.0 -var A 0.1 -var Tp %s -var nevery 1000 -var DumpFile shearOscillation.xyz -var ParseData 1 -var DataFile data.%s.txt',\n"%(EPS[epsi],itime)
+				string[ inums ] = "\t10:' -var teq 1.0 -var up - %s -var nevery 50 -var ParseData 1 -var DataFile data.%s.txt -var DumpFile dumpUp_',\n"%(EPS[epsi],itime)
+				#---
+				inums = lnums[ 4 ] - 1
+				string[ inums ] = "\t101:' -var teq 1.0 -var up %s -var nevery 50 -var ParseData 1 -var DataFile data.%s.txt -var DumpFile dumpDown_',\n"%(EPS[epsi],itime)
 
 				sfile=open('junk%s.py'%count,'w');sfile.writelines(string);sfile.close()
 				os.system( 'python junk%s.py'%count )
