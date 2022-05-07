@@ -61,10 +61,10 @@ if __name__ == '__main__':
 				inums = lnums[ 3 ] - 1
 #				string[ inums ] = "\t10:' -var T 300.0 -var teq  2.0 -var nevery 100 -var ParseData 1 -var DataFile data.%s.txt',\n"%(itime)
 #				string[ inums ] = "\t11:' -var T 300.0 -var A 0.1 -var Tp %s -var nevery 1000 -var DumpFile shearOscillation.xyz -var ParseData 1 -var DataFile data.%s.txt',\n"%(EPS[epsi],itime)
-				string[ inums ] = "\t10:' -var teq 1.0 -var up - %s -var nevery 50 -var ParseData 1 -var DataFile data.%s.txt -var DumpFile dumpUp_',\n"%(EPS[epsi],itime)
+				string[ inums ] = "\t10:' -var T 300.0 -var teq 1.0 -var up %s -var nevery 50 -var ParseData 1 -var DataFile data.%s.txt -var DumpFile dumpUp_',\n"%(-EPS[epsi],itime)
 				#---
 				inums = lnums[ 4 ] - 1
-				string[ inums ] = "\t101:' -var teq 1.0 -var up %s -var nevery 50 -var ParseData 1 -var DataFile data.%s.txt -var DumpFile dumpDown_',\n"%(EPS[epsi],itime)
+				string[ inums ] = "\t101:' -var T 300.0 -var teq 1.0 -var up %s -var nevery 50 -var ParseData 1 -var DataFile data.%s.txt -var DumpFile dumpDown_',\n"%(EPS[epsi],itime)
 
 				sfile=open('junk%s.py'%count,'w');sfile.writelines(string);sfile.close()
 				os.system( 'python junk%s.py'%count )
