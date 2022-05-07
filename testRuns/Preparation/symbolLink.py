@@ -39,5 +39,5 @@ if __name__ == '__main__':
 				assert len(job_ids) == len(runs)
 				for id_job, counter in zip( job_ids, runs): #xrange( sys.maxint ) ):
 					writPath = os.getcwd() + '/%s/Run%s' % ( jobname, counter ) # --- curr. dir
-					for file_name in ['shearOscillation.xyz']: #[ 'dump_init.xyz', 'dump_def6.xyz' ]:
+					for file_name in ['dump_init.xyz','dumpUp_6.xyz','dumpDown_6.xyz']: #['shearOscillation.xyz']: #[ 'dump_init.xyz', 'dump_def6.xyz' ]:
 						os.system( 'ln -s /scratch/%s/%s %s/' % ( id_job, file_name, writPath ) )
