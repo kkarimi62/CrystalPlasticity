@@ -25,9 +25,9 @@ if __name__ == '__main__':
              '5':'Co5Cr2Fe40Mn27Ni26'
          }
 	EPS = { 
-			'0':1.0e-03,
+#			'0':1.0e-03,
 #			'1':0.5e-03,
-#			'2':0.25e-03,
+			'2':0.25e-03,
 #			'3':8.0
 #			'4':16.0,
 #			'5':32.0,
@@ -39,7 +39,7 @@ if __name__ == '__main__':
 #	nn = 4
 #	NTHRESH = np.linspace(0.05,0.11,nn,endpoint=True)
 	#---
-	times=np.arange(0,200+1,2) #[0,50,101,120,195] #np.arange(0,200+8,8)
+	times=np.arange(0,200+1,4) #np.arange(0,200+1,2) 
 	#--- 
 	count = 0
 	for iphi in PHI:

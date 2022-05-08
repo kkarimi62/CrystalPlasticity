@@ -26,7 +26,7 @@ if __name__ == '__main__':
 		  }
 	
    
-	runs=[0] #,1,2] #--- nruns
+	runs=[0,1,2] #--- nruns
 	for loopi in PHI: #--- composition 
 		for epsi in EPS: #--- strain 
 			for loop in np.arange(0,200+1,2): #[50,101,195]: #np.arange(0,200+8,8): #--- itimes
