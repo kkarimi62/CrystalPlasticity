@@ -19,9 +19,9 @@ if __name__ == '__main__':
 
 
 	EPS = {
-             '0':1.0e-03,
+#             '0':1.0e-03,
 #             '1':0.5e-03,
-#             '2':0.25e-03,
+             '2':0.25e-03,
 #            '3':8.0,
 #              '4':16.0,
 #              '5':32.0,
@@ -31,7 +31,7 @@ if __name__ == '__main__':
 
 	nphi = len(PHI)
 	#---
-	times=np.arange(0,200+1,2) #[70,100,130,160] #np.arange(0,100,4) #[0,50,101,120,195] #np.arange(0,200+1,1) #[0,50,101,120,195] #np.arange(0,200+8,8)	
+	times=np.arange(0,200+1,4) 
 
 #	PHI = [[PHI[iphi],NTHRESH[inn]] for iphi in xrange( nphi ) for inn in xrange(nn)]
 #	nphi = len(PHI)
