@@ -27,8 +27,8 @@ if __name__ == '__main__':
 	EPS = { 
 #			'0':1.0e-03,
 #			'1':0.5e-03,
-#			'2':0.25e-03,
-			'3':2.0e-02,
+			'2':0.25e-03,
+#			'3':2.0e-02,
 #			'4':16.0,
 #			'5':32.0,
 #			'6':64.0,
@@ -39,7 +39,7 @@ if __name__ == '__main__':
 #	nn = 4
 #	NTHRESH = np.linspace(0.05,0.11,nn,endpoint=True)
 	#---
-	times=np.arange(0,200+1,4) #np.arange(0,200+1,2) 
+	times=np.arange(0,200+1,1) #np.arange(0,200+1,2) 
 	#--- 
 	count = 0
 	for iphi in PHI:
