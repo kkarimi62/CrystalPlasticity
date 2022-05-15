@@ -1048,8 +1048,9 @@ def ReadDataa(file0,file0_indx,verbose=False):
             errx = np.ones(len(xdata))*np.nan
             
     except:
-        print('error while reading %s'%file0)
-        return
+        if verbose: print('error while reading %s'%file0)
+        pass
+        #return
 
     return xdata, ydata, erry, errx
             
@@ -1593,7 +1594,7 @@ def GetMetrics(pathh_indx,file0_indx,**kwargs):
                             assert xdata.shape == ydata.shape
                     
                     except:
-                        print('error while reading %s'%file0)
+                        if verbose: print('error while reading %s'%file0)
                         pass
 
 #                    ydata /= xdata**2 #!!!!!!!!!!!!!comment 
