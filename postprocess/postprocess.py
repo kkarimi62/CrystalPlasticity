@@ -27,7 +27,7 @@ if __name__ == '__main__':
 	readPath = os.getcwd() + {
 								'1':'/../testRuns/Preparation/ElasticityT300/Co5Cr2Fe40Mn27Ni26/itime0',
 								'2':'/../testRuns/glassCo5Cr2Fe40Mn27Ni26',
-								'3':'/../testRuns/Preparation/CuZrNatom32KT300Tdot1E-1Sheared/Run0',
+								'3':'/../testRuns/Preparation/CuZrNatom32KT300Tdot1E-1Sheared',
  							}['3'] #--- source
 	EXEC_DIR = '.'     #--- path for executable file
 	durtn = '11:59:59'
