@@ -35,6 +35,59 @@ import LammpsPostProcess2nd as lp
 import imp
 imp.reload(lp)
 
+def GetQuantile(df,q):
+    s=df.to_list()
+    s.sort()
+    n=len(s)
+    return s[int(q*n)]
+
+def Wrapper_neighList(lmpData,reference_frames,cutoff):
+    '''
+    fetch neighbor list from ovito
+    '''
+    
+    fileRef = 'neighList/dump_ref.xyz'
+    output  = 'neighList/neighList.xyz'
+    #--- rm existig file
+    os.system('rm %s'%output)
+    #--- split dump file
+    for ii0 in reference_frames:
+        atom_reference = lp.Atoms(**lmpData.coord_atoms_broken[ii0])
+        box0 = lp.Box( BoxBounds = lmpData.BoxBounds[ii0], AddMissing = np.array([0.0,0.0,0.0] ))
+        lp.WriteDumpFile(atom_reference, box0).Write(fileRef, itime=ii0,
+                 attrs=['id', 'type','x', 'y', 'z'],
+                 fmt='%i %i %15.14e %15.14e %15.14e')
+        #--- load to ovito
+        os.system('ovitos OvitosCna.py %s %s 1 4 %s'%(fileRef,output,cutoff))
+        #--- concat
+        
+        
+def WrapperD2min(lmpData,reference_frames,current_frames):
+    '''
+    invoke d2min analysis in ovito
+    '''
+    #--- split dump file
+    for ii0, ii in zip(reference_frames,current_frames):
+        atom_current = lp.Atoms(**lmpData.coord_atoms_broken[ii])
+        atom_reference = lp.Atoms(**lmpData.coord_atoms_broken[ii0])
+        box  = lp.Box( BoxBounds = lmpData.BoxBounds[ii],  AddMissing = np.array([0.0,0.0,0.0] ))
+        box0 = lp.Box( BoxBounds = lmpData.BoxBounds[ii0], AddMissing = np.array([0.0,0.0,0.0] ))
+        lp.WriteDumpFile(atom_current, box).Write('D2minAnl/dump_curr.xyz', itime = ii,
+                 attrs=['id', 'type','x', 'y', 'z'],
+                 fmt='%i %i %15.14e %15.14e %15.14e')
+        lp.WriteDumpFile(atom_reference, box0).Write('D2minAnl/dump_ref.xyz', itime=ii0,
+                 attrs=['id', 'type','x', 'y', 'z'],
+                 fmt='%i %i %15.14e %15.14e %15.14e')
+    #    os.system('tar czf dump.gz dump.xyz')
+        fileCurr = 'D2minAnl/dump_curr.xyz'
+        fileRef = 'D2minAnl/dump_ref.xyz'
+        output = 'D2minAnl/d2min.%s.xyz'%ii
+        #--- load to ovito
+        os.system('ovitos OvitosCna.py %s %s 2 2 %s'%(fileCurr,output,fileRef))
+        #--- concat
+        os.system('cat %s >> D2minAnl/d2min.xyz;rm %s'%(output,output))
+        
+        
 def GetAtoms( filee, nevery = 1 ):
     lmpData = lp.ReadDumpFile( filee )
     lmpData.GetCords( ncount = sys.maxsize, 
@@ -1085,7 +1138,7 @@ def PlotPaperVersion(pathh_indx,
                                             'CoCrFeMn',
                                             'CoNiCrFeMn',
                                             'Co5Cr2Fe40Mn27Ni26',
-                                            'Co5Cr2Fe40Mn27Ni262nd',
+#                                            'Co5Cr2Fe40Mn27Ni262nd',
 #                                             'CuZr3'
                                         ],markers, colors, fillstyles, markersizes )):
         if 'glass' in kwargs and kwargs['glass'] != mg:
@@ -2020,7 +2073,81 @@ def PltErr( xdata, ydata,
     
 #    if not 'ax' in kwargs:
     return ax
+       
+
+def PltScatter( xdata, ydata, 
+            yerr = None,
+            xstr = '',
+            ystr = '',
+            Plot = True,
+            **kwargs,
+            ):
+    fontsize=kwargs['fontsize'] if 'fontsize' in kwargs else 20
+    if not 'ax' in kwargs:
+        fig = plt.figure( figsize = (4,4))
+        ax = fig.add_subplot(111)
+    else:
+        ax = kwargs['ax']
+        if 'twinx' in kwargs and kwargs['twinx']:
+                ax = kwargs['ax'].twinx()
+    #--- setting   
+    ax.set_xlabel(xstr,fontsize=fontsize)
+    ax.set_ylabel(ystr,fontsize=fontsize)
+    ax.tick_params(labelsize=fontsize,which='both',axis='both', top=True, right=True)
+    #
+    xerr = kwargs['xerr'] if 'xerr' in kwargs else None 
+#
+    if 'attrs' in kwargs:
+        ax.scatter( xdata, ydata, **kwargs['attrs'])
+        if 'fill_between' in kwargs and kwargs['fill_between']:   
+            ax.fill_between(xdata, ydata-yerr, ydata+yerr)
+
+    else:
+        ax.errorbar( xdata, ydata,yerr = yerr, xerr = xerr, fmt='-o',label=r'$x$')       
+    #--- plot
+    #
+#    ax.plot(ax.axis()[:2],[0.0,0.0],'-.',color='black')
+    #
+    if 'ylim' in kwargs:
+        ylim = kwargs['ylim'] 
+        ax.set_ylim(ylim)
+    if 'xlim' in kwargs:
+        xlim = kwargs['xlim'] 
+        ax.set_xlim(xlim)
+    #
+    if 'xscale' in kwargs: 
+        ax.set_xscale(kwargs['xscale'])
+    if 'yscale' in kwargs: 
+        ax.set_yscale(kwargs['yscale'])
+    #
+    if 'xticks' in kwargs:
+        ax.set_xticks(list(map(float,kwargs['xticks'][1])))
+        ax.set_xticklabels(list(map(lambda x:'$%s$'%x,kwargs['xticks'][0])))
+    #
+    if 'yticks' in kwargs:
+        ax.set_yticks(list(map(float,kwargs['yticks'][1])))
+        ax.set_yticklabels(list(map(lambda x:'$%s$'%x,kwargs['yticks'][0])))
         
+    #
+    LOGY = True if ('yscale' in kwargs and kwargs['yscale'] == 'log') else False
+    LOGX = True if ('xscale' in kwargs and kwargs['xscale'] == 'log') else False
+    PutMinorTicks(ax, LOGX=LOGX,LOGY=LOGY)
+    #
+    if 'DrawFrame' in kwargs: 
+        DrawFrame(ax, *kwargs['DrawFrame'],LOG_Y=LOGY,LOG_X=LOGX)
+    #
+    if 'legend' in kwargs and kwargs['legend']:
+        plt.legend(frameon=False,fontsize=fontsize)
+    if 'title' in kwargs: #Plot:
+        plt.savefig(kwargs['title'],dpi=300 if not 'dpi' in kwargs else kwargs['dpi'],bbox_inches='tight', 
+                    pad_inches=0.0)
+    if Plot:
+        plt.show()
+    #
+    
+    
+#    if not 'ax' in kwargs:
+    return ax
         
 def FilterDataFrame(df,key='id',val=[1,2,3]): #,out='C66'):
     tmp0 = df.set_index(key,drop=True,append=False).loc[val] 
@@ -2508,7 +2635,7 @@ def PltBitmap( value,
     #
     pos = ax.imshow(val.real,cmap='bwr' if 'cmap' not in kwargs else kwargs['cmap'],
                      extent=(xlim[0],xlim[1],ylim[0],ylim[1]),origin='lower',
-                    vmin=vmin, vmax=vmax)
+                    vmin=vmin, vmax=vmax,interpolation=kwargs['interpolation'] if 'interpolation' in kwargs else None )
     if colorbar:
         fig.colorbar( pos, fraction = 0.04)
     #

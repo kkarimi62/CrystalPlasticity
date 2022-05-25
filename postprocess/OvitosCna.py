@@ -25,18 +25,14 @@ def GetPairAttrs(data, neigh,iatom):
         
 #--- command-line args
 InputFile = sys.argv[1] #--- input file
+print('InputFile=',InputFile)
 OutputFile = sys.argv[2] #--- output
+print('OutputFile=',OutputFile)
 nevery = int(sys.argv[3])
-#frames = [100,200] #list(map(int, eval(sys.argv[3]))) #--- compute at theses frames
+print('nevery',nevery)
 AnalysisType = int(sys.argv[4]) #--- 0:CommonNeighborAnalysis 1:g(r) 2:d2min 3:voronoi analysis 4: neighborlist
-#if AnalysisType != 4: #--- if not neighbor list analysis
-#    nevery = int(sys.argv[3]) #--- compute every nevery time
 if AnalysisType == 2: #--- d2min: reference file
     RefFile = sys.argv[5]
-    use_frame_offset = bool(eval(sys.argv[6]))    
-    frame_offset = int(sys.argv[7])
-    reference_frame = int(sys.argv[8])
-#    print('reference_frame=',reference_frame)
 
 if AnalysisType == 3: #--- voronoi analysis
     radii=list(map(float,sys.argv[5:]))
@@ -63,7 +59,7 @@ if AnalysisType == 1:
 
 if AnalysisType == 2:
     d2min = md.AtomicStrainModifier(
-                                    use_frame_offset = use_frame_offset, #True,
+#                                    use_frame_offset = use_frame_offset, #True,
 #                                    frame_offset = frame_offset, #-1,
 #                                    reference_frame = reference_frame,
                                     output_nonaffine_squared_displacements=True,
@@ -181,11 +177,10 @@ if AnalysisType == 2:
     io.export_file( pipeline, OutputFile, "lammps_dump",\
                     columns = ["Particle Identifier", "Particle Type", "Position.X","Position.Y","Position.Z",\
                                "Nonaffine Squared Displacement"],
-                     start_frame = 100,
-                     end_frame = 200, #pipeline.source.num_frames,
-                     every_nth_frame = 100, #nevery,
-#                     multiple_frames=True 
-#                   frame=[100,100],
+                     start_frame = 0,
+                     end_frame = pipeline.source.num_frames,
+                     every_nth_frame = nevery,
+                     multiple_frames=True 
                   )
 
 if AnalysisType == 3: 

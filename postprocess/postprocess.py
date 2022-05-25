@@ -21,18 +21,20 @@ if __name__ == '__main__':
 				'3':'PairCrltnT300/Co5Cr2Fe40Mn27Ni26', 
 				'4':'VorAnlT300/Co5Cr2Fe40Mn27Ni26', 
 				'5':'D2minAnalysisT300/Co5Cr2Fe40Mn27Ni26', 
-				}['1']
+				'6':'MlTrain/cuzr/itime0/Run0', 
+				}['6']
 	DeleteExistingFolder = True
 	readPath = os.getcwd() + {
 								'1':'/../testRuns/Preparation/ElasticityT300/Co5Cr2Fe40Mn27Ni26/itime0',
 								'2':'/../testRuns/glassCo5Cr2Fe40Mn27Ni26',
- 							}['1'] #--- source
+								'3':'/../testRuns/Preparation/CuZrNatom32KT300Tdot1E-1Sheared/Run0',
+ 							}['3'] #--- source
 	EXEC_DIR = '.'     #--- path for executable file
-	durtn = '00:59:59'
+	durtn = '11:59:59'
 	mem = '64gb'
 	partition = ['parallel','cpu2019','bigmem','single'][2] 
 	argv = "path=%s"%(readPath) #--- don't change! 
-	argv2nd = "itime=0\nindx=5" 
+	argv2nd = "itime=10000\n\itime0=0\nindx=6" 
 	PYFILdic = { 
 		0:'ElasticConstants.ipynb',
 		1:'analyzePlasticity.ipynb',

@@ -178,7 +178,7 @@ class WriteDumpFile:
         self.atom = atomm
         self.box = boxx
         
-    def Write(self, outpt, attrs=['id', 'type', 'x', 'y', 'z' ], fmt = '%i %i %15.14e %15.14e %15.14e' ):
+    def Write(self, outpt, itime=0,attrs=['id', 'type', 'x', 'y', 'z' ], fmt = '%i %i %15.14e %15.14e %15.14e' ):
         natom = len(self.atom.x)
         (xlo,xhi,xy)=list(map(float,self.box.BoxBounds[0,:]))
         (ylo,yhi,junk)=list(map(float,self.box.BoxBounds[1,:]))
@@ -186,7 +186,7 @@ class WriteDumpFile:
         sfile=open(outpt,'w')
         sfile.write('ITEM: TIMESTEP\n%d\nITEM: NUMBER OF ATOMS\n%d\nITEM: BOX BOUNDS xy xz yz pp pp pp\n\
                      %15.14e %15.14e %15.14e\n%15.14e\t%15.14e\t%15.14e\n%15.14e\t%15.14e\t%15.14e\nITEM: ATOMS %s\n'\
-                     %(0,natom,xlo,xhi,xy,ylo,yhi,0.0,zlo,zhi,0.0," ".join(map(str,attrs))))
+                     %(itime,natom,xlo,xhi,xy,ylo,yhi,0.0,zlo,zhi,0.0," ".join(map(str,attrs))))
 
 #                     %s %s %s\n%s\t%s\t%s\n%s\t%s\t%s\nITEM: ATOMS id type x y z\n'\
 
