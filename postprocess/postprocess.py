@@ -34,7 +34,7 @@ if __name__ == '__main__':
 	mem = '64gb'
 	partition = ['parallel','cpu2019','bigmem','single'][2] 
 	argv = "path=%s"%(readPath) #--- don't change! 
-	argv2nd = "itime=10000\nitime0=0\nindx=6" 
+	argv2nd = "itime=900000\nitime0=0\nindx=6" 
 	PYFILdic = { 
 		0:'ElasticConstants.ipynb',
 		1:'analyzePlasticity.ipynb',
