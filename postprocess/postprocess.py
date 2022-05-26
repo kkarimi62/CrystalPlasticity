@@ -21,7 +21,7 @@ if __name__ == '__main__':
 				'3':'PairCrltnT300/Co5Cr2Fe40Mn27Ni26', 
 				'4':'VorAnlT300/Co5Cr2Fe40Mn27Ni26', 
 				'5':'D2minAnalysisT300/Co5Cr2Fe40Mn27Ni26', 
-				'6':'MlTrain/cuzr/itime0', 
+				'6':'MlTrain/cuzr/itime90', 
 				}['6']
 	DeleteExistingFolder = False
 	readPath = os.getcwd() + {
