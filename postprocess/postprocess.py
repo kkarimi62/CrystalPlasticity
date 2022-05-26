@@ -21,7 +21,7 @@ if __name__ == '__main__':
 				'3':'PairCrltnT300/Co5Cr2Fe40Mn27Ni26', 
 				'4':'VorAnlT300/Co5Cr2Fe40Mn27Ni26', 
 				'5':'D2minAnalysisT300/Co5Cr2Fe40Mn27Ni26', 
-				'6':'MlTrain/cuzr/itime0', 
+				'6':'MlTrain/cuzr2nd/itime0', 
 				}['6']
 	DeleteExistingFolder = False
 	readPath = os.getcwd() + {
@@ -30,7 +30,7 @@ if __name__ == '__main__':
 								'3':'/../testRuns/Preparation/CuZrNatom32KT300Tdot1E-1Sheared',
  							}['3'] #--- source
 	EXEC_DIR = '.'     #--- path for executable file
-	durtn = '11:59:59'
+	durtn = '23:59:59'
 	mem = '64gb'
 	partition = ['parallel','cpu2019','bigmem','single'][2] 
 	argv = "path=%s"%(readPath) #--- don't change! 
