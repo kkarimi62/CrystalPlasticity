@@ -23,7 +23,7 @@ if __name__ == '__main__':
 				'5':'D2minAnalysisT300/Co5Cr2Fe40Mn27Ni26', 
 				'6':'MlTrain/cuzr2nd/itime0', 
 				}['6']
-	DeleteExistingFolder = True #False
+	DeleteExistingFolder = False
 	readPath = os.getcwd() + {
 								'1':'/../testRuns/Preparation/ElasticityT300/Co5Cr2Fe40Mn27Ni26/itime0',
 								'2':'/../testRuns/glassCo5Cr2Fe40Mn27Ni26',
