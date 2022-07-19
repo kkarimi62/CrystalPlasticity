@@ -687,6 +687,7 @@ def Pltt(ax_s,ax_m,**kwargs):
            'capthick':1,
            'elinewidth':1,
            'fmt':'.',
+#           'markevery':2,
           }       
     ax = None  
     ax = PltErr(X[:,0],X[:,1], 
@@ -702,7 +703,7 @@ def Pltt(ax_s,ax_m,**kwargs):
     #--- plot average
     Xm = np.c_[ax_m.lines[0].get_xdata(),
                ax_m.lines[1].get_ydata(),
-               np.array(ax_m.lines[2].get_ydata())-np.array(ax_m.lines[1].get_ydata())]
+               np.array(ax_m.lines[2].get_ydata())-np.array(ax_m.lines[0].get_ydata())]
 
 
     attrs={ 'color':'red',
@@ -2444,7 +2445,7 @@ def gaussian_mixture( values,
     #         nij_blue = nij[list_of_blue]
 
             #--- plot distributions
-            edge_act, hist_act = DistNij(nij,normed=None, nbins_per_decade = 16)
+            edge_act, hist_act = DistNij(nij,normed=None, nbins_per_decade = 8)
 
             if PLOT:
                 fig = plt.figure(figsize=(4,4))
@@ -2459,8 +2460,8 @@ def gaussian_mixture( values,
                         len(X)*(delta['trigrd']*gaussian(xv, mean['trigrd'], sigma['trigrd'])+
                                 delta['backgrd']*gaussian(xv, mean['backgrd'], sigma['backgrd']))*(xv[1]-xv[0]), 
                         color='black')
-                ax.plot( xv, len(X)*delta['trigrd']*gaussian(xv, mean['trigrd'], sigma['trigrd'])*(xv[1]-xv[0]),color='red')
-                ax.plot( xv, len(X)*delta['backgrd']*gaussian(xv, mean['backgrd'], sigma['backgrd'])*(xv[1]-xv[0]),color='C0')
+                ax.plot( xv, len(X)*delta['trigrd']*gaussian(xv, mean['trigrd'], sigma['trigrd'])*(xv[1]-xv[0]),color='C0')
+                ax.plot( xv, len(X)*delta['backgrd']*gaussian(xv, mean['backgrd'], sigma['backgrd'])*(xv[1]-xv[0]),color='red')
                 if LABELS:
                     ax.set_xlabel(r'$log n_{ij}$')
                     ax.set_ylabel(r'$P(log n_{ij})$')
