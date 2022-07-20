@@ -311,6 +311,7 @@ class Stats:
     def GetSize(self):
         #--- clusters
         label_im, nb_labels = ndimage.label(self.mask)
+        self.label_im = label_im
         #--- cluster bounds
         sliced=ndimage.find_objects(label_im,max_label=0)
     #    sliceX = sliced[0][1]
@@ -2062,8 +2063,8 @@ def PltErr( xdata, ydata,
     if 'DrawFrame' in kwargs: 
         DrawFrame(ax, *kwargs['DrawFrame'],LOG_Y=LOGY,LOG_X=LOGX)
     #
-    if 'legend' in kwargs and kwargs['legend']:
-        plt.legend(frameon=False,fontsize=fontsize)
+    if 'legend' in kwargs:# and :
+        plt.legend(**kwargs['legend'])#frameon=False,fontsize=fontsize)
     if 'title' in kwargs: #Plot:
         plt.savefig(kwargs['title'],dpi=300 if not 'dpi' in kwargs else kwargs['dpi'],bbox_inches='tight', 
                     pad_inches=0.0)
