@@ -358,7 +358,8 @@ class Stats:
         df_cls = df_cls.iloc[1:] #--- remove label 0
 
         #--- append percTrue
-        df_cls=pd.DataFrame(np.concatenate((np.c_[df_cls],np.c_[size],np.c_[radg_sq],np.c_[percTrue]),axis=1, dtype=np.object), columns=['cls_id','size','rg_sq','percTrue'])
+#        df_cls=pd.DataFrame(np.concatenate((np.c_[df_cls],np.c_[size],np.c_[radg_sq],np.c_[percTrue]),axis=1, dtype=np.object), columns=['cls_id','size','rg_sq','percTrue'])
+        df_cls=pd.DataFrame(np.concatenate((np.c_[df_cls],np.c_[size],np.c_[radg_sq],np.c_[percTrue]),axis=1), columns=['cls_id','size','rg_sq','percTrue'])
 #        pdb.set_trace()
         #---
         #--- sort based on size
@@ -1063,7 +1064,7 @@ def ReadDataa(file0,file0_indx,verbose=False):
         if file0_indx in [5]:
             xdata = np.array([sarr[0]])
             ydata = np.array([-sarr[1]])
-        elif file0_indx in [ 25, 26, 27 ]:
+        elif file0_indx in [ 25, 26, 27,29,30 ]:
             xdata = np.array([sarr[1]])
             ydata = np.array([sarr[0]])
             erry = np.array([sarr[2]]) #--- error
@@ -1197,6 +1198,8 @@ def PlotPaperVersion(pathh_indx,
                           26:'%s/hmin_nu_exp.txt'%pathh, 
                           27:'%s/hmin_beta_exp.txt'%pathh, 
                           28:'%s/s_rg.txt'%pathh, 
+                          29:'%s/hmin_tau_exp.txt'%pathh, 
+                          30:'%s/hmin_df_exp.txt'%pathh, 
                         }[file0_indx]
                 
                 #--- read data
