@@ -183,7 +183,10 @@ class WriteDumpFile:
         (xlo,xhi,xy)=list(map(float,self.box.BoxBounds[0,:]))
         (ylo,yhi,junk)=list(map(float,self.box.BoxBounds[1,:]))
         (zlo,zhi,junk)=list(map(float,self.box.BoxBounds[2,:]))
-        sfile=open(outpt,'w')
+        if type(outpt) == type(''):
+            sfile=open(outpt,'w')
+        else:
+            sfile = outpt
         sfile.write('ITEM: TIMESTEP\n%d\nITEM: NUMBER OF ATOMS\n%d\nITEM: BOX BOUNDS xy xz yz pp pp pp\n\
                      %15.14e %15.14e %15.14e\n%15.14e\t%15.14e\t%15.14e\n%15.14e\t%15.14e\t%15.14e\nITEM: ATOMS %s\n'\
                      %(itime,natom,xlo,xhi,xy,ylo,yhi,0.0,zlo,zhi,0.0," ".join(map(str,attrs))))
@@ -200,7 +203,8 @@ class WriteDumpFile:
 #        for idd, typee, x, y, z in zip(self.atom.id, self.atom.type, self.atom.x, self.atom.y, self.atom.z ):
 #            sfile.write('%s %s %s %s %s\n'%(int(idd),int(typee),x,y,z))
             
-        sfile.close()
+        if type(outpt) == type(''):
+            sfile.close()
         
 ############################################################
 #######  class WriteDumpFile writes LAMMPS data files 
@@ -309,6 +313,8 @@ class Atoms:
             self.VoronoiIndex9=kwargs['VoronoiIndex9']
         if 'AtomicVolume' in kwargs:
             self.AtomicVolume=kwargs['AtomicVolume']
+        if 'radius' in kwargs:
+            self.radius=kwargs['radius']
         if 'rad' in kwargs:
             self.rad=kwargs['rad']
         if 'ux' in kwargs:
