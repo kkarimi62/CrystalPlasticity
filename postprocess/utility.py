@@ -62,7 +62,7 @@ def Wrapper_neighList(lmpData,reference_frames,cutoff):
         #--- concat
         
         
-def WrapperD2min(lmpData,reference_frames,current_frames):
+def WrapperD2min(lmpData,reference_frames,current_frames, dim=3):
     '''
     invoke d2min analysis in ovito
     '''
@@ -72,12 +72,20 @@ def WrapperD2min(lmpData,reference_frames,current_frames):
         atom_reference = lp.Atoms(**lmpData.coord_atoms_broken[ii0])
         box  = lp.Box( BoxBounds = lmpData.BoxBounds[ii],  AddMissing = np.array([0.0,0.0,0.0] ))
         box0 = lp.Box( BoxBounds = lmpData.BoxBounds[ii0], AddMissing = np.array([0.0,0.0,0.0] ))
-        lp.WriteDumpFile(atom_current, box).Write('D2minAnl/dump_curr.xyz', itime = ii,
+        if dim == 3:
+        	lp.WriteDumpFile(atom_current, box).Write('D2minAnl/dump_curr.xyz', itime = ii,
                  attrs=['id', 'type','x', 'y', 'z'],
                  fmt='%i %i %15.14e %15.14e %15.14e')
-        lp.WriteDumpFile(atom_reference, box0).Write('D2minAnl/dump_ref.xyz', itime=ii0,
+        	lp.WriteDumpFile(atom_reference, box0).Write('D2minAnl/dump_ref.xyz', itime=ii0,
                  attrs=['id', 'type','x', 'y', 'z'],
                  fmt='%i %i %15.14e %15.14e %15.14e')
+        else:
+        	lp.WriteDumpFile(atom_current, box).Write('D2minAnl/dump_curr.xyz', itime = ii,
+                 attrs=['id', 'type','x', 'y'],
+                 fmt='%i %i %15.14e %15.14e')
+        	lp.WriteDumpFile(atom_reference, box0).Write('D2minAnl/dump_ref.xyz', itime=ii0,
+                 attrs=['id', 'type','x', 'y'],
+                 fmt='%i %i %15.14e %15.14e')
     #    os.system('tar czf dump.gz dump.xyz')
         fileCurr = 'D2minAnl/dump_curr.xyz'
         fileRef = 'D2minAnl/dump_ref.xyz'
@@ -86,6 +94,41 @@ def WrapperD2min(lmpData,reference_frames,current_frames):
         os.system('ovitos OvitosCna.py %s %s 2 2 %s'%(fileCurr,output,fileRef))
         #--- concat
         os.system('cat %s >> D2minAnl/d2min.xyz;rm %s'%(output,output))
+
+def WrapperStrain(lmpData,reference_frames,current_frames, dim=3):
+    '''
+    invoke strain analysis in ovito
+    '''
+    #--- split dump file
+    for ii0, ii in zip(reference_frames,current_frames):
+        atom_current = lp.Atoms(**lmpData.coord_atoms_broken[ii])
+        atom_reference = lp.Atoms(**lmpData.coord_atoms_broken[ii0])
+        box  = lp.Box( BoxBounds = lmpData.BoxBounds[ii],  AddMissing = np.array([0.0,0.0,0.0] ))
+        box0 = lp.Box( BoxBounds = lmpData.BoxBounds[ii0], AddMissing = np.array([0.0,0.0,0.0] ))
+        if dim == 3:
+            lp.WriteDumpFile(atom_current, box).Write('strain/dump_curr.xyz', itime = ii,
+                     attrs=['id', 'type','x', 'y', 'z'],
+                     fmt='%i %i %15.14e %15.14e %15.14e')
+
+            lp.WriteDumpFile(atom_reference, box0).Write('strain/dump_ref.xyz', itime=ii0,
+                 attrs=['id', 'type','x', 'y', 'z'],
+                 fmt='%i %i %15.14e %15.14e %15.14e')
+        else:
+            lp.WriteDumpFile(atom_current, box).Write('strain/dump_curr.xyz', itime = ii,
+                     attrs=['id', 'type','x', 'y'],
+                     fmt='%i %i %15.14e %15.14e')
+
+            lp.WriteDumpFile(atom_reference, box0).Write('strain/dump_ref.xyz', itime=ii0,
+                 attrs=['id', 'type','x', 'y'],
+                 fmt='%i %i %15.14e %15.14e')
+    #    os.system('tar czf dump.gz dump.xyz')
+        fileCurr = 'strain/dump_curr.xyz'
+        fileRef = 'strain/dump_ref.xyz'
+        output = 'strain/d2min.%s.xyz'%ii
+        #--- load to ovito
+        os.system('ovitos OvitosCna.py %s %s 2 5 %s'%(fileCurr,output,fileRef))
+        #--- concat
+        os.system('cat %s >> strain/strain.xyz;rm %s'%(output,output))
         
         
 def GetAtoms( filee, nevery = 1 ):
