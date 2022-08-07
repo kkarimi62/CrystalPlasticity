@@ -130,6 +130,30 @@ def WrapperStrain(lmpData,reference_frames,current_frames, dim=3):
         #--- concat
         os.system('cat %s >> strain/strain.xyz;rm %s'%(output,output))
         
+def WrapperDisp(lmpData,reference_frames,current_frames, dim=3):
+    '''
+    invoke strain analysis in ovito
+    '''
+    #--- split dump file
+    for ii0, ii in zip(reference_frames,current_frames):
+        atom_current = lp.Atoms(**lmpData.coord_atoms_broken[ii])
+        atom_reference = lp.Atoms(**lmpData.coord_atoms_broken[ii0])
+        box  = lp.Box( BoxBounds = lmpData.BoxBounds[ii],  AddMissing = np.array([0.0,0.0,0.0] ))
+        box0 = lp.Box( BoxBounds = lmpData.BoxBounds[ii0], AddMissing = np.array([0.0,0.0,0.0] ))
+        lp.WriteDumpFile(atom_current, box).Write('disp/dump_curr.xyz', itime = ii,
+                     attrs=['id', 'type','x', 'y', 'z'],
+                     fmt='%i %i %15.14e %15.14e %15.14e')
+
+        lp.WriteDumpFile(atom_reference, box0).Write('disp/dump_ref.xyz', itime=ii0,
+                 attrs=['id', 'type','x', 'y', 'z'],
+                 fmt='%i %i %15.14e %15.14e %15.14e')
+        fileCurr = 'disp/dump_curr.xyz'
+        fileRef = 'disp/dump_ref.xyz'
+        output = 'disp/d2min.%s.xyz'%ii
+        #--- load to ovito
+        os.system('ovitos OvitosCna.py %s %s 2 6 %s'%(fileCurr,output,fileRef))
+        #--- concat
+        os.system('cat %s >> disp/disp.xyz;rm %s'%(output,output))
         
 def GetAtoms( filee, nevery = 1 ):
     lmpData = lp.ReadDumpFile( filee )
@@ -253,10 +277,10 @@ def PdfD2min( d2min,
         
  #   return Ebulk, Mean, Std, D2min
 
-def FilterDataFrame(df,column,limits):
-    (xlo,xhi) = limits
-    filtr = np.all([df[column]>=xlo,df[column]<xhi],axis=0)
-    return df[filtr]
+#def FilterDataFrame(df,column,limits):
+#    (xlo,xhi) = limits
+#    filtr = np.all([df[column]>=xlo,df[column]<xhi],axis=0)
+#    return df[filtr]
 
 
 def PlotNonLinearDecisionBoundary( ax, X, clf,  ngrid  ):
@@ -2201,7 +2225,6 @@ def FilterDataFrame(df,key='id',val=[1,2,3]): #,out='C66'):
     tmp0 = df.set_index(key,drop=True,append=False).loc[val] 
     return tmp0.reset_index() #.reindex(range(len(tmp0)))
 
-
 def CrssCrltn(x,y):        
     x-=np.mean(x)
     x/=np.std(x)
@@ -2492,7 +2515,7 @@ def gaussian_mixture( values,
     #         nij_blue = nij[list_of_blue]
 
             #--- plot distributions
-            edge_act, hist_act = DistNij(nij,normed=None, nbins_per_decade = 8)
+            edge_act, hist_act = DistNij(nij,normed=None, nbins_per_decade = 32)
 
             if PLOT:
                 fig = plt.figure(figsize=(4,4))

@@ -31,7 +31,7 @@ print('OutputFile=',OutputFile)
 nevery = int(sys.argv[3])
 print('nevery',nevery)
 AnalysisType = int(sys.argv[4]) #--- 0:CommonNeighborAnalysis 1:g(r) 2:d2min 3:voronoi analysis 4: neighborlist
-if AnalysisType == 2 or AnalysisType == 5: #--- d2min: reference file
+if AnalysisType == 2 or AnalysisType == 5 or AnalysisType == 6: #--- d2min: reference file
     RefFile = sys.argv[5]
 
 if AnalysisType == 3: #--- voronoi analysis
@@ -99,6 +99,16 @@ if AnalysisType == 5:
                                    )
     strain.reference.load(RefFile, multiple_frames = True)
     pipeline.modifiers.append(strain)
+
+if AnalysisType == 6:
+    disp = md.CalculateDisplacementsModifier(
+#                                    use_frame_offset = use_frame_offset, #True,
+#                                    frame_offset = frame_offset, #-1,
+#                                    reference_frame = reference_frame,
+									affine_mapping = md.CalculateDisplacementsModifier.AffineMapping.ToReference
+                                   )
+    disp.reference.load(RefFile, multiple_frames = True)
+    pipeline.modifiers.append(disp)
 #if AnalysisType != 4:
 #    frames = range(0,pipeline.source.num_frames,nevery)
 
@@ -214,6 +224,18 @@ if AnalysisType == 5:
                                "Strain Tensor.XX", "Strain Tensor.YY","Strain Tensor.ZZ", "Strain Tensor.XY",
 							   "Strain Tensor.XZ", "Strain Tensor.YZ"
 							  ],
+                     start_frame = 0,
+                     end_frame = pipeline.source.num_frames,
+                     every_nth_frame = nevery,
+                     multiple_frames=True 
+                  )
+
+if AnalysisType == 6:
+#    print('start_frame=',start_frame)
+#    print(help(io.export_file))
+    io.export_file( pipeline, OutputFile, "lammps_dump",\
+                    columns = ["Particle Identifier", "Particle Type", "Position.X","Position.Y","Position.Z",\
+                               "Displacement.X", "Displacement.Y","Displacement.Z"],
                      start_frame = 0,
                      end_frame = pipeline.source.num_frames,
                      every_nth_frame = nevery,

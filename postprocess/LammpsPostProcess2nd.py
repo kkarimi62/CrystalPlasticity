@@ -80,10 +80,11 @@ def SqError( xdata, ydata):
 #######  class ReadDumpFile Reads LAMMPS dump files 
 ############################################################    
 class ReadDumpFile:
-    def __init__( self, path ):
+    def __init__( self, path, verbose=False ):
         self.path = path
         self.coord_atoms_broken = {}
         self.BoxBounds = {}
+        self.verbose=verbose
     
     def GetCords( self, ncount = 1, columns = {} ):
         slist = open( self.path )    
@@ -111,6 +112,8 @@ class ReadDumpFile:
 
                 self.BoxBounds[ itime ] = cell_vector
 
+                if self.verbose:
+                    print('itime=%s'%itime)
                 count += 1
         except:
 #            traceback.print_exc()
@@ -247,6 +250,12 @@ class WriteDataFile:
 class Atoms:
     def __init__(self,**kwargs):
 #        print 'hello from Atoms const' 
+        for key in kwargs:
+             try:
+                 exec('self.%s=kwargs["%s"]'%(key,key))
+             except:
+                 continue
+        '''
         if 'x' in kwargs:
             self.x = kwargs['x']
         if 'y' in kwargs:
@@ -367,6 +376,7 @@ class Atoms:
         	self.C66 = kwargs['C66']     
         if 'tmp' in kwargs:
             self.tmp = kwargs[ 'tmp' ]
+        '''
 
             
     def __getitem__(self,key):
