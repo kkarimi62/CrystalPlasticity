@@ -1,8 +1,15 @@
-def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argv2nd):
+from backports import configparser
+def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv):
+	#--- parse conf. file
+	confParser = configparser.ConfigParser()
+	confParser.read('config.ini')
+	#--- set parameters
+	confParser.set('parameters','itime0','5')
+	confParser.set('parameters','itime','15')
+	confParser.set('input files','path',argv)
+	#--- write
+	confParser.write(open('configuration.ini','w'))	
 	#--- set environment variables
-	sfile = open('.env','w')
-	print('%s\n%s'%(argv,argv2nd),file=sfile)
-	sfile.close()
 
 	someFile = open( 'oarScript.sh', 'w' )
 	print('#!/bin/bash\n',file=someFile)
@@ -21,20 +28,20 @@ if __name__ == '__main__':
 				'3':'PairCrltnT300/Co5Cr2Fe40Mn27Ni26', 
 				'4':'VorAnlT300/Co5Cr2Fe40Mn27Ni26', 
 				'5':'D2minAnalysisT300/Co5Cr2Fe40Mn27Ni26', 
-				'6':'MlTrain/cuzr2nd/itime0', 
+				'6':'MlTrain/granular/itime0', 
 				}['6']
 	DeleteExistingFolder = False
 	readPath = os.getcwd() + {
 								'1':'/../testRuns/Preparation/ElasticityT300/Co5Cr2Fe40Mn27Ni26/itime0',
 								'2':'/../testRuns/glassCo5Cr2Fe40Mn27Ni26',
 								'3':'/../testRuns/Preparation/CuZrNatom32KT300Tdot1E-1Sheared',
- 							}['3'] #--- source
+								'4':'/../testRuns/granular/silviaData/DATA_GRAINS/seed1_1001',
+ 							}['4'] #--- source
 	EXEC_DIR = '.'     #--- path for executable file
 	durtn = '23:59:59'
 	mem = '128gb'
 	partition = ['parallel','cpu2019','bigmem','single'][2] 
 	argv = "path=%s"%(readPath) #--- don't change! 
-	argv2nd = "itime=1000000\nitime0=0\nindx=6" 
 	PYFILdic = { 
 		0:'ElasticConstants.ipynb',
 		1:'analyzePlasticity.ipynb',
@@ -54,7 +61,7 @@ if __name__ == '__main__':
 		print(' i = %s' % counter)
 		writPath = os.getcwd() + '/%s/Run%s' % ( jobname, counter ) # --- curr. dir
 		os.system( 'mkdir -p %s' % ( writPath ) ) # --- create folder
-		os.system( 'cp utility.py LammpsPostProcess2nd.py OvitosCna.py %s' % ( writPath ) ) #--- cp python module
+		os.system( 'cp config.ini utility.py LammpsPostProcess2nd.py OvitosCna.py %s' % ( writPath ) ) #--- cp python module
 		makeOAR( writPath, 1, 1, durtn, PYFIL, argv+"/Run%s"%counter, argv2nd) # --- make oar script
 		os.system( 'chmod +x oarScript.sh; mv oarScript.sh .env %s; cp %s/%s %s' % ( writPath, EXEC_DIR, PYFIL, writPath ) ) # --- create folder & mv oar scrip & cp executable
 		os.system( 'sbatch --partition=%s --mem=%s --time=%s --job-name %s.%s --output %s.%s.out --error %s.%s.err \
