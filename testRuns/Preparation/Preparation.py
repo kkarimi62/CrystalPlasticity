@@ -22,7 +22,7 @@ if __name__ == '__main__':
 	import os
 	import numpy as np
 
-	runs	 = [0,1,2]
+	runs	 = [0] #,1,2]
 	#
 	nThreads = [1,9][1]
 	nNode	 = 1

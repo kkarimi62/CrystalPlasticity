@@ -17,12 +17,12 @@ if __name__ == '__main__':
 #	PHI = np.linspace(1800, 3000, 10, endpoint=True, dtype=int) #--- melt. temp.
 	PHI ={
 #			'0':'CuZr3',
-             '0':'FeNi',
-             '1':'CoNiFe',
-            '2':'CoNiCrFe',
-            '3' :'CoCrFeMn',
-             '4':'CoNiCrFeMn',
-#             '5':'Co5Cr2Fe40Mn27Ni26'
+#             '0':'FeNi',
+#             '1':'CoNiFe',
+#            '2':'CoNiCrFe',
+#            '3' :'CoCrFeMn',
+#             '4':'CoNiCrFeMn',
+             '5':'Co5Cr2Fe40Mn27Ni26'
          }
 	EPS = { 
 #			'0':1.0e-03,
