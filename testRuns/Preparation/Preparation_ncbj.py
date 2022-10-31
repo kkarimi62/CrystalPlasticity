@@ -35,7 +35,7 @@ if __name__ == '__main__':
 	jobname  = {
 				1:'CuZrNatom32KT300Tdot1E-3Sheared',
 				2:'CuZrNatom32KT300Tdot1E-1Elasticity',
-				4:'ElasticityT300',#/Co5Cr2Fe40Mn27Ni26/itime0',
+				4:'ElasticityT300/Co5Cr2Fe40Mn27Ni26/itime0',
 			   }[4]
 	sourcePath = os.getcwd() +\
 				{	
@@ -137,9 +137,9 @@ if __name__ == '__main__':
 		#---
 		makeOAR( path) # --- make oar script
 		os.system( 'chmod +x oarScript.sh; mv oarScript.sh %s' % ( writPath) ) # --- create folder & mv oar scrip & cp executable
-		print( 'sbatch --partition=%s --mem=%s --time=%s --job-name %s.%s --output %s.%s.out --error %s.%s.err \
+		os.system( 'sbatch --partition=%s --mem=%s --time=%s --job-name %s.%s --output %s.%s.out --error %s.%s.err \
 								--chdir %s --ntasks-per-node=%s --nodes=%s %s/oarScript.sh >> jobID.txt'\
-						   % ( partition, mem, durtn, jobname, counter, jobname, counter, jobname, counter \
+						   % ( partition, mem, durtn, jobname, counter, jobname.split()[0], counter, jobname.split()[0], counter \
 						       , writPath, nThreads, nNode, writPath ) ) # --- runs oarScript.sh! 
 		irun += 1
 											 
