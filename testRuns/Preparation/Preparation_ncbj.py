@@ -8,7 +8,7 @@ def makeOAR( EXEC_DIR, node, core, time ):
 #						spack load openmpi@4.0.5 %gcc@9.3.0\n\
 #						spack load openblas@0.3.18%gcc@9.3.0\n\
 #						spack load python@3.8.12%gcc@8.3.0\n\n',
-	print >> someFile, 'export LD_LIBRARY_PATH=/mnt/opt/tools/cc7/lapack/3.5.0-x86_64-gcc46/lib:${LD_LIBRARY_PATH}\n'
+#	print >> someFile, 'export LD_LIBRARY_PATH=/mnt/opt/tools/cc7/lapack/3.5.0-x86_64-gcc46/lib:${LD_LIBRARY_PATH}\n'
 	#--- run python script 
 	for script,var,indx, execc in zip(Pipeline,Variables,range(100),EXEC):
 		if execc == 'lmp_g++_openmpi': #_mpi' or EXEC == 'lmp_serial':
@@ -29,7 +29,7 @@ if __name__ == '__main__':
 
 	runs	 = [0] #,1,2]
 	#
-	nThreads = [1,9][1]
+	nThreads = 8
 	nNode	 = 1
 	#
 	jobname  = {
