@@ -1,9 +1,0 @@
-LAMMPS (29 Oct 2020)
-#-----------------------------
-#--- Model parameters
-#-----------------------------
-
-variable natom	equal ${natom}  #--- system size
-variable natom	equal 4000  
-ERROR: Cannot redefine variable as a different style (../variable.cpp:405)
-Last command: variable natom	equal ${natom}  #--- system size
