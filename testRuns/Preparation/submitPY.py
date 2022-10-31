@@ -3,7 +3,7 @@ if __name__ == '__main__':
 	import os
 	import numpy as np
 	#---
-	lnums = [ 33, 39, 46, 88, 89   ]
+	lnums = [ 35, 41, 48, 90, 91   ]
 	string=open('Preparation.py').readlines() #--- python script
 	#---
 #        MC = [-0.25,-0.1,0.0,0.1,0.2]
