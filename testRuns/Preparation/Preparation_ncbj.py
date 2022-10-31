@@ -1,4 +1,4 @@
-def makeOAR( EXEC_DIR, node, core, time ):
+def makeOAR( EXEC_DIR):
 	someFile = open( 'oarScript.sh', 'w' )
 	print >> someFile, '#!/bin/bash\n'
 	print >> someFile, 'EXEC_DIR=%s\n' %( EXEC_DIR )
@@ -135,9 +135,9 @@ if __name__ == '__main__':
 			for sf in sourceFiles:
 				os.system( 'ln -s %s/Run%s/%s %s' %(sourcePath, counter, sf, writPath) ) #--- lammps script: periodic x, pxx, vy, load
 		#---
-		makeOAR( path, 1, nThreads, durtn) # --- make oar script
+		makeOAR( path) # --- make oar script
 		os.system( 'chmod +x oarScript.sh; mv oarScript.sh %s' % ( writPath) ) # --- create folder & mv oar scrip & cp executable
-		os.system( 'sbatch --partition=%s --mem=%s --time=%s --job-name %s.%s --output %s.%s.out --error %s.%s.err \
+		print( 'sbatch --partition=%s --mem=%s --time=%s --job-name %s.%s --output %s.%s.out --error %s.%s.err \
 								--chdir %s --ntasks-per-node=%s --nodes=%s %s/oarScript.sh >> jobID.txt'\
 						   % ( partition, mem, durtn, jobname, counter, jobname, counter, jobname, counter \
 						       , writPath, nThreads, nNode, writPath ) ) # --- runs oarScript.sh! 
