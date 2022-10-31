@@ -951,7 +951,9 @@ def PltBinary(xlin,ylin,zlin,
     
     #--- plot
     CellVectorOrtho, VectorNorm = lp.GetOrthogonalBasis( box0.CellVector ) #--- box length
-    PltBitmap(value2d<thresh, 
+    Plot = True if not 'Plot' in kwargs else kwargs['Plot']
+    if Plot:
+        PltBitmap(value2d<thresh, 
 #              xlim=VectorNorm[0]*np.array([-0.5,0.5]),ylim=VectorNorm[1]*np.array([-0.5,0.5]),
               xlim=np.array([xc-0.5*lx,xc+0.5*lx]),ylim=np.array([yc-0.5*lx,yc+0.5*lx]),
               frac = 1.0, #--- plot a patch
