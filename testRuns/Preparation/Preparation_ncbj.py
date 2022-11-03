@@ -27,7 +27,7 @@ if __name__ == '__main__':
 	import os
 	import numpy as np
 
-	runs	 = [0] #,1,2]
+	runs	 = [0,1,2]
 	#
 	nThreads = 8
 	nNode	 = 1
@@ -110,7 +110,7 @@ if __name__ == '__main__':
 	DeleteExistingFolder = True
 	#
 	EXEC_lmp = ['lmp_g++_openmpi'][0]
-	durtn = ['96:59:59','01:59:59'][1]
+	durtn = ['96:59:59','02:59:59'][1]
 	mem = '16gb'
 	partition = ['INTEL_PHI'][0]
 	#---

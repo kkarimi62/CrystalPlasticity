@@ -3,8 +3,8 @@ if __name__ == '__main__':
 	import os
 	import numpy as np
 	#---
-	lnums = [ 35, 41, 48, 90, 91   ]
-	string=open('Preparation.py').readlines() #--- python script
+	lnums = [ 38, 44, 51, 93, 94   ]
+	string=open('Preparation_ncbj.py').readlines() #--- python script
 	#---
 #        MC = [-0.25,-0.1,0.0,0.1,0.2]
 #        B = [1.1,1.2,1.3]
