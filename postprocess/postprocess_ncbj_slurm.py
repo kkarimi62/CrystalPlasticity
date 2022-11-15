@@ -7,6 +7,7 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv):
 	confParser.set('parameters','itime0','0')
 	confParser.set('parameters','itime','2000000')
 	confParser.set('input files','path',argv)
+	confParser.set('input files','fileIndex',5)
 	#--- write
 	confParser.write(open('config.ini','w'))	
 	#--- set environment variables
@@ -25,7 +26,7 @@ if __name__ == '__main__':
 	nNode    = 1
 	nThreads = 1
 	jobname  = {
-				'1':'ElasticityT300/Co5Cr2Fe40Mn27Ni26/itime0', 
+				'1':'ElasticityT300/Co5Cr2Fe40Mn27Ni26/eps2/itime0', 
 				'2':'MlTrain/Co5Cr2Fe40Mn27Ni26/itime0/Angular', 
 				'3':'PairCrltnT300/Co5Cr2Fe40Mn27Ni26', 
 				'4':'VorAnlT300/Co5Cr2Fe40Mn27Ni26', 
@@ -34,7 +35,7 @@ if __name__ == '__main__':
 				}['1']
 	DeleteExistingFolder = True
 	readPath = os.getcwd() + {
-								'1':'/../testRuns/Preparation/ElasticityT300/Co5Cr2Fe40Mn27Ni26/itime0',
+								'1':'/../testRuns/Preparation/ElasticityT300/Co5Cr2Fe40Mn27Ni26/eps2/itime0',
 								'2':'/../testRuns/glassCo5Cr2Fe40Mn27Ni26',
 								'3':'/../testRuns/Preparation/CuZrNatom32KT300Tdot1E-1Sheared',
 								'4':'/../testRuns/granular/silviaData/DATA_GRAINS/seed1_1001',
