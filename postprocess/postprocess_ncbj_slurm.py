@@ -48,7 +48,7 @@ if __name__ == '__main__':
 	PYFILdic = { 
 		0:'ElasticConstants.ipynb',
 		1:'analyzePlasticity.ipynb',
-		2:'test2nd.ipynb',
+		2:'analyzePlasticity.py',
 		3:'junk.ipynb',
 		}
 	keyno = 1
