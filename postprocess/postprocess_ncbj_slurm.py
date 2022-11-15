@@ -51,7 +51,7 @@ if __name__ == '__main__':
 		2:'analyzePlasticity.py',
 		3:'junk.ipynb',
 		}
-	keyno = 1
+	keyno = 3
 #---
 #---
 	PYFIL = PYFILdic[ keyno ] 
