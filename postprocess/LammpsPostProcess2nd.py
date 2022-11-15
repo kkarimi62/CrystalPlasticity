@@ -90,11 +90,11 @@ class ReadDumpFile:
         slist = open( self.path )    
         count = 0
         try:
-            while True and count <= ncount:
+            while True and count < ncount:
                 sarr, cell_vector, itime, cols  = self.GetCordsTimeStep( slist ) #--- get coord
-
                 #--- insert in a data frame
-                self.coord_atoms_broken[ itime ] = pd.DataFrame( np.c_[sarr].astype('float'), columns = cols )
+#                pdb.set_trace()
+                self.coord_atoms_broken[ itime ] = pd.DataFrame( np.c_[sarr], columns = cols )
 
                 #--- cast id and type to 'int'
                 self.coord_atoms_broken[ itime ]['id'] = list(map(int,self.coord_atoms_broken[ itime ]['id'].tolist()))[:]
@@ -116,7 +116,8 @@ class ReadDumpFile:
                     print('itime=%s'%itime)
                 count += 1
         except:
-#            traceback.print_exc()
+            if self.verbose:
+                traceback.print_exc()
             pass
 
     
@@ -132,8 +133,13 @@ class ReadDumpFile:
         CellVector = np.array([slist.readline().split() for i in range( 3 )])
 
         cols = slist.readline().split()[2:]
-
-        return np.array([slist.readline().split() for i in range( nrows )]), CellVector, itime, cols
+        if self.verbose:
+            print('itime=%s\nnatom=%s\ncols=%s'%(itime,nrows,cols))
+        try:
+            return_list = [list(map(float,slist.readline().split())) for i in range( nrows )]			
+        except:
+            print('reached end of line: missing rows! ')
+        return return_list, CellVector, itime, cols
     
     def ReadData( self, ncount = 1, columns = {} ):
         itime = 0
@@ -191,7 +197,7 @@ class WriteDumpFile:
         else:
             sfile = outpt
         sfile.write('ITEM: TIMESTEP\n%d\nITEM: NUMBER OF ATOMS\n%d\nITEM: BOX BOUNDS xy xz yz pp pp pp\n\
-                     %15.14e %15.14e %15.14e\n%15.14e\t%15.14e\t%15.14e\n%15.14e\t%15.14e\t%15.14e\nITEM: ATOMS %s\n'\
+                     %15.14e %15.14e %15.14e\n%15.14e %15.14e %15.14e\n%15.14e %15.14e %15.14e\nITEM: ATOMS %s\n'\
                      %(itime,natom,xlo,xhi,xy,ylo,yhi,0.0,zlo,zhi,0.0," ".join(map(str,attrs))))
 
 #                     %s %s %s\n%s\t%s\t%s\n%s\t%s\t%s\nITEM: ATOMS id type x y z\n'\

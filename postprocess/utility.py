@@ -175,8 +175,10 @@ def GetAtoms( filee, nevery = 1 ):
     ovtData.GetCords( ncount = sys.maxsize)
     #--- atom obj
     box0 = map(lambda x:lp.Box( BoxBounds = lmpData.BoxBounds[x], AddMissing = np.array([0.0,0.0,0.0] ) ), itimee ) #--- reference state
-    atoms0 = map(lambda x: lp.Atoms( **lmpData.coord_atoms_broken[x].to_dict(orient='series'),
-                        AtomicVolume = ovtData.coord_atoms_broken[0]['AtomicVolume'].tolist()), itimee )
+    atoms0 = map(lambda x: lp.Atoms( 
+									AtomicVolume = ovtData.coord_atoms_broken[0]['AtomicVolume'].tolist())
+									**lmpData.coord_atoms_broken[x].to_dict(orient='series'),
+									itimee )
 
     return dict(zip(itimee,list(atoms0))), dict(zip(itimee,list(box0)))
 
@@ -559,7 +561,7 @@ def exponents(xdata,ydata, verbose=False, Plot = False, **kwargs):
         nonlinfit( xdata,
                    ydata,
                   2, #--- fit index
-                  **kwargs,
+                  **kwargs
                  )
         (a,alpha,rc) = popt2
         
@@ -794,7 +796,7 @@ def Pltt(ax_s,ax_m,**kwargs):
             attrs = attrs,
             ax=ax,
 #            zorder=5,
-            **kwargs,
+            **kwargs
 #           yticks=(['0','10','20'],['0','10000','20000'])
       )
 
@@ -930,7 +932,7 @@ def PltBinary(xlin,ylin,zlin,
               val,
               box0,
               thresh = 0.0,
-              **kwargs,
+              **kwargs
              ):
     #--- reshape value
     (nx,ny,nz) = len(xlin), len(ylin),len(zlin) 
@@ -1085,19 +1087,18 @@ def PdfCondD2min( lmpData, lmpDmin, times,
     #                          barsabove=None,capsize=5,capthick=1,elinewidth=1,label='Total')
                 #
             ax.errorbar(edges_filtrd,hist_filtrd,error_filtrd,
-                        **attr,
                         fmt='-o', color='black', 
                         markerfacecolor='white', markeredgecolor=None,
                         label='Icosahedra', markevery = int(len(edges_filtrd)/10),
-                        errorevery = int(len(edges_filtrd)/10),
+                        errorevery = int(len(edges_filtrd)/10),**attr
                        )
             #
             ax.errorbar(edges_inv,hist_inv,error_inv,
-                        **attr,
                         fmt='-s', color='red',
                         markerfacecolor=None, markeredgecolor='black',
                         label='Non Icosahedra',markevery = int(len(edges_inv)/10),
                         errorevery = int(len(edges_inv)/10),
+                        **attr
                        )
     #
     if Plot:
@@ -1313,7 +1314,7 @@ def PlotPaperVersion(pathh_indx,
                        ystr = ystr,
                        attrs = attrs,
                        Plot = False,
-                       **kwargs,
+                       **kwargs
                       )
 
                 else:
@@ -1402,7 +1403,7 @@ def PlotPaperVersion(pathh_indx,
                            ystr = ystr,
                            attrs = attrs,
                            Plot = False,
-                           **kwargs,
+                           **kwargs
     #                           xerr=yerr0,
                           )
 
@@ -1447,7 +1448,7 @@ def PlotPaperVersion(pathh_indx,
                        xstr = xstr,
                        ystr = ystr,
                        Plot = False,
-                       **kwargs,
+                       **kwargs
                 #      xerr=yerr0,
                       )
             except:
@@ -1611,7 +1612,7 @@ def PlotPaperVersionScatter(pathh_indx,
                        ax = ax,
                        attrs = attrs,
                        Plot = False,
-                       **kwargs,
+                       **kwargs
 #                           xerr=yerr0,
                       )
             
@@ -1755,7 +1756,7 @@ def GetMetrics(pathh_indx,file0_indx,**kwargs):
                            ax = ax,
                            attrs = attrs,
                            Plot = False,
-                           **kwargs,
+                           **kwargs
 #                           xerr=yerr0,
                           )
                     #--- plot ydata2
@@ -1793,7 +1794,7 @@ def GetMetrics(pathh_indx,file0_indx,**kwargs):
                    ax = ax,
                    attrs = attrs,
                    Plot = False,
-                   **kwargs,
+                   **kwargs
             #      xerr=yerr0,
                   )
 
@@ -2079,7 +2080,7 @@ def PltErr( xdata, ydata,
             xstr = '',
             ystr = '',
             Plot = True,
-            **kwargs,
+            **kwargs
             ):
     fontsize=kwargs['fontsize'] if 'fontsize' in kwargs else 20
     if not 'ax' in kwargs:
@@ -2154,7 +2155,7 @@ def PltScatter( xdata, ydata,
             xstr = '',
             ystr = '',
             Plot = True,
-            **kwargs,
+            **kwargs
             ):
     fontsize=kwargs['fontsize'] if 'fontsize' in kwargs else 20
     if not 'ax' in kwargs:
@@ -2241,7 +2242,7 @@ def ScatterXY( vor, d2min,
                   Plot = True, PLOT_AVERAGE = True, title='scatterD2minRho.png',
                  GetAx = False,
                 nbins_per_decade = 8,
-                 **kwargs,
+                 **kwargs
                
                 ):
 
@@ -3302,7 +3303,7 @@ def Intrp( d2min, box0, attr, Plot = None, title = 'test.png',**kwargs ):
 
     points = np.c_[d2exp.xm,d2exp.ym,d2exp.zm] #--- unstructured points
     values = np.array(d2exp[attr]) #(np.array(d2exp.C66)+np.array(d2exp.C55)+np.array(d2exp.C44))/3.0 #np.c_[-(np.array(d2exp.sxx)+np.array(d2exp.syy)+np.array(d2exp.szz))/3.0/np.array(d2exp.AtomicVolume)] #--- corresponding values
-
+#    pdb.set_trace()
     grid_z = scp_int.griddata(points, values, xi, method='linear')
     assert not np.any(np.isnan(grid_z.flatten())), 'increase ev!'
 
@@ -3484,7 +3485,7 @@ def GetAverage( X, y, nbins ):
 
 def sroDensityDiscrete( vor, box,
                 AtomicRadius,     
-                 **kwargs,
+                 **kwargs
                
                 ):
 
