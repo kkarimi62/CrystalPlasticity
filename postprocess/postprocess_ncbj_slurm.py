@@ -51,13 +51,14 @@ if __name__ == '__main__':
 		2:'analyzePlasticity.py',
 		3:'junk.ipynb',
 		}
-	keyno = 1
+	keyno = 3
 #---
 #---
 	PYFIL = PYFILdic[ keyno ] 
 	#--- update argV
 	#---
 	if DeleteExistingFolder:
+		print('rm %s'%jobname)
 		os.system( 'rm -rf %s' % jobname ) # --- rm existing
 	# --- loop for submitting multiple jobs
 	for counter in runs:
