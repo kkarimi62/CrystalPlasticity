@@ -26,7 +26,7 @@ if __name__ == '__main__':
 	nNode    = 1
 	nThreads = 1
 	jobname  = {
-				'1':'ElasticityT300/Co5Cr2Fe40Mn27Ni26/eps2/itime0', 
+				'1':'junk',#'ElasticityT300/Co5Cr2Fe40Mn27Ni26/eps2/itime0', 
 				'2':'MlTrain/Co5Cr2Fe40Mn27Ni26/itime0/Angular', 
 				'3':'PairCrltnT300/Co5Cr2Fe40Mn27Ni26', 
 				'4':'VorAnlT300/Co5Cr2Fe40Mn27Ni26', 
