@@ -52,8 +52,11 @@ if __name__ == '__main__':
 #				inums = lnums[ 2 ] - 1
 #				string[ inums ] = "\targv2nd = \'itime=%s\\nindx=%s\'\n"%(itime*10000,key) #(PHI[iphi]*10000)
 #				string[ inums ] = "\targv2nd = \'itime=%s\\nitime0=%s\\nindx=%s\'\n"%(1000000,itime*nevery,6) #(PHI[iphi]*10000)
+				inums = lnums[ 2 ] - 1
 				string[ inums ] = "\tconfParser.set(\'parameters\',\'itime0\',\'%s\')\n"%(itime*nevery) 
+				inums = lnums[ 3 ] - 1
 				string[ inums ] = "\tconfParser.set(\'parameters\',\'itime\',\'%s\')\n"%(2000000) 
+				inums = lnums[ 4 ] - 1
 				string[ inums ] = "\tconfParser.set(\'input files\',\'fileIndex\',\'%s\')\n"%(key) 
 
 				sfile=open('junk%s.py'%count,'w');sfile.writelines(string);sfile.close()
