@@ -3,7 +3,7 @@ if __name__ == '__main__':
 	import os
 	import numpy as np
 	#---
-	lnums = [ 29, 38, 7, 8, 10 ]
+	lnums = [ 32, 41, 7, 8, 10 ]
 	string=open('postprocess_ncbj_slurm.py').readlines() #--- python script
 	#---
 	PHI ={ 
