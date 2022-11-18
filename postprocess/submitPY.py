@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
 	nphi = len(PHI)
 	#---
-	times=np.arange(0,200+1)  #--- run GetFrames(lmpData,times=lmpData.coord_atoms_broken.keys())
+	times=np.arange(0,10+1)  #--- run GetFrames(lmpData,times=lmpData.coord_atoms_broken.keys())
 	nevery = 10000 #--- run list(lmpData.coord_atoms_broken.keys())[1]
 
 	count = 0
