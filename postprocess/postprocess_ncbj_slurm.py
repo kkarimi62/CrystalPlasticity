@@ -16,7 +16,6 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv):
 	print('#!/bin/bash\n',file=someFile)
 	print('EXEC_DIR=%s\n source /mnt/opt/spack-0.17/share/spack/setup-env.sh\n\nspack load python@3.8.12%%gcc@8.3.0\n\n'%( EXEC_DIR ),file=someFile)
 	if convert_to_py:
-		print('jupyter nbconvert --to script %s --output py_script\n'%PYFIL,file=someFile)
 		print('python3 py_script.py\n',file=someFile)
 		 
 	else:
@@ -59,7 +58,9 @@ if __name__ == '__main__':
 #---
 #---
 	PYFIL = PYFILdic[ keyno ]
-	
+	if convert_to_py:
+		os.system('jupyter nbconvert --to script %s --output py_script\n'%PYFIL)
+		PYFIL = 'py_script.py'
 	#--- update argV
 	#---
 	if DeleteExistingFolder:
