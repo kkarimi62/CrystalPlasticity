@@ -16,7 +16,7 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv):
 	print('#!/bin/bash\n',file=someFile)
 	print('EXEC_DIR=%s\n source /mnt/opt/spack-0.17/share/spack/setup-env.sh\n\nspack load python@3.8.12%%gcc@8.3.0\n\n'%( EXEC_DIR ),file=someFile)
 	if convert_to_py:
-		print('python3 py_script.py\n',file=someFile)
+		print('ipython3 py_script.py\n',file=someFile)
 		 
 	else:
 		print('jupyter nbconvert --execute $EXEC_DIR/%s --to html --ExecutePreprocessor.timeout=-1 --ExecutePreprocessor.allow_errors=True;ls output.html'%(PYFIL), file=someFile)
