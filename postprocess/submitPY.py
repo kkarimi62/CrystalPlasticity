@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
 	nphi = len(PHI)
 	#---
-	times=np.arange(0,200+1,2)  #--- run GetFrames(lmpData,times=lmpData.coord_atoms_broken.keys())
+	times=[50,100,130,160] #np.arange(0,200+1,2)  #--- run GetFrames(lmpData,times=lmpData.coord_atoms_broken.keys())
 	nevery = 10000 #--- run list(lmpData.coord_atoms_broken.keys())[1]
 
 	count = 0
@@ -40,7 +40,7 @@ if __name__ == '__main__':
 			#---	
 				inums = lnums[ 0 ] - 1
 #				string[ inums ] = "\t\'6\':\'MlTrain/%s/itime%s',\n" % (PHI[key],itime) #--- change job name
-				string[ inums ] = "\t\'1\':\'ElasticityT300threshold-mean/%s/eps%s/itime%s',\n" % (PHI[key],epsi,itime) #--- change job name
+				string[ inums ] = "\t\'1\':\'ElasticityT300/%s/eps%s/itime%s',\n" % (PHI[key],epsi,itime) #--- change job name
 #			string[ inums ] = "\t\'3\':\'PairCrltnT300/%s',\n" % (PHI[iphi]) #--- change job name
 	#		string[ inums ] = "\t\'4\':\'VorAnlT300/%s',\n" % (PHI[iphi]) #--- change job name
 	#		string[ inums ] = "\t\'5\':\'D2minAnalysisT300/%s',\n" % (PHI[iphi]) #--- change job name
@@ -53,9 +53,9 @@ if __name__ == '__main__':
 #				string[ inums ] = "\targv2nd = \'itime=%s\\nindx=%s\'\n"%(itime*10000,key) #(PHI[iphi]*10000)
 #				string[ inums ] = "\targv2nd = \'itime=%s\\nitime0=%s\\nindx=%s\'\n"%(1000000,itime*nevery,6) #(PHI[iphi]*10000)
 				inums = lnums[ 2 ] - 1
-				string[ inums ] = "\tconfParser.set(\'parameters\',\'itime0\',\'%s\')\n"%(itime*nevery) 
+				string[ inums ] = "\tconfParser.set(\'parameters\',\'itime0\',\'%s\')\n"%(0) 
 				inums = lnums[ 3 ] - 1
-				string[ inums ] = "\tconfParser.set(\'parameters\',\'itime\',\'%s\')\n"%(2000000) 
+				string[ inums ] = "\tconfParser.set(\'parameters\',\'itime\',\'%s\')\n"%(itime*nevery) 
 				inums = lnums[ 4 ] - 1
 				string[ inums ] = "\tconfParser.set(\'input files\',\'fileIndex\',\'%s\')\n"%(key) 
 

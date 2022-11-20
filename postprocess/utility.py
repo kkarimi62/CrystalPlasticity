@@ -35,6 +35,49 @@ import LammpsPostProcess2nd as lp
 import imp
 imp.reload(lp)
 
+
+def GetInterpolatedData2d( x,y, 
+                         xv, yv
+                       ):
+    dx = xv[1]-xv[0]
+    dy = yv[1]-yv[0]
+    dr = (dx*dx+dy*dy)**0.5
+    r2nd=3*dr #--- g(r)
+    sigma = int(r2nd/dr)
+    heatmap, edges = np.histogramdd( np.c_[y, x],
+                                    bins=[np.append(yv,yv[-1]+dy),
+                                          np.append(xv,xv[-1]+dx)],
+                                    normed=True)
+
+    print('(nx,ny)=', heatmap.shape )
+    
+    heatmap *= len( x )
+    heatmap = gaussian_filter( heatmap, sigma = sigma )
+    return heatmap
+
+def DensityMap2d(xs, ys, **kwargs):    
+    #--- scattered points
+#     xs = np.array(atoms0.xm)[filtr] #--- must be reference frame!
+#     ys = np.array(atoms0.ym)[filtr]
+#     zs = np.array(atoms0.zm)[filtr]
+
+#    (nx,ny,nz)=list(map(len,[xv,yv,zv]))
+    
+    xv=np.linspace((xs.min()),(xs.max()),128)
+    yv=np.linspace((ys.min()),(ys.max()),128)
+    #--- density
+    heatmap2d=GetInterpolatedData2d(xs,ys,
+                                xv, yv,
+                               )
+    #--- bitmap
+    PltBitmap(
+          heatmap2d, #transpose? 
+          **kwargs
+          )
+
+    
+    return heatmap2d
+
 def GetQuantile(df,q):
     s=df.to_list()
     s.sort()
@@ -1237,6 +1280,7 @@ def PlotPaperVersion(pathh_indx,
                           3:'%s/ElasticityT300/%s/eps2/itime%s/Run%s'%(os.getcwd(),mg,itimee,irun),
                           4:'%s/ElasticityT300/%s/eps2/itime%s/Run%s/ModuAnl'%(os.getcwd(),mg,itimee,irun),
                           5:'%s/Exponents/%s'%(os.getcwd(),mg),
+                          6:'%s/ElasticityT300threshold-mean/%s/eps2/itime%s/Run%s/ModuAnl'%(os.getcwd(),mg,itimee,irun),
                         }[pathh_indx]
                 file0 = {
                           0:'%s/gr.txt'%pathh,
@@ -1274,6 +1318,7 @@ def PlotPaperVersion(pathh_indx,
                 
                 #--- read data
                 xdata, ydata, erry, errx = ReadDataa(file0,file0_indx)
+#                xdata=[0.2*itimee/200.0]
                 Rescale(file0_indx,xdata, ydata, erry)
 
                     
