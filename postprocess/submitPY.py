@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
 	nphi = len(PHI)
 	#---
-	times=[50,100,130,160] #np.arange(0,200+1,2)  #--- run GetFrames(lmpData,times=lmpData.coord_atoms_broken.keys())
+	times=np.arange(0,200+1,2)  #--- run GetFrames(lmpData,times=lmpData.coord_atoms_broken.keys())
 	nevery = 10000 #--- run list(lmpData.coord_atoms_broken.keys())[1]
 
 	count = 0
@@ -40,7 +40,7 @@ if __name__ == '__main__':
 			#---	
 				inums = lnums[ 0 ] - 1
 #				string[ inums ] = "\t\'6\':\'MlTrain/%s/itime%s',\n" % (PHI[key],itime) #--- change job name
-				string[ inums ] = "\t\'1\':\'ElasticityT300/%s/eps%s/itime%s',\n" % (PHI[key],epsi,itime) #--- change job name
+				string[ inums ] = "\t\'1\':\'ElasticityT300thresh-3/%s/eps%s/itime%s',\n" % (PHI[key],epsi,itime) #--- change job name
 #			string[ inums ] = "\t\'3\':\'PairCrltnT300/%s',\n" % (PHI[iphi]) #--- change job name
 	#		string[ inums ] = "\t\'4\':\'VorAnlT300/%s',\n" % (PHI[iphi]) #--- change job name
 	#		string[ inums ] = "\t\'5\':\'D2minAnalysisT300/%s',\n" % (PHI[iphi]) #--- change job name

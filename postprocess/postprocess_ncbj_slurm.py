@@ -44,8 +44,8 @@ if __name__ == '__main__':
 								'4':'/../testRuns/granular/silviaData/DATA_GRAINS/seed1_1001',
  							}['1'] #--- source
 	EXEC_DIR = '.'     #--- path for executable file
-	durtn = '23:59:59'
-	mem = '128gb'
+	durtn = '02:59:59'
+	mem = '32gb'
 	partition = ['INTEL_PHI'][0] 
 	argv = "%s"%(readPath) #--- don't change! 
 	PYFILdic = { 
