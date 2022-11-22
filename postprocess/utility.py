@@ -1280,7 +1280,7 @@ def PlotPaperVersion(pathh_indx,
                           3:'%s/ElasticityT300/%s/eps2/itime%s/Run%s'%(os.getcwd(),mg,itimee,irun),
                           4:'%s/ElasticityT300/%s/eps2/itime%s/Run%s/ModuAnl'%(os.getcwd(),mg,itimee,irun),
                           5:'%s/Exponents/%s'%(os.getcwd(),mg),
-                          6:'%s/ElasticityT300threshold-mean/%s/eps2/itime%s/Run%s/ModuAnl'%(os.getcwd(),mg,itimee,irun),
+                          6:'%s/ElasticityT300thresh-1/%s/eps2/itime%s/Run%s/ModuAnl'%(os.getcwd(),mg,itimee,irun),
                         }[pathh_indx]
                 file0 = {
                           0:'%s/gr.txt'%pathh,
@@ -1315,7 +1315,8 @@ def PlotPaperVersion(pathh_indx,
                           29:'%s/hmin_tau_exp.txt'%pathh, 
                           30:'%s/hmin_df_exp.txt'%pathh, 
                         }[file0_indx]
-                
+                if verbose:
+                    print('path=%s'%file0)
                 #--- read data
                 xdata, ydata, erry, errx = ReadDataa(file0,file0_indx)
 #                xdata=[0.2*itimee/200.0]

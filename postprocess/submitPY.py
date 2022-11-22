@@ -40,7 +40,7 @@ if __name__ == '__main__':
 			#---	
 				inums = lnums[ 0 ] - 1
 #				string[ inums ] = "\t\'6\':\'MlTrain/%s/itime%s',\n" % (PHI[key],itime) #--- change job name
-				string[ inums ] = "\t\'1\':\'ElasticityT300thresh-3/%s/eps%s/itime%s',\n" % (PHI[key],epsi,itime) #--- change job name
+				string[ inums ] = "\t\'1\':\'ElasticityT300thresh-0/%s/eps%s/itime%s',\n" % (PHI[key],epsi,itime) #--- change job name
 #			string[ inums ] = "\t\'3\':\'PairCrltnT300/%s',\n" % (PHI[iphi]) #--- change job name
 	#		string[ inums ] = "\t\'4\':\'VorAnlT300/%s',\n" % (PHI[iphi]) #--- change job name
 	#		string[ inums ] = "\t\'5\':\'D2minAnalysisT300/%s',\n" % (PHI[iphi]) #--- change job name
