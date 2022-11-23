@@ -1280,7 +1280,7 @@ def PlotPaperVersion(pathh_indx,
                           3:'%s/ElasticityT300/%s/eps2/itime%s/Run%s'%(os.getcwd(),mg,itimee,irun),
                           4:'%s/ElasticityT300/%s/eps2/itime%s/Run%s/ModuAnl'%(os.getcwd(),mg,itimee,irun),
                           5:'%s/Exponents/%s'%(os.getcwd(),mg),
-                          6:'%s/ElasticityT300thresh-1/%s/eps2/itime%s/Run%s/ModuAnl'%(os.getcwd(),mg,itimee,irun),
+                          6:'%s/ElasticityT300thresh-3/%s/eps2/itime%s/Run%s/ModuAnl'%(os.getcwd(),mg,itimee,irun),
                         }[pathh_indx]
                 file0 = {
                           0:'%s/gr.txt'%pathh,
