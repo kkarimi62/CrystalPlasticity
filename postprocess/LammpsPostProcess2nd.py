@@ -829,6 +829,25 @@ class ComputeRdf( Compute, Wrap ):
     def Get( self ):
         return self.rmean, self.hist, self.err
 
+    def Sro(self,neigh_list,typei,typej,bins):
+        '''
+            Warren-Cowley order parameter
+        '''
+        filtr_i = neigh_list['type']==typei #--- filter based on center atom i
+        self.PairCrltn(
+                        bins=bins,
+                        rlist=neigh_list[filtr_i].DIST )
+#        ntot = self.count.copy()
+
+
+        #--- filter based on pair ij
+        filtr_ij = np.all([neigh_list['type']==typei,neigh_list['Jtype'].astype(int)==typej],axis=0)
+        self.PairCrltn(
+                  bins=bins,
+                  rlist=neigh_list[filtr_ij].DIST )
+
+
+
 class ComputeCrltn( ComputeRdf ):
 ############################################################
 ####### compute CrltnFunc for data defined over 
