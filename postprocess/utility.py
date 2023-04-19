@@ -3170,18 +3170,37 @@ def AvalancheSize(strain, Virial):
     
     return df
 
-def GetPDF(slist, n_per_decade=4, ACCUM = None, linscale = None, density=True):
-    if not linscale:
+def GetPDF(slist, n_per_decade=4, ACCUM = None, linscale = None, density=True,**kwargs):
+    if 'bins' in kwargs:
+        bins = kwargs['bins'] 
+    elif not linscale:
         xlo = np.floor(np.log10(np.min(slist)))
         xhi = np.ceil(np.log10(np.max(slist)))
         bins = np.logspace(xlo,xhi,int(xhi-xlo)*n_per_decade)    
     else:
+        assert not 'bins' in kwargs and linscale
         xlo = np.min(slist)
         xhi = np.max(slist)
         bins = np.linspace(xlo,xhi,n_per_decade)
+
+    bins = kwargs['bins'] if 'bins' in kwargs else bins
         
     hist, edges = np.histogram(slist,bins=bins,density=density)
     count, edges = np.histogram(slist,bins=bins)
+    
+    
+    if ACCUM:
+        return np.cumsum((edges[1:]-edges[:-1])*hist), edges
+    
+    if density:
+    	nth=1   
+    	hist = hist[count>nth]
+    	edges = edges[:-1][count>nth]
+    	count = count[count>nth]
+    else:
+        count=1
+
+    return  hist, edges, hist / count**0.5
     
     
     if ACCUM:
