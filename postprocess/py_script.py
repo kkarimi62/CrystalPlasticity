@@ -3,7 +3,7 @@
 
 # # Parse Parameters
 
-# In[242]:
+# In[4]:
 
 
 import configparser
@@ -15,10 +15,12 @@ confParser.sections()
 
 # # import libraries
 
-# In[243]:
+# In[5]:
 
 
 #--- system libraries
+#import sys
+#sys.path.append(confParser['python library path']['path'])
 import pdb
 import pandas as pd
 import numpy as np
@@ -50,6 +52,8 @@ import time
 from scipy import ndimage
 from scipy.stats import chi2
 from scipy.optimize import curve_fit
+import functools as ftl
+
 #from backports 
 #
 warnings.filterwarnings('ignore')
@@ -80,7 +84,7 @@ DFset=(0.18,0.17,0.15,0.06,0.05)
 FontSize = 19
 
 
-# In[244]:
+# In[6]:
 
 
 class Symbols:
@@ -148,17 +152,19 @@ class Legends:
         self.attrs = {'frameon':False,'fontsize':fontsize,
                    'labelspacing':labelspacing,
                       'handletextpad':.2,
-                   'handlelength':1#,
+                   'handlelength':1,
                     **kwargs
                      }
     def Get(self):
         return self.attrs
+    
+DRAW_FRAME=(0.23,0.08,0.12,0.07,0.1)
 
 
 # 
 # ## Dump File
 
-# In[245]:
+# In[10]:
 
 
 #--- parse lammps data
@@ -171,7 +177,7 @@ print('parsing %s/%s'%(path,fileName))
 t0 = time.time()
 lmpData = lp.ReadDumpFile( '%s/%s'%(path,fileName ) ,verbose=False)
 lmpData.GetCords( ncount = sys.maxsize, 
-                 columns = {'c_mystress[4]':'sxy'}, #--- multi-component glass
+#                 columns = {'c_mystress[4]':'sxy'}, #--- multi-component glass
 #                 columns = {'c_mystress1':'sxx','c_mystress2':'syy','c_mystress3':'szz','c_mystress4':'sxy'},
 #                 columns = {'c_1[4]':'sxy'}, #--- cuzr
                 )
@@ -179,16 +185,10 @@ print('duration=%s s'%(time.time()-t0))
 print('time steps:',lmpData.coord_atoms_broken.keys())
 print('ref. frame:')
 itime0=list(lmpData.coord_atoms_broken.keys())[0]
-display(lmpData.coord_atoms_broken[itime0].head())
+print(lmpData.coord_atoms_broken[itime0].head())
 
 
-# In[246]:
-
-
-list(lmpData.coord_atoms_broken.keys())[1]
-
-
-# In[247]:
+# In[11]:
 
 
 def AddRndStrs(df):
@@ -200,7 +200,7 @@ if eval(confParser['parameters']['dimension'])==2:
     list( map(lambda x:AddRndStrs(lmpData.coord_atoms_broken[x]),lmpData.coord_atoms_broken.keys()) )
 
 
-# In[248]:
+# In[10]:
 
 
 #--- write ovito input
@@ -250,7 +250,7 @@ if OVITO:
     sfile0.close()
 
 
-# In[249]:
+# In[11]:
 
 
 def GetStrainn(box0,box ):
@@ -263,15 +263,16 @@ def GetStrainn(box0,box ):
 
 
 
+
 # # stress-strain curve
 
-# In[250]:
+# In[27]:
 
 
 get_ipython().system('mkdir loadCurve')
 
 
-# In[251]:
+# In[28]:
 
 
 fileNamee = confParser['input files']['filenamee'].split()[int(indx)]
@@ -302,7 +303,8 @@ if eval(confParser['flags']['ReadStrsFromDump']):
     times = lmpData.coord_atoms_broken.keys()
     try: 
 
-        func_sxy = lambda x: np.sum(lp.Atoms( **lmpData.coord_atoms_broken[x].to_dict(orient='series') ).sxy)/                             utl.GetVolume(lmpData,x)
+        func_sxy = lambda x: np.sum(lp.Atoms( **lmpData.coord_atoms_broken[x].to_dict(orient='series') ).sxy)/\
+                             utl.GetVolume(lmpData,x)
         Virial = np.array(list(map(func_sxy,times)))*1.0e-04
         Virial -= Virial[0]
         strainDump = np.array(list(map(lambda x: utl.GetStrain(lmpData,x,0),times)))
@@ -321,6 +323,7 @@ if eval(confParser['flags']['ReadStrsFromDump']):
     except AttributeError: #--- dump file has no stress entry! 
         traceback.print_exc()
         ReadStrsFromDump = False
+
 
 
 # ## multiple systems
@@ -446,90 +449,93 @@ if not eval(confParser['flags']['RemoteMachine']):
 
 
 latexx = eval(confParser['flags']['RemoteMachine']) == False
-if eval(confParser['flags']['ReadStrsFromDump']):
-    strain = strainDump
 
-x, y = np.array(strain), np.array(Virial)
-#--- training points
-transfrm = utl.ReturnShapeFunc(x,13)
+if eval(confParser['flags']['FitSpline']):
     
-#--- train
-reg = utl.TrainModel(transfrm,np.c_[y])
+    if eval(confParser['flags']['ReadStrsFromDump']):
+        strain = strainDump
 
-#--- prediction
-y_pred = reg.predict( transfrm )
-    
+    x, y = np.array(strain), np.array(Virial)
+    #--- training points
+    transfrm = utl.ReturnShapeFunc(x,13)
 
-#--- validate
-#mse = Validate(reg, strain,np.c_[y])
+    #--- train
+    reg = utl.TrainModel(transfrm,np.c_[y])
 
-#--- yield stress
-try:
-    (ey,sy), (em,sm,dsm), (ef,sf), gmodu = utl.YieldStress(x,y_pred)
-except:
-    (ey,sy), (em,sm,dsm), (ef,sf), gmodu = utl.YieldStress2nd(x,y_pred)
+    #--- prediction
+    y_pred = reg.predict( transfrm )
 
-#--- write on the disk
-np.savetxt('loadCurve/NegativeModulus.txt',np.c_[em,-dsm],header='Strain\tModulus')
-np.savetxt('loadCurve/ShearModulus.txt',np.c_[0,gmodu],header='Strain\tModulus')
 
-#--- Plot
-attrs={ 'alpha':0.5,
-        'fmt':'x',
-        'markersize':4,
-        'color':'C0',
-         'markerfacecolor':'white',
-         'markeredgecolor':'black',
-         'markevery':int(len(x)/128),
-       
-      }
-ax=None   
-kwargs = {
-        'borderwidth' : 0.1,
-#       'xlim':(0,0.2),
-#       'ylim':(0,2.5),
-        'title':'hminIllustration.png',
-         }
-#
-ax = utl.PltErr(x,y, 
-       yerr=None, 
-       attrs = attrs,
-       Plot = False,
-       xstr=r'$\gamma$' if latexx else '',
-       ystr=r'$\sigma$(Gpa)' if latexx else '',
-      )
-#
-utl.PltErr(x,y_pred, 
-       yerr=None, 
-       attrs = {'fmt':'-.r'},
-       Plot = False,
-       ax = ax,
-       **kwargs
-      )
-if eval(confParser['flags']['AssignYieldTime']):
-    utl.PltErr([ey,ey], [ax.axis()[2],sy], 
+    #--- validate
+    #mse = Validate(reg, strain,np.c_[y])
+
+    #--- yield stress
+    try:
+        (ey,sy), (em,sm,dsm), (ef,sf), gmodu = utl.YieldStress(x,y_pred)
+    except:
+        (ey,sy), (em,sm,dsm), (ef,sf), gmodu = utl.YieldStress2nd(x,y_pred)
+
+    #--- write on the disk
+    np.savetxt('loadCurve/NegativeModulus.txt',np.c_[em,-dsm],header='Strain\tModulus')
+    np.savetxt('loadCurve/ShearModulus.txt',np.c_[0,gmodu],header='Strain\tModulus')
+
+    #--- Plot
+    attrs={ 'alpha':0.5,
+            'fmt':'x',
+            'markersize':4,
+            'color':'C0',
+             'markerfacecolor':'white',
+             'markeredgecolor':'black',
+             'markevery':int(len(x)/128),
+
+          }
+    ax=None   
+    kwargs = {
+            'borderwidth' : 0.1,
+    #       'xlim':(0,0.2),
+    #       'ylim':(0,2.5),
+            'title':'hminIllustration.png',
+             }
+    #
+    ax = utl.PltErr(x,y, 
+           yerr=None, 
+           attrs = attrs,
+           Plot = False,
+           xstr=r'$\gamma$' if latexx else '',
+           ystr=r'$\sigma$(Gpa)' if latexx else '',
+          )
+    #
+    utl.PltErr(x,y_pred, 
            yerr=None, 
            attrs = {'fmt':'-.r'},
-           Plot = True,
+           Plot = False,
            ax = ax,
            **kwargs
-          )    
-elif eval(confParser['flags']['AssignMaxDropTime']):
-    utl.PltErr(em, sm, 
-           yerr=None, 
-           attrs = {'fmt':'s','color':'black','markersize':8},
-           Plot = True,
-           ax = ax,
-           **kwargs
-          )    
-elif eval(confParser['flags']['AssignFlowTime']):
-    utl.PltErr([ef,ef], [ax.axis()[2],sf], 
-           yerr=None, 
-           attrs = {'fmt':'-.r'},
-           Plot = True,
-           ax = ax,
-           **kwargs
-          )    
+          )
+    if eval(confParser['flags']['AssignYieldTime']):
+        utl.PltErr([ey,ey], [ax.axis()[2],sy], 
+               yerr=None, 
+               attrs = {'fmt':'-.r'},
+               Plot = True,
+               ax = ax,
+               **kwargs
+              )    
+    elif eval(confParser['flags']['AssignMaxDropTime']):
+        utl.PltErr(em, sm, 
+               yerr=None, 
+               attrs = {'fmt':'s','color':'black','markersize':8},
+               Plot = True,
+               ax = ax,
+               **kwargs
+              )    
+    elif eval(confParser['flags']['AssignFlowTime']):
+        utl.PltErr([ef,ef], [ax.axis()[2],sf], 
+               yerr=None, 
+               attrs = {'fmt':'-.r'},
+               Plot = True,
+               ax = ax,
+               **kwargs
+              )    
 
 
 # In[255]:
@@ -582,6 +588,7 @@ if not eval(confParser['flags']['RemoteMachine']):
 
 # sarr1 = np.loadtxt('loadCurve/CoNiFe.txt')
 # sarr2 = np.loadtxt('loadCurve/CoNiCrFe.txt')
+
 
 
 # In[257]:
@@ -695,25 +702,26 @@ if not eval(confParser['flags']['RemoteMachine']):
 # ols_result.summary()
 
 
-# In[260]:
+# In[30]:
 
 
-times = lmpData.coord_atoms_broken.keys()
-times = np.array(sorted(times))
-strainDump=list(map(lambda x:GetStrainn(lp.Box(BoxBounds=lmpData.BoxBounds[0]),
-                                        lp.Box(BoxBounds=lmpData.BoxBounds[x])),times))
-if eval(confParser['flags']['AssignYieldTime']):
-    itime = times[strainDump>=ey][0]
-    print('itime(peak)=%s'%itime)    
-elif eval(confParser['flags']['AssignMaxDropTime']):
-    itime = times[strainDump>=em][0]
-    print('itime(max. drop)=%s'%itime)
-elif eval(confParser['flags']['AssignFlowTime']):
-    itime = times[strainDump>=ef][0]
-    print('itime(flow)=%s'%itime)
-    
-#--- set parameter
-#confParser.set('parameters','itime',value='%s'%itime)
+if eval(confParser['flags']['FitSpline']):
+    times = lmpData.coord_atoms_broken.keys()
+    times = np.array(sorted(times))
+    strainDump=list(map(lambda x:GetStrainn(lp.Box(BoxBounds=lmpData.BoxBounds[times[0]]),
+                                            lp.Box(BoxBounds=lmpData.BoxBounds[x])),times))
+    if eval(confParser['flags']['AssignYieldTime']):
+        itime = times[strainDump>=ey][0]
+        print('itime(peak)=%s'%itime)    
+    elif eval(confParser['flags']['AssignMaxDropTime']):
+        itime = times[strainDump>=em][0]
+        print('itime(max. drop)=%s'%itime)
+    elif eval(confParser['flags']['AssignFlowTime']):
+        itime = times[strainDump>=ef][0]
+        print('itime(flow)=%s'%itime)
+
+    #--- set parameter
+    #confParser.set('parameters','itime',value='%s'%itime)
 
 
 # ### test error vs. complexity
@@ -751,18 +759,20 @@ def GetMismatch(lmpData,itime,AtomicRadius):
     return df['size'].std()/df['size'].mean()
 
 
-types = list(map(int,confParser['props']['types'].split()))
-radii = list(map(float,confParser['props']['AtomicRadius'].split()))
-gmods = list(map(float,confParser['props']['Gmodu'].split()))
-AtomicRadius = dict(list(zip(types,radii)))
-Gmodu = dict(list(zip(types,gmods)))
+if eval(confParser['flags']['FitSpline']):
+    types = list(map(int,confParser['props']['types'].split()))
+    radii = list(map(float,confParser['props']['AtomicRadius'].split()))
+    gmods = list(map(float,confParser['props']['Gmodu'].split()))
+    AtomicRadius = dict(list(zip(types,radii)))
+    Gmodu = dict(list(zip(types,gmods)))
 
-delta = GetMismatch(lmpData,0,AtomicRadius)
-delta_g = GetMismatch(lmpData,0,Gmodu)
-       
-if eval(confParser['flags']['AssignYieldTime']):     
-    np.savetxt('YieldDelta.txt',np.c_[delta,sy],header='AtomMismatch\tYieldStress')
-np.savetxt('ModuMismatch.txt',[delta_g],header='ModuMismatch')
+    delta = GetMismatch(lmpData,0,AtomicRadius)
+    delta_g = GetMismatch(lmpData,0,Gmodu)
+
+    if eval(confParser['flags']['AssignYieldTime']):     
+        np.savetxt('YieldDelta.txt',np.c_[delta,sy],header='AtomMismatch\tYieldStress')
+    np.savetxt('ModuMismatch.txt',[delta_g],header='ModuMismatch')
+
 
 
 # ### multiple frames
@@ -1129,18 +1139,19 @@ if eval(confParser['flags']['StrainAnalysis']):
 
 # # Neighbor list
 
-# In[273]:
+# In[71]:
 
 
 os.system('mkdir neighList')
 os.system('rm -r neighList/neighList.xyz')
 
 
-# In[274]:
+# In[72]:
 
 
 if eval(confParser['flags']['NeighList']):    
-    if not eval(confParser['neighbor list']['ReadDisc']) and        eval(confParser['neighbor list']['WritDisc']):
+    if not eval(confParser['neighbor list']['ReadDisc']) and\
+        eval(confParser['neighbor list']['WritDisc']):
         
         itime0 = eval(confParser['parameters']['itime0'])
         cutoff = eval(confParser['neighbor list']['cutoff'])
@@ -1151,7 +1162,7 @@ if eval(confParser['flags']['NeighList']):
         #--- parse
         lmpNeigh = lp.ReadDumpFile( 'neighList/neighList.xyz' )
         lmpNeigh.GetCords( ncount = sys.maxsize)
-        display(lmpNeigh.coord_atoms_broken[itime0].head())
+        print(lmpNeigh.coord_atoms_broken[itime0].head())
 
 
 # #  Pair correlation function
@@ -1182,37 +1193,63 @@ if eval(confParser['flags']['NeighList']):
 #     plt.show()
 
 
-# In[276]:
+# In[101]:
 
 
 if eval(confParser['flags']['PairCorrelationFunction']):
+    itime=0
     box = lp.Box( BoxBounds = lmpData.BoxBounds[itime], AddMissing = np.array([0.0,0.0,0.0] ))
     atoms = lp.Atoms( **lmpData.coord_atoms_broken[itime].to_dict(orient='series') )
     neigh = lmpNeigh.coord_atoms_broken[itime]
 
-
+    pairs = list(set(lmpData.coord_atoms_broken[itime].type))
+    Pairi,Pairj = np.meshgrid(pairs,pairs)
+    
+    
     rdf = lp.ComputeRdf(  atoms, box )
-    rdf.PairCrltn(  
-                  bins=np.linspace(2.0,cutoff,250), 
-                  rlist=neigh.DIST )
-    bin_edges, hist, err = rdf.Get()
+#     rdf.PairCrltn(  
+#                   bins=np.linspace(2.0,cutoff,250), 
+#                   rlist=neigh.DIST )
+#    bin_edges, hist, err = rdf.Get()
+    bins = np.linspace(2.0,cutoff,128)
+    #
+    count=0
+    symbols=Symbols()
+    legend=Legends()
+    legend.Set()
+    legend.Set(bbox_to_anchor= (1.0,0.5,0.5,0.5))
+    ax=utl.PltErr(None,None,Plot=False,attrs={})
+    text=['Co', 'Ni', 'Cr', 'Fe', 'Mn']
+    for pairi, pairj in zip(Pairi.flatten(),Pairj.flatten()):
+    #    pairi=1
+    #    pairj=1
+        if pairi != 1 or pairi > pairj:
+            continue
+        print(pairi,pairj)
+        rdf.Sro(neigh,pairi,pairj,bins=bins)
+        bin_edges, hist, err = rdf.Get()
 
-    #--- print
-    np.savetxt('gr.txt',np.c_[bin_edges, hist, err],header='r\tg(r)\terr')
-    #--- plot
-    #plt.errorbar(bin_edges,hist,yerr=err,fmt='-o')
 
-    PltErr(bin_edges,hist,err,
-          ylim=[0,5],
-           ystr='g(r)',
-           title='gr.png'
-          )
+        utl.PltErr(bin_edges,hist,err,
+#              xlim=[2,3.5], ylim=[-0.2,6.5],
+#              xlim=[3,5], ylim=[-0.1,2],
+              xlim=[4.5,5.7], ylim=[0.3,1.5],
+              attrs=symbols.GetAttrs(count=count%7,label=r'$\mathrm{%s}\mathrm{%s}$'%(text[pairi-1],text[pairj-1])),
+              ax=ax,
+                Plot=False,
+#               title='gr.png'
+              )
+        count+=1
+#        if count >1:
+#            break
+        
+    utl.PltErr(None,None, attrs={},
+               xstr='$r\mathrm{(Angstrom)}$', ystr='$g_{ab}(r)$',
+    #           legend=legend.Get(),
+               ax=ax,
+               title='gr_Co_3rdPeak.png'
 
-
-# In[277]:
-
-
-#PairCorrelationFunction=True
+              )
 
 
 # ## 1st peak evolution
@@ -1457,7 +1494,7 @@ os.system('mkdir D2minAnl')
 # 
 # ## Run Ovitos
 
-# In[287]:
+# In[222]:
 
 
 if eval(confParser['flags']['DminAnalysis']):# and eval(confParser['flags']['Ovitos']):
@@ -1487,7 +1524,6 @@ if eval(confParser['flags']['DminAnalysis']):# and eval(confParser['flags']['Ovi
 
 
 # In[288]:
-
 
 
 # #--- write ovito input
@@ -1534,7 +1570,7 @@ if eval(confParser['flags']['DminAnalysis']):# and eval(confParser['flags']['Ovi
 
 # ## PDF
 
-# In[289]:
+# In[179]:
 
 
 import utility as utl
@@ -1576,7 +1612,9 @@ if eval(confParser['flags']['DminAnalysis']) and eval(confParser['flags']['Ovito
 # In[290]:
 
 
-if eval(confParser['flags']['DminAnalysis'])and eval(confParser['flags']['Ovitos'])and not eval(confParser['flags']['RemoteMachine']):
+if eval(confParser['flags']['DminAnalysis'])\
+and eval(confParser['flags']['Ovitos'])\
+and not eval(confParser['flags']['RemoteMachine']):
     #--- lambda function
     GetMeanD2min = lambda x: lp.Atoms( **lmpDmin.coord_atoms_broken[x].to_dict(orient='series') ).d2min.mean()
     
@@ -1685,7 +1723,7 @@ if not eval(confParser['flags']['RemoteMachine']):
 
 # ## Interpolation
 
-# In[294]:
+# In[223]:
 
 
 if eval(confParser['flags']['DminAnalysis']):
@@ -1693,22 +1731,22 @@ if eval(confParser['flags']['DminAnalysis']):
     atom = lp.Atoms( **lmpDmin.coord_atoms_broken[itime].to_dict(orient='series') )
     #---
     PlotAttrs = {
-#                'zscore' : False,
-#                'scale' : 'log',
+                'zscore' : False,
+                'scale' : 'log',
                 'xlabel' : '', #r'$x$(\r{A})', 
                 'ylabel' : '', #r'$y$(\r{A})',
-#                'DrawFrame':(0.17,0.17,0.15,0.06,0.1),
-                'colorbar':True,
+                'DrawFrame':(0.17,0.17,0.15,0.06,0.1),
+#                'colorbar':True,
                 'labels' : True,
-#                'vmin':-0.5,
-#                'vmax':+2.1,
+                 'vmin':-0.5,
+                 'vmax':+2.1,
                 'fontsize':18,
                 'interpolation':'bilinear',
                 }
     junk, junk, d2intrp = utl.Intrp(atom, box0,
                     attr = 'd2min',
                     Plot = True,
-                    title='D2minAnl/map_d2min.png',
+                    title='D2minAnl/map_d2min_%s.png'%itime,
                     **PlotAttrs
                     )
 
@@ -1828,7 +1866,9 @@ if not eval(confParser['flags']['RemoteMachine']):
 # In[298]:
 
 
-if eval(confParser['flags']['DminAnalysis'])and eval(confParser['flags']['CrltnFunctionUnstructured'])and not eval(confParser['flags']['Ovitos']):
+if eval(confParser['flags']['DminAnalysis'])\
+and eval(confParser['flags']['CrltnFunctionUnstructured'])\
+and not eval(confParser['flags']['Ovitos']):
     crltn = lp.ComputeCrltn(  d2min, box, 
                               d2min.d2min, #--- values
                               cutoff = cutoff, #--- cutoff size to include neighbors
@@ -1885,7 +1925,9 @@ if eval(confParser['flags']['DminAnalysis'])and eval(confParser['flags']['CrltnF
 # In[301]:
 
 
-if eval(confParser['flags']['DminAnalysis'])and eval(confParser['flags']['CrltnFunctionUnstructured'])and not eval(confParser['flags']['Ovitos']):
+if eval(confParser['flags']['DminAnalysis'])\
+and eval(confParser['flags']['CrltnFunctionUnstructured'])\
+and not eval(confParser['flags']['Ovitos']):
     #--- get 2d slice
     xv2d, yv2d, hist2d, err2d = GetSlice2d( hist, err,
                                            xvv, yvv, zvv,
@@ -1967,7 +2009,8 @@ def CrltnFunctionFFT( atom, box, box0, attr, Plot = True):
         l1=box.CellVector[1,1]
         ebulk = dx/l1
         #---
-        (xc, yc), (xdata0,ydata0), (xdata,ydata) =                PltCrltnFunc(   crltn, 
+        (xc, yc), (xdata0,ydata0), (xdata,ydata) =\
+                PltCrltnFunc(   crltn, 
                                  xv,yv,
                                  fileName = 'cr_d2minBad.png',
                                  title = '', #r'$\gamma=%3.2f$'%(ebulk),
@@ -1979,7 +2022,8 @@ def CrltnFunctionFFT( atom, box, box0, attr, Plot = True):
         #--- save
         return  (ebulk, xc, yc)
     
-if eval(confParser['flags']['DminAnalysis'])and not eval(confParser['flags']['RemoteMachine']):
+if eval(confParser['flags']['DminAnalysis'])\
+and not eval(confParser['flags']['RemoteMachine']):
     box0  = lp.Box( BoxBounds = lmpData.BoxBounds[0],AddMissing = np.array([0.0,0.0,0.0] ))
     box  = lp.Box( BoxBounds = lmpData.BoxBounds[itime],AddMissing = np.array([0.0,0.0,0.0] ))
     atom = lp.Atoms( **lmpDmin.coord_atoms_broken[itime].to_dict(orient='series') )
@@ -2096,7 +2140,7 @@ if eval(confParser['flags']['VorAnl']):
     nevery = int(confParser['parameters']['nevery'])
 
     #--- dump files
-    get_ipython().system('ovitos OvitosCna.py $fileName VorAnl/Voronoi.xyz $nevery 3 $rad1 $rad2 $rad3 $rad4 $rad5  ')
+    get_ipython().system('ovitos OvitosCna.py $fileName VorAnl/Voronoi.xyz $nevery 3 $rad1 $rad2 $rad3 $rad4 $rad5')
 
 
 # In[309]:
@@ -2200,10 +2244,6 @@ if not eval(confParser['flags']['RemoteMachine']):
 # ## conditional pdf of d2min
 
 # In[313]:
-
-
-
-    
 
 
 if eval(confParser['flags']['DminAnalysis']) and eval(confParser['flags']['VorAnl']):
@@ -2494,51 +2534,9 @@ if eval(confParser['flags']['DminAnalysis']) and eval(confParser['flags']['VorAn
 
 # ### kde
 
-# In[319]:
+# In[146]:
 
 
-def GetInterpolatedData2d( x,y, 
-                         xv, yv
-                       ):
-    dx = xv[1]-xv[0]
-    dy = yv[1]-yv[0]
-    dr = (dx*dx+dy*dy)**0.5
-    r2nd=3*dr #--- g(r)
-    sigma = int(r2nd/dr)
-    heatmap, edges = np.histogramdd( np.c_[y, x],
-                                    bins=[np.append(yv,yv[-1]+dy),
-                                          np.append(xv,xv[-1]+dx)],
-                                    normed=True)
-
-    print('(nx,ny)=', heatmap.shape )
-    
-    heatmap *= len( x )
-    heatmap = gaussian_filter( heatmap, sigma = sigma )
-    return heatmap
-
-def DensityMap2d(xs, ys, **kwargs):    
-    #--- scattered points
-#     xs = np.array(atoms0.xm)[filtr] #--- must be reference frame!
-#     ys = np.array(atoms0.ym)[filtr]
-#     zs = np.array(atoms0.zm)[filtr]
-
-#    (nx,ny,nz)=list(map(len,[xv,yv,zv]))
-    
-    xv=np.linspace((xs.min()),(xs.max()),128)
-    yv=np.linspace((ys.min()),(ys.max()),128)
-    #--- density
-    heatmap2d=GetInterpolatedData2d(xs,ys,
-                                xv, yv,
-                               )
-    #--- bitmap
-    PltBitmap(
-          heatmap2d, #transpose? 
-          **kwargs
-          )
-
-    
-    return heatmap2d
-    
 if eval(confParser['flags']['DminAnalysis']) and eval(confParser['flags']['VorAnl']):
     #--- cross crltn.
     x = np.array(vor.tmp)
@@ -2661,7 +2659,7 @@ if not eval(confParser['flags']['RemoteMachine']):
 # + analysis of local modulus fluctuations
 # + output files in "ModuAnl" directory
 
-# In[323]:
+# In[112]:
 
 
 LAOS = eval(confParser['modulus analysis']['LAOS'])
@@ -2672,7 +2670,7 @@ os.system('mkdir ModuAnl')
 
 # ## parse data
 
-# In[324]:
+# In[113]:
 
 
 if eval(confParser['flags']['ModuAnl']) and Down and not Up:
@@ -2714,7 +2712,7 @@ if eval(confParser['flags']['ModuAnl']) and Down and not Up:
     print('duration=%s s'%(time.time()-t0))
 
 
-# In[325]:
+# In[133]:
 
 
 if eval(confParser['flags']['ModuAnl']) and Up and Down:
@@ -2736,7 +2734,7 @@ if eval(confParser['flags']['ModuAnl']) and Up and Down:
     print('timesteps=',modDataInit.coord_atoms_broken.keys())
 
 
-# In[326]:
+# In[115]:
 
 
 if eval(confParser['flags']['ModuAnl']) and LAOS:
@@ -2752,11 +2750,12 @@ if eval(confParser['flags']['ModuAnl']) and LAOS:
     modData.coord_atoms_broken.keys()
 
 
-# In[327]:
+# In[134]:
 
 
 def AddVolumes(inputt,neveryy = 100):
-    os.system('ovitos OvitosCna.py %s %s %s %s %s %s %s'              %(inputt,'ModuAnl/Voronoi.xyz',neveryy,3,0.0,0.0,0.0))  
+    os.system('ovitos OvitosCna.py %s %s %s %s %s %s %s'\
+              %(inputt,'ModuAnl/Voronoi.xyz',neveryy,3,0.0,0.0,0.0))  
     ovtData = lp.ReadDumpFile( 'ModuAnl/Voronoi.xyz' )
     ovtData.GetCords( ncount = sys.maxsize)
     #--- insert column
@@ -2775,24 +2774,25 @@ if eval(confParser['flags']['ModuAnl']):
         AddColumnn(modDataInit,'AtomicVolume', val)
         AddColumnn(modDataUp,'AtomicVolume', val)
         AddColumnn(modDataDown,'AtomicVolume', val)    
-        display(modDataInit.coord_atoms_broken[0].head())
+        print(modDataInit.coord_atoms_broken[0].head())
     if LAOS:
         val = AddVolumes('%s/shearOscillation.xyz'%path)
         AddColumnn(modData,'AtomicVolume', val)
-        display(modData.coord_atoms_broken[0].head())
+        print(modData.coord_atoms_broken[0].head())
     
 
 
 # ### Plot
 
-# In[328]:
+# In[63]:
 
 
 latexx = eval(confParser['flags']['RemoteMachine']) == False
 if eval(confParser['flags']['ModuAnl']) and LAOS:
     times = modData.coord_atoms_broken.keys()
 
-    func_sxy = lambda x: np.sum(lp.Atoms( **modData.coord_atoms_broken[x].to_dict(orient='series') ).sxy)/                         utl.GetVolume(modData,x)
+    func_sxy = lambda x: np.sum(lp.Atoms( **modData.coord_atoms_broken[x].to_dict(orient='series') ).sxy)/\
+                         utl.GetVolume(modData,x)
     Virial = np.array(list(map(func_sxy,times)))*1.0e-04
     strainDump = np.array(list(map(lambda x: utl.GetStrain(modData,x,0),times)))
     #
@@ -2808,7 +2808,7 @@ if eval(confParser['flags']['ModuAnl']) and LAOS:
     ax=PltErr(xarray[:,0],xarray[:,1],Plot=False)
     eps = GetStrain(lmpData,itime,0)
     #eps=0.9*0.2 #--- itime=90
-    ax=PltErr(strainDump[0]+eps, Virial[0],
+    ax=utl.PltErr(strainDump[0]+eps, Virial[0],
            Plot=False,
            attrs={'fmt':'-.o','color':'black'},
            ax=ax,
@@ -2825,13 +2825,14 @@ if eval(confParser['flags']['ModuAnl']) and LAOS:
     print('mu=%s Gpa'%(np.polyfit(strainDump, Virial, 1)[0]))
 
 
-# In[329]:
+# In[117]:
 
 
 def Wrapper(modData):
     times = modData.coord_atoms_broken.keys()
 
-    func_sxy = lambda x: np.sum(lp.Atoms( **modData.coord_atoms_broken[x].to_dict(orient='series') ).sxy)/                         utl.GetVolume(modData,x)
+    func_sxy = lambda x: np.sum(lp.Atoms( **modData.coord_atoms_broken[x].to_dict(orient='series') ).sxy)/\
+                         utl.GetVolume(modData,x)
     Virial = np.array(list(map(func_sxy,times)))*1.0e-04
     strainDump = np.array(list(map(lambda x: utl.GetStrain(modData,x,0),times)))
     return strainDump, Virial
@@ -2856,10 +2857,12 @@ if eval(confParser['flags']['ModuAnl']) and Up and Down:
     strainUp, VirialUp = Wrapper(modDataUp)
     strainDown, VirialDown = Wrapper(modDataDown)
     
-    dgammaUp = GetStrainn( lp.Box( BoxBounds = modDataInit.BoxBounds[0],                        AddMissing = np.array([0.0,0.0,0.0] ) ),
+    dgammaUp = GetStrainn( lp.Box( BoxBounds = modDataInit.BoxBounds[0],\
+                        AddMissing = np.array([0.0,0.0,0.0] ) ),
                    lp.Box( BoxBounds = modDataUp.BoxBounds[0],\
                         AddMissing = np.array([0.0,0.0,0.0] ) ))
-    dgammaDown = GetStrainn( lp.Box( BoxBounds = modDataInit.BoxBounds[0],                        AddMissing = np.array([0.0,0.0,0.0] ) ),
+    dgammaDown = GetStrainn( lp.Box( BoxBounds = modDataInit.BoxBounds[0],\
+                        AddMissing = np.array([0.0,0.0,0.0] ) ),
                    lp.Box( BoxBounds = modDataDown.BoxBounds[0],\
                         AddMissing = np.array([0.0,0.0,0.0] ) ))
 
@@ -2986,6 +2989,7 @@ if eval(confParser['flags']['ModuAnl']) and Up and Down:
 # PltErr(np.ones(len(s0))*(eps+dgamma),s1,Plot=False,ax=ax,xlim=(0.96*eps,1.04*eps)) #,ylim=(0.5,1))
 
 
+
 # ## elastic constants
 
 # In[332]:
@@ -3008,7 +3012,7 @@ if eval(confParser['flags']['ModuAnl']) and Down and not Up:
         dxy[mode]=(atomd[mode].sxy/atomd[mode].AtomicVolume-atoms0.sxy/atoms0.AtomicVolume)/ebulk[mode]*cfac
 
 
-# In[333]:
+# In[67]:
 
 
 def func(x,a,b):
@@ -3017,7 +3021,8 @@ def func(x,a,b):
 def GetModulus(atomid,modData, Plot=False):
     times = modData.coord_atoms_broken.keys()
 
-    func_sxy = lambda x: modData.coord_atoms_broken[x].iloc[atomid].sxy/                         modData.coord_atoms_broken[x].iloc[atomid].AtomicVolume
+    func_sxy = lambda x: modData.coord_atoms_broken[x].iloc[atomid].sxy/\
+                         modData.coord_atoms_broken[x].iloc[atomid].AtomicVolume
     
     Virial = np.array(list(map(func_sxy,times)))*1.0e-04
     strainDump = np.array(list(map(lambda x: utl.GetStrain(modData,x,0),times)))
@@ -3046,7 +3051,8 @@ if eval(confParser['flags']['ModuAnl']) and LAOS:
     
     times = modData.coord_atoms_broken.keys()
     
-    virials = np.c_[list(map(lambda x: 1.0e-04*modData.coord_atoms_broken[x].sxy/                          modData.coord_atoms_broken[x].AtomicVolume,times))]
+    virials = np.c_[list(map(lambda x: 1.0e-04*modData.coord_atoms_broken[x].sxy/\
+                          modData.coord_atoms_broken[x].AtomicVolume,times))]
     strainDump = np.array(list(map(lambda x: utl.GetStrain(modData,x,0),times)))
     gmodu = list(map(lambda x:np.polyfit(strainDump, x, 1)[0],virials.T))
     
@@ -3055,13 +3061,13 @@ if eval(confParser['flags']['ModuAnl']) and LAOS:
     val = gmodu
     #modData.coord_atoms_broken[0].drop(['AtomicVolume'], axis=1,inplace=True)
     modData.coord_atoms_broken[0].insert(loc, 'C66', val)
-    display(modData.coord_atoms_broken[0].head())
+    print(modData.coord_atoms_broken[0].head())
     #--- atom object
     atomm = lp.Atoms(**modData.coord_atoms_broken[0])
     print('mu=%s Gpa'%(atomm.C66.mean()))
 
 
-# In[334]:
+# In[141]:
 
 
 def func(x,a,b):
@@ -3069,7 +3075,8 @@ def func(x,a,b):
 
 def Wrapper(atomid,modData):
     times = modData.coord_atoms_broken.keys()
-    func_sxy = lambda x: modData.coord_atoms_broken[x].iloc[atomid].sxy/                         modData.coord_atoms_broken[x].iloc[atomid].AtomicVolume
+    func_sxy = lambda x: modData.coord_atoms_broken[x].iloc[atomid].sxy/\
+                         modData.coord_atoms_broken[x].iloc[atomid].AtomicVolume
     
     Virial = np.array(list(map(func_sxy,times)))*1.0e-04
     strainDump = np.array(list(map(lambda x: utl.GetStrain(modData,x,0),times)))
@@ -3081,10 +3088,12 @@ def GetModulus(atomid,modDataInit,modDataUp,modDataDown, Plot=False):
     strainUp, VirialUp = Wrapper(atomid,modDataUp)
     strainDown, VirialDown = Wrapper(atomid,modDataDown)
     
-    dgammaUp = GetStrainn( lp.Box( BoxBounds = modDataInit.BoxBounds[0],                        AddMissing = np.array([0.0,0.0,0.0] ) ) ,
+    dgammaUp = GetStrainn( lp.Box( BoxBounds = modDataInit.BoxBounds[0],\
+                        AddMissing = np.array([0.0,0.0,0.0] ) ) ,
                    lp.Box( BoxBounds = modDataUp.BoxBounds[0],\
                         AddMissing = np.array([0.0,0.0,0.0] ) ))
-    dgammaDown = GetStrainn( lp.Box( BoxBounds = modDataInit.BoxBounds[0],                        AddMissing = np.array([0.0,0.0,0.0] ) ),
+    dgammaDown = GetStrainn( lp.Box( BoxBounds = modDataInit.BoxBounds[0],\
+                        AddMissing = np.array([0.0,0.0,0.0] ) ),
                    lp.Box( BoxBounds = modDataDown.BoxBounds[0],\
                         AddMissing = np.array([0.0,0.0,0.0] ) ))
 
@@ -3122,17 +3131,23 @@ if eval(confParser['flags']['ModuAnl']) and Up and Down:
 
     times = modDataInit.coord_atoms_broken.keys()
     #--- atom-wise virials
-    virialsInit = np.c_[list(map(lambda x: 1.0e-04*modDataInit.coord_atoms_broken[x].sxy/                      modDataInit.coord_atoms_broken[x].AtomicVolume,times))]
+    virialsInit = np.c_[list(map(lambda x: 1.0e-04*modDataInit.coord_atoms_broken[x].sxy/\
+                      modDataInit.coord_atoms_broken[x].AtomicVolume,times))]
     print('virialsInit.shape=',virialsInit.shape)
-    virialsUp = np.c_[list(map(lambda x: 1.0e-04*modDataUp.coord_atoms_broken[x].sxy/                      modDataUp.coord_atoms_broken[x].AtomicVolume,times))]
-    virialsDown = np.c_[list(map(lambda x: 1.0e-04*modDataDown.coord_atoms_broken[x].sxy/                      modDataDown.coord_atoms_broken[x].AtomicVolume,times))]
+    virialsUp = np.c_[list(map(lambda x: 1.0e-04*modDataUp.coord_atoms_broken[x].sxy/\
+                      modDataUp.coord_atoms_broken[x].AtomicVolume,times))]
+    virialsDown = np.c_[list(map(lambda x: 1.0e-04*modDataDown.coord_atoms_broken[x].sxy/\
+                      modDataDown.coord_atoms_broken[x].AtomicVolume,times))]
 
     virials = np.concatenate([virialsInit,virialsUp,virialsDown],axis=0)
     print('virials.shape=',virials.shape)
     
-    boxInit = lp.Box( BoxBounds = modDataInit.BoxBounds[0],                        AddMissing = np.array([0.0,0.0,0.0] ))
-    boxUp = lp.Box( BoxBounds = modDataUp.BoxBounds[0],                        AddMissing = np.array([0.0,0.0,0.0] ) )
-    boxDown = lp.Box( BoxBounds = modDataDown.BoxBounds[0],                        AddMissing = np.array([0.0,0.0,0.0] ) )
+    boxInit = lp.Box( BoxBounds = modDataInit.BoxBounds[0],\
+                        AddMissing = np.array([0.0,0.0,0.0] ))
+    boxUp = lp.Box( BoxBounds = modDataUp.BoxBounds[0],\
+                        AddMissing = np.array([0.0,0.0,0.0] ) )
+    boxDown = lp.Box( BoxBounds = modDataDown.BoxBounds[0],\
+                        AddMissing = np.array([0.0,0.0,0.0] ) )
                      
     dgammaUp = GetStrainn(boxInit , boxUp)
     dgammaDown = GetStrainn( boxInit , boxDown)
@@ -3150,7 +3165,7 @@ if eval(confParser['flags']['ModuAnl']) and Up and Down:
 #     if 'C66' in modData.coord_atoms_broken[0].keys():
 #         modData.coord_atoms_broken[0].drop(['C66'], axis=1,inplace=True)
     modData.coord_atoms_broken[0].insert(loc, 'C66', val)
-    display(modData.coord_atoms_broken[0].head())
+    print(modData.coord_atoms_broken[0].head())
     #--- atom object
     atomm = lp.Atoms(**modData.coord_atoms_broken[0])
     print('mu=%s Gpa'%(atomm.C66.mean()))
@@ -3244,7 +3259,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
 #     lmpDmin.GetCords( ncount = sys.maxsize, columns = {'NonaffineSquaredDisplacement':'d2min'} )
 
 
-# In[340]:
+# In[125]:
 
 
 class ModuD2minCrltn:
@@ -3332,7 +3347,7 @@ class ModuD2minCrltn:
                   ) 
 
     def Scatter(self,lmpDmin,key,atomm,**kwargs):
-        key = 1
+#        key = 1
         d2min = lp.Atoms( **lmpDmin.coord_atoms_broken[key].to_dict(orient='series') )
         d2min.tmp = d2min.d2min
 
@@ -3355,7 +3370,7 @@ class ModuD2minCrltn:
         return utl.GetTimeAverageAtom( atoms )
 
 
-# In[341]:
+# In[120]:
 
 
 if eval(confParser['modulus analysis']['d2minCrltn']):
@@ -3410,6 +3425,23 @@ if eval(confParser['modulus analysis']['d2minCrltn']):
                    )
 
 
+# In[187]:
+
+
+# mod2min = ModuD2minCrltn(verbose=True)
+# mod2min.Scatter(lmpDmin,1600000,atomm,
+#                         Plot = True, 
+#                         PLOT_AVERAGE = True,
+#                         nbins_per_decade = 12,
+#                         xscale = 'linear',
+#                         yscale = 'log',
+#                         zscore = True,
+#                         xlim=np.array([-1,1,-1,1])*5,
+#             #            title = 'scatterModuRho.png',
+#     #                    axisLabels=(r'$\mu$',r'$D^2_{min}$'),
+#                    )
+
+
 # In[342]:
 
 
@@ -3420,11 +3452,55 @@ if eval(confParser['modulus analysis']['d2minCrltn']):
 #           ) 
 
 
-# In[343]:
+# In[178]:
 
 
-# d2min = lp.Atoms( **lmpDmin.coord_atoms_broken[1].to_dict(orient='series') )
-# plt.scatter(atomm.C66,np.log10(d2min.d2min),alpha=0.1)
+# d2min = lp.Atoms( **lmpDmin.coord_atoms_broken[2000000].to_dict(orient='series') )
+# plt.scatter(atomm.C66,np.log10(d2min.d2min),alpha=1)
+
+
+# In[183]:
+
+
+#     x = np.array(atomm.C66)
+#     y = np.array(d2min.d2min)
+#     #---
+
+# #    y=y[x>0]
+# #    x=x[x>0]
+
+#     attrs={
+#           'xlabel' : r'$x$(\r{A})', 'ylabel' : r'$y$(\r{A})',
+#           'xlim':[-2,2],'ylim':[-2,2],
+#           'zscore' : None,
+#           'frac' : 1.0, #--- plot a patch
+#           'title' : 'kdeRhoBad.png',
+# #          'colorbar':True,
+#           'labels' : False,
+#           'color':'black',
+# #                     DrawFrame=[0.2,0.09,0.15,0.06,0.04],
+#     }
+#     y=np.log10(y)
+#     x=np.random.rand(y.shape[0])
+#     utl.DensityMap2d(utl.Zscore(x), utl.Zscore(y),**attrs)
+
+
+# In[181]:
+
+
+# filtr = np.log10(lmpDmin.coord_atoms_broken[itime]['d2min']) > -5
+# d2min = lp.Atoms( **lmpDmin.coord_atoms_broken[itime][filtr].to_dict(orient='series') )
+# hist,bins,err=utl.GetPDF(np.log10(d2min.d2min),linscale=True,n_per_decade=64)
+# utl.PltErr(bins,hist)#,yscale='log')
+
+
+# In[182]:
+
+
+# y=d2min.d2min #np.log10(d2min.d2min)
+# x=np.random.random(y.shape[0])
+# plt.scatter(x,y,alpha=0.1)
+# plt.yscale('log')
 
 
 # ### average 
@@ -3546,7 +3622,8 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
               dpi = 60
             )
     #---
-    (xc, yc), (xdata0,ydata0), (xdata,ydata)=    PltCrltnFunc( Crltn, 
+    (xc, yc), (xdata0,ydata0), (xdata,ydata)=\
+    PltCrltnFunc( Crltn, 
                  xv,yv,
                  fileName = 'cr_mu.png',
                  title = '',
@@ -4203,7 +4280,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
 
 # ## Distributions
 
-# In[364]:
+# In[75]:
 
 
 def Pdf( value,  label='',n_per_decade=32, Error = True, density=True, linscale=True,
@@ -4217,11 +4294,12 @@ def Pdf( value,  label='',n_per_decade=32, Error = True, density=True, linscale=
 if eval(confParser['flags']['ModuAnl']): # and not eval(confParser['flags']['RemoteMachine']):
     itime=eval(confParser['parameters']['itime'])
     #
-    hist, edges2, error =    Pdf( atomm.C66,#[atomm.C66>0.0], #(atomm.C66+atomm.C55+atomm.C44)/3.0, #-np.mean(value))/var[key], 
+    hist, edges2, error =\
+    Pdf( atomm.C66,#[atomm.C66>0.0], #(atomm.C66+atomm.C55+atomm.C44)/3.0, #-np.mean(value))/var[key], 
          label = 'Total',
         density=True,
         linscale=True,
-        n_per_decade=32,
+        n_per_decade=128,
         )
 #
     utl.PltErr(edges2,hist, 
@@ -4249,17 +4327,20 @@ if eval(confParser['flags']['ModuAnl']): # and not eval(confParser['flags']['Rem
     #--- bulk strain
     ebulk = utl.GetStrain(lmpData,itime,0)
     #
-    np.savetxt('mu_mean_std.txt',np.c_[ebulk,mu,mu_std],header='strain\tmu\tmu_std')
+    np.savetxt('ModuAnl/mu_mean_std.txt',np.c_[ebulk,mu,mu_std],header='strain\tmu\tmu_std')
     #
-    np.savetxt('pdfMu.txt',np.c_[edges2,hist,error],header='mu\tp(mu)\terr')
+    np.savetxt('ModuAnl/pdfMu.txt',np.c_[edges2,hist,error],header='mu\tp(mu)\terr')
+    #
 
 
 # ### Plot multiple frames
 
-# In[365]:
+# In[252]:
 
 
 if not eval(confParser['flags']['RemoteMachine']):
+    legend=Legends()
+    legend.Set()
     utl.PlotPaperVersion(3,9,
                       glass={0:'FeNi',1:'CoNiFe',2:'CoNiCrFe',3:'CoCrFeMn',
                              4:'CoNiCrFeMn',5:'Co5Cr2Fe40Mn27Ni26'}[5],
@@ -4267,13 +4348,14 @@ if not eval(confParser['flags']['RemoteMachine']):
 #                         ylabel=r'Histogram',
                         title='pdfMu.png',
                         yscale='log',
-                        ylim = (1e-7,1e-2),
-                        xlim = (-3000,3000),
+                        ylim = (1e-13,1e-2),
+                        xlim = (-2000,2000),
                         PlotMean = False,
-                        times=[0,32,64,128], #np.arange(0,200+1,8),
+                        times=[50,100,130,160], #np.arange(0,200+1,8),
+                        scaley=[1.0,100.0,10000.0,1e6],
                         timeseries=None,
                         runs=[0],
-#                        legend = True,
+#                        legend = legend.Get(),#True,
                         DrawFrame=(0.21,0.21,0.15,0.06,0.001),
                      dpi=300,
 #                     verbose=True,
@@ -4283,7 +4365,7 @@ if not eval(confParser['flags']['RemoteMachine']):
 
 # ### variance: multiple frames
 
-# In[366]:
+# In[107]:
 
 
 if not eval(confParser['flags']['RemoteMachine']):
@@ -4297,7 +4379,7 @@ if not eval(confParser['flags']['RemoteMachine']):
                         xlim=(-0.01,.21),
                         PlotMean = False,
                         timeseries=True,
-                        times=np.arange(0,200+1,1),
+                        times=np.arange(0,200+1,2),
 #                        legend = True,
 #                        yscale='log',
 #                        borderwidth = 0.001,
@@ -4316,7 +4398,7 @@ if not eval(confParser['flags']['RemoteMachine']):
                         xlim=(-0.01,.21),
                         PlotMean = False,
                         timeseries=True,
-                        times=np.arange(0,200+1,1),
+                        times=np.arange(0,200+1,2),
 #                        legend = True,
 #                        yscale='log',
 #                        borderwidth = 0.001,
@@ -4344,7 +4426,7 @@ if not eval(confParser['flags']['RemoteMachine']):
            }
     #--- 1st plot 
     ax=None
-    ax=PltErr(xdata,ydata, 
+    ax=utl.PltErr(xdata,ydata, 
            yerr=None, 
            attrs = attrs,
            Plot = False,
@@ -4373,7 +4455,7 @@ if not eval(confParser['flags']['RemoteMachine']):
             'dpi':300,
              }
 
-    PltErr(xdata,ydata2,
+    utl.PltErr(xdata,ydata2,
            yerr=None, 
            attrs = attrs,
            Plot = True,
@@ -4383,24 +4465,24 @@ if not eval(confParser['flags']['RemoteMachine']):
           )    
 
 
-# In[367]:
+# In[95]:
+
+
+# if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['RemoteMachine']):
+#     xarray=np.loadtxt('./loadCurve.txt')
+#     #ax=PltErr(xarray[:,0],xarray[:,1],Plot=False)
+#     ax=utl.PltErr(xarray[:,0],np.gradient(xarray[:,1],xarray[:,0]),Plot=False)
+#     utl.PltErr(xdata,ydata,
+#     #       ylim=[0,30],
+#            ax=ax,
+#            Plot=False)
+
+
+# In[97]:
 
 
 if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['RemoteMachine']):
-    xarray=np.loadtxt('./loadCurve.txt')
-    #ax=PltErr(xarray[:,0],xarray[:,1],Plot=False)
-    ax=PltErr(xarray[:,0],np.gradient(xarray[:,1],xarray[:,0]),Plot=False)
-    PltErr(xdata,ydata,
-    #       ylim=[0,30],
-           ax=ax,
-           Plot=False)
-
-
-# In[368]:
-
-
-if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['RemoteMachine']):
-    PltErr(xdata,ydata,
+    utl.PltErr(xdata,ydata,
     #       ylim=[0,30],
            Plot=False,attrs={'fmt':'-'},
           ystr=r'$\mu$(GPA)',
@@ -4434,6 +4516,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
     rsub = rsub
     # #--- composition and pressure fluctuations
     # cplist = list(map(lambda x: GetPressComp( atoms,box, x ), rsub))
+
 
 
 # In[370]:
@@ -4503,7 +4586,7 @@ def GetPressComp( atoms,box, dmean, **kwargs ):
     df['ix']=df['ix'].astype(int)
     df['iy']=df['iy'].astype(int)
     df['iz']=df['iz'].astype(int)
-#    display(df.head())
+#    print(df.head())
 
     #--- group & compute p and c
     d = df.groupby(by=['ix','iy','iz']).groups
@@ -4528,7 +4611,7 @@ def GetPressComp( atoms,box, dmean, **kwargs ):
     if 'MODU' in kwargs and kwargs['MODU']:
         fileName = kwargs['PATH']
         modu = pd.read_csv(fileName, sep=' ',header=0)
-#        display(modu.head())
+#        print(modu.head())
         if 'PLOT' in kwargs and kwargs['PLOT']:
             plott(modu['C66'],nx,ny,nz,box,zlin, 'muCG.png')
 
@@ -4537,7 +4620,7 @@ def GetPressComp( atoms,box, dmean, **kwargs ):
 
 
         
-#        display(modu.head())
+#        print(modu.head())
     if 'MODU' in kwargs and kwargs['MODU']:
         mlist = modu['C66'].to_list()
         return clist, plist, mlist
@@ -4687,12 +4770,15 @@ if eval(confParser['flags']['ModuAnl']):
     #---------------------
     #--- cluster analysis
     #---------------------
-    mask = value < eval(confParser['modulus analysis']['threshold']) #--- threshold
+    threshold = eval(confParser['modulus analysis']['threshold'])
+#     if eval(confParser['modulus analysis']['threshold_mean']):
+#         threshold = mu
+    mask = value <  threshold #--- threshold
     print('p=',np.sum(mask)/value.size)
     
 #    stats = Stats(mask, xlin, ylin, zlin)
 #    stats.GetSize()
-#    display(stats.stats)
+#    print(stats.stats)
     
     #--- save
     np.save('ModuAnl/negative_mu',mask)
@@ -4751,7 +4837,7 @@ if eval(confParser['flags']['ModuAnl']):
 
 # ### parse bitmaps: multiple strains
 
-# In[376]:
+# In[191]:
 
 
 def FilterSmallCls(stats,label_im,q):
@@ -4786,7 +4872,7 @@ def FilterSmallCls(stats,label_im,q):
     return label_im
 
 
-# In[377]:
+# In[232]:
 
 
 def PrintvarTemporal(xpath,filee,x, header):
@@ -4800,14 +4886,16 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
     except:
         pass
     #---
-    indxxxx = 2
+    indxxxx = 5
     Plot = [True,False][0]
     pathh='./ElasticityT300/%s/eps2'%{0:'FeNi',1:'CoNiFe',2:'CoNiCrFe',3:'CoCrFeMn',
                          4:'CoNiCrFeMn',5:'Co5Cr2Fe40Mn27Ni26'}[indxxxx]
     times = np.arange(0,201,2)#[98] #
     runs=[0]#[[0,1,2], [1,2], [0,1,2], [0,1,2], [1], [0,1,2] ][indxxxx]
-    nave = 1
+    nave = 3
+    box0 = lp.Box( BoxBounds = lmpData.BoxBounds[0],AddMissing = np.array([0.0,0.0,0.0] ))
 #    masks = []
+    counterr = 0
     #---
     for irun in runs:
         for itimee, counter in zip(times,range(len(times))): #--- read 3d matrix
@@ -4819,8 +4907,8 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
 #                box0 = lp.Box( BoxBounds = lmpData.BoxBounds[itimee*10000],AddMissing = np.array([0.0,0.0,0.0] ))
                 xv,yv,zv = np.meshgrid(xlin, ylin,zlin)
                 #
-                if counter % nave == 0: #--- for printing only: average every nave
-                    if counter != 0:
+                if counterr % nave == 0: #--- for printing only: average every nave
+                    if counterr != 0:
                         assert len(masks) == nave
                         mask_acc=np.any(masks,axis=0)
 
@@ -4838,7 +4926,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
                                  zlin=zlin,
                                 )
                 stats.GetSize()
-            #    display(stats.stats)
+            #    print(stats.stats)
                 stats.GetProbInf()
                 stats.GetProb()
                 stats.GetSmean()
@@ -4847,15 +4935,15 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
                 #--------------------------
                 #--- plot
                 #--------------------------
-                conds = counter % nave == 0 and np.any(stats.stats['percTrue']) #np.abs(p-0.134)/p <= 1.0e-2 # percCount > 0:# and itimee == 60 or itimee == 0
+                conds = counterr % nave == 0 #and np.any(stats.stats['percTrue']) #np.abs(p-0.134)/p <= 1.0e-2 # percCount > 0:# and itimee == 60 or itimee == 0
                 if conds: #--- plot in ovito
-                    label_im = FilterSmallCls(stats,stats.label_im,0.95)
+#                    label_im = FilterSmallCls(stats,stats.label_im,0.95)
 #                     #--- all clusters
-                    PrintOvito( pd.DataFrame( np.c_[xv.flatten(),yv.flatten(),zv.flatten(),label_im.flatten()],
-                                             columns=['x','y','z','mass'] ), 
-                                    open( 'ModuAnl/everyCluster.xyz','a'), 
-                                    footer = 'ITIME=%3.2e'%(0.2*itimee*10000/2000000.0), #stats.p, #(GetStrain(lmpData,itimee*10000,0)),
-                                    attr_list=['x','y','z','mass'] )
+#                     PrintOvito( pd.DataFrame( np.c_[xv.flatten(),yv.flatten(),zv.flatten(),label_im.flatten()],
+#                                              columns=['x','y','z','mass'] ), 
+#                                     open( 'ModuAnl/everyCluster.xyz','a'), 
+#                                     footer = 'ITIME=%3.2e'%(0.2*itimee*10000/2000000.0), #stats.p, #(GetStrain(lmpData,itimee*10000,0)),
+#                                     attr_list=['x','y','z','mass'] )
 
 #                     #--- percolating cluster
 #                     if np.any(stats.stats['percTrue']):
@@ -4870,24 +4958,24 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
 #                                         footer = 'ITIME=%s'%itimee,
 #                                         attr_list=['x','y','z','mass'] )
 
-#                     junk = PltBinary(
-#                                         xlin,ylin,zlin, (~mask_acc).flatten().astype(int),
-#                                         box0,
-#                   `                      0.5, #--- threshold
-#                                         cmap='Greys',
-#                                         title='ModuAnl/negative_mu_%s.png'%itimee,
-#                                         zscore=False,
-#                                         DrawFrame=(0.17,0.17,0.15,0.06,0.1),
-#                                         xlabel = '', ylabel = '',
-#                                         labels = True,
-#                                         fontsize=18,
-#                                      )
+                    junk = utl.PltBinary(
+                                        xlin,ylin,zlin, (~mask_acc).flatten().astype(int),
+                                        box0,
+                                        0.5, #--- threshold
+                                        cmap='Greys',
+                                        title='ModuAnl/negative_mu_%s.png'%itimee,
+                                        zscore=False,
+                                        DrawFrame=(0.17,0.17,0.15,0.06,0.1),
+                                        xlabel = '', ylabel = '',
+                                        labels = True,
+                                        fontsize=18,
+                                     )
 
-#                     print('itime=%s,gamma=%s,p=%s'
-#                           %(itimee,GetStrain(lmpData,itimee*10000,0),stats.p))
+                    print('itime=%s,gamma=%s,p=%s'
+                          %(itimee,utl.GetStrain(lmpData,itimee*10000,0),stats.p))
 
 
-
+                counterr += 1
 
             except:
                 traceback.print_exc()
@@ -4896,7 +4984,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
 
 # ### stats
 
-# In[378]:
+# In[114]:
 
 
 def Wrapper(pathh, lmpData, itime, pcut):
@@ -4908,7 +4996,7 @@ def Wrapper(pathh, lmpData, itime, pcut):
                          zlin=np.loadtxt('%s/zlin.txt'%pathh),
                         )
         stats.GetSize()
-    #    display(stats.stats)
+    #    print(stats.stats)
         stats.GetProbInf()
         stats.GetProb()
         stats.GetSmean()
@@ -4933,7 +5021,7 @@ def Wrapper(pathh, lmpData, itime, pcut):
                     np.c_[utl.GetStrain(lmpData,itime*10000,0),stats.p,stats.si_sq**0.5],
                     header='gamma\tp\tsi')
         #--- size distributions
-        hist, edges, error = GetPDF( stats.stats['size'].astype(float),n_per_decade=8)
+        hist, edges, error = utl.GetPDF( stats.stats['size'].astype(float),n_per_decade=8)
         #
         np.savetxt('%s/ps.txt'%pathh,
                    np.c_[edges,hist,error],
@@ -4950,14 +5038,15 @@ def Wrapper(pathh, lmpData, itime, pcut):
         pass
     
 if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['RemoteMachine']):
-    indxxxx=3
+    thresh=3
+    indxxxx=5
     times = np.arange(0,201,2)
     runs=[[0,1,2], [1,2], [0,1,2], [0,1,2], [1], [0,1,2] ][indxxxx]
     indicess = [ [0,5,10], [0,5], [0,5,10], [0,5,10], [0], [0,5,10] ][indxxxx]
     pcut = 0.3 #--- p < pcut
 
 
-# In[379]:
+# In[71]:
 
 
 if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['RemoteMachine']):
@@ -4966,7 +5055,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
           4:'CoNiCrFeMn',5:'Co5Cr2Fe40Mn27Ni26',6:'CuZr3'}[indxxxx]
     #---
     x, y = np.meshgrid(runs,times) #--- different realizations and times
-    list(map(lambda x: Wrapper( './ElasticityT300/%s/eps2/itime%s/Run%s/ModuAnl'%(mg,x[1],x[0]), lmpData, x[1], pcut ), zip(x.flatten(),y.flatten()) ))
+    list(map(lambda x: Wrapper( './ElasticityT300thresh-3/%s/eps2/itime%s/Run%s/ModuAnl'%(mg,x[1],x[0]), lmpData, x[1], pcut ), zip(x.flatten(),y.flatten()) ))
 
 
 # In[380]:
@@ -4979,7 +5068,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
 #                      zlin=np.loadtxt('%s/zlin.txt'%pathh),
 #                     )
 #     stats.GetSize()
-#     #display(stats.stats)
+#     #print(stats.stats)
 #     filtr = stats.stats['rg_sq'] > 0.0
 # #     plt.scatter(stats.stats['rg_sq'][filtr]**0.5,stats.stats['size'][filtr])
 # #     plt.xscale('log')
@@ -5202,11 +5291,11 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
 
 # #### fraction p
 
-# In[383]:
+# In[115]:
 
 
 if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['RemoteMachine']):
-    ax_s = utl.PlotPaperVersion(4,13,
+    ax_s = utl.PlotPaperVersion(6,13,
                       glass={0:'FeNi',1:'CoNiFe',2:'CoNiCrFe',3:'CoCrFeMn',
                              4:'CoNiCrFeMn',5:'Co5Cr2Fe40Mn27Ni26',6:'Co5Cr2Fe40Mn27Ni262nd'}[indxxxx],
                         xlabel=r'$\gamma$',
@@ -5226,7 +5315,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
                     )
     
 #     #--- get scatter data
-    ax_m = utl.PlotPaperVersion(4,13,
+    ax_m = utl.PlotPaperVersion(6,13,
                     glass={0:'FeNi',1:'CoNiFe',2:'CoNiCrFe',3:'CoCrFeMn',
                            4:'CoNiCrFeMn',5:'Co5Cr2Fe40Mn27Ni26',6:'CuZr3'}[indxxxx],
                         xlabel=r'$\gamma$',
@@ -5247,7 +5336,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
     ydata = ydata[~np.isnan(ydata)]
     ydata.sort()
     ymin,ymax=ydata[int(0.05*len(ydata))],ydata[int(0.95*len(ydata))]
-    Pltt(ax_s,ax_m,
+    utl.Pltt(ax_s,ax_m,
          indices=indicess,
 #          yticks=(['10.0','35.0','60.0'],['10.0','35.0','60.0']),
 #          xticks=(['0.05','0.11','0.17'],['0.05','0.11','0.17']),
@@ -5293,11 +5382,11 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
 
 # #### crltn length
 
-# In[387]:
+# In[116]:
 
 
 if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['RemoteMachine']):
-    ax_s0=utl.PlotPaperVersion(4,22,
+    ax_s0=utl.PlotPaperVersion(6,22,
                   glass={0:'FeNi',1:'CoNiFe',2:'CoNiCrFe',3:'CoCrFeMn',
                          4:'CoNiCrFeMn',5:'Co5Cr2Fe40Mn27Ni26'}[indxxxx],
                     xlabel=r'$\gamma$',
@@ -5314,7 +5403,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
 #                    verbose = False,
                 )
     
-    ax_m0 = utl.PlotPaperVersion(4,22,
+    ax_m0 = utl.PlotPaperVersion(6,22,
                     glass={0:'FeNi',1:'CoNiFe',2:'CoNiCrFe',3:'CoCrFeMn',
                            4:'CoNiCrFeMn',5:'Co5Cr2Fe40Mn27Ni26'}[indxxxx],
                     xlabel=r'$\gamma$',
@@ -5335,7 +5424,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
     ydata = ydata[~np.isnan(ydata)]
     ydata.sort()
     ymin,ymax=ydata[int(0.05*len(ydata))],ydata[int(0.95*len(ydata))]    
-    Pltt(ax_s0,ax_m0,
+    utl.Pltt(ax_s0,ax_m0,
          indices=indicess,
 #          yticks=(['10.0','35.0','60.0'],['10.0','35.0','60.0']),
 #          xticks=(['0.05','0.11','0.17'],['0.05','0.11','0.17']),
@@ -5348,7 +5437,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
         )
     
 #--- get scatter data
-    ax_s=utl.PlotPaperVersion(4,23,
+    ax_s=utl.PlotPaperVersion(6,23,
               glass={0:'FeNi',1:'CoNiFe',2:'CoNiCrFe',3:'CoCrFeMn',
                      4:'CoNiCrFeMn',5:'Co5Cr2Fe40Mn27Ni26'}[indxxxx],
                 xlabel=r'$p$',
@@ -5366,7 +5455,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
             )
     
 #     #--- get scatter data
-    ax_m = utl.PlotPaperVersion(4,23,
+    ax_m = utl.PlotPaperVersion(6,23,
                     glass={0:'FeNi',1:'CoNiFe',2:'CoNiCrFe',3:'CoCrFeMn',
                            4:'CoNiCrFeMn',5:'Co5Cr2Fe40Mn27Ni26'}[indxxxx],
                     xlabel=r'$p$',
@@ -5396,7 +5485,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
         )
 
 
-# In[388]:
+# In[117]:
 
 
 def func(x,A,alpha,pc):
@@ -5446,9 +5535,9 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
     print('alpha=',alpha_mean)
     print('pc=',pc,'pmax=',xdata[filtr].max())
     #--- plot
-    ax=PltErr(xdata[filtr],y[filtr],Plot=False,attrs={'fmt':'.'})
+    ax=utl.PltErr(xdata[filtr],y[filtr],Plot=False,attrs={'fmt':'.'})
     xx=np.linspace(xdata[filtr].min(),xdata[filtr].max(),32)
-    PltErr(xx,func(xx,*popt),attrs={'fmt':'-.r'},ax=ax, Plot=False,
+    utl.PltErr(xx,func(xx,*popt),attrs={'fmt':'-.r'},ax=ax, Plot=False,
     #         ylim=(ymin,ymax),
 
           )
@@ -5457,7 +5546,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
           )
 
 
-# In[389]:
+# In[118]:
 
 
 # #--- mean data
@@ -5483,12 +5572,12 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
 
 # ##### rescaled
 
-# In[390]:
+# In[123]:
 
 
 if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['RemoteMachine']):
     #--- 1st
-    ax_rs = PlotPaperVersion(4,24,
+    ax_rs = utl.PlotPaperVersion(6,24,
                     glass={0:'FeNi',1:'CoNiFe',2:'CoNiCrFe',3:'CoCrFeMn',
                            4:'CoNiCrFeMn',5:'Co5Cr2Fe40Mn27Ni26'}[indxxxx],
                    xlabel=r'probability:$1-p/p_c$',
@@ -5498,7 +5587,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
 #                      xlim=(1e-1,1e0),
                     PlotEvery = True, #--- plot timeseries
                     timeseries = True,
-                    legend = False,
+#                    legend = False,
                     yscale='log',
                     xscale='log',
                     runs=runs,
@@ -5507,7 +5596,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
                     pmax=pc,
                 )
     #--- 2nd
-    ax_rm = PlotPaperVersion(4,24,
+    ax_rm = utl.PlotPaperVersion(6,24,
                     glass={0:'FeNi',1:'CoNiFe',2:'CoNiCrFe',3:'CoCrFeMn',
                            4:'CoNiCrFeMn',5:'Co5Cr2Fe40Mn27Ni26'}[indxxxx],
                    xlabel=r'probability:$1-p/p_c$',
@@ -5534,7 +5623,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
     xx=np.logspace(-2,0,4)
     for alpha in [alpha_min,alpha_mean,alpha_max]:
         yy=1.3e1/xx**alpha
-        PltErr(xx,yy,yerr=None,
+        utl.PltErr(xx,yy,yerr=None,
                Plot=False,
                attrs={'fmt':'-.','color':'red'},
                fontsize=FontSize,
@@ -5546,7 +5635,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
                 DrawFrame=DFset,
                  ax=ax_rm)    
     #--- 3rd
-    ax3=Pltt(ax_rs,ax_rm,
+    ax3=utl.Pltt(ax_rs,ax_rm,
              indices=indicess,
      xscale='log',
      yscale='log',
@@ -5557,22 +5646,24 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
     
     #--- fit
     yy=1.5e1/xx**(alpha_mean)
-    PltErr(xx,yy,yerr=None,
+    utl.PltErr(xx,yy,yerr=None,
            Plot=False,
            attrs={'fmt':'-.','color':'darkred','lw':'1'},
            fontsize=FontSize,
-            title='ModuAnl/crltnl_p_rescaled%s.png'%indxxxx,
+            title='ModuAnl/crltnl_p_rescaled%s_thresh%s.png'%(indxxxx,thresh),
             yscale='log',
             xscale='log',
             DrawFrame=DFset,
      xlim=(1e-1,1e0),
                     ylim=(7,1e2),
              ax=ax3)
+    
+    np.savetxt('ModuAnl/nu%s.txt'%thresh,np.c_[alpha_mean])
 
 
 # ##### exponents
 
-# In[391]:
+# In[120]:
 
 
 def func0(x,a, alpha,rc):
@@ -5582,13 +5673,15 @@ def func1(x, a,b):
     return b*x**a
 
 def Wrapper(ax_h,item, Plot = True, **kwargs):
-    
+    legend = Legends()
+    legend.Set()
+
     #--- fetch data
-    xdata, ydata, yerr = FetchData(ax_h, item )
+    xdata, ydata, yerr = utl.FetchData(ax_h, item )
     
     #--- Plot
     if Plot:
-        ax = PltErr( xdata,ydata,
+        ax = utl.PltErr( xdata,ydata,
                      yerr=yerr,
                      Plot = False,
                      attrs={'fmt':'.', 'markersize':'12'},
@@ -5597,9 +5690,9 @@ def Wrapper(ax_h,item, Plot = True, **kwargs):
               )
         
     #--- filter
-    filtr0 = Filtr(xdata,0.0,np.inf)    
-    filtr1 = Filtr(ydata,0.0,np.inf)    
-    filtr2 = Filtr(yerr,1.0e-5,np.inf)
+    filtr0 = utl.Filtr(xdata,0.0,np.inf)    
+    filtr1 = utl.Filtr(ydata,0.0,np.inf)    
+    filtr2 = utl.Filtr(yerr,1.0e-5,np.inf)
     filtr = {0:np.ones(len(xdata),dtype=bool)*True,
              1:np.all([filtr0,filtr1,filtr2],axis=0),
              2:filtr2}[1]
@@ -5618,21 +5711,21 @@ def Wrapper(ax_h,item, Plot = True, **kwargs):
     
         #--- plot fit
         if Plot:
-            ax = PltErr(xdata,func0(xdata,*popt), 
+            ax = utl.PltErr(xdata,func0(xdata,*popt), 
                         Plot = False,
                         attrs={'fmt':'-.',
                         'color':'red',
                         'label':r'$x^{-%3.2f},r_c=%2.1e$'%(popt[1],popt[2]),
                         },
                         ax=ax,
-                        legend=True,
+                        legend=legend.Get(),
                          xscale = 'log',
                         yscale='log',
                       )        
 
         #--- plot rc
         if Plot:
-            ax=PltErr([rc,rc],ax.axis()[2:], #[ax.axis()[2],funcc2(rc,*popt2)], 
+            ax=utl.PltErr([rc,rc],ax.axis()[2:], #[ax.axis()[2],funcc2(rc,*popt2)], 
                         Plot = False,
                         attrs={'fmt':'-.',
                         'color':'red',
@@ -5647,7 +5740,7 @@ def Wrapper(ax_h,item, Plot = True, **kwargs):
         rc = kwargs['rc']
         
     #--- filter: x>rc
-    filtr = np.all([filtr,Filtr(xdata,rc,np.inf)],axis=0)
+    filtr = np.all([filtr,utl.Filtr(xdata,rc,np.inf)],axis=0)
     #--- fit
 #     popt, pcov = np.polyfit(np.log10(xdata[filtr]),np.log10(ydata[filtr]),deg=1, w=1.0/yerr[filtr],cov=True)
 #     alpha = popt[0]
@@ -5670,7 +5763,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
     print('exponent=',alpha)
 
 
-# In[392]:
+# In[121]:
 
 
 if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['RemoteMachine']):
@@ -5679,7 +5772,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
     X = list(map(lambda x:Wrapper(ax_rm,0,Plot=False,rc=x), rcc))
 
 
-# In[393]:
+# In[122]:
 
 
 if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['RemoteMachine']):
@@ -5687,7 +5780,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
     r=np.c_[X][:,0]
     nu=-np.c_[X][:,1]
     yerr=np.c_[X][:,2]
-    ax = PltErr(r,nu, yerr=yerr,
+    ax = utl.PltErr(r,nu, yerr=yerr,
           xstr=r'$r_c$',
           ystr=r'$\nu$',
           Plot=False,
@@ -5708,7 +5801,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
 
     #--- plot
     for rr in [r0,r1]:
-        ax = PltErr([rr,rr],ax.axis()[2:],
+        ax = utl.PltErr([rr,rr],ax.axis()[2:],
               Plot=False,
              ax=ax,
               xstr=r'$r_c$',
@@ -5719,7 +5812,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
               )
 
     #--- filter
-    filtr = Filtr(r,r0,r1)
+    filtr = utl.Filtr(r,r0,r1)
     alpha_min = -alpha#(nu[filtr]-yerr[filtr]).min()
     alpha_max =- alpha#(nu[filtr]+yerr[filtr]).max()
     alpha_mean = -alpha#nu[filtr].mean()
@@ -6146,7 +6239,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
 # #### mean size
 # 
 
-# In[405]:
+# In[124]:
 
 
 if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['RemoteMachine']):
@@ -6154,7 +6247,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
 #     runs = [0,1,2]
 #     times = np.arange(0,202,2)
     #--- fetch data
-    ax_s0=PlotPaperVersion(4,14,
+    ax_s0=utl.PlotPaperVersion(6,14,
                   glass={0:'FeNi',1:'CoNiFe',2:'CoNiCrFe',3:'CoCrFeMn',
                          4:'CoNiCrFeMn',5:'Co5Cr2Fe40Mn27Ni26'}[indxxxx],
                     xlabel=r'$\gamma$',
@@ -6170,7 +6263,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
                 )    
 
     #--- get averaged data
-    ax_m0 = PlotPaperVersion(4,14,
+    ax_m0 = utl.PlotPaperVersion(6,14,
                     glass={0:'FeNi',1:'CoNiFe',2:'CoNiCrFe',3:'CoCrFeMn',
                            4:'CoNiCrFeMn',5:'Co5Cr2Fe40Mn27Ni26'}[indxxxx],
                     xlabel=r'$\gamma$',
@@ -6192,7 +6285,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
     ymin,ymax=ydata[int(0.05*len(ydata))],ydata[int(0.95*len(ydata))]
     yticks=np.linspace(0,1000*np.floor(ymax/1000.0),4,endpoint=True)
     
-    Pltt(ax_s0,ax_m0, indices=indicess,
+    utl.Pltt(ax_s0,ax_m0, indices=indicess,
          title='ModuAnl/smean_gamma_glass%s.png'%indxxxx,
 #         xlim=(0.05,0.17),
          
@@ -6204,7 +6297,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
 #        fill_between = True,
         )    
 
-    PlotPaperVersion(4,17,
+    utl.PlotPaperVersion(6,17,
                     glass={0:'FeNi',1:'CoNiFe',2:'CoNiCrFe',3:'CoCrFeMn',
                            4:'CoNiCrFeMn',5:'Co5Cr2Fe40Mn27Ni26'}[indxxxx],
                    xlabel=r'probability:$p$',
@@ -6224,7 +6317,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
                 )
     
     #--- get scatter data
-    ax_s = PlotPaperVersion(4,17,
+    ax_s = utl.PlotPaperVersion(6,17,
                     glass={0:'FeNi',1:'CoNiFe',2:'CoNiCrFe',3:'CoCrFeMn',
                            4:'CoNiCrFeMn',5:'Co5Cr2Fe40Mn27Ni26'}[indxxxx],
                    xlabel=r'probability:$p$',
@@ -6239,7 +6332,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
                 ) 
     
     #--- get averaged data
-    ax_m = PlotPaperVersion(4,17,
+    ax_m = utl.PlotPaperVersion(6,17,
                     glass={0:'FeNi',1:'CoNiFe',2:'CoNiCrFe',3:'CoCrFeMn',
                            4:'CoNiCrFeMn',5:'Co5Cr2Fe40Mn27Ni26'}[indxxxx],
                    xlabel=r'probability:$p$',
@@ -6269,7 +6362,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
         )
 
 
-# In[406]:
+# In[125]:
 
 
 def func(x,A,alpha,pc):
@@ -6299,18 +6392,18 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
     print('alpha=',alpha_mean)
     print('pc=',pc,'pmax=',xdata[filtr].max())
     #--- plot
-    ax=PltErr(xdata[filtr],y[filtr],Plot=False,attrs={'fmt':'.'})
+    ax=utl.PltErr(xdata[filtr],y[filtr],Plot=False,attrs={'fmt':'.'})
     xx=np.linspace(xdata[filtr].min(),xdata[filtr].max(),32)
-    PltErr(xx,func(xx,*popt),attrs={'fmt':'-.r'},ax=ax, Plot=False,
+    utl.PltErr(xx,func(xx,*popt),attrs={'fmt':'-.r'},ax=ax, Plot=False,
     #         ylim=(ymin,ymax),
 
           )
 
-    PltErr([pc,pc],ax.axis()[2:],attrs={'fmt':'-.r'},ax=ax,
+    utl.PltErr([pc,pc],ax.axis()[2:],attrs={'fmt':'-.r'},ax=ax,
           )
 
 
-# In[407]:
+# In[126]:
 
 
 # if 1:#not indxxxx == 5:
@@ -6337,12 +6430,12 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
 
 # ##### rescaled
 
-# In[408]:
+# In[131]:
 
 
 if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['RemoteMachine']):
     #--- 1st
-    ax_rs = PlotPaperVersion(4,15,
+    ax_rs = utl.PlotPaperVersion(6,15,
                     glass={0:'FeNi',1:'CoNiFe',2:'CoNiCrFe',3:'CoCrFeMn',
                            4:'CoNiCrFeMn',5:'Co5Cr2Fe40Mn27Ni26'}[indxxxx],
                    xlabel=r'probability:$1-p/p_c$',
@@ -6360,7 +6453,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
 #                        verbose = True,
                 )
     #--- 2nd
-    ax_rm = PlotPaperVersion(4,15,
+    ax_rm = utl.PlotPaperVersion(6,15,
                     glass={0:'FeNi',1:'CoNiFe',2:'CoNiCrFe',3:'CoCrFeMn',
                            4:'CoNiCrFeMn',5:'Co5Cr2Fe40Mn27Ni26'}[indxxxx],
                    xlabel=r'probability:$1-p/p_c$',
@@ -6387,7 +6480,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
     for alpha in [alpha_min,alpha_mean,alpha_max]:
         yy=1/xx**alpha
 
-        PltErr(xx,2e2*yy,yerr=None,
+        utl.PltErr(xx,2e2*yy,yerr=None,
                Plot=False,
                attrs={'fmt':'-.','color':'red'},
                fontsize=FontSize,
@@ -6412,12 +6505,13 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
         )
 
     #--- fit
+#    alpha_mean=2.5
     yy=2e2/xx**alpha_mean
-    PltErr(xx,yy,yerr=None,
+    utl.PltErr(xx,yy,yerr=None,
            Plot=False,
            attrs={'fmt':'-.','color':'darkred'},#,'linewidth':'0.001'},
            fontsize=FontSize,
-            title='ModuAnl/smean_p_rescaled%s.png'%indxxxx,
+            title='ModuAnl/smean_p_rescaled%s_thresh%s.png'%(indxxxx,thresh),
             yscale='log',
             xscale='log',
             DrawFrame=DFset,
@@ -6425,11 +6519,49 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
                xlim=(0.1,1),
                ylim=(ax_rs.axis()[2],ax_rs.axis()[2]*100),
           )
+    np.savetxt('ModuAnl/gamma%s.txt'%thresh,np.c_[alpha_mean])
+
+
+# In[159]:
+
+
+# symbol=Symbols()
+# for i in range(4):
+#     data=np.loadtxt('ModuAnl/gamma%s.txt'%i)
+#     sdata = data.copy() if i == 0 else np.c_[sdata,data]
+# data = np.c_[[1,0.1,0.01,0.001],sdata.T]
+# ax=utl.PltErr(None,None,Plot=False)
+# utl.PltErr(data[:,0],data[:,1],
+#            attrs=symbol.GetAttrs(count=0),
+#           xscale='log',
+#            ax=ax,
+#            Plot=False,
+#            ylim=(2.0,2.6),
+#           )
+# for i in range(4):
+#     data=np.loadtxt('ModuAnl/nu%s.txt'%i)
+#     sdata = data.copy() if i == 0 else np.c_[sdata,data]
+# data = np.c_[[1,0.1,0.01,0.001],sdata.T]
+# utl.PltErr(data[:,0],data[:,1],
+#            attrs=symbol.GetAttrs(count=1),
+#           xscale='log',
+#            ax=ax,
+#            twinx=True,
+#            ylim=(0.9,1),
+#            Plot=False
+#           )
+# utl.PltErr(None,None,ax=ax,
+#                      fontsize=FontSize,
+#             title='ModuAnl/robustness%s.png'%(indxxxx),
+#             DrawFrame=DFset,
+#            yscale='linear',xscale='log',
+
+#           )
 
 
 # ##### extract exponent
 
-# In[409]:
+# In[128]:
 
 
 def func0(x,a, alpha,rc):
@@ -6442,26 +6574,28 @@ def func2(x, a,b,x0):
     return a*np.exp(-(x/x0)**b)
 
 def Wrapper(ax_h,item, Plot = True, **kwargs):
+    legend = Legends()
+    legend.Set()
     #-----------------
     #--- fetch data
     #-----------------
-    xdata, ydata, yerr = FetchData(ax_h, item )
+    xdata, ydata, yerr = utl.FetchData(ax_h, item )
     
 
         
     #-----------------
     #--- filter
     #-----------------
-    filtr0 = Filtr(xdata,0.0,np.inf)    
-    filtr1 = Filtr(ydata,0.0,np.inf)    
-    filtr2 = Filtr(yerr,1.0e-06,np.inf)
+    filtr0 = utl.Filtr(xdata,0.0,np.inf)    
+    filtr1 = utl.Filtr(ydata,0.0,np.inf)    
+    filtr2 = utl.Filtr(yerr,1.0e-06,np.inf)
     filtr = np.all([filtr0,filtr1,filtr2],axis=0)             
    
     #-----------------
     #--- Plot
     #-----------------
     if Plot:
-        ax = PltErr( xdata[filtr],ydata[filtr],
+        ax = utl.PltErr( xdata[filtr],ydata[filtr],
                      yerr=yerr[filtr],
                      Plot = False,
                      attrs={'fmt':'.', 'markersize':'12'},
@@ -6492,14 +6626,14 @@ def Wrapper(ax_h,item, Plot = True, **kwargs):
         #--- plot fit
         #--------------
         if Plot:
-            ax = PltErr(xdata,func0(xdata,*popt), 
+            ax = utl.PltErr(xdata,func0(xdata,*popt), 
                         Plot = False,
                         attrs={'fmt':'-.',
                         'color':'red',
                         'label':r'$1/[1+(x/r_c)^{%3.2f}],r_c=%2.1e$'%(popt[1],popt[2]),
                         },
                         ax=ax,
-                        legend=True,
+                        legend=legend.Get(),
                          xscale = 'log',
                         yscale='log',
                     xlim=(1e-3,1),
@@ -6513,7 +6647,7 @@ def Wrapper(ax_h,item, Plot = True, **kwargs):
     #--- plot rc
     #--------------
     if Plot:
-        ax=PltErr([rc,rc],ax.axis()[2:], #[ax.axis()[2],funcc2(rc,*popt2)], 
+        ax=utl.PltErr([rc,rc],ax.axis()[2:], #[ax.axis()[2],funcc2(rc,*popt2)], 
                     Plot = False,
                     attrs={'fmt':'-.',
                     'color':'red',
@@ -6528,7 +6662,7 @@ def Wrapper(ax_h,item, Plot = True, **kwargs):
     #--------------
     #--- filter: x>rc
     #--------------
-    filtr3 = np.all([filtr,Filtr(xdata,rc,np.inf)],axis=0)
+    filtr3 = np.all([filtr,utl.Filtr(xdata,rc,np.inf)],axis=0)
     
     #--------------
     #--- linear fit: x>rc
@@ -6554,14 +6688,14 @@ def Wrapper(ax_h,item, Plot = True, **kwargs):
     #--- plot fit
     #--------------
     if Plot:
-        ax = PltErr(xdata[filtr],func1(xdata[filtr],*popt), 
+        ax = utl.PltErr(xdata[filtr],func1(xdata[filtr],*popt), 
                     Plot = False,
                     attrs={'fmt':'-.',
                     'color':'black',
                     'label':r'$x^{%3.2f},r_c=%2.1e$'%(popt[0],rc),
                     },
                     ax=ax,
-                    legend=True,
+                    legend=legend.Get(),
                      xscale = 'log',
                     yscale='log',
                 xlim=(1e-3,1),
@@ -6585,7 +6719,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
     print('exponent=',alpha)
 
 
-# In[410]:
+# In[129]:
 
 
 #--- vary cutoff 
@@ -6593,7 +6727,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
 # X = list(map(lambda x:Wrapper(ax_rm,0,Plot=False,rc=x), rcc))
 
 
-# In[411]:
+# In[130]:
 
 
 if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['RemoteMachine']):
@@ -6601,7 +6735,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
     r=np.c_[X][:,0]
     nu=-np.c_[X][:,1]
     yerr=np.c_[X][:,2]
-    ax = PltErr(r,nu, yerr=yerr,
+    ax = utl.PltErr(r,nu, yerr=yerr,
           xstr=r'$r_c$',
           ystr=r'$\gamma$',
           Plot=False,
@@ -6620,7 +6754,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
 
     #--- plot
     for rr in [r0,r1]:
-        ax = PltErr([rr,rr],ax.axis()[2:],
+        ax = utl.PltErr([rr,rr],ax.axis()[2:],
               Plot=False,
              ax=ax,
               xstr=r'$r_c$',
@@ -6631,10 +6765,10 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
               )
 
     #--- filter
-    filtr = Filtr(r,r0,r1)
-    alpha_min = (nu[filtr]-yerr[filtr]).min()
-    alpha_max = (nu[filtr]+yerr[filtr]).max()
-    alpha_mean = nu[filtr].mean()
+    filtr = utl.Filtr(r,r0,r1)
+    alpha_min = -alpha#(nu[filtr]-yerr[filtr]).min()
+    alpha_max =- alpha#(nu[filtr]+yerr[filtr]).max()
+    alpha_mean = -alpha#nu[filtr].mean()
     print('exponent:',alpha_min,'-',alpha_max)
     alpha=alpha_mean
 
@@ -6985,7 +7119,7 @@ def Wrapper(pathh, lmpData, itime, pcut):
                          zlin=np.loadtxt('%s/zlin.txt'%pathh),
                         )
         stats.GetSize()
-    #    display(stats.stats)
+    #    print(stats.stats)
         stats.GetProbInf()
         stats.GetProb()
         stats.GetSmean()
@@ -7104,7 +7238,7 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
            ystr=r'$\tau$',
           )
     
-    display(pd.DataFrame(np.c_[xdata,
+    print(pd.DataFrame(np.c_[xdata,
                        list(map(lambda x:alphaa[x],xdata)),
                        list(map(lambda x:std[x],xdata))],columns=['p','tau','err']))
 
@@ -7294,7 +7428,7 @@ def Wrapper(pathh, lmpData, itime, pcut):
                          zlin=np.loadtxt('%s/zlin.txt'%pathh),
                         )
         stats.GetSize()
-    #    display(stats.stats)
+    #    print(stats.stats)
         stats.GetProbInf()
         stats.GetProb()
         stats.GetSmean()
@@ -7566,7 +7700,6 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
 # In[430]:
 
 
-
 #     #--- reshape value
 # nx,ny,nz = len(xlin), len(ylin),len(zlin) 
 # value = np.c_[d2intrp.C66].reshape(((ny,nx,nz)))
@@ -7648,7 +7781,13 @@ if eval(confParser['flags']['ModuAnl']) and not eval(confParser['flags']['Remote
 
 # # Local Order Analysis
 
-# In[431]:
+# In[7]:
+
+
+get_ipython().system('mkdir icosahedra')
+
+
+# In[12]:
 
 
 if eval(confParser['flags']['CommonNeighAnl']) and not eval(confParser['flags']['Ovitos']):
@@ -7660,49 +7799,512 @@ if eval(confParser['flags']['CommonNeighAnl']) and not eval(confParser['flags'][
         for iitime in lmpCna.coord_atoms_broken:
             cna[iitime] = lp.Atoms( **lmpCna.coord_atoms_broken[iitime].to_dict(orient='list') )
 
-if eval(confParser['flags']['CommonNeighAnl']) and eval(confParser['flags']['Ovitos']):            
-    get_ipython().system('ovitos OvitosCna.py $fileName Cna.xyz $nevery 0')
+if eval(confParser['flags']['CommonNeighAnl']) and eval(confParser['flags']['Ovitos']):  
+    nevery = int(confParser['parameters']['nevery'])
+    pathh = confParser['input files']['path']
+    get_ipython().system('ovitos OvitosCna.py $pathh/$fileName Cna.xyz $nevery 0')
 
 
-# In[432]:
+# In[13]:
 
 
 #--- read from d2min.xyz
-if eval(confParser['flags']['CommonNeighAnl']) and Ovitos:
-    lmpData = lp.ReadDumpFile( 'Cna.xyz' )
-    lmpData.GetCords( ncount = sys.maxsize)
+if eval(confParser['flags']['CommonNeighAnl']): # and Ovitos:
+    lmpCna = lp.ReadDumpFile( 'Cna.xyz' )
+    lmpCna.GetCords( ncount = sys.maxsize)
+
+
+# ## class Temperature
+
+# In[23]:
+
+
+class Temperature:
+    
+    def __init__(self,temp_range,nrun,verbose=False):
+        self.temps =  temp_range
+        self.nrun = nrun
+        self.verbose = verbose
+#         pdb.set_trace()
+#        self.temps_runs = np.concatenate(list(map(lambda x:self.BuildTempRealizationPair([x[0]],np.arange(x[1])),
+#            zip(self.temps,self.nrun))))
+
+        self.temps_runs = np.concatenate(list(map(lambda x:self.BuildTempRealizationPair([x[0]],x[1]),
+             zip(self.temps,self.nrun))))
+        
+    
+    def BuildTempRealizationPair(self,temps,nrun):
+        t,r=np.meshgrid(temps,nrun,indexing='ij')
+        return np.array(list(zip(t.flatten(),r.flatten())))
+        
+    def ModifyNrun(self,dirs):
+        #--- modify dirs
+        count = -1
+        dirs_copy = dirs[:]
+        for _, indx in zip(self.temps,range(len(self.temps))):
+            nrun_mod = self.nrun[indx][:]
+            for y in self.nrun[indx]:
+                count += 1
+                x = dirs[count]
+                if not os.path.isfile(x): #--- if false: remove file from "dirs"
+                    dirs_copy.remove(x)
+                    nrun_mod.remove(y)
+            self.nrun[indx] = nrun_mod[:]
+
+            assert len(self.nrun[indx]) > 0, 'temp = %s has no data!'%(self.temps[indx])
+                
+        self.temps_runs = np.concatenate(list(map(lambda x:self.BuildTempRealizationPair([x[0]],x[1]),
+             zip(self.temps,self.nrun))))
+        return dirs_copy
+        
+    def Parse(self,dirs):
+            
+        dirs = self.ModifyNrun(dirs)
+#         print('dirs:',dirs)
+        self.data=list(map(lambda x:np.loadtxt(x,ndmin=2),dirs))
+        if self.verbose:
+            n = np.array(self.nrun).flatten()
+            list(map(lambda x:print('Parsing: %s data.shape is: %s'%(x[1],x[0].shape)),zip(self.data,n)))
+#        print('np.array(self.data):',np.array(self.data))
+
+        
+    def PlotScatter(self,shift = False, shift_factor=10,  
+                    rescale=False,alpha=1.0,
+                    mylegends='',
+                    powerlaw=False, prefact=1.0,
+                    markersizes=np.array([10,10,10,12,12,12,10])*8,
+                    transparency=0.1,
+                    addPoints = [],
+                    colorIndex = [],
+                    col_x=0,col_y=1,
+                    **kwargs):
+        self.ax = utl.PltErr(None,
+                        None,
+                        attrs={'fmt':'-.r'},Plot=False)
+
+        symbols=Symbols(markersizes=markersizes)
+        legends = Legends()
+        legends.Set(bbox_to_anchor=kwargs['bbox_to_anchor'] if 'bbox_to_anchor' in kwargs
+                    else (1.0,0.5,0.5,0.5)
+                   )
+        kounts = colorIndex if colorIndex else range(len(self.temps)) 
+        for temp, count in zip(self.temps,kounts): 
+            text = mylegends[count] if not mylegends == '' else ' '
+            #
+            data = self.data_reduced[temp]            
+            xdata = data[:,col_x]
+            ydata = data[:,col_y]
+            
+            if powerlaw and count == 0:
+                Xdata = xdata.copy()
+
+            if rescale:
+                ydata *= xdata ** alpha 
+
+            ydata = ydata*shift_factor**count if shift else ydata
+
+            self.ax.scatter(xdata,ydata,
+                        **symbols.GetAttrsScatter(count=count%7,label='%s'%text,fmt='.',alpha=transparency),
+                       )
+        #--- add points
+        for points in addPoints:
+            utl.PltErr([points[0]],
+                       [points[1]],
+                       attrs={'fmt':'.','ms':10,'color':'red'},
+                       ax=self.ax,
+                       Plot=False,
+                      )
+            
+        #
+        attrs = {} if mylegends == '' else {'legend':legends.Get()}
+        if powerlaw:
+            Xdata.sort()
+        utl.PltErr(Xdata if powerlaw else None,
+                   prefact/Xdata**alpha if powerlaw else None,
+                   ax=self.ax,
+                   Plot=False,
+                   DrawFrame=DRAW_FRAME,
+                   **attrs,
+                   **kwargs
+                  )
+    def PlotPdf(self,shift = False, shift_factor=10,
+                rescale=False,alpha=1.0,
+                powerlaw=False, prefact=1.0,
+                mylegends='', 
+                **kwargs):
+        self.ax = utl.PltErr(None,
+                        None,
+                        attrs={'fmt':'-.r'},Plot=False)
+
+        symbols=utl.Symbols()
+        legends = utl.Legends()
+        legends.Set(bbox_to_anchor=kwargs['bbox_to_anchor'] if 'bbox_to_anchor' in kwargs
+                    else (1.0,0.5,0.5,0.5),
+                    labelspacing=kwargs['labelspacing'] if 'labelspacing' in kwargs
+                    else 0.0
+                   )
+        for temp, count in zip(self.temps,range(len(self.temps))): 
+            text = mylegends[count] if not mylegends == '' else ' '
+            #
+            data = self.data_averaged[temp]
+            xdata = data[ :,1 ]
+            ydata = data[ :,0 ]
+            yerr  = data[:,2]
+            #
+            if powerlaw and count == 0:
+                Xdata = xdata.copy()
+            if rescale:
+                ydata *= xdata ** alpha 
+                yerr *= xdata ** alpha 
+                
+            ydata = ydata * shift_factor**count if shift else ydata
+            yerr  = yerr  * shift_factor**count if shift else yerr
+
+            try:
+                utl.PltErr(xdata,ydata,
+                        yerr=yerr,
+                       ax = self.ax,
+                       attrs=symbols.GetAttrs(count=count%7,label=r'$%s$'%text,**kwargs),
+                       Plot=False,
+                   
+                      )
+            except:
+                traceback.print_exc()
+                continue
+        #
+        attrs = {} if mylegends == '' else {'legend':legends.Get()}
+        attrs2 = {} if 'DrawFrame' in kwargs else {'DrawFrame':DRAW_FRAME}
+        utl.PltErr(Xdata if powerlaw else None,
+                   prefact/Xdata**alpha if powerlaw else None,
+                   ax=self.ax,
+                   Plot=False,
+                   #DrawFrame=DRAW_FRAME,
+                   **attrs2,
+                   **attrs,
+                   **kwargs
+                  )
+    def Concatenate(self):
+        kount = 0
+        self.data_reduced = {} 
+        for temp, indx in zip(self.temps,range(len(self.temps))):
+            #--- concat. data for each temp
+            nruns = len(self.nrun[indx])
+            data = self.data[kount:kount+nruns]
+            filtr = list(map(lambda x:x.shape[0] > 0,data)) #--- filter empty arrays
+            self.data_reduced[temp] = np.concatenate(np.array(data)[filtr]) #,axis=0)
+            if self.verbose:
+                print('temp:%s, data.shape:%s'%(temp,self.data_reduced[temp].shape)) 
+            kount += nruns
+
+    def Transform(self,**kwargs):
+        for temp, indx in zip(self.temps,range(len(self.temps))):
+            #--- concat. data for each temp
+            if 'multBy' in kwargs:
+                if 'col' in kwargs:
+                    if 'temp' in kwargs and temp != kwargs['temp']:
+                        continue
+                    self.data_reduced[temp][:,kwargs['col']] *=  kwargs['multBy']
+
+            if 'zscore' in kwargs and kwargs['zscore']:
+                if 'col' in kwargs:
+                    if 'temp' in kwargs and temp != kwargs['temp']:
+                        continue
+                    data = self.data_reduced[temp][:,kwargs['col']]
+                    data -= np.mean(data)
+                    data /= np.std(data)
+                    self.data_reduced[temp][:,kwargs['col']] = data
+                    
+    def EnsAverage(self):
+        kount = 0
+        self.data_averaged = {} 
+        for temp, indx in zip(self.temps,range(len(self.temps))):
+            #--- concat. data for each temp
+            nruns = len(self.nrun[indx])
+            data = self.data[kount:kount+nruns]
+            if self.verbose:
+                print('data.shape:',np.array(data).shape) 
+#            filtr = list(map(lambda x:x.shape[0] > 0,data)) #--- filter empty arrays
+#            data = np.concatenate(np.array(data)[filtr]) #,axis=0)
+            data_reduced = ftl.reduce(Temperature.myadd,data)
+        
+            self.data_averaged[ temp ] = self.hist(data_reduced,nruns) #self.nrun[indx])
+            kount += nruns #self.nrun[indx]
+
+    def hist(self,data,nrun):
+        count, edge_left, edge_right, _ = data.T
+        
+        edge_left /= nrun
+        edge_right /= nrun
+        
+        ntot = np.sum(count)
+        
+        edges = np.sqrt( edge_left * edge_right )
+        
+        hist = count / ntot / (edge_right-edge_left)
+#        print(np.sum(hist*(edge_right-edge_left)))
+
+        err = hist / count ** 0.5
+        
+        filtr = count > 1
+        
+        return np.c_[hist[filtr], edges[filtr], err[filtr]]
+                    
+
+
+    def func2nd(self,x,k,x0,xc,beta,alpha):
+        return k*np.exp(-(x/xc)**beta)/(1+(x/x0)**alpha)
+
+    def func(self,x,k,xc,beta,alpha):
+        return k*np.exp(-(x/xc)**beta)/(x)**alpha
+
+    def Fit(self,Plot=None,
+            shift = False,
+            plotAttrs={},
+            bounds=(-np.inf, np.inf),
+            xlo=float('-inf'),xhi=float('inf'),
+            mylegends='',
+            **kwargs):
+        self.exponent = {}
+        pref=1e-10*1e-10 #--- ang^2 to m^2
+        symbols=utl.Symbols()
+        legends = Legends()
+        legends.Set(bbox_to_anchor=plotAttrs['bbox_to_anchor'] if 'bbox_to_anchor' in plotAttrs
+                    else (1.0,0.5,0.5,0.5))
+
+        if Plot:
+            ax = utl.PltErr(None,None,
+                            Plot=False)
+        #
+        for temp, count in zip(self.temps,range(len(self.temps))): 
+            self.smat = smat = self.data_averaged[ temp ] #if len(self.nrun) > 1 else self.data[count]
+
+            xdata = smat[ :,1 ]
+            ydata = smat[ :,0 ]
+            yerr  = smat[:,2]
+
+        
+            #--- set limits:
+            if self.verbose:
+                print('limits:',xlo,xhi)
+
+            filtr = np.ones(xdata.shape[0],dtype=bool)
+            filtr = np.all([filtr,xdata > xlo],axis=0)
+            filtr = np.all([filtr,xdata <= xhi],axis=0)
+            assert np.any(filtr), 'empty arrays!'
+            if self.verbose:
+                print('filtr=',filtr)
+            
+            #--- error in y
+            if 'sigma' in kwargs:
+                kwargs['sigma'] = 2*yerr[filtr]
+
+            #--- fit
+#             print(kwargs)
+            popt, pcov = curve_fit(self.func, xdata[filtr], ydata[filtr],
+                                   bounds=bounds, 
+                                    **kwargs
+                                    )
+            self.popt = popt
+            self.filtr = filtr
+            #--- uncertainties
+            if self.verbose:
+                print('Temp=%s,y0,c0,alpha'%temp,list(popt),pcov)
+            alpha=popt[-1]
+            err_alpha = pcov[-1,-1]**0.5
+            self.exponent[temp] = [alpha,alpha+err_alpha,alpha-err_alpha]
+            if Plot:
+                text = mylegends[count] if not mylegends == '' else ' '
+                #---fit
+                shift_factor = 100**count if shift else 1
+                utl.PltErr(xdata,
+                                (self.func(xdata,*popt))*shift_factor,#-y0)/xdata_shift,
+                                attrs={'fmt':'-.','color':symbols.colors[count%7]},
+                           Plot=False,ax=ax)
+                #--- points
+#                temp= [1000,1200,1400,1600,1800,2000][count]
+                utl.PltErr(xdata,
+                           ydata*shift_factor,#-y0)/xdata_shift,
+                           yerr=yerr*shift_factor,#-y0),#/xdata_shift,
+                           attrs=symbols.GetAttrs(count=count%7,label=r'$%s$'%text,fmt='.',**plotAttrs),
+                           ax=ax,
+                           Plot=False,
+                          )
+        if Plot:
+            attrs = {} if mylegends == '' else {'legend':legends.Get()}
+            utl.PltErr(None,
+                       None, 
+                       ax=ax,
+                       Plot=False,
+                       DrawFrame=DRAW_FRAME,
+                       **plotAttrs,
+                       **attrs
+                      )
+
+    def PlotDiff(self,**kwargs):
+        symbols=utl.Symbols()
+        utl.PltErr(1.0/np.array(self.temps),
+                   list(map(lambda x:self.Diffusion[x][0],self.temps)),
+                   yerr=list(map(lambda x:(self.Diffusion[x][1]-self.Diffusion[x][2])/2,self.temps)),
+                   attrs=symbols.GetAttrs(),
+                   DrawFrame=DRAW_FRAME,
+                   **kwargs
+                  )
+
+    def PlotExponent(self,**kwargs):
+        symbols=utl.Symbols()
+        ax=utl.PltErr([0.5e-3,1e-3],[1,1],attrs={'fmt':'-.r'},Plot=False)
+        utl.PltErr(1.0/np.array(self.temps),
+                   list(map(lambda x:self.exponent[x][0],self.temps)),
+                   yerr=list(map(lambda x:1.0*(self.exponent[x][1]-self.exponent[x][2]),self.temps)),
+                   attrs=symbols.GetAttrs(),
+                   DrawFrame=DRAW_FRAME,
+                   ax=ax,
+                   **kwargs
+                  )
+
+    @staticmethod
+    def myadd(a,b):
+        return a+b
+    
 
 
 # ## Histograms
 
-# In[433]:
+# In[15]:
 
 
 if eval(confParser['flags']['CommonNeighAnl']) and not eval(confParser['flags']['TimeSeries']):
-    cna = lp.Atoms( **lmpData.coord_atoms_broken[itime].to_dict(orient='list') )
+    itime = list(lmpCna.coord_atoms_broken.keys())[0]
+    cna = lmpCna.coord_atoms_broken[itime]
     #
     plt.yscale('log')
     plt.ylim(1,1e6)
     plt.xlabel('Type')
     plt.ylabel('Frequency')
     #
-    x, y = np.unique(pd.DataFrame(cna.__dict__)['StructureType'], return_counts=True) #bug !!! len(y)!=5
+    x, y = np.unique(cna['StructureType'], return_counts=True) #bug !!! len(y)!=5
     #
-    count=np.zeros(5,dtype=int)
-    for typee in x:
-        count[int(typee)] = y[int(typee)]
+#    count=np.zeros(5,dtype=int)
+#    for typee in x:
+#        count[int(typee)] = y[int(typee)]
+
+    rho = np.c_[x,y]
     #
-    plt.bar(x, count)
+    plt.bar(rho[:,0], rho[:,1])
     #
     plt.show()
     #--- strain
-    dx=box.CellVector[0,1]-box0.CellVector[0,1]
-    l1=box.CellVector[1,1]
-    ebulk = np.array([dx/l1])
+#     dx=box.CellVector[0,1]-box0.CellVector[0,1]
+#     l1=box.CellVector[1,1]
+#     ebulk = np.array([dx/l1])
 
-    #--- save
-    np.savetxt('StructureTypeCounts.txt',np.concatenate([ebulk,count]).reshape((1,6)),
-               header='Strain,n0,n1,n2,n3,n4', fmt='%s')
+#     #--- save
+#     np.savetxt('StructureTypeCounts.txt',np.concatenate([ebulk,count]).reshape((1,6)),
+#                header='Strain,n0,n1,n2,n3,n4', fmt='%s')
+
+
+# ## eigenmodes: size dist.
+
+# In[16]:
+
+
+def SizeDist(sizes, fout, **kwargs):
+#        smax = np.max(sizes)
+    hist, edge, err = utl.GetPDF(sizes, n_per_decade=6, linscale=None, **kwargs)
+
+#    if self.verbose:
+    print('write in %s'%fout)
+
+    with open(fout,'w') as fp:
+        if not kwargs['density']: #--- output histogram and edges
+            np.savetxt(fp,np.c_[hist, edge[:-1], edge[1:], err],header='hist edge_left edge_right err')
+        else:
+            np.savetxt(fp,np.c_[hist, edge, err],header='hist edge err')
+                    
+def LogBins(xlo,xhi,nbin_per_decade):
+    return np.logspace(np.log10(xlo),
+                       np.log10(xhi),
+                       nbin_per_decade*int(np.log10(xhi/xlo))
+                      )
+
+if eval(confParser['flags']['CommonNeighAnl']):
+
+    #--- filter icosahedral sym.
+    filtr = cna.StructureType == 4.0
+    #--- atom id
+    atom_ids = cna[filtr].id
+    #--- fetch displacements
+    df = lmpData.coord_atoms_broken[itime]
+    df_filtrd = utl.FilterDataFrame(df,key='id',val=list(atom_ids))
+
+    #--- output dx, dy, dz
+    xlo = 1e-6
+    xhi = 1e6
+    for item in ['fx','fy','fz']:
+        #--- ico. sym.
+        fout = 'icosahedra/%sDistIcosahedra.txt'%item
+        SizeDist(sizes=np.abs(df_filtrd[item]),
+                   fout=fout,
+                   density = False,
+                   bins=LogBins(xlo,
+                               xhi,
+                               nbin_per_decade=6))
+
+
+
+
+        #--- none ico.
+        fout = 'icosahedra/%sDist.txt'%item
+        SizeDist(sizes=np.abs(df[item]),
+                   fout=fout,
+                   density = False,
+                   bins=LogBins(xlo,
+                               xhi,
+                               nbin_per_decade=6))
+
+
+
+# In[26]:
+
+
+def main():
+    if eval(confParser['flags']['RemoteMachine']):
+        return
+    
+    get_ipython().system('mkdir png')
+    #--- temp object
+    temp = Temperature(
+       [0,1],[list(range(1)),list(range(1))],
+         verbose = True,
+                     )
+    #--- parse data
+    temp.Parse( 
+                ['icosahedra/fxDist.txt','icosahedra/fyDist.txt']
+#                list(map(lambda x:'CantorNatom10KTemp300KMultipleRates/Rate%s/Run%s/dislocations/clusterSizePdfTotal.txt'%(x[0],x[1]),
+#                         temp.temps_runs ))
+              )
+    temp.EnsAverage()
+     #--- plot
+    temp.PlotPdf(shift=False,shift_factor=0.1,
+                 rescale=False,alpha=2,
+                 powerlaw=False, prefact=1e3,
+                 **{
+                  'attrs':{'fmt':'-.r'},
+                 'xscale':'log',
+                 'yscale':'log',
+#                   'xlim':(1e0,1e4),
+#                    'ylim':(2e-11,1e-1),
+#                    'ylim':(1e-3,4e4),
+#                    'ndecade_y':2,'ndecade_x':1,
+                    'nevery':1,
+#                   'title':'png/pdf_s_T300-900K.png',
+                   'title':'png/pdf_cluster_size_E1-4_cantor.png',
+#                   'title':'png/pdf_s_E4_kernels.png',
+        'bbox_to_anchor':(-0.16,-0.07,0.5,0.5),
+    
+    })
+
+main()
 
 
 # ## output timeseries
@@ -7710,43 +8312,43 @@ if eval(confParser['flags']['CommonNeighAnl']) and not eval(confParser['flags'][
 # In[434]:
 
 
-if eval(confParser['flags']['CommonNeighAnl']):
-    #
-    times = list(lmpData.coord_atoms_broken.keys())
-    times.sort()
-    ntime = len(times)
-    ebulk = np.zeros( ntime )
-    Count = np.zeros(ntime*5).reshape((ntime,5))
-    #
-    for iitime, indxx in zip(times,range(ntime)):
-        cna = lp.Atoms( **lmpData.coord_atoms_broken[iitime].to_dict(orient='list') )
-        #
-        x, y = np.unique(pd.DataFrame(cna.__dict__)['StructureType'], return_counts=True) #bug !!! len(y)!=5
-        #
-        for typee, count in zip(x,y):
-            typee = int(typee)
-            count = int(count)
-            Count[indxx,typee] = count
-        #
-        #--- strain
-        if indxx == 0:
-            box0 = lp.Box( BoxBounds = lmpData.BoxBounds[0] )
-            box0.BasisVectors( AddMissing = np.array([0.0,0.0,0.0] ))
+# if eval(confParser['flags']['CommonNeighAnl']):
+#     #
+#     times = list(lmpData.coord_atoms_broken.keys())
+#     times.sort()
+#     ntime = len(times)
+#     ebulk = np.zeros( ntime )
+#     Count = np.zeros(ntime*5).reshape((ntime,5))
+#     #
+#     for iitime, indxx in zip(times,range(ntime)):
+#         cna = lp.Atoms( **lmpData.coord_atoms_broken[iitime].to_dict(orient='list') )
+#         #
+#         x, y = np.unique(pd.DataFrame(cna.__dict__)['StructureType'], return_counts=True) #bug !!! len(y)!=5
+#         #
+#         for typee, count in zip(x,y):
+#             typee = int(typee)
+#             count = int(count)
+#             Count[indxx,typee] = count
+#         #
+#         #--- strain
+#         if indxx == 0:
+#             box0 = lp.Box( BoxBounds = lmpData.BoxBounds[0] )
+#             box0.BasisVectors( AddMissing = np.array([0.0,0.0,0.0] ))
 
-        box = lp.Box( BoxBounds = lmpData.BoxBounds[iitime] )
-        box.BasisVectors( AddMissing = np.array([0.0,0.0,0.0] ))
-        #
-        #--- volume
-        CellVectorOrtho, VectorNorm = lp.GetOrthogonalBasis( box.CellVector )
-        volume = np.linalg.det( CellVectorOrtho )
-        #--- bulk strain
-        dx=box.CellVector[0,1]-box0.CellVector[0,1]
-        l1=box.CellVector[1,1]
-        ebulk[indxx] = dx/l1
+#         box = lp.Box( BoxBounds = lmpData.BoxBounds[iitime] )
+#         box.BasisVectors( AddMissing = np.array([0.0,0.0,0.0] ))
+#         #
+#         #--- volume
+#         CellVectorOrtho, VectorNorm = lp.GetOrthogonalBasis( box.CellVector )
+#         volume = np.linalg.det( CellVectorOrtho )
+#         #--- bulk strain
+#         dx=box.CellVector[0,1]-box0.CellVector[0,1]
+#         l1=box.CellVector[1,1]
+#         ebulk[indxx] = dx/l1
 
-    #--- save
-    np.savetxt('StructureTypeCounts.txt',np.c_[ebulk,Count].reshape((ntime,6)),
-               header='Strain,n0,n1,n2,n3,n4', fmt='%s')
+#     #--- save
+#     np.savetxt('StructureTypeCounts.txt',np.c_[ebulk,Count].reshape((ntime,6)),
+#                header='Strain,n0,n1,n2,n3,n4', fmt='%s')
 
 
 # ### Multiple Frames
@@ -7754,27 +8356,27 @@ if eval(confParser['flags']['CommonNeighAnl']):
 # In[435]:
 
 
-if eval(confParser['flags']['CommonNeighAnl']):
-    path = '.'
-    sarr = np.loadtxt('%s/StructureTypeCounts.txt'%path)
+# if eval(confParser['flags']['CommonNeighAnl']):
+#     path = '.'
+#     sarr = np.loadtxt('%s/StructureTypeCounts.txt'%path)
 
-    #
-    fig = plt.figure(figsize=(4,4))
-    ax = fig.add_subplot(111)
-    ax.set_xlabel('$\gamma$')
-    ax.set_ylabel('Frequency')
-    ax.set_ylim(1e0,1e3)
-    ax.set_yscale('log')
-    #
-    #ax.plot(sarr[:,0],sarr[:,1],label='Other')
-    ax.plot(sarr[:,0],sarr[:,2],label='FCC')
-    ax.plot(sarr[:,0],sarr[:,3],label='HCP')
-    ax.plot(sarr[:,0],sarr[:,4],label='BCC')
-    ax.plot(sarr[:,0],sarr[:,5],label='ICO')
-    #
-    ax.legend(frameon=False)
-    plt.savefig('StructureTypeGamma.png',dpi=75,bbox_inches='tight')
-    plt.show()
+#     #
+#     fig = plt.figure(figsize=(4,4))
+#     ax = fig.add_subplot(111)
+#     ax.set_xlabel('$\gamma$')
+#     ax.set_ylabel('Frequency')
+#     ax.set_ylim(1e0,1e3)
+#     ax.set_yscale('log')
+#     #
+#     #ax.plot(sarr[:,0],sarr[:,1],label='Other')
+#     ax.plot(sarr[:,0],sarr[:,2],label='FCC')
+#     ax.plot(sarr[:,0],sarr[:,3],label='HCP')
+#     ax.plot(sarr[:,0],sarr[:,4],label='BCC')
+#     ax.plot(sarr[:,0],sarr[:,5],label='ICO')
+#     #
+#     ax.legend(frameon=False)
+#     plt.savefig('StructureTypeGamma.png',dpi=75,bbox_inches='tight')
+#     plt.show()
 
 
 # In[436]:
@@ -7907,6 +8509,7 @@ if eval(confParser['flags']['StrnAnalysis']):
 
     #--- make an object
     uintrp = lp.Atoms(**pd.DataFrame(np.c_[xi,grid_z],columns=['x','y','z','dx','dy','dz']).to_dict(orient='list'))
+
 
 
 # ### Print
@@ -8164,6 +8767,7 @@ if eval(confParser['flags']['StrnAnalysis']):
         #         )
 
 
+
 # ### Crltn Length
 
 # In[448]:
@@ -8178,7 +8782,8 @@ if eval(confParser['flags']['StrnAnalysis']):
     l1=box.CellVector[1,1]
     ebulk = dx/l1
     #---
-    (xc, yc), (xdata0,ydata0), (xdata,ydata)=    PltCrltnFunc( Crltn, 
+    (xc, yc), (xdata0,ydata0), (xdata,ydata)=\
+    PltCrltnFunc( Crltn, 
                  xv,yv,
                  fileName = 'cr_strain.%s.png'%itime,
                  title = r'$\epsilon=%3.2f$'%(2*ebulk),
@@ -8295,12 +8900,13 @@ if eval(confParser['flags']['CompFluc']):
     atoms = lp.Atoms( **lmpData.coord_atoms_broken[itime].to_dict(orient='series') )
     box = lp.Box( BoxBounds = lmpData.BoxBounds[itime], AddMissing = np.array([0.0,0.0,0.0]))
     #--- partition & compute \delta within each subvolume
-    (xlin,ylin,zlin), df_comp =                            GetPressComp(atoms,
+    (xlin,ylin,zlin), df_comp =\
+                            GetPressComp(atoms,
                                          box, 
                                          4.0,
                                          AtomicRadius,
                                         ) 
-    display(df_comp.head())
+    print(df_comp.head())
     #--- add as an attribute
     atoms.tmp = GetMismatchIco(pd.DataFrame(atoms.__dict__),box,
                        df_comp,
@@ -8353,7 +8959,8 @@ if eval(confParser['flags']['CompFluc']):
     #--- plot with ico
     vor = lp.Atoms( **lmpVor.coord_atoms_broken[itime].to_dict(orient='series') )
     #
-    (xlin, ylin, zlin), (xv, yv, zv), delta_intrp =    IntrpScatter(
+    (xlin, ylin, zlin), (xv, yv, zv), delta_intrp =\
+    IntrpScatter(
                     atoms, box, 'tmp',
                     vor,
                     **PlotAttrs
@@ -8421,13 +9028,15 @@ if eval(confParser['flags']['CompFluc']):
 
 
 if eval(confParser['flags']['CompFluc']):
-    hist, edges, error =    Pdf( pd.DataFrame(atoms.__dict__).iloc[GetFullIcosahedra( vor )].tmp,
+    hist, edges, error =\
+    Pdf( pd.DataFrame(atoms.__dict__).iloc[GetFullIcosahedra( vor )].tmp,
         density=True,
         linscale=True,
         n_per_decade=16,
         )
 #
-    hist2, edges2, error2 =    Pdf( pd.DataFrame(atoms.__dict__).iloc[~GetFullIcosahedra( vor )].tmp,
+    hist2, edges2, error2 =\
+    Pdf( pd.DataFrame(atoms.__dict__).iloc[~GetFullIcosahedra( vor )].tmp,
         density=True,
         linscale=True,
         n_per_decade=16,
@@ -8958,7 +9567,7 @@ if not eval(confParser['flags']['RemoteMachine']):
     df = pd.DataFrame(X,columns=['ws','ico','gr','d2min','cxy','hmin','sy','delta']) #,dtype=float)
 
 
-    #    display(df)
+    #    print(df)
     markers=['o','s','D','^','<','>']
     colors = ['black','red','green','blue','cyan','brown']
     plt.rcParams['text.usetex'] = True
@@ -9173,7 +9782,8 @@ class MachineLearning:
         set feature matrix
         '''
         if not eval(self.confParser['ml flags']['ReadDisc']):
-            X=np.c_[structFuncRad,structFuncAng] if eval(self.confParser['ml flags']['StructFuncAng'])            else np.c_[structFuncRad]
+            X=np.c_[structFuncRad,structFuncAng] if eval(self.confParser['ml flags']['StructFuncAng'])\
+            else np.c_[structFuncRad]
             if eval(self.confParser['ml flags']['WritDisc']):
                 with open('MlAnl/features.npy','wb') as f:
                     np.save( f, X )
@@ -9726,7 +10336,8 @@ class GNN:
         edge_features = edge_features[filtr]
 
         xyz = pd.DataFrame(np.c_[xyz,xyz.index],columns=list(xyz.keys())+['row_index'])
-        self.edges = np.c_[utl.FilterDataFrame(xyz, key='id', val=contact_list['id'])['row_index'],                      utl.FilterDataFrame(xyz, key='id', val=contact_list['J'])['row_index']].astype(int)
+        self.edges = np.c_[utl.FilterDataFrame(xyz, key='id', val=contact_list['id'])['row_index'],\
+                      utl.FilterDataFrame(xyz, key='id', val=contact_list['J'])['row_index']].astype(int)
         self.edge_features = list(map(lambda x:list(x),np.c_[edge_features]))  
     
     def Predictors(self,x):
@@ -9798,7 +10409,8 @@ class GNN:
 
 
         #--- graph structure  
-        static_graph_tr, self.train_mask_np, self.val_mask_np, self.test_mask_np,        self.target_nodes_np, self.weight_np = base_graph(
+        static_graph_tr, self.train_mask_np, self.val_mask_np, self.test_mask_np,\
+        self.target_nodes_np, self.weight_np = base_graph(
                                                 self.descriptors, 
                                                 self.edges,
                                                 self.edge_features,

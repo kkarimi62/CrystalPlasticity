@@ -7,7 +7,7 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv):
 	confParser.set('parameters','itime0','0')
 	confParser.set('parameters','itime','2000000')
 	confParser.set('input files','path',argv)
-	confParser.set('input files','fileIndex','5')
+	confParser.set('input files','fileIndex','8')
 	#--- write
 	confParser.write(open('config.ini','w'))	
 	#--- set environment variables
@@ -25,7 +25,7 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv):
 if __name__ == '__main__':
 	import os
 #
-	runs	 = [0,1,2]
+	runs	 = range(1,11)
 	nNode    = 1
 	nThreads = 1
 	jobname  = {
@@ -35,17 +35,19 @@ if __name__ == '__main__':
 				'4':'VorAnlT300/Co5Cr2Fe40Mn27Ni26', 
 				'5':'D2minAnalysisT300/Co5Cr2Fe40Mn27Ni26', 
 				'6':'MlTrain/granular/itime0', 
-				}['1']
+				'7':'localizedModes', 
+				}['7']
 	DeleteExistingFolder = True
 	readPath = os.getcwd() + {
 								'1':'/../testRuns/Preparation/ElasticityT300/Co5Cr2Fe40Mn27Ni26/eps2/itime0',
 								'2':'/../testRuns/glassCo5Cr2Fe40Mn27Ni26',
 								'3':'/../testRuns/Preparation/CuZrNatom32KT300Tdot1E-1Sheared',
 								'4':'/../testRuns/granular/silviaData/DATA_GRAINS/seed1_1001',
- 							}['1'] #--- source
+								'7':'/../testRuns/granular/silviaData/QUASI-LOCALIZED-MODEs',
+ 							}['7'] #--- source
 	EXEC_DIR = '.'     #--- path for executable file
-	durtn = '02:59:59'
-	mem = '32gb'
+	durtn = '00:59:59'
+	mem = '16gb'
 	partition = ['INTEL_PHI'][0] 
 	argv = "%s"%(readPath) #--- don't change! 
 	PYFILdic = { 
