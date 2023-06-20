@@ -37,7 +37,8 @@ if __name__ == '__main__':
                 '6':'MlTrain/granular/itime0', 
                 '7':'localizedModes', 
                 '8':'localizedModes', 
-                }['amorphousAlumina/temp0']
+                '9':'amorphousAlumina/temp0', 
+                }['9']
     DeleteExistingFolder = True
     readPath = os.getcwd() + {
                                 '1':'/../testRuns/Preparation/ElasticityT300/Co5Cr2Fe40Mn27Ni26/eps2/itime0',
@@ -45,8 +46,8 @@ if __name__ == '__main__':
                                 '3':'/../testRuns/Preparation/CuZrNatom32KT300Tdot1E-1Sheared',
                                 '4':'/../testRuns/granular/silviaData/DATA_GRAINS/seed1_1001',
                                 '7':'/../testRuns/granular/silviaData/QUASI-LOCALIZED-MODEs',
-                                '8':'/../testRuns/glassAlumina/temp0',
-                            }['8'] #--- source
+                                '9':'/../testRuns/glassAlumina/temp0',
+                            }['9'] #--- source
     EXEC_DIR = '.'     #--- path for executable file
     durtn = '00:59:59'
     mem = '16gb'
