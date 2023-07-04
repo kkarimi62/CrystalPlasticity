@@ -7,7 +7,7 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv):
     confParser.set('parameters','itime0','0')
     confParser.set('parameters','itime','2000000')
     confParser.set('input files','path',argv)
-    confParser.set('input files','fileIndex','9')
+    confParser.set('input files','fileIndex','11')
     #--- write
     confParser.write(open('config.ini','w'))	
     #--- set environment variables

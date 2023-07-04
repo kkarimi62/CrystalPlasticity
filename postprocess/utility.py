@@ -269,7 +269,7 @@ def PdfD2min( d2min,
     if Plott:
         fig = plt.figure(figsize=(4,4))
         ax = fig.add_subplot(111)
-        #    ax.set_yscale('log')
+        ax.set_yscale('log')
         #ax.set_xscale('log')
         # ax.set_ylim(1e-5,10)
         # ax.set_xlim(1e-2,1e4)
@@ -2569,8 +2569,8 @@ def gaussian_mixture( values,
             if PLOT:
                 fig = plt.figure(figsize=(4,4))
                 ax = fig.add_subplot(111)
-    #            ax.set_yscale('log')
-    #            ax.set_ylim(0.9,len(nij_red))#1e3)
+                ax.set_yscale('log')
+                ax.set_ylim(0.9,len(nij_red))#1e3)
                 #
                 ax.plot(edge_act,hist_act,'o',color='black',label='Total')
                 #
