@@ -18,16 +18,15 @@ if __name__ == '__main__':
 
 
 
-    count = 0
     for key_t in temps:
         temp = temps[key_t]
-                inums = lnums[ 0 ] - 1
-                string[ inums ] = "\t\'9\':\'amorphousAlumina/temp%s\',\n" % (key_t) #--- change job name
+        inums = lnums[ 0 ] - 1
+        string[ inums ] = "\t\'9\':\'amorphousAlumina/temp%s\',\n" % (key_t) #--- change job name
 
-                inums = lnums[ 1 ] - 1
-                string[ inums ] = "\t\'9\':\'/../testRuns/glassAlumina/temp%s\',\n"%(key_t)
+        inums = lnums[ 1 ] - 1
+        string[ inums ] = "\t\'9\':\'/../testRuns/glassAlumina/temp%s\',\n"%(key_t)
 
-                sfile=open('junk%s.py'%count,'w');sfile.writelines(string);sfile.close()
-                os.system( 'python3 junk%s.py'%count )
-                os.system( 'rm junk%s.py'%count )
-                count += 1
+        sfile=open('junk%s.py'%count,'w');sfile.writelines(string);sfile.close()
+        os.system( 'python3 junk%s.py'%count )
+        os.system( 'rm junk%s.py'%count )
+        count += 1
