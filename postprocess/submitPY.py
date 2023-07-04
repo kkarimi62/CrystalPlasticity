@@ -17,7 +17,7 @@ if __name__ == '__main__':
 
 
 
-
+    count = 0
     for key_t in temps:
         temp = temps[key_t]
         inums = lnums[ 0 ] - 1
