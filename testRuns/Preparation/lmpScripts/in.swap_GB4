@@ -1,0 +1,45 @@
+# --------------------------------------- Atomic   Setup ------------------------------------------#
+include ${INC}/init.mod
+
+# ---------- Create Atoms ---------------------
+include ${INC}/CreateBox.mod
+
+# -------------------------------- EAM Interatomic Potential ------------------------------------#
+include ${INC}/potential.mod
+
+#--- set mass 
+#include ${INC}/mass.mod
+
+#--- fix buffer zone
+#include ${INC}/buffer.mod
+
+
+# -------------------------------------- General Variables --------------------------------------#
+variable                  t_eq      equal     1000.0*${damp_t}         # Equlibration time
+variable 				  Nstep  	equal	floor(${t_eq}/${dt}) #--- timesteps
+
+#--- thermalize
+fix              f1  all npt temp ${initTemp} ${initTemp} ${damp_t} x 0.0 0.0 ${damp_p} z 0.0 0.0 ${damp_p}  
+#fix              f1  bulk nvt temp ${initTemp} ${initTemp} ${damp_t}  
+#fix             f1  bulk nvt temp $T $T ${damp_t} 
+
+
+#--- fix swap
+variable      ran1 equal round(random(0,999999,10))
+fix           4 bulk atom/swap ${swap_every} ${swap_atoms} ${ran1} ${initTemp} ke no types 1 2 
+
+#-----------------------------
+#--- compute & dump variables
+#-----------------------------
+dump        1 all custom ${dump_every} ${OUT_PATH}/${DumpFile} id type x y z #c_1[1] c_1[2] c_1[3] c_1[4] c_1[5] c_1[6]
+dump_modify 1 flush yes format line "%d %d %4.3e %4.3e %4.3e" # %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e"
+
+
+#--- set discretization time 
+timestep	${dt}
+
+#--- thermalize two partial dislocations
+include ${INC}/thermo2nd.mod
+
+run                       ${Nstep}
+
