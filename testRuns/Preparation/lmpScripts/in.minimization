@@ -1,0 +1,37 @@
+# ---------- Initialize Simulation --------------------- 
+include ${INC}/init.mod
+
+# ---------- Create Atoms ---------------------
+include ${INC}/CreateBox.mod
+
+# -------------------------------- EAM Interatomic Potential ------------------------------------#
+include ${INC}/potential.mod
+
+#--- fix buffer zone
+#include ${INC}/buffer.mod
+
+# -------------------------------------- Minimization -------------------------------------------#
+
+
+#-----------------------------
+#--- compute & dump variables
+#-----------------------------
+compute     1 all stress/atom NULL pair
+dump        1 all custom ${nevery} ${OUT_PATH}/${DumpFile} id type x y z c_1[1] c_1[2] c_1[3] c_1[4] c_1[5] c_1[6]
+dump_modify 1 flush yes format line "%d %d %15.14e %15.14e %15.14e %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e"
+#run	0
+#undump		1
+
+# -------------------------------------- Minimization -------------------------------------------#
+fix 3 all box/relax  iso 0.0
+minimize ${etol} ${ftol} ${maxiter} ${maxeval} #--- initial state is already in equilibrium!
+
+#-----------------------------
+#--- compute & dump variables
+#-----------------------------
+#dump        1 all custom ${nevery} ${OUT_PATH}/DumpFile.xyz id type x y z c_1[1] c_1[2] c_1[3] c_1[4] c_1[5] c_1[6]
+#dump_modify 1 flush yes append yes format line "%d %d %15.14e %15.14e %15.14e %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e"
+
+write_data ${WriteData}
+
+run	0

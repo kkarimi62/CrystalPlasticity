@@ -43,7 +43,7 @@ boundary    	p p p
 
 
 #--- discretization time
-variable            dt        equal     0.001         # Time step
+variable            dt        equal     0.005         # Time step
 
 #--- thermostat parameters
 variable            damp_t    equal     100*${dt}     # Thermostat damping
