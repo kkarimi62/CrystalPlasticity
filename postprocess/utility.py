@@ -105,7 +105,7 @@ def Wrapper_neighList(lmpData,reference_frames,cutoff):
         #--- concat
         
         
-def WrapperD2min(lmpData,reference_frames,current_frames, dim=3):
+def WrapperD2min(lmpData,reference_frames,current_frames, dim=3,pypath='.'):
     '''
     invoke d2min analysis in ovito
     '''
@@ -134,7 +134,7 @@ def WrapperD2min(lmpData,reference_frames,current_frames, dim=3):
         fileRef = 'D2minAnl/dump_ref.xyz'
         output = 'D2minAnl/d2min.%s.xyz'%ii
         #--- load to ovito
-        os.system('ovitos OvitosCna.py %s %s 2 2 %s'%(fileCurr,output,fileRef))
+        os.system('ovitos %s/OvitosCna.py %s %s 2 2 %s'%(pypath,fileCurr,output,fileRef))
         #--- concat
         os.system('cat %s >> D2minAnl/d2min.xyz;rm %s'%(output,output))
 
@@ -1129,14 +1129,15 @@ def PdfCondD2min( lmpData, lmpDmin, times,
     #                         linewidth=.5,
     #                          barsabove=None,capsize=5,capthick=1,elinewidth=1,label='Total')
                 #
-            ax.errorbar(edges_filtrd,hist_filtrd,error_filtrd,
+#            assert len(edges_filtrd) == len(hist_filtrd) == len(error_filtrd), '%s %s %s'%(len(edges_filtrd),len(hist_filtrd),len(error_filtrd))
+            ax.errorbar(edges_filtrd[:-1],hist_filtrd,error_filtrd,
                         fmt='-o', color='black', 
                         markerfacecolor='white', markeredgecolor=None,
                         label='Icosahedra', markevery = int(len(edges_filtrd)/10),
                         errorevery = int(len(edges_filtrd)/10),**attr
                        )
             #
-            ax.errorbar(edges_inv,hist_inv,error_inv,
+            ax.errorbar(edges_inv[:-1],hist_inv,error_inv,
                         fmt='-s', color='red',
                         markerfacecolor=None, markeredgecolor='black',
                         label='Non Icosahedra',markevery = int(len(edges_inv)/10),
@@ -2300,15 +2301,15 @@ def ScatterXY( vor, d2min,
     x = np.array(vor.tmp)
     y = np.array(d2min.tmp)
     #---
-    if yscale == 'log':
-        y=np.log10(y) #y[x>0]
-    if xscale == 'log':
-        x=np.log10(x) #y[x>0]
+#    if yscale == 'log':
+#        y=np.log10(y) #y[x>0]
+#    if xscale == 'log':
+#        x=np.log10(x) #y[x>0]
 #         x=x[x>0]
         
-    if 'zscore' in kwargs and kwargs['zscore']:
-        x=Zscore(x)
-        y=Zscore(y)
+#    if 'zscore' in kwargs and kwargs['zscore']:
+#        x=Zscore(x)
+#        y=Zscore(y)
 
     crs = CrssCrltn( x,y )
         
@@ -2365,6 +2366,8 @@ def ScatterXY( vor, d2min,
 #        ax.legend(frameon=False, fontsize=12)
         #
         ax.tick_params(labelsize=20,which='both',axis='both', top=True, right=True)
+        ax.set_xscale(xscale)
+        ax.set_yscale(yscale)
         
         DrawFrame(ax, 0.2,0.09,0.15,0.06,0.04,
                   LOG_X=True if xscale == 'log' else False,
